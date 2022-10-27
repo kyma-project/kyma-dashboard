@@ -1,0 +1,31 @@
+FROM alpine:3.15.0 AS builder
+
+# declare TARGET_ENV variable and make sure it has been passed to build
+ARG TARGET_ENV
+RUN test -n "$TARGET_ENV" 
+
+WORKDIR /build
+
+RUN apk add --update nodejs npm
+RUN apk update && apk upgrade
+
+COPY . /build
+
+RUN npm ci
+
+RUN ENV=${TARGET_ENV} npm run pack-extensions
+RUN ENV=${TARGET_ENV} npm run prepare-extensions
+
+RUN stat /build/environments/${TARGET_ENV}/dist/extensions.yaml
+
+FROM eu.gcr.io/kyma-project/busola-web:bce3f326
+
+ARG TARGET_ENV
+
+WORKDIR /app
+
+COPY  --from=builder /build/environments/${TARGET_ENV}/dist/extensions.yaml /app/core/assets/extensions/extensions.yaml
+
+# are needed?
+EXPOSE 8080
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

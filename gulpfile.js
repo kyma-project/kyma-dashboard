@@ -1,13 +1,17 @@
-const gulp = require("gulp");
-const through2 = require("through2");
-const jsyaml = require("js-yaml");
-const { mapValues } = require("lodash");
-const concat = require("gulp-concat");
-const clean = require("gulp-clean");
 const fetch = require("node-fetch");
-const clc = require("cli-color");
 const URL = require("url").URL;
 const fs = require("fs");
+const jsyaml = require("js-yaml");
+
+const gulp = require("gulp");
+const through2 = require("through2");
+const concat = require("gulp-concat");
+const clean = require("gulp-clean");
+
+const mapValues = (obj, fn) =>
+  Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => [key, fn(value)])
+  );
 
 const isUrl = (str) => {
   try {
@@ -95,9 +99,7 @@ gulp.task("pack-extensions", () => {
     const version = metadata.labels?.["busola.io/extension-version"];
     if (!SUPPORTED_VERSIONS.includes(version)) {
       throw Error(
-        `Unsupported version ${clc.magenta(version)} for ${clc.magenta(
-          metadata.name
-        )} extension.`
+        `Unsupported version "${version}" for ${metadata.name} extension.`
       );
     }
   };
