@@ -1,0 +1,19 @@
+{
+  "name": "kyma-dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "pack-extensions:dev": "ENV=dev gulp pack-extensions",
+    "prepare-extensions:dev": "ENV=dev gulp clean-extensions && ENV=dev gulp get-extensions"
+  },
+  "devDependencies": {
+    "cli-color": "^2.0.3",
+    "gulp": "^4.0.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
+    "node-fetch": "^2.6.1"
+  }
+}
