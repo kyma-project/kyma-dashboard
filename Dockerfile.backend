@@ -1,0 +1,7 @@
+FROM eu.gcr.io/kyma-project/busola-backend:PR-1971
+
+# declare TARGET_ENV variable and make sure it is  passed to build
+ARG TARGET_ENV
+RUN test -n "$TARGET_ENV" 
+
+COPY /environments/${TARGET_ENV}/dist/config.yaml /backend/config/config.yaml

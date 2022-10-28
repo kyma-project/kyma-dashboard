@@ -1,6 +1,6 @@
 FROM alpine:3.15.0 AS builder
 
-# declare TARGET_ENV variable and make sure it has been passed to build
+# declare TARGET_ENV variable and make sure it is passed to build
 ARG TARGET_ENV
 RUN test -n "$TARGET_ENV" 
 
@@ -24,6 +24,7 @@ ARG TARGET_ENV
 WORKDIR /app
 
 COPY  --from=builder /build/environments/${TARGET_ENV}/dist/extensions.yaml /app/core/assets/extensions/extensions.yaml
+COPY  --from=builder /build/environments/${TARGET_ENV}/config.yaml /app/core/assets/config/config.yaml
 
 # are needed?
 EXPOSE 8080
