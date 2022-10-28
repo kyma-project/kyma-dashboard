@@ -6,9 +6,8 @@ TAG = $(DOCKER_TAG)
 release-dev: build-dev push-dev
 
 build-dev:
-	node -v
 	docker build -t $(DEV_IMG_NAME) --build-arg TARGET_ENV=dev -f Dockerfile.web  .
 
 push-dev:
 	docker tag $(DEV_IMG_NAME) $(REPO_IMG_DEV):$(TAG)
-	docker push $(IMG):$(TAG)
+	docker push $(REPO_IMG_DEV):$(TAG)

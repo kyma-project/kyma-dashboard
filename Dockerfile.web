@@ -13,10 +13,9 @@ COPY . /build
 
 RUN npm ci
 
-RUN ENV=${TARGET_ENV} npm run pack-extensions
 RUN ENV=${TARGET_ENV} npm run prepare-extensions
+RUN ENV=${TARGET_ENV} npm run pack-extensions
 
-RUN stat /build/environments/${TARGET_ENV}/dist/extensions.yaml
 
 FROM eu.gcr.io/kyma-project/busola-web:bce3f326
 
