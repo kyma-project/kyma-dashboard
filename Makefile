@@ -10,6 +10,10 @@ release-dev-backend:
 	TARGET=backend ENV=dev make build
 	TARGET=backend ENV=dev make push
 
+release-dev-local:
+	TARGET=local ENV=dev make build
+	TARGET=local ENV=dev make push
+
 release-stage-web:
 	TARGET=web ENV=stage make build
 	TARGET=web ENV=stage make push
@@ -18,6 +22,10 @@ release-stage-backend:
 	TARGET=backend ENV=stage make build
 	TARGET=backend ENV=stage make push
 
+release-stage-local:
+	TARGET=local ENV=dev make build
+	TARGET=local ENV=dev make push
+
 release-prod-web:
 	TARGET=web ENV=prod make build
 	TARGET=web ENV=prod make push
@@ -25,6 +33,10 @@ release-prod-web:
 release-prod-backend:
 	TARGET=backend ENV=prod make build
 	TARGET=backend ENV=prod make push
+
+release-prod-local:
+	TARGET=local ENV=dev make build
+	TARGET=local ENV=dev make push
 
 build:
 	$(eval LOCAL_TAG := $(BASE_IMG_NAME)-$(TARGET)-$(ENV))

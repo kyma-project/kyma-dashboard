@@ -17,7 +17,7 @@ RUN ENV=${TARGET_ENV} npm run prepare-extensions
 RUN ENV=${TARGET_ENV} npm run pack-extensions
 
 
-FROM eu.gcr.io/kyma-project/busola-web:bce3f326
+FROM eu.gcr.io/kyma-project/busola:latest
 
 ARG TARGET_ENV
 
@@ -26,5 +26,6 @@ WORKDIR /app
 COPY  --from=builder /build/environments/${TARGET_ENV}/dist/extensions.yaml /app/core/assets/extensions/extensions.yaml
 COPY  --from=builder /build/environments/${TARGET_ENV}/config.yaml /app/core/assets/config/config.yaml
 
-EXPOSE 8080
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+EXPOSE 3001
+ENV NODE_ENV=production ADDRESS=0.0.0.0 IS_DOCKER=true
+CMD ["node", "backend-production.js"]
