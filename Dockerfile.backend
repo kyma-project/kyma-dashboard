@@ -4,4 +4,4 @@ FROM eu.gcr.io/kyma-project/busola-backend:PR-1971
 ARG TARGET_ENV
 RUN test -n "$TARGET_ENV" 
 
-COPY /environments/${TARGET_ENV}/dist/config.yaml /backend/config/config.yaml
+COPY /environments/${TARGET_ENV}/config.yaml /backend/config/config.yaml
