@@ -5,4 +5,3 @@ ARG TARGET_ENV
 RUN test -n "$TARGET_ENV" 
 
 COPY /environments/${TARGET_ENV}/config.yaml /backend/config/config.yaml
- 
