@@ -2,21 +2,38 @@ BASE_IMG_NAME=kyma-dashboard
 REPO_IMG_DEV = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(BASE_IMG_NAME)
 TAG = $(DOCKER_TAG)
 
-release-web-dev: build-web-dev push-web-dev
+release-dev-web:
+	TARGET=web ENV=dev make build
+	TARGET=web ENV=dev make push
 
-build-web-dev:
-	docker build -t $(BASE_IMG_NAME)-web-dev --build-arg TARGET_ENV=dev -f Dockerfile.web  .
+release-dev-backend:
+	TARGET=backend ENV=dev make build
+	TARGET=backend ENV=dev make push
 
-push-web-dev:
-	docker tag $(BASE_IMG_NAME)-web-dev $(REPO_IMG_DEV)-web-dev:$(TAG)
-	docker push $(REPO_IMG_DEV)-web-dev:$(TAG)
+release-stage-web:
+	TARGET=web ENV=stage make build
+	TARGET=web ENV=stage make push
 
+release-stage-backend:
+	TARGET=backend ENV=stage make build
+	TARGET=backend ENV=stage make push
 
-release-backend-dev: build-backend-dev push-backend-dev
+release-prod-web:
+	TARGET=web ENV=prod make build
+	TARGET=web ENV=prod make push
 
-build-backend-dev:
-	docker build -t $(BASE_IMG_NAME)-backend-dev --build-arg TARGET_ENV=dev -f Dockerfile.backend  .
+release-prod-backend:
+	TARGET=backend ENV=prod make build
+	TARGET=backend ENV=prod make push
 
-push-backend-dev:
-	docker tag $(BASE_IMG_NAME)-backend-dev $(REPO_IMG_DEV)-backend-dev:$(TAG)
-	docker push $(REPO_IMG_DEV)-backend-dev:$(TAG)
+build:
+	$(eval LOCAL_TAG := $(BASE_IMG_NAME)-$(TARGET)-$(ENV))
+
+	docker build -t $(LOCAL_TAG) --build-arg TARGET_ENV=$(ENV) -f Dockerfile.$(TARGET) .
+
+push:
+	$(eval LOCAL_TAG := $(BASE_IMG_NAME)-$(TARGET)-$(ENV))
+	$(eval EXTERNAL_TAG := $(REPO_IMG_DEV)-$(TARGET)-$(ENV):$(TAG))
+
+	docker tag $(LOCAL_TAG) $(EXTERNAL_TAG)
+	docker push $(EXTERNAL_TAG)
