@@ -8,7 +8,7 @@ build-web-dev:
 	docker build -t $(BASE_IMG_NAME)-web-dev --build-arg TARGET_ENV=dev -f Dockerfile.web  .
 
 push-web-dev:
-	docker tag $(BASE_IMG_NAME)-web-dev $(REPO_IMG_DEV):$(TAG)
+	docker tag $(BASE_IMG_NAME)-web-dev $(REPO_IMG_DEV)-web-dev:$(TAG)
 	docker push $(REPO_IMG_DEV)-web-dev:$(TAG)
 
 
@@ -18,5 +18,5 @@ build-backend-dev:
 	docker build -t $(BASE_IMG_NAME)-backend-dev --build-arg TARGET_ENV=dev -f Dockerfile.backend  .
 
 push-backend-dev:
-	docker tag $(BASE_IMG_NAME)-backend-dev $(REPO_IMG_DEV):$(TAG)
+	docker tag $(BASE_IMG_NAME)-backend-dev $(REPO_IMG_DEV)-backend-dev:$(TAG)
 	docker push $(REPO_IMG_DEV)-backend-dev:$(TAG)
