@@ -133,3 +133,5 @@ dist
 extensions-local
 
 .DS_Store
+
+environments/**/Dockerfile*

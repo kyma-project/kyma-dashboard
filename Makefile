@@ -5,11 +5,11 @@ TAG = $(DOCKER_TAG)
 release-dev:
 	ENV=dev make prepare-extensions-image
 	TARGET=web ENV=dev make build
-	TARGET=web ENV=dev make push
+	# TARGET=web ENV=dev make push
 	TARGET=backend ENV=dev make build
-	TARGET=backend ENV=dev make push
+	# TARGET=backend ENV=dev make push
 	TARGET=local ENV=dev make build
-	TARGET=local ENV=dev make push
+	# TARGET=local ENV=dev make push
 
 release-stage:
 	ENV=stage make prepare-extensions-image
@@ -30,12 +30,19 @@ release-prod:
 	TARGET=local ENV=prod make push
 
 prepare-extensions-image:
-	docker build -t extensions-local --build-arg TARGET_ENV=$(ENV) -f Dockerfile.extensions .
+	docker build -t extensions-local --build-arg ENV=$(ENV) -f Dockerfile.extensions .
 
 build:
 	$(eval LOCAL_TAG := $(BASE_IMG_NAME)-$(TARGET)-$(ENV))
 
-	docker build -t $(LOCAL_TAG) --build-arg TARGET_ENV=$(ENV) -f Dockerfile.$(TARGET) .
+
+	set -a
+	. ./environments/${ENV}/env.conf
+	set + a
+	
+	envsubst < Dockerfile.${TARGET} > environments/${ENV}/Dockerfile.${TARGET}
+	docker build -t $(LOCAL_TAG) -f environments/$(ENV)/Dockerfile.$(TARGET) .
+	rm environments/$(ENV)/Dockerfile.$(TARGET)
 
 push:
 	$(eval LOCAL_TAG := $(BASE_IMG_NAME)-$(TARGET)-$(ENV))
