@@ -12,6 +12,15 @@
 
 - `push` - requires `ENV` (dev, stage, prod) and `TARGET` (web, backend, frontend) variables. Tags and pushes the image create on `build` stage.
 
-## Deploying `dev`
+## `dev` synchronisation
 
-`kyma-dashboard` repository watches the `busola` repository (TODO) and when change occurs, it pulls the created images () and creates kyma-dashboard 
+- `kyma-dashboard` repository watches the `busola` repository and when change occurs, it updates the images in `environments/dev/env.conf`. - TODO
+- `busola-deploy/dev` picks up changes in `env.conf`, `config.yaml` and `extensions.json` and updates the image on `dashboard.dev`. TODO
+
+## Updating `stage`
+
+Only updating the files in `kyma-dashboard` repository is needed - `busola-deploy/stage` should pick up changes and update the `dashboard.stage` - TODO
+
+## Updating `prod`
+
+We would need to manually update the files both here and on `busola-deploy/prod`.
