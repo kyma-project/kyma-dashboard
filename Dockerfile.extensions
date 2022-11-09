@@ -1,0 +1,17 @@
+FROM alpine:3.15.0 AS builder
+
+# declare ENV variable and make sure it is passed to build
+ARG ENV
+RUN test -n "$ENV" 
+
+WORKDIR /build
+
+RUN apk add --update nodejs npm
+RUN apk update && apk upgrade
+
+COPY . /build
+
+RUN npm ci
+
+RUN ENV=${ENV} npm run prepare-extensions
+RUN ENV=${ENV} npm run pack-extensions
