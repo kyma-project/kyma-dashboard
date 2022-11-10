@@ -3,6 +3,7 @@ name: Update dev images from Busola main
 on:
   schedule:
     - cron: "*/6 * * * *"
+  workflow_dispatch:
 
 jobs:
   update_images:
