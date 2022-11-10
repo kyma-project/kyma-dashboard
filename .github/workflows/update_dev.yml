@@ -22,11 +22,15 @@ jobs:
           WEB_IMAGE=$(yq e '.spec.template.spec.containers[] | select(.name=="busola").image' busola/resources/web/deployment.yaml)
           WEB_IMAGE=${WEB_IMAGE#*:}
           sed -i "s/export WEB_IMAGE=.*/export WEB_IMAGE=${WEB_IMAGE}/" kyma-dashboard/environments/dev/env.sh
+
       - name: Get backend image tag
         run: |
           BACKEND_IMAGE=$(yq e '.spec.template.spec.containers[] | select(.name=="backend").image' busola/resources/backend/deployment.yaml)
           BACKEND_IMAGE=${BACKEND_IMAGE#*:}
           sed -i "s/export BACKEND_IMAGE=.*/export BACKEND_IMAGE=${BACKEND_IMAGE}/" kyma-dashboard/environments/dev/env.sh
+
+      - name: Display changes to be pushed
+        run: cat kyma-dashboard/environments/dev/env.sh
 
       - name: Update DEV environment configuration
         run: |
