@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: "*/6 * * * *"
   workflow_dispatch:
+
 jobs:
   update_images:
     runs-on: ubuntu-latest
