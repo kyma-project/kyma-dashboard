@@ -1,3 +1,3 @@
 export WEB_IMAGE=PR-2011
-export BACKEND_IMAGE=todo1
+export BACKEND_IMAGE=todo2
 export LOCAL_IMAGE=bce3f326
