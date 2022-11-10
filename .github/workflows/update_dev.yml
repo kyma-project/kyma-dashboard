@@ -2,7 +2,7 @@ name: Update dev images from Busola main
 
 on:
   schedule:
-    - cron: "*/2 * * * *"
+    - cron: "*/6 * * * *"
 
 jobs:
   update_images:
