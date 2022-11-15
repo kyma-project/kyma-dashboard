@@ -1,0 +1,47 @@
+name: Update dev images from Busola main
+
+on:
+  schedule:
+    - cron: "*/6 * * * *"
+  workflow_dispatch:
+
+jobs:
+  update_images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod a+x /usr/local/bin/yq
+      - name: Checkout kyma-dashboard & busola repos
+        run: |
+          git clone https://github.com/kyma-project/busola
+          git clone https://github.com/kyma-project/kyma-dashboard
+
+      - name: Get web image tag
+        run: |
+          WEB_IMAGE=$(yq e '.spec.template.spec.containers[] | select(.name=="busola").image' busola/resources/web/deployment.yaml)
+          WEB_IMAGE=${WEB_IMAGE#*:}
+          sed -i "s/export WEB_IMAGE=.*/export WEB_IMAGE=${WEB_IMAGE}/" kyma-dashboard/environments/dev/env.sh
+
+      - name: Get backend image tag
+        run: |
+          BACKEND_IMAGE=$(yq e '.spec.template.spec.containers[] | select(.name=="backend").image' busola/resources/backend/deployment.yaml)
+          BACKEND_IMAGE=${BACKEND_IMAGE#*:}
+          sed -i "s/export BACKEND_IMAGE=.*/export BACKEND_IMAGE=${BACKEND_IMAGE}/" kyma-dashboard/environments/dev/env.sh
+
+      - name: Display changes to be pushed
+        run: cat kyma-dashboard/environments/dev/env.sh
+
+      - name: Update DEV environment configuration
+        run: |
+          cd kyma-dashboard/
+          if [ $(git status | grep -c "nothing to commit") == 0 ]; then
+            git config user.name kyma-bot
+            git config user.email team-neighbors+1@sap.com
+            git diff
+            git commit -am "Busola version update for actions run-$GITHUB_RUN_NUMBER"
+            git push -f https://${{ secrets.ACCESS_TOKEN }}@github.com/kyma-project/kyma-dashboard
+          else
+              echo "No changes, skipping..."
+          fi
