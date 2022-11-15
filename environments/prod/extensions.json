@@ -1,15 +1,14 @@
 [
-    {
-      "source": "extensions/applicationconnector"
-    },
-    {
-      "source": "extensions/serverless"
-    },
-    {
-      "source": "extensions/configuration"
-    },
-    {
-      "source": "extensions/istio"
-    }
-  ]
-  
+  {
+    "source": "extensions/applicationconnector"
+  },
+  {
+    "source": "extensions/serverless"
+  },
+  {
+    "source": "extensions/configuration"
+  },
+  {
+    "source": "extensions/istio"
+  }
+]
