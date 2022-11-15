@@ -1,1 +1,12 @@
-[]
+[
+    {
+      "source": "https://raw.githubusercontent.com/kyma-project/busola/main/examples/pizzas/configuration/pizza-orders-configmap.yaml"
+    },
+    {
+      "source": "extensions/serverless/functions.yaml"
+    },
+    {
+      "source": "extensions/istio"
+    }
+  ]
+  

@@ -14,11 +14,11 @@ release-dev:
 release-stage:
 	ENV=stage make prepare-extensions-image
 	TARGET=web ENV=stage make build
-	TARGET=web ENV=stage make push
+	# TARGET=web ENV=stage make push
 	TARGET=backend ENV=stage make build
-	TARGET=backend ENV=stage make push
+	# TARGET=backend ENV=stage make push
 	TARGET=local ENV=stage make build
-	TARGET=local ENV=stage make push
+	# TARGET=local ENV=stage make push
 
 release-prod:
 	ENV=prod make prepare-extensions-image
