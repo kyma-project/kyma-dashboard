@@ -1,0 +1,79 @@
+config:
+  storage: localStorage
+  features:
+    PROTECTED_RESOURCES:
+      isEnabled: true
+      config:
+        resources:
+        - match:
+            "$.metadata.labels['serverless.kyma-project.io/managed-by']": function-controller
+          message: 'Resource managed by: function-controller'
+        - match:
+            "$.metadata.labels['reconciler.kyma-project.io/managed-by']": reconciler
+          messageSrc: "$.metadata.annotations['reconciler.kyma-project.io/managed-by-reconciler-disclaimer']"
+        - match:
+            "$.metadata.labels['istio.io/rev']": default
+          message: Resource managed by Istio control plane
+        - match:
+            "$.metadata.labels['applicationconnector.kyma-project.io/managed-by']": compass-runtime-agent
+    LEGAL_LINKS:
+      config:
+        legal-disclosure:
+          default: https://www.sap.com/corporate/en/legal/impressum.html
+          de: https://www.sap.com/corporate/de/legal/impressum.html
+        privacy:
+          default: https://help.sap.com/viewer/82bdf2271c6041f79387c122147cf774/Cloud/en-US
+        copyright:
+          default: https://www.sap.com/corporate/en/legal/copyright.html
+          de: https://www.sap.com/corporate/de/legal/copyright.html
+        trademark:
+          default: https://www.sap.com/corporate/en/legal/trademark.html
+          de: https://www.sap.com/corporate/de/legal/trademark.html
+    SSO_LOGIN:
+      isEnabled: false
+      config:
+        issuerUrl: https://kymatest.accounts400.ondemand.com
+        scope: openid
+        clientId: e69c0ad6-c283-4baf-9ad7-3714decef49d
+    KUBECONFIG_ID:
+      isEnabled: true
+      config:
+        kubeconfigUrl: https://kyma-env-broker.cp.stage.kyma.cloud.sap/kubeconfig
+    SENTRY:
+      isEnabled: true
+      selectors: []
+      config:
+        dsn: https://6b34a073f53c4949bf4f1fae1b788527@o399001.ingest.sentry.io/5953495
+    SHOW_KYMA_VERSION:
+      isEnabled: true
+    SHOW_GARDENER_METADATA:
+      isEnabled: true
+    SERVICE_CATALOG_READ_ONLY:
+      isReadOnly: false
+    SERVICE_CATALOG:
+      isEnabled: false
+    SERVICE_CATALOG_ADDONS:
+      isEnabled: false
+    ADDONS:
+      isEnabled: false
+    OBSERVABILITY:
+      isEnabled: true
+      config:
+        links:
+        - label: Grafana
+          path: apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/monitoring-grafana
+        - label: Kiali
+          path: apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/kiali
+        - label: Tracing
+          path: apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/tracing
+    JWT_CHECK_CONFIG:
+      isEnabled: false
+      config:
+        issuer: https://kymatest.accounts400.ondemand.com
+        jwksUri: https://kymatest.accounts400.ondemand.com/oauth2/certs
+    GZIP:
+      isEnabled: true
+    TRACKING:
+      isEnabled: false
+    EXTENSIBILITY:
+      isEnabled: true
