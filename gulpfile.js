@@ -1,19 +1,19 @@
-const fetch = require("node-fetch");
-const URL = require("url").URL;
-const fs = require("fs");
-const jsyaml = require("js-yaml");
+const fetch = require('node-fetch');
+const URL = require('url').URL;
+const fs = require('fs');
+const jsyaml = require('js-yaml');
 
-const gulp = require("gulp");
-const through2 = require("through2");
-const concat = require("gulp-concat");
-const clean = require("gulp-clean");
+const gulp = require('gulp');
+const through2 = require('through2');
+const concat = require('gulp-concat');
+const clean = require('gulp-clean');
 
 const mapValues = (obj, fn) =>
   Object.fromEntries(
-    Object.entries(obj).map(([key, value]) => [key, fn(value)])
+    Object.entries(obj).map(([key, value]) => [key, fn(value)]),
   );
 
-const isUrl = (str) => {
+const isUrl = str => {
   try {
     return !!new URL(str);
   } catch {
@@ -21,7 +21,7 @@ const isUrl = (str) => {
   }
 };
 
-gulp.task("clean-extensions", () => {
+gulp.task('clean-extensions', () => {
   const env = process.env.ENV;
   return gulp
     .src(`environments/${env}/extensions/extensions-local`, {
@@ -31,11 +31,11 @@ gulp.task("clean-extensions", () => {
     .pipe(clean());
 });
 
-gulp.task("get-extensions", () => {
-  const loadExtensions = through2.obj(async function (extensionsFile, _, cb) {
+gulp.task('get-extensions', () => {
+  const loadExtensions = through2.obj(async function(extensionsFile, _, cb) {
     const list = JSON.parse(extensionsFile.contents.toString());
 
-    const readLocalFile = (filePath) =>
+    const readLocalFile = filePath =>
       new Promise((resolve, reject) =>
         fs.readFile(filePath, (err, data) => {
           if (err) {
@@ -43,18 +43,18 @@ gulp.task("get-extensions", () => {
           } else {
             resolve({
               contents: data.toString(),
-              name: filePath.substr(filePath.lastIndexOf("/") + 1),
+              name: filePath.substr(filePath.lastIndexOf('/') + 1),
             });
           }
-        })
+        }),
       );
 
-    const readExternalFile = (fileAddress) =>
+    const readExternalFile = fileAddress =>
       fetch(fileAddress)
-        .then((res) => res.text())
-        .then((contents) => ({
+        .then(res => res.text())
+        .then(contents => ({
           contents,
-          name: fileAddress.substr(fileAddress.lastIndexOf("/") + 1),
+          name: fileAddress.substr(fileAddress.lastIndexOf('/') + 1),
         }));
 
     const requests = list.map(({ source }) => {
@@ -64,7 +64,7 @@ gulp.task("get-extensions", () => {
         if (fs.lstatSync(source).isDirectory()) {
           return fs
             .readdirSync(source)
-            .map((name) => readLocalFile(source + "/" + name));
+            .map(name => readLocalFile(source + '/' + name));
         } else {
           return readLocalFile(source);
         }
@@ -88,18 +88,18 @@ gulp.task("get-extensions", () => {
     .pipe(gulp.dest(`environments/${process.env.ENV}/extensions-local/-/-`)); // gulp strips the 2 last path components?
 });
 
-gulp.task("pack-extensions", () => {
-  const convertYamlToObject = (yamlString) => {
+gulp.task('pack-extensions', () => {
+  const convertYamlToObject = yamlString => {
     return jsyaml.load(yamlString, { json: true });
   };
 
-  const checkExtensionVersion = (metadata) => {
-    const SUPPORTED_VERSIONS = ["0.4", "0.5"];
+  const checkExtensionVersion = metadata => {
+    const SUPPORTED_VERSIONS = ['0.4', '0.5'];
 
-    const version = metadata.labels?.["busola.io/extension-version"];
+    const version = metadata.labels?.['busola.io/extension-version'];
     if (!SUPPORTED_VERSIONS.includes(version)) {
       throw Error(
-        `Unsupported version "${version}" for ${metadata.name} extension.`
+        `Unsupported version "${version}" for ${metadata.name} extension.`,
       );
     }
   };
@@ -110,7 +110,7 @@ gulp.task("pack-extensions", () => {
     checkExtensionVersion(metadata);
 
     file.contents = Buffer.from(
-      jsyaml.dump(mapValues(data, convertYamlToObject))
+      jsyaml.dump(mapValues(data, convertYamlToObject)),
     );
     cb(null, file);
   });
@@ -120,9 +120,9 @@ gulp.task("pack-extensions", () => {
     .src(`environments/${env}/extensions-local/**/*.yaml`)
     .pipe(loadExtensions)
     .pipe(
-      concat("extensions.yaml", {
-        newLine: "---\n",
-      })
+      concat('extensions.yaml', {
+        newLine: '---\n',
+      }),
     )
     .pipe(gulp.dest(`environments/${env}/dist`));
 });
