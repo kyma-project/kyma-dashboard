@@ -7,7 +7,7 @@ config:
         resources:
           - match:
               $.metadata.labels['serverless.kyma-project.io/managed-by']: function-controller
-            message: "Resource managed by: function-controller"
+            message: 'Resource managed by: function-controller'
           - match:
               $.metadata.labels['reconciler.kyma-project.io/managed-by']: reconciler
             messageSrc: >-
@@ -45,7 +45,7 @@ config:
       isEnabled: false
       selectors: []
       config:
-        dsn: ""
+        dsn: ''
     SHOW_KYMA_VERSION:
       isEnabled: true
     SHOW_GARDENER_METADATA:

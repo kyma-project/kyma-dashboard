@@ -5,13 +5,25 @@
   "main": "gulpfile.js",
   "scripts": {
     "pack-extensions": "gulp pack-extensions",
-    "prepare-extensions": "gulp clean-extensions && gulp get-extensions"
+    "prepare-extensions": "gulp clean-extensions && gulp get-extensions",
+    "lint-fix": "prettier --config ./.prettierrc --write '**/*.{ts,tsx,js,jsx,json,html,css,yaml,md}'"
   },
   "devDependencies": {
     "gulp": "^4.0.1",
     "gulp-clean": "^0.4.0",
     "gulp-concat": "^2.6.1",
+    "husky": "^2.4.1",
     "js-yaml": "^4.1.0",
-    "node-fetch": "^2.6.1"
+    "lint-staged": "^10.4.0",
+    "node-fetch": "^2.6.1",
+    "prettier": "^1.18.2"
+  },
+  "lint-staged": {
+    "*": "prettier --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

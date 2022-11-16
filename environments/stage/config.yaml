@@ -5,17 +5,17 @@ config:
       isEnabled: true
       config:
         resources:
-        - match:
-            "$.metadata.labels['serverless.kyma-project.io/managed-by']": function-controller
-          message: 'Resource managed by: function-controller'
-        - match:
-            "$.metadata.labels['reconciler.kyma-project.io/managed-by']": reconciler
-          messageSrc: "$.metadata.annotations['reconciler.kyma-project.io/managed-by-reconciler-disclaimer']"
-        - match:
-            "$.metadata.labels['istio.io/rev']": default
-          message: Resource managed by Istio control plane
-        - match:
-            "$.metadata.labels['applicationconnector.kyma-project.io/managed-by']": compass-runtime-agent
+          - match:
+              "$.metadata.labels['serverless.kyma-project.io/managed-by']": function-controller
+            message: 'Resource managed by: function-controller'
+          - match:
+              "$.metadata.labels['reconciler.kyma-project.io/managed-by']": reconciler
+            messageSrc: "$.metadata.annotations['reconciler.kyma-project.io/managed-by-reconciler-disclaimer']"
+          - match:
+              "$.metadata.labels['istio.io/rev']": default
+            message: Resource managed by Istio control plane
+          - match:
+              "$.metadata.labels['applicationconnector.kyma-project.io/managed-by']": compass-runtime-agent
     LEGAL_LINKS:
       config:
         legal-disclosure:
@@ -60,12 +60,12 @@ config:
       isEnabled: true
       config:
         links:
-        - label: Grafana
-          path: apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/monitoring-grafana
-        - label: Kiali
-          path: apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/kiali
-        - label: Tracing
-          path: apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/tracing
+          - label: Grafana
+            path: apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/monitoring-grafana
+          - label: Kiali
+            path: apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/kiali
+          - label: Tracing
+            path: apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/tracing
     JWT_CHECK_CONFIG:
       isEnabled: false
       config:
