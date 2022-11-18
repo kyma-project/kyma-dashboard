@@ -175,6 +175,7 @@ data:
         - Inline
         - Git Repository
       dynamicValue: '$exists(spec.source.gitRepository) ? "Git Repository" : "Inline"'
+      name: header.sourceType
     - simple: true
       path: spec.runtime
       placeholder: placeholders.spec.runtime
@@ -280,17 +281,19 @@ data:
         - path: source
           widget: CodeEditor
           language: '$contains($root.spec.runtime, "node") ? "javascript" : "python"'
+          defaultExpanded: true
         - path: dependencies
           widget: CodeEditor
           language: '$contains($root.spec.runtime, "node") ? "javascript" : "plaintext"'
+          defaultExpanded: true
   general: |-
     resource:
       kind: Function
       group: serverless.kyma-project.io
       version: v1alpha2
-    name: Ext Functions
+    name: Functions
     category: Workloads
-    urlPath: ext-functions
+    urlPath: functions
     scope: namespace
     description: >-
       {{[Function](https://kyma-project.io/docs/kyma/latest/05-technical-reference/00-custom-resources/svls-01-function/#documentation-content/)}}
