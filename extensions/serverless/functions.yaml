@@ -63,16 +63,16 @@ data:
                 widget: CodeViewer
                 name: code.source
                 language: '$contains($root.spec.runtime, "python") ? "python": "javascript"'
-                visibility: $exists($.data)
+                visibility: $exists($value)
               - source: spec.source.inline.dependencies
                 widget: CodeViewer
                 name: code.dependencies
                 language: '"json"'
-                visibility: $exists($.data)
+                visibility: $exists($value)
               - source: spec.source.gitRepository
                 widget: Panel
                 name: code.gitRepositoryConfig
-                visibility: $exists($.data)
+                visibility: $exists($value)
                 children:
                   - name: code.gitRepository.url
                     source: spec.source.gitRepository.url
@@ -184,6 +184,16 @@ data:
         - nodejs16
         - python39
     - path: spec.runtimeImageOverride
+    - path: spec.source.inline
+      visibility: $sourceType = 'Inline' #the bug
+      children:
+        - path: source
+          widget: CodeEditor
+          language: '$contains($root.spec.runtime, "node") ? "javascript" : "python"'
+          defaultExpanded: true
+        - path: dependencies
+          widget: CodeEditor
+          language: '$contains($root.spec.runtime, "node") ? "javascript" : "plaintext"'
     - path: spec.source.gitRepository
       widget: FormGroup
       visibility: $sourceType = 'Git Repository'
@@ -195,6 +205,7 @@ data:
           required: true
         - var: useAuthorization
           type: boolean
+          name: code.gitRepository.auth
           dynamicValue: $exists($.spec.source.gitRepository.auth)
         - widget: FormGroup
           path: auth
@@ -240,6 +251,7 @@ data:
           children:
             - var: envType
               widget: Text
+              name: spec.env.source
               enum:
                 - Custom
                 - From Config Map
@@ -275,17 +287,6 @@ data:
               widget: Text
               enum: $keys($configMap.data)
               visibility: $envType = 'From Config Map'
-    - path: spec.source.inline
-      visibility: $sourceType = 'Inline'
-      children:
-        - path: source
-          widget: CodeEditor
-          language: '$contains($root.spec.runtime, "node") ? "javascript" : "python"'
-          defaultExpanded: true
-        - path: dependencies
-          widget: CodeEditor
-          language: '$contains($root.spec.runtime, "node") ? "javascript" : "plaintext"'
-          defaultExpanded: true
   general: |-
     resource:
       kind: Function
@@ -377,6 +378,7 @@ data:
       code.gitRepository.url: Url
       code.gitRepository.reference: Reference
       code.gitRepository.baseDir: Base Directory
+      code.gitRepository.auth: Auth
       code.env: Environment Variables
       code.env.name: Name
       code.env.value: Value
@@ -419,6 +421,7 @@ data:
       spec.resourceConfiguration.function: Function
       placeholders.spec.runtime: Choose Function runtime
       spec.env.name: Variable Name
+      spec.env.source: Source
       envType: Variable Type
       'Node.js Function': Node.js Function
       'Python Function': Python Function
