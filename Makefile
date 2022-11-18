@@ -50,12 +50,12 @@ push:
 	docker push $(EXTERNAL_TAG)
 
 push-latest:
-	# ifeq ($(JOB_TYPE), postsubmit)
+	ifeq ($(JOB_TYPE), postsubmit)
 		$(eval EXTERNAL_TAG := $(REPO_IMG_DEV)-$(TARGET)-$(ENV):$(TAG))
 		$(eval LATEST_TAG := $(REPO_IMG_DEV)-$(TARGET)-$(ENV):latest)
 		@echo "Tag image with latest"
 		docker tag $(EXTERNAL_TAG) $(LATEST_TAG)
 		docker push $(LATEST_TAG)
-	# else
+	else
 		@echo "Image tagging with latest skipped"
-	# endif
+	endif
