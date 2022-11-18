@@ -28,6 +28,7 @@ release-prod:
 	TARGET=backend ENV=prod make push
 	TARGET=local ENV=prod make build
 	TARGET=local ENV=prod make push
+	TARGET=local ENV=prod make push-latest
 
 prepare-extensions-image:
 	docker build -t extensions-local --build-arg ENV=$(ENV) -f Dockerfile.extensions .
@@ -47,3 +48,14 @@ push:
 
 	docker tag $(LOCAL_TAG) $(EXTERNAL_TAG)
 	docker push $(EXTERNAL_TAG)
+
+push-latest:
+	# ifeq ($(JOB_TYPE), postsubmit)
+		$(eval EXTERNAL_TAG := $(REPO_IMG_DEV)-$(TARGET)-$(ENV):$(TAG))
+		$(eval LATEST_TAG := $(REPO_IMG_DEV)-$(TARGET)-$(ENV):latest)
+		@echo "Tag image with latest"
+		docker tag $(EXTERNAL_TAG) $(LATEST_TAG)
+		docker push $(LATEST_TAG)
+	# else
+		@echo "Image tagging with latest skipped"
+	# endif
