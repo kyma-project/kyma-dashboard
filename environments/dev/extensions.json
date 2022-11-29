@@ -18,9 +18,9 @@
     "source": "extensions/kyma"
   },
   {
-    "source": "https://raw.githubusercontent.com/kyma-project/kyma/2.9.1/resources/telemetry/charts/operator/templates/logparser_busola_extension_cm.yaml"
+    "source": "https://raw.githubusercontent.com/kyma-project/kyma/f6d5daa28044ddeb2355efac7def30d047eb7574/resources/telemetry/charts/operator/templates/logparser_busola_extension_cm.yaml"
   },
   {
-    "source": "https://raw.githubusercontent.com/kyma-project/kyma/2.9.1/resources/telemetry/charts/operator/templates/logpipeline_busola_extension_cm.yaml"
+    "source": "https://raw.githubusercontent.com/kyma-project/kyma/f6d5daa28044ddeb2355efac7def30d047eb7574/resources/telemetry/charts/operator/templates/logpipeline_busola_extension_cm.yaml"
   }
 ]
