@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: moduletemplates.operator.kyma-project.io
+  namespace: kube-public
+  labels:
+    app.kubernetes.io/name: moduletemplates.operator.kyma-project.io
+    busola.io/extension: resource
+    busola.io/extension-version: '0.5'
+
+data:
+  details: |-
+    header: []
+    body:
+    - name: Summary
+      widget: Panel
+      children:
+      - name: channel
+        source: spec.channel
+      - name: target
+        source: spec.target
+      - name: Age
+        source: metadata.creationTimestamp
+    - source: spec
+      widget: CodeViewer
+  form: |-
+    - simple: true
+      path: spec.channel
+      required: false
+    - simple: true
+      path: spec.target
+      required: true
+  general: |
+    resource:
+      kind: ModuleTemplate
+      group: operator.kyma-project.io
+      version: v1alpha1
+    name: Module Templates
+    category: Kyma
+    urlPath: moduletemplates
+    scope: namespace
+  list: |
+    - name: channel
+      source: spec.channel
+    - name: target
+      source: spec.target
+    - name: Age
+      source: metadata.creationTimestamp
+  translations: |
+    en:
+      metadata.annotations: Annotations
+      metadata.labels: Labels
+      metadata.creationTimestamp: Created at
