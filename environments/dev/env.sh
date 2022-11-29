@@ -1,4 +1,4 @@
-export WEB_IMAGE=315f3bd8
+export WEB_IMAGE=c63a17a5
 export BACKEND_IMAGE=PR-1979
-export LOCAL_IMAGE=315f3bd8
+export LOCAL_IMAGE=c63a17a5
 
