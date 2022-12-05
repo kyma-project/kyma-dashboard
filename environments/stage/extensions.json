@@ -6,7 +6,7 @@
     "source": "extensions/serverless"
   },
   {
-    "source": "extensions/configuration"
+    "source": "extensions/istio"
   },
   {
     "source": "extensions/gateway"
