@@ -1,3 +1,3 @@
-export WEB_IMAGE=68e1c96d
+export WEB_IMAGE=a21151d4
 export BACKEND_IMAGE=68e1c96d
-export LOCAL_IMAGE=68e1c96d
+export LOCAL_IMAGE=a21151d4
