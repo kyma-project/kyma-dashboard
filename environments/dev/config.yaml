@@ -72,6 +72,15 @@ config:
           - label: Tracing
             path: >-
               apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/tracing
+    EXTERNAL_NODES:
+      isEnabled: true
+      stage: SECONDARY
+      nodes:
+        - category: My Category
+          icon: course-book
+          children:
+            - label: Example Node Label
+              link: https://github.com/kyma-project/busola
     JWT_CHECK_CONFIG:
       isEnabled: false
       config:
@@ -83,3 +92,13 @@ config:
       isEnabled: true
     TRACKING:
       isEnabled: false
+    EVENTING:
+      isEnabled: true
+      selectors:
+        - type: apiGroup
+          apiGroup: eventing.kyma-project.io
+    API_GATEWAY:
+      isEnabled: true
+      selectors:
+        - type: apiGroup
+          apiGroup: gateway.kyma-project.io
