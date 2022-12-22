@@ -66,12 +66,7 @@ config:
     EXTERNAL_NODES:
       isEnabled: true
       stage: SECONDARY
-      nodes:
-        - category: My Category
-          icon: course-book
-          children:
-            - label: Example Node Label
-              link: https://github.com/kyma-project/busola
+      nodes: []
     JWT_CHECK_CONFIG:
       isEnabled: false
       config:
