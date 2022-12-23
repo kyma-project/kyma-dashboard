@@ -66,6 +66,7 @@ config:
     EXTERNAL_NODES:
       isEnabled: true
       stage: SECONDARY
+      nodes: []
     JWT_CHECK_CONFIG:
       isEnabled: false
       config:
