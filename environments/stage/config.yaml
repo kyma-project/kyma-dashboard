@@ -90,3 +90,6 @@ config:
       selectors:
         - type: apiGroup
           apiGroup: gateway.kyma-project.io
+    GARDENER_LOGIN:
+      isEnabled: false
+      kubeconfig: null
