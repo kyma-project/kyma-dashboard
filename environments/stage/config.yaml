@@ -66,6 +66,9 @@ config:
             path: apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/kiali
           - label: Tracing
             path: apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/tracing
+    EXTERNAL_NODES:
+      isEnabled: true
+      stage: SECONDARY
     JWT_CHECK_CONFIG:
       isEnabled: false
       config:
@@ -77,3 +80,16 @@ config:
       isEnabled: false
     EXTENSIBILITY:
       isEnabled: true
+    EVENTING:
+      isEnabled: true
+      selectors:
+        - type: apiGroup
+          apiGroup: eventing.kyma-project.io
+    API_GATEWAY:
+      isEnabled: true
+      selectors:
+        - type: apiGroup
+          apiGroup: gateway.kyma-project.io
+    GARDENER_LOGIN:
+      isEnabled: false
+      kubeconfig: null
