@@ -6,7 +6,7 @@
   "scripts": {
     "pack-extensions": "gulp pack-extensions",
     "prepare-extensions": "gulp clean-extensions && gulp get-extensions",
-    "lint-fix": "prettier --config ./.prettierrc --write '**/*.{ts,tsx,js,jsx,json,html,css,yaml,md}'"
+    "lint-fix": "prettier --config ./.prettierrc --write '**/*.{ts,tsx,js,jsx,json,html,css,yaml,md}' --ignore-path ./.prettierignore"
   },
   "devDependencies": {
     "gulp": "^4.0.1",
@@ -19,7 +19,7 @@
     "prettier": "^1.18.2"
   },
   "lint-staged": {
-    "*": "prettier --write"
+    "*": "prettier --config ./.prettierrc --write '**/*.{ts,tsx,js,jsx,json,html,css,yaml,md}' --ignore-path ./.prettierignore"
   },
   "husky": {
     "hooks": {
