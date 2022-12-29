@@ -6,6 +6,5 @@ import './paste-to-monaco';
 import './inspect-list';
 import './views/api-rules-view';
 import './views/functions-view';
-import './createNamespace';
 import './loadFile';
 import './mockConfig';
