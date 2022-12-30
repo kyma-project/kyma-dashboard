@@ -31,15 +31,6 @@ Cypress.skipAfterFail = ({ skipAllSuits = false } = {}) => {
   });
 };
 
-Cypress.Commands.add(
-  'shouldHaveTrimmedText',
-  { prevSubject: true },
-  (subject, equalTo) => {
-    expect(subject.text().trim()).to.eq(equalTo);
-    return subject;
-  },
-);
-
 Cypress.Commands.add('filterWithNoValue', { prevSubject: true }, $elements =>
   $elements.filter((_, e) => !e.value),
 );
