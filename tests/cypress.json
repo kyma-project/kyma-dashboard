@@ -1,0 +1,33 @@
+{
+  "defaultCommandTimeout": 10000,
+  "execTimeout": 10000,
+  "taskTimeout": 10000,
+  "pageLoadTimeout": 10000,
+  "requestTimeout": 10000,
+  "responseTimeout": 10000,
+  "fixturesFolder": "fixtures",
+  "integrationFolder": "tests",
+  "supportFile": "support/index.js",
+  "pluginsFile": "plugins",
+  "chromeWebSecurity": false,
+  "viewportWidth": 1500,
+  "viewportHeight": 1500,
+  "videoCompression": false,
+  "experimentalInteractiveRunEvents": true,
+  "testFiles": [
+    "cluster/run-before.spec.js",
+    "cluster/test-applications.spec.js",
+    "cluster/run-after.spec.js",
+    "namespace/run-before.spec.js",
+    "namespace/run-prepare-functions.spec.js",
+    "namespace/test-destination-rules.spec.js",
+    "namespace/test-virtual-services.spec.js",
+    "namespace/test-authorization-policies.spec.js",
+    "namespace/test-gateways.spec.js",
+    "namespace/test-sidecars.spec.js",
+    "namespace/test-service-entries.spec.js",
+    "namespace/test-api-rules.spec.js",
+    "namespace/test-in-cluster-eventing.spec.js",
+    "namespace/run-after.spec.js"
+  ]
+}
