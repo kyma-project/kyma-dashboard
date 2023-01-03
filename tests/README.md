@@ -8,10 +8,10 @@ This project contains integration UI tests for Kyma-Dashboard.
 
 Before testing, you need to copy your cluster's kubeconfig file to `fixtures/kubeconfig.yaml`.
 
-You need to have runned Kyma-Dashboard using docker and PR number:
+You need to have ran Kyma-Dashboard using docker and PR number:
 
-```
-docker run --rm -it -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --pid=host --name kyma-dashboard eu.gcr.io/kyma-project/kyma-dashboard-local-dev:PR-{PR_NUMBER}
+```bash
+PR_NUMBER={YOUR_PR_NUMBER} npm run run-docker
 ```
 
 ## Installation
