@@ -17,6 +17,7 @@ data:
     scope: cluster
     name: Applications
     category: Integration
+    description: description
   details: |-
     header:
       - name: headers.description
