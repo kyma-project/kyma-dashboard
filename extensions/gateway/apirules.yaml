@@ -215,6 +215,11 @@ data:
                 - noop
                 - jwt
                 - oauth2_introspection
+            - path: '[].config'
+              simple: true
+              name: accessStrategies.config
+              widget: CodeEditor
+              language: '"yaml"'
             - simple: true
               widget: Alert
               severity: error
@@ -225,11 +230,6 @@ data:
               severity: error
               alert: '"alert.oauth2_introspection"'
               visibility: '$item.handler="oauth2_introspection"'
-            - path: '[].config'
-              simple: true
-              name: accessStrategies.config
-              widget: CodeEditor
-              language: '"yaml"'
         - required: true
           simple: true
           path: '[].methods'
