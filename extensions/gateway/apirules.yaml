@@ -206,14 +206,6 @@ data:
           template:
             handler: 'allow'
           children:
-            - path: '[].config'
-              simple: true
-              name: accessStrategies.config
-              widget: KeyValuePair
-              keyEnum:
-                - jwks_urls
-                - trusted_issuers
-                - required_scope
             - required: true
               simple: true
               path: '[].handler'
@@ -223,6 +215,21 @@ data:
                 - noop
                 - jwt
                 - oauth2_introspection
+            - simple: true
+              widget: Alert
+              severity: error
+              alert: '"alert.jwt"'
+              visibility: '$item.handler="jwt"'
+            - simple: true
+              widget: Alert
+              severity: error
+              alert: '"alert.oauth2_introspection"'
+              visibility: '$item.handler="oauth2_introspection"'
+            - path: '[].config'
+              simple: true
+              name: accessStrategies.config
+              widget: CodeEditor
+              language: '"yaml"'
         - required: true
           simple: true
           path: '[].methods'
@@ -340,3 +347,5 @@ data:
       status: Status
       virtualService: Virtual Service
       alert.spec.host: Host can not be a wildcard, replace * with subdomain name
+      alert.jwt: "Config should contain 'jwks_urls' and 'trusted_issuers' as array of strings"
+      alert.oauth2_introspection: "Config should contain 'required_scope' as array of strings"
