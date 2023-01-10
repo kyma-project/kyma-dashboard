@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import 'cypress-file-upload';
+import jsyaml from 'js-yaml';
 
 function openSearchWithSlashShortcut() {
   cy.get('body').type('/');
@@ -101,16 +102,15 @@ context('Test API Rules in the Function details view', () => {
       .find('[aria-label="Combobox input arrow"]:visible', { log: false })
       .click();
 
-    cy.get('[data-testid="select-dropdown"]:visible').click();
-
-    cy.get('[role="list"]')
-      .contains('required_scope')
+    cy.get('[aria-label="expand Config"]:visible', { log: false })
       .click();
 
-    cy.get('[placeholder="Enter value"]:visible')
-      .filterWithNoValue()
-      .first()
-      .type('read');
+    cy.loadFiles(
+      'apirules-config-read.yaml',
+    ).then(resources => {
+      const input = resources.map(r => jsyaml.dump(r)).join('\n---\n');
+      cy.pasteToMonaco(input);
+    });
 
     // > Methods
 
@@ -140,6 +140,7 @@ context('Test API Rules in the Function details view', () => {
     cy.contains(API_RULE_PATH).should('not.exist');
 
     cy.contains('allow').should('not.exist');
+    cy.contains('read').should('exist');
   });
 
   it('Edit the API Rule', () => {
@@ -155,6 +156,10 @@ context('Test API Rules in the Function details view', () => {
     cy.get('[aria-label="expand Rule"]:visible', { log: false })
       .first()
       .click();
+
+    cy.get('[data-testid="spec.rules.1.path"]:visible')
+      .clear()
+      .type(API_RULE_PATH);
 
     // > Access Strategies
     cy.get('[aria-label="expand Access Strategies"]:visible', { log: false })
@@ -173,28 +178,21 @@ context('Test API Rules in the Function details view', () => {
       .find('[aria-label="Combobox input arrow"]:visible', { log: false })
       .click();
 
-    cy.get('[data-testid="select-dropdown"]:visible')
-      .scrollIntoView()
+    cy.get('[aria-label="expand Config"]:visible', { log: false })
       .click();
 
-    cy.get('[role="list"]')
-      .contains('required_scope')
-      .click();
-
-    cy.get('[placeholder="Enter value"]:visible')
-      .filterWithNoValue()
-      .first()
-      .type('write');
+    cy.loadFiles(
+      'apirules-config-jwt.yaml',
+    ).then(resources => {
+      const input = resources.map(r => jsyaml.dump(r)).join('\n---\n');
+      cy.pasteToMonaco(input);
+    });
 
     // > Methods
 
     cy.get('[data-testid="spec.rules.1.methods.0"]:visible')
       .clear()
       .type('POST');
-
-    cy.get('[data-testid="spec.rules.1.path"]:visible')
-      .clear()
-      .type(API_RULE_PATH);
 
     cy.get('[role=dialog]')
       .contains('button', 'Update')
@@ -213,6 +211,8 @@ context('Test API Rules in the Function details view', () => {
     cy.contains(API_RULE_PATH).should('exist');
 
     cy.contains('jwt').should('exist');
+    cy.contains('https://urls.com').should('exist');
+    cy.contains('https://trusted.com').should('exist');
   });
 
   it('Inspect list using slash shortcut', () => {

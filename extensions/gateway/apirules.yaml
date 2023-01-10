@@ -77,10 +77,13 @@ data:
                 widget: Badge
               - source: $item.config.required_scope
                 name: accessStrategies.required_scope
+                widget: JoinedArray
               - source: $item.config.jwks_urls
                 name: accessStrategies.jwks_urls
+                widget: JoinedArray
               - source: $item.config.trusted_issuers
                 name: accessStrategies.trusted_issuers
+                widget: JoinedArray
           - source: $item.mutators
             widget: Table
             disablePadding: true
