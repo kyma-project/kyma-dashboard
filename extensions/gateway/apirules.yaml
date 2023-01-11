@@ -368,8 +368,8 @@ data:
       host: Host
       inputInfo.gateway: Gateway structure, '{GATEWAY}.{NAMESPACE}.svc.cluster.local'
       inputInfo.path: "Path can contain alphanumeric characters and '/', '.', '*', '?', '!', '-', '(', and ')'."
-      inputInfo.jwks_urls: "JWKS Urls should start with 'https://' or 'file://'"
-      inputInfo.trusted_issuers: "Trusted Issuers should start with 'https://' or 'file://'"
+      inputInfo.jwks_urls: "JWKS URLs must start with 'https://' or 'file://'"
+      inputInfo.trusted_issuers: "Trusted Issuers must start with 'https://' or 'file://'"
       mutators: Mutators
       mutators.config: Config
       mutators.handlers: Handlers
