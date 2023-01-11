@@ -15,7 +15,7 @@
     "source": "extensions/kyma"
   },
   {
-    "source": "extensions/issuers"
+    "source": "extensions/configuration/issuers"
   },
   {
     "source": "https://raw.githubusercontent.com/kyma-project/kyma/main/resources/telemetry/charts/operator/templates/logparser_busola_extension_cm.yaml"
