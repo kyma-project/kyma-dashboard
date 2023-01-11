@@ -102,12 +102,9 @@ context('Test API Rules in the Function details view', () => {
       .find('[aria-label="Combobox input arrow"]:visible', { log: false })
       .click();
 
-    cy.get('[aria-label="expand Config"]:visible', { log: false })
-      .click();
+    cy.get('[aria-label="expand Config"]:visible', { log: false }).click();
 
-    cy.loadFiles(
-      'apirules-config-read.yaml',
-    ).then(resources => {
+    cy.loadFiles('apirules-config-read.yaml').then(resources => {
       const input = resources.map(r => jsyaml.dump(r)).join('\n---\n');
       cy.pasteToMonaco(input);
     });
@@ -178,12 +175,9 @@ context('Test API Rules in the Function details view', () => {
       .find('[aria-label="Combobox input arrow"]:visible', { log: false })
       .click();
 
-    cy.get('[aria-label="expand Config"]:visible', { log: false })
-      .click();
+    cy.get('[aria-label="expand Config"]:visible', { log: false }).click();
 
-    cy.loadFiles(
-      'apirules-config-jwt.yaml',
-    ).then(resources => {
+    cy.loadFiles('apirules-config-jwt.yaml').then(resources => {
       const input = resources.map(r => jsyaml.dump(r)).join('\n---\n');
       cy.pasteToMonaco(input);
     });
