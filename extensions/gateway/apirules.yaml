@@ -361,7 +361,7 @@ data:
       accessStrategies.config: Config
       accessStrategies.handler: Handler
       accessStrategies.handlers: Handlers
-      accessStrategies.jwks_urls: JWKS Urls
+      accessStrategies.jwks_urls: JWKS URLs
       accessStrategies.trusted_issuers: Trusted Issuers
       accessStrategies.required_scope: Required Scope
       gateway: Gateway
