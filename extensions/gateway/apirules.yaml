@@ -240,6 +240,7 @@ data:
               children:
                 - path: jwks_urls
                   name: accessStrategies.jwks_urls
+                  inputInfo: inputInfo.jwks_urls
                   simple: true
                   widget: SimpleList
                   visibility: '$item.handler="jwt"'
@@ -248,6 +249,7 @@ data:
                       simple: true
                 - path: trusted_issuers
                   name: accessStrategies.trusted_issuers
+                  inputInfo: inputInfo.trusted_issuers
                   simple: true
                   widget: SimpleList
                   visibility: '$item.handler="jwt"'
@@ -366,6 +368,8 @@ data:
       host: Host
       inputInfo.gateway: Gateway structure, '{GATEWAY}.{NAMESPACE}.svc.cluster.local'
       inputInfo.path: "Path can contain alphanumeric characters and '/', '.', '*', '?', '!', '-', '(', and ')'."
+      inputInfo.jwks_urls: "JWKS Urls should start with 'https://' or 'file://'"
+      inputInfo.trusted_issuers: "Trusted Issuers should start with 'https://' or 'file://'"
       mutators: Mutators
       mutators.config: Config
       mutators.handlers: Handlers
