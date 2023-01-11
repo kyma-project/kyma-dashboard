@@ -174,7 +174,7 @@ context('Test API Rules in the Function details view', () => {
       .find('[aria-label="Combobox input arrow"]:visible', { log: false })
       .click();
 
-    cy.get('[aria-label="expand JWKS Urls"]:visible', { log: false })
+    cy.get('[aria-label="expand JWKS URLs"]:visible', { log: false })
       .click();
 
     cy.get('[data-testid="spec.rules.1.accessStrategies.0.config.jwks_urls.0"]:visible')
