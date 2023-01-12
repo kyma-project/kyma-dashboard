@@ -10,41 +10,32 @@ metadata:
 data:
   details: |
     header:
-      - path: status.state
-        type: string
-        name: STATUS
-        isSelected: true
+      - name: Status
+        source: 'status.state ? status.state : "UNKNOWN"'
+        highlights:
+          informative:
+          - UNKNOWN
         widget: Badge
+        description: status.message
+      - name: Expiration Date
+        source: status.expirationDate
+      - name: Common Name
+        source: spec.commonName
     body:
-      - name: Summary
+      - name: References
         widget: Panel
         children:
-          - name: commonName
-            source: spec.commonName
-          - name: csr
-            source: spec.csr
-          - name: ensureRenewedAfter
-            source: spec.ensureRenewedAfter
-          - name: followCNAME
-            source: spec.followCNAME
-          - name: renew
-            source: spec.renew
-          - name: secretName
-            source: spec.secretName
-          - name: COMMON NAME
-            source: status.commonName
-          - name: ISSUER
+          - name: Issuer
             source: status.issuerRef.name
-          - name: STATUS
-            source: status.state
-          - name: EXPIRATION_DATE
-            source: status.expirationDate
-          - name: DNS_NAMES
-            source: status.dnsNames
-          - name: AGE
-            source: metadata.creationTimestamp
-      - source: spec
-        widget: CodeViewer
+          - name: Secret
+            source: spec.secretRef.name
+          - name: CSR
+            source: spec.csr
+          - name: Renew
+            source: spec.renew
+          - name: DNS Names
+            source: spec.dnsNames
+            widget: Labels
   form: |
     - var: useCSR
       dynamicValue: 'false'
@@ -112,7 +103,12 @@ data:
     - name: Expiration Date
       source: status.expirationDate
     - name: Status
-      source: status.state
+      source: 'status.state ? status.state : "UNKNOWN"'
+      highlights:
+        informative:
+        - UNKNOWN
+      widget: Badge
+      description: status.message
   translations: |
     en:
       metadata.annotations: Annotations
