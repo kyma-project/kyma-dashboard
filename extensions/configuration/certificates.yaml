@@ -1,0 +1,120 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: certificates.cert.gardener.cloud
+  namespace: kube-public
+  labels:
+    app.kubernetes.io/name: certificates.cert.gardener.cloud
+    busola.io/extension: resource
+    busola.io/extension-version: '0.5'
+data:
+  details: |
+    header:
+      - path: status.state
+        type: string
+        name: STATUS
+        isSelected: true
+        widget: Badge
+    body:
+      - name: Summary
+        widget: Panel
+        children:
+          - name: commonName
+            source: spec.commonName
+          - name: csr
+            source: spec.csr
+          - name: ensureRenewedAfter
+            source: spec.ensureRenewedAfter
+          - name: followCNAME
+            source: spec.followCNAME
+          - name: renew
+            source: spec.renew
+          - name: secretName
+            source: spec.secretName
+          - name: COMMON NAME
+            source: status.commonName
+          - name: ISSUER
+            source: status.issuerRef.name
+          - name: STATUS
+            source: status.state
+          - name: EXPIRATION_DATE
+            source: status.expirationDate
+          - name: DNS_NAMES
+            source: status.dnsNames
+          - name: AGE
+            source: metadata.creationTimestamp
+      - source: spec
+        widget: CodeViewer
+  form: |
+    - var: useCSR
+      dynamicValue: 'false'
+      simple: true
+      type: boolean
+      name: Use a CSR
+    - simple: true
+      path: spec.commonName
+      required: true
+      placeholder: Certificate CN (max 64 characters)
+      visibility: "$useCSR = false"
+    - simple: true
+      path: spec.csr
+      name: CSR
+      required: true
+      placeholder: Plain text Certificate Signing Request
+      visibility: "$useCSR = true"
+    - path: spec.dnsNames
+      name: DNS Names
+      widget: SimpleList
+      children:
+        - path: '[]'
+      placeholder: Additional domain names, one per line
+    - name: Issuer
+      path: spec.issuerRef
+      required: false
+      widget: ResourceRef      
+      resource:
+        kind: Secret
+        version: v1
+    - path: spec.renew
+    - var: useExistingSecret
+      dynamicValue: 'false'
+      type: boolean
+      name: Use the existing Secret
+    - path: spec.secretName
+      visibility: "$useExistingSecret = false"
+    - name: Secret to use
+      path: spec.secretRef
+      widget: ResourceRef      
+      provideVar: secret
+      resource:
+        kind: Secret
+        version: v1
+      defaultExpanded: true
+      required: true 
+      visibility: "$useExistingSecret = true"
+  general: |
+    resource:
+      kind: Certificate
+      group: cert.gardener.cloud
+      version: v1alpha1
+    name: Certificates
+    category: Custom Resources
+    urlPath: certificates-x
+    scope: namespace
+    description: >-
+      {{[Certificate](https://cert-manager.io/docs/concepts/certificate/)}}
+      provides a definition of a certificate that is then processed by the indicated issuer.
+  list: |
+    - name: Common Name
+      source: status.commonName
+    - name: Issuer
+      source: status.issuerRef.name
+    - name: Expiration Date
+      source: status.expirationDate
+    - name: Status
+      source: status.state
+  translations: |
+    en:
+      metadata.annotations: Annotations
+      metadata.labels: Labels
+      metadata.creationTimestamp: Created at
