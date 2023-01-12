@@ -42,6 +42,12 @@ data:
       simple: true
       type: boolean
       name: Use a CSR
+    - var: encode
+      dynamicValue: 'false'
+      simple: true
+      type: boolean
+      name: '$encode ? "Encode" : Decode'
+      visibility: $useCSR
     - simple: true
       path: spec.commonName
       required: true
@@ -51,8 +57,8 @@ data:
       path: spec.csr
       name: CSR
       required: true
-      placeholder: Plain text Certificate Signing Request
-      visibility: "$useCSR = true"
+      placeholder: '$encode ? "Base64-encoded Certificate Signing Request" : "Plain text Certificate Signing Request"'
+      visibility: "$useCSR"
     - path: spec.dnsNames
       name: DNS Names
       widget: SimpleList
@@ -82,7 +88,7 @@ data:
         version: v1
       defaultExpanded: true
       required: true 
-      visibility: "$useExistingSecret = true"
+      visibility: "$useExistingSecret"
   general: |
     resource:
       kind: Certificate
