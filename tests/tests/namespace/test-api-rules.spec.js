@@ -101,10 +101,13 @@ context('Test API Rules in the Function details view', () => {
       .find('[aria-label="Combobox input arrow"]:visible', { log: false })
       .click();
 
-    cy.get('[aria-label="expand Required Scope"]:visible', { log: false })
-      .click();
+    cy.get('[aria-label="expand Required Scope"]:visible', {
+      log: false,
+    }).click();
 
-    cy.get('[data-testid="spec.rules.0.accessStrategies.0.config.required_scope.0"]:visible')
+    cy.get(
+      '[data-testid="spec.rules.0.accessStrategies.0.config.required_scope.0"]:visible',
+    )
       .clear()
       .type('read');
 
@@ -174,18 +177,21 @@ context('Test API Rules in the Function details view', () => {
       .find('[aria-label="Combobox input arrow"]:visible', { log: false })
       .click();
 
-    cy.get('[aria-label="expand JWKS URLs"]:visible', { log: false })
-      .click();
+    cy.get('[aria-label="expand JWKS URLs"]:visible', { log: false }).click();
 
-    cy.get('[data-testid="spec.rules.1.accessStrategies.0.config.jwks_urls.0"]:visible')
+    cy.get(
+      '[data-testid="spec.rules.1.accessStrategies.0.config.jwks_urls.0"]:visible',
+    )
       .clear()
       .type('https://urls.com');
 
+    cy.get('[aria-label="expand Trusted Issuers"]:visible', {
+      log: false,
+    }).click();
 
-    cy.get('[aria-label="expand Trusted Issuers"]:visible', { log: false })
-      .click();
-
-    cy.get('[data-testid="spec.rules.1.accessStrategies.0.config.trusted_issuers.0"]:visible')
+    cy.get(
+      '[data-testid="spec.rules.1.accessStrategies.0.config.trusted_issuers.0"]:visible',
+    )
       .clear()
       .type('https://trusted.com');
 
