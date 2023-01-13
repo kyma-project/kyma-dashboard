@@ -25,7 +25,7 @@ context('Test Certificates', () => {
 
     cy.contains('Simple').should('be.visible');
 
-    cy.get('input[data-cy="cert-name"]:visible').type(CERT_NAME);
+    cy.get('input[ariaLabel="Certificate name"]:visible').type(CERT_NAME);
 
     cy.get('input[placeholder^="Certificate CN"]:visible').type(
       CERT_COMMON_NAME,

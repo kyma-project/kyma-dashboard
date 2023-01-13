@@ -31,6 +31,9 @@ data:
             source: spec.secretRef.name
           - name: CSR
             source: spec.csr
+          - name: Annotations
+            source: metadata.annotations
+            widget: Labels
           - name: Renew
             source: spec.renew
           - name: DNS Names
