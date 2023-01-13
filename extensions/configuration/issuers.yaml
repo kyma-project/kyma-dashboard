@@ -1,10 +1,10 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: issuers.cert.gardener.cloud
+  name: issuers
   namespace: kube-public
   labels:
-    app.kubernetes.io/name: issuers.cert.gardener.cloud
+    app.kubernetes.io/name: issuers
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
@@ -15,7 +15,7 @@ data:
       - source: 'status.state ? status.state : "UNKNOWN"'
         highlights:
           informative:
-          - UNKNOWN
+            - UNKNOWN
         name: status
         widget: Badge
         description: status.message
@@ -24,20 +24,20 @@ data:
     body:
       - widget: Columns
         children:
-        - name: included.domains
-          widget: Table
-          showHeader: false
-          source: spec.acme.domains.include
-          children:
-            - source: $item
-              search: true
-        - name: excluded.domains
-          widget: Table
-          showHeader: false
-          source: spec.acme.domains.exclude
-          children:
-            - source: $item
-              search: true
+          - name: included.domains
+            widget: Table
+            showHeader: false
+            source: spec.acme.domains.include
+            children:
+              - source: $item
+                search: true
+          - name: excluded.domains
+            widget: Table
+            showHeader: false
+            source: spec.acme.domains.exclude
+            children:
+              - source: $item
+                search: true
   form: |-
     - var: IssuerType
       dynamicValue: | 
@@ -129,7 +129,7 @@ data:
       source: 'status.state ? status.state : "UNKNOWN"'
       highlights:
         informative:
-        - UNKNOWN
+          - UNKNOWN
       widget: Badge
       description: status.message
   presets: |-
