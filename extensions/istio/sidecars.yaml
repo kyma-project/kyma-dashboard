@@ -104,13 +104,11 @@ data:
       children:
         - path: number
           simple: true
-          required: true
           placeholder: Enter the port number
         - path: name
           widget: Name
           inputInfo: null
           simple: true
-          required: true
         - path: protocol
           simple: true
           enum:
@@ -121,7 +119,6 @@ data:
             - MONGO
             - TCP
             - TLS
-          required: true
           placeholder: Type or choose an option
         - path: targetPort
           simple: true
@@ -143,6 +140,7 @@ data:
       placeholder: For example, *.api.mydomain.com
       children:
         - path: '[]'
+          simple: true
     - widget: FormGroup
       path: spec.ingress[].port
       required: true

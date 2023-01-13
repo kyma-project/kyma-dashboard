@@ -72,14 +72,51 @@ config:
           - label: Tracing
             path: >-
               apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/tracing
-    JWT_CHECK_CONFIG:
-      isEnabled: false
-      config:
-        issuer: https://kymatest.accounts400.ondemand.com
-        jwksUri: https://kymatest.accounts400.ondemand.com/oauth2/certs
+    EXTERNAL_NODES:
+      isEnabled: true
+      stage: SECONDARY
     GZIP:
       isEnabled: true
     EXTENSIBILITY:
       isEnabled: true
     TRACKING:
       isEnabled: false
+    EVENTING:
+      isEnabled: true
+      selectors:
+        - type: apiGroup
+          apiGroup: eventing.kyma-project.io
+    API_GATEWAY:
+      isEnabled: true
+      selectors:
+        - type: apiGroup
+          apiGroup: gateway.kyma-project.io
+    GARDENER_LOGIN:
+      isEnabled: true
+      kubeconfig:
+        kind: Config
+        apiVersion: v1
+        clusters:
+          - name: garden-hasselhoff
+            cluster:
+              server: 'https://api.dev.gardener.cloud.sap'
+        contexts:
+          - context:
+              cluster: garden-hasselhoff
+              user: oidc-login
+              namespace: garden-hasselhoff
+            name: garden-hasselhoff
+        current-context: garden-hasselhoff
+        users:
+          - name: oidc-login
+            user:
+              exec:
+                apiVersion: client.authentication.k8s.io/v1beta1
+                command: kubectl
+                args:
+                  - oidc-login
+                  - get-token
+                  - '--oidc-issuer-url=https://gardener-live.accounts.ondemand.com'
+                  - '--oidc-client-id=d6feea7d-2414-41e3-8462-44c496e10b61'
+                  - '--oidc-use-pkce'
+                  - '--grant-type=auto'
