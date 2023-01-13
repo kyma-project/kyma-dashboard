@@ -101,15 +101,11 @@ context('Test API Rules in the Function details view', () => {
       .find('[aria-label="Combobox input arrow"]:visible', { log: false })
       .click();
 
-    cy.get('[data-testid="select-dropdown"]:visible').click();
-
-    cy.get('[role="list"]')
-      .contains('required_scope')
+    cy.get('[aria-label="expand Required Scope"]:visible', { log: false })
       .click();
 
-    cy.get('[placeholder="Enter value"]:visible')
-      .filterWithNoValue()
-      .first()
+    cy.get('[data-testid="spec.rules.0.accessStrategies.0.config.required_scope.0"]:visible')
+      .clear()
       .type('read');
 
     // > Methods
@@ -140,6 +136,7 @@ context('Test API Rules in the Function details view', () => {
     cy.contains(API_RULE_PATH).should('not.exist');
 
     cy.contains('allow').should('not.exist');
+    cy.contains('read').should('exist');
   });
 
   it('Edit the API Rule', () => {
@@ -155,6 +152,10 @@ context('Test API Rules in the Function details view', () => {
     cy.get('[aria-label="expand Rule"]:visible', { log: false })
       .first()
       .click();
+
+    cy.get('[data-testid="spec.rules.1.path"]:visible')
+      .clear()
+      .type(API_RULE_PATH);
 
     // > Access Strategies
     cy.get('[aria-label="expand Access Strategies"]:visible', { log: false })
@@ -173,28 +174,26 @@ context('Test API Rules in the Function details view', () => {
       .find('[aria-label="Combobox input arrow"]:visible', { log: false })
       .click();
 
-    cy.get('[data-testid="select-dropdown"]:visible')
-      .scrollIntoView()
+    cy.get('[aria-label="expand JWKS URLs"]:visible', { log: false })
       .click();
 
-    cy.get('[role="list"]')
-      .contains('required_scope')
+    cy.get('[data-testid="spec.rules.1.accessStrategies.0.config.jwks_urls.0"]:visible')
+      .clear()
+      .type('https://urls.com');
+
+
+    cy.get('[aria-label="expand Trusted Issuers"]:visible', { log: false })
       .click();
 
-    cy.get('[placeholder="Enter value"]:visible')
-      .filterWithNoValue()
-      .first()
-      .type('write');
+    cy.get('[data-testid="spec.rules.1.accessStrategies.0.config.trusted_issuers.0"]:visible')
+      .clear()
+      .type('https://trusted.com');
 
     // > Methods
 
     cy.get('[data-testid="spec.rules.1.methods.0"]:visible')
       .clear()
       .type('POST');
-
-    cy.get('[data-testid="spec.rules.1.path"]:visible')
-      .clear()
-      .type(API_RULE_PATH);
 
     cy.get('[role=dialog]')
       .contains('button', 'Update')
@@ -213,6 +212,8 @@ context('Test API Rules in the Function details view', () => {
     cy.contains(API_RULE_PATH).should('exist');
 
     cy.contains('jwt').should('exist');
+    cy.contains('https://urls.com').should('exist');
+    cy.contains('https://trusted.com').should('exist');
   });
 
   it('Inspect list using slash shortcut', () => {
