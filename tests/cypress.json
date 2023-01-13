@@ -29,6 +29,7 @@
     "namespace/test-service-entries.spec.js",
     "namespace/test-api-rules.spec.js",
     "namespace/test-in-cluster-eventing.spec.js",
+    "namespace/test-dns-entries.spec.js",
     "namespace/run-after.spec.js"
   ]
 }
