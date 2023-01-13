@@ -95,8 +95,8 @@ data:
       group: cert.gardener.cloud
       version: v1alpha1
     name: Certificates
-    category: Custom Resources
-    urlPath: certificates-x
+    category: Configuration
+    urlPath: certificates
     scope: namespace
     description: >-
       {{[Certificate](https://cert-manager.io/docs/concepts/certificate/)}}
