@@ -15,22 +15,22 @@ context('Test DNS Entries', () => {
   });
 
   it('Create DNS Entry', () => {
-    cy.wait(500);
     cy.navigateTo('Configuration', 'DNS Entries');
 
     cy.contains('Create DNS Entry').click();
 
-    // name
-    cy.wait(500);
-    cy.get('[ariaLabel="DNSEntry name"]:visible').type(DNS_ENTRY_NAME);
     // ttl
     cy.get('[placeholder^="Enter the time to live"]:visible')
       .clear()
       .type(TTL);
+
     // dns name
     cy.get('[placeholder^="Select the DNSName"]:visible')
       .type(DNS_NAME)
       .click();
+
+    // name
+    cy.get('[ariaLabel="DNSEntry name"]:visible').type(DNS_ENTRY_NAME);
 
     // target
     cy.get(
