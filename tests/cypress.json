@@ -20,6 +20,7 @@
     "cluster/run-after.spec.js",
     "namespace/run-before.spec.js",
     "namespace/run-prepare-functions.spec.js",
+    "namespace/test-certificates.spec.js",
     "namespace/test-destination-rules.spec.js",
     "namespace/test-dns-providers.spec.js",
     "namespace/test-virtual-services.spec.js",
