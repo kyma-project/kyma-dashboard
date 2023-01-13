@@ -47,8 +47,7 @@ context('Test Certificates', () => {
 
     cy.contains('button', 'Edit').click();
 
-    cy.get('header[ariaLabel="expand Annotations"]:visible').click();
-    //cy.contains('Annotations').click();
+    cy.get('[aria-label="expand Annotations"]').click();
 
     cy.get('input[placeholder^="Enter key"]:visible').type(ANNOTATION_KEY);
 
