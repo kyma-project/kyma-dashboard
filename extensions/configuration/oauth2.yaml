@@ -1,0 +1,179 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: oauth2clients.hydra.ory.sh
+  namespace: kube-public
+  labels:
+    app.kubernetes.io/name: oauth2clients.hydra.ory.sh
+    busola.io/extension: resource
+    busola.io/extension-version: '0.5'
+data:
+  dataSources: |
+    secret:
+      resource:
+        kind: Secret
+        version: v1
+      filter: '$item.metadata.name = $root.spec.secretName'
+  details: |-
+    header: 
+      - source: 'status.state ? "error" : "ok"'
+        highlights:
+          positive:
+            - ok
+          negative: 
+            - error
+        type: string
+        name: status
+        isSelected: true
+        widget: Badge
+        description: status.message
+    body: 
+      - name: configuration
+        widget: Panel
+        children:
+          - name: spec.grantTypes
+            source: spec.grantTypes
+            widget: Labels
+            placeholder: '-'
+          - name: spec.responseTypes
+            source: spec.responseTypes
+            widget: Labels
+            placeholder: '-'
+          - name: spec.scope
+            source: spec.scope
+            widget: Labels
+            placeholder: '-'
+          - name: spec.secretName
+            widget: ResourceLink
+            source: spec.secretName
+            resource:
+              name: spec.secretName
+              namespace: $root.metadata.namespace
+              kind: "'secret'"
+          - name: spec.tokenEndpointAuthMethod
+            source: spec.tokenEndpointAuthMethod
+            widget: Labels
+            placeholder: '-'
+      - name: data
+        widget: Panel
+        source: $secret().items.data
+        decodable: true
+        children:
+          - name: secret.client_secret
+            source: client_id
+            widget: Labels
+            placeholder: '-' 
+          - name: secret.client_secret
+            source: client_secret
+            widget: Labels
+            placeholder: '-'
+  form: |
+    - path: spec.responseTypes
+      widget: FormGroup
+      simple: true
+      children:
+        - value: false
+          simple: true
+          name: spec.responseTypes.IDToken
+          type: boolean
+          path: '[]'
+        - value: false
+          simple: true
+          name: spec.responseTypes.code
+          type: boolean
+          path: '[]'
+        - value: false
+          simple: true
+          name: spec.responseTypes.token
+          type: boolean
+          path: '[]'
+    - name: spec.scope
+      widget: Text
+      simple: true
+      required: true
+      path: spec.scope
+      inputInfo: 'You can provide more then one Scope, but they have to be separated by a Space'
+    - advanced: true
+      widget: SimpleList
+      name: spec.redirectUris
+      defaultExpanded: true
+      path: spec.redirectUris
+      children:
+        - path: '[]'
+    - advanced: true
+      name: spec.postLogoutRedirectUris
+      path: spec.postLogoutRedirectUris
+      widget: SimpleList
+      defaultExpanded: true
+      children:
+        - path: '[]'
+    - advanced: true
+      path: spec.audience
+      name: spec.audience
+      widget: SimpleList
+      defaultExpanded: true
+      children:
+        - path: '[]'
+  general: |-
+    resource: 
+      kind: OAuth2Client
+      group: hydra.ory.sh
+      version: v1alpha1
+    name: OAuth2
+    category: Custom Resources
+    urlPath: oauth2clients-ex
+    scope: namespace
+    description: >-
+      {{[OAuth2 Client](https://kyma-project.io/docs/kyma/latest/03-tutorials/00-api-exposure/apix-05-expose-and-secure-workload-oauth2#register-an-o-auth2-client-and-get-tokens)}}
+      allows an application to acquire an OAuth2 token to access protected resources.
+  list: |-
+    - source: spec.secretName
+      name: spec.secretName
+    - source: 'status.state ? "error" : "ok"'
+      highlights:
+        positive:
+          - ok
+        negative: 
+          - error
+      type: string
+      name: status
+      isSelected: true
+      widget: Badge
+      description: status.message
+  presets: |-
+    - name: template
+      default: true
+      value:
+        spec:
+          grantTypes: []
+          scope: ''
+          secretName: ''
+          tokenEndpointAuthMethod: client_secret_basic  
+          responseTypes: []
+          grantTypes: []
+  translations: |-
+    en: 
+        metadata.annotations: Annotations
+        metadata.labels: Labels
+        metadata.creationTimestamp: Created at
+        status: Status
+        spec.scope: Scope
+        spec.responseTypes: Response Types
+        spec.responseTypes.IDToken: ID Token
+        spec.responseTypes.code: Code
+        spec.responseTypes.token: Token
+        spec.grantTypes: Grant Types
+        spec.grantTypes.ClientCredentials: Client Credentials 
+        spec.grantTypes.AuthorizationCode: Authorization Code
+        spec.grantTypes.Implicit: Implicit
+        spec.grantTypes.RefreshToken: Refresh Token
+        spec.tokenEndpointAuthMethod: Token Endpoint Authentication Method
+        spec.redirectUris: Redirect URIs
+        spec.postLogoutRedirectUris: Post-Logout Redirect URIs
+        spec.audience: Audience
+        spec.secretName: Secret
+        configuration: Configuration
+        data: Data
+        status: Status
+        secret.client_id: client_id
+        secret.client_secret: client_secret
