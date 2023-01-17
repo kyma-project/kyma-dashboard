@@ -77,10 +77,13 @@ data:
                 widget: Badge
               - source: $item.config.required_scope
                 name: accessStrategies.required_scope
+                widget: JoinedArray
               - source: $item.config.jwks_urls
                 name: accessStrategies.jwks_urls
+                widget: JoinedArray
               - source: $item.config.trusted_issuers
                 name: accessStrategies.trusted_issuers
+                widget: JoinedArray
           - source: $item.mutators
             widget: Table
             disablePadding: true
@@ -206,14 +209,6 @@ data:
           template:
             handler: 'allow'
           children:
-            - path: '[].config'
-              simple: true
-              name: accessStrategies.config
-              widget: KeyValuePair
-              keyEnum:
-                - jwks_urls
-                - trusted_issuers
-                - required_scope
             - required: true
               simple: true
               path: '[].handler'
@@ -223,6 +218,52 @@ data:
                 - noop
                 - jwt
                 - oauth2_introspection
+            - path: '[].config'
+              simple: true
+              name: accessStrategies.config
+              type: object
+              properties:
+                jwks_urls:
+                  type: array
+                  items:
+                    type: string
+                    pattern: ^(https://|file://).*$
+                trusted_issuers:
+                  type: array
+                  items:
+                    type: string
+                    pattern: ^(https://|file://).*$
+                required_scope:
+                  type: array
+                  items:
+                    type: string
+              children:
+                - path: jwks_urls
+                  name: accessStrategies.jwks_urls
+                  inputInfo: inputInfo.jwks_urls
+                  simple: true
+                  widget: SimpleList
+                  visibility: '$item.handler="jwt"'
+                  children:
+                    - path: '[]'
+                      simple: true
+                - path: trusted_issuers
+                  name: accessStrategies.trusted_issuers
+                  inputInfo: inputInfo.trusted_issuers
+                  simple: true
+                  widget: SimpleList
+                  visibility: '$item.handler="jwt"'
+                  children:
+                    - path: '[]'
+                      simple: true
+                - path: required_scope
+                  name: accessStrategies.required_scope
+                  simple: true
+                  widget: SimpleList
+                  visibility: '$item.handler="oauth2_introspection"'
+                  children:
+                    - path: '[]'
+                      simple: true
         - required: true
           simple: true
           path: '[].methods'
@@ -320,13 +361,15 @@ data:
       accessStrategies.config: Config
       accessStrategies.handler: Handler
       accessStrategies.handlers: Handlers
-      accessStrategies.jwks_urls: JWKS Urls
+      accessStrategies.jwks_urls: JWKS URLs
       accessStrategies.trusted_issuers: Trusted Issuers
       accessStrategies.required_scope: Required Scope
       gateway: Gateway
       host: Host
       inputInfo.gateway: Gateway structure, '{GATEWAY}.{NAMESPACE}.svc.cluster.local'
       inputInfo.path: "Path can contain alphanumeric characters and '/', '.', '*', '?', '!', '-', '(', and ')'."
+      inputInfo.jwks_urls: "JWKS URLs must start with 'https://' or 'file://'"
+      inputInfo.trusted_issuers: "Trusted Issuers must start with 'https://' or 'file://'"
       mutators: Mutators
       mutators.config: Config
       mutators.handlers: Handlers
