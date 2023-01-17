@@ -19,7 +19,7 @@
     "prettier": "^1.18.2"
   },
   "lint-staged": {
-    "*": "prettier --config ./.prettierrc --write '**/*.{ts,tsx,js,jsx,json,html,css,yaml,md}' --ignore-path ./.prettierignore"
+    "*.{ts,tsx,js,jsx,json,html,css,scss,yaml,md}": "prettier --config ./.prettierrc --write --ignore-path ./.prettierignore"
   },
   "husky": {
     "hooks": {
