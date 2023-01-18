@@ -77,6 +77,7 @@ data:
           widget: SimpleList
           children:
             - '[]'
+              simple: true
           placeholder: spec.acme.domainallowed
         - path: domains.exclude
           widget: SimpleList
