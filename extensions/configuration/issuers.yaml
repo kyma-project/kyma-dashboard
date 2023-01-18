@@ -24,14 +24,14 @@ data:
     body:
       - widget: Columns
         children:
-          - name: included.domains
+          - name: Included domains
             widget: Table
             showHeader: false
             source: spec.acme.domains.include
             children:
               - source: $item
                 search: true
-          - name: excluded.domains
+          - name: Excluded domains
             widget: Table
             showHeader: false
             source: spec.acme.domains.exclude
@@ -76,12 +76,12 @@ data:
           simple: true
           widget: SimpleList
           children:
-            - []
+            - '[]'
           placeholder: spec.acme.domainallowed
         - path: domains.exclude
           widget: SimpleList
           children:
-            - []
+            - '[]'
           placeholder: spec.acme.domainforbidden
         - path: externalAccountBinding
           widget: FormGroup
