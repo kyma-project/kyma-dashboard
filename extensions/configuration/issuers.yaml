@@ -76,13 +76,13 @@ data:
           simple: true
           widget: SimpleList
           children:
-            - '[]'
+            - path: '[]'
               simple: true
           placeholder: spec.acme.domainallowed
         - path: domains.exclude
           widget: SimpleList
           children:
-            - '[]'
+            - path: '[]'
           placeholder: spec.acme.domainforbidden
         - path: externalAccountBinding
           widget: FormGroup
