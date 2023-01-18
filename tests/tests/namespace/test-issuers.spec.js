@@ -69,13 +69,7 @@ context('Test Issuers', () => {
     cy.get('[placeholder="Select Issuer type"]')
       .filter(':visible')
       .click()
-      .type('CA');
-
-    cy.contains('CA').click();
-
-    cy.get('[placeholder="Select Issuer type"]')
-      .filter(':visible')
-      .click()
+      .clear()
       .type('ACME');
 
     cy.contains('ACME').click();
