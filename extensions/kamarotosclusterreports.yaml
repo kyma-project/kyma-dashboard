@@ -1,0 +1,173 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: kamarotosclusterreports.kamarotos.sap.com
+  namespace: kube-public
+  labels:
+    app.kubernetes.io/name: kamarotosclusterreports.kamarotos.sap.com
+    busola.io/extension: resource
+    busola.io/extension-version: '0.5'
+data:
+  details: |-
+    header:
+      - name: Owner
+        source: metadata.ownerReferences
+        widget: ControlledBy
+        placeholder: 'cluster'
+      - widget: Badge
+        placeholder: " "
+      - widget: Badge
+        placeholder: " "
+      - name: Passed
+        source: summary.passed
+        placeholder: '0'
+        widget: Badge
+        highlights:
+          positive: $exists($value)
+      - name: Failed
+        source: summary.failed
+        placeholder: '0'
+        widget: Badge
+        highlights:
+          negative: $exists($value)
+      - name: Skipped
+        source: summary.skipped
+        placeholder: '0'
+        widget: Badge
+        highlights:
+          critical: $exists($value)
+    body:
+    - name: Results
+      source: results
+      widget: Table
+      visibility: $exists($value)
+      children:
+      - name: Policy
+        source: $item.policy
+        sort:
+          default: true
+        search: true
+        widget: ResourceLink
+        resource:
+          name: policy
+          kind: "'KamarotosPolicy'"
+      - name: Category
+        source: $item.metadata.category
+        sort: true
+        search: true
+      - name: Status
+        source: $item.metadata.status
+        sort: true
+        search: true
+        widget: Badge
+        highlights:
+          positive:
+          - passed
+          negative:
+          - failed
+          critical:
+          - skipped
+      - name: Message
+        source: $item.metadata.message
+    - name: Child Reports
+      source: childReports
+      widget: Table
+      visibility: $exists($value)
+      children:
+      - name: Kamarotos Cluster Reports
+        source: report.name
+        visibility: $contains(report.name, /namespace|kamarotos/)
+        widget: ResourceLink
+        sort: true
+        search: true
+        resource:
+          name: report.name
+          kind: "'KamarotosClusterReport'"
+      - name: Kamarotos Reports
+        source: report.name
+        visibility: $not($contains(report.name, /namespace|kamarotos/))
+        widget: ResourceLink
+        sort: true
+        search: true
+        resource:
+          name: report.name
+          kind: "'KamarotosReport'"
+          namespace: report.namespace
+      - name: Passed
+        source: summary.passed
+        placeholder: '0'
+        widget: Badge
+        sort: true
+        highlights:
+          positive: $exists($value)
+      - name: Failed
+        source: summary.failed
+        placeholder: '0'
+        widget: Badge
+        sort: true
+        highlights:
+          negative: $exists($value)
+      - name: Skipped
+        source: summary.skipped
+        placeholder: '0'
+        widget: Badge
+        sort: true
+        highlights:
+          critical: $exists($value)
+  form: '[]'
+  general: |-
+    resource:
+      kind: KamarotosClusterReport
+      group: kamarotos.sap.com
+      version: v1
+    name: Kamarotos Cluster Reports
+    category: Kamarotos
+    urlPath: kamarotosclusterreports
+    scope: cluster
+    features:
+      actions:
+        disableCreate: true
+        disableEdit: true
+  list: |-
+    - name: Passed
+      source: summary.passed
+      widget: Badge
+      placeholder: '0'
+      highlights:
+        positive: $exists($value)
+    - name: Failed
+      source: summary.failed
+      widget: Badge
+      placeholder: '0'
+      highlights:
+        negative: $exists($value)
+    - name: Skipped
+      source: summary.skipped
+      widget: Badge
+      placeholder: '0'
+      highlights:
+        critical: $exists($value)
+  translations: |-
+    en:
+      metadata.annotations: Annotations
+      metadata.labels: Labels
+      metadata.creationTimestamp: Created at
+      metadata.message: Message
+      metadata.origin: Result Origin
+      results: Results
+      results.policy: Policy
+      results.metadata.category: Category
+      results.metadata.status: Status
+      results.metadata.message: message
+      results.metadata.origin: origin
+      childReports: Child Reports
+      childReports.report.name: Name
+      childReports.report.namespace: Namespace
+      childReports.summary.passed: Passed
+      childReports.summary.failed: Failed
+      childReports.summary.skipped: Skipped
+      childReports.report: Report
+      summary: Summary
+      summary.passed: Passed
+      summary.failed: Failed
+      summary.skipped: Skipped

@@ -1,0 +1,107 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: trivyreports.kamarotos.sap.com
+  namespace: kube-public
+  labels:
+    app.kubernetes.io/name: trivyreports.kamarotos.sap.com
+    busola.io/extension: resource
+    busola.io/extension-version: '0.5'
+data:
+  details: |-
+    header:
+    - source: metadata.ownerReferences
+      widget: ControlledBy
+      name: Resource
+    - source: summary.message
+      name: Summary
+    body:
+    - name: Results
+      source: results
+      widget: Table
+      children:
+      - name: Image
+        source: image
+      collapsible:
+      - name: Vulnerabilities
+        source: vulnerabilities
+        widget: Table
+        children:
+        - name: ID
+          source: id
+          sort: true
+          search: true
+        - name: Package Name
+          source: packageName
+          search: true
+          sort: true
+        - name: Installed Version
+          source: installedVersion
+        - name: Fixed Version
+          source: fixedVersion
+        - name: Severity
+          source: severity
+          search: true
+          widget: Badge
+          highlights:
+            informative:
+            - unknown
+            positive:
+            - low
+            critical:
+            - medium
+            negative:
+            - critical
+            - high
+          sort:
+            default: true
+        - name: References
+          source: references
+          widget: ExternalLink
+  form: '[]'
+  general: |-
+    resource:
+      kind: TrivyReport
+      group: kamarotos.sap.com
+      version: v1
+    name: Trivy Reports
+    category: Kamarotos
+    urlPath: trivyreports
+    scope: namespace
+    features:
+      actions:
+        disableCreate: true
+        disableEdit: true
+  list: |-
+    - source: summary.critical
+      name: Critical
+    - source: summary.high
+      name: High
+    - source: summary.medium
+      name: Medium
+    - source: summary.low
+      name: Low
+    - source: summary.unknown
+      name: Unknown
+    - source: summary.message
+      name: Summary
+  translations: |-
+    en:
+      name: Trivy Reports
+      summary.message: Summary
+      summary.critical: Critical
+      summary.high: High
+      summary.medium: Medium
+      summary.unknown: Unknown
+      metadata.annotations: Annotations
+      metadata.labels: Labels
+      metadata.ownerReferences: Resource
+      category: Kamarotos
+      results: Results
+      results.image: Image
+      results.image.vulnerabilities: Vulnerabilities
+      results.image.vulnerabilities.id: ID
+      results.image.vulnerabilities.packageName: Package Name
+      results.image.vulnerabilities.installedVersion: Installed Version
+      results.image.vulnerabilities.fixedVersion: Fixed Version
+      results.image.vulnerabilities.references: References

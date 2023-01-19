@@ -1,0 +1,345 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: kamarotospolicies.kamarotos.sap.com
+  namespace: kube-public
+  labels:
+    app.kubernetes.io/name: kamarotospolicies.kamarotos.sap.com
+    busola.io/extension: resource
+    busola.io/extension-version: '0.5'
+data:
+  details: |-
+    header:
+      - name: Type
+        source: spec.type
+        widget: Badge
+      - name: Category
+        source: $lookup(metadata.annotations, 'kamarotos.policy-category')
+        widget: Badge
+      
+      - widget: Badge
+        placeholder: " "
+        
+      - name: 'Passed:'
+        source: status.summary.passed
+        placeholder: '0'
+        widget: Badge
+        highlights:
+          positive: $exists($value)
+      - name: 'Failed:'
+        source: status.summary.failed
+        placeholder: '0'
+        widget: Badge
+        highlights:
+          negative: $exists($value)
+      - name: 'Skipped:'
+        source: status.summary.skipped
+        placeholder: '0'
+        widget: Badge
+        highlights:
+          critical: $exists($value)
+    body:
+      - widget: Tabs
+        children:
+          - name: Selector
+            children:
+              - name: Included
+                source: spec.selector.include
+                widget: Table
+                visibility: $exists($value)
+                children:
+                  - source: namespaces
+                    name: Namespace
+                    widget: JoinedArray
+                    separator: ', '
+                  - source: labels
+                    widget: Labels
+                    name: Labels
+              - name: Excluded 
+                source: spec.selector.exclude
+                widget: Table
+                visibility: $exists($value)
+                children:
+                  - source: namespaces
+                    name: Namespace
+                    widget: JoinedArray
+                    separator: ', '
+                  - source: labels
+                    name: Labels
+              - name: Kinds
+                source: spec.selector.kinds
+                widget: JoinedArray
+                separator: ', '
+                visibility: $exists($value)
+          - name: Configuration 
+            children:
+              - name: Config
+                widget: Panel
+                children:
+                  - name: Skip images
+                    source: spec.config.skipImages
+                    widget: JoinedArray
+                    separator: ', '
+                    visibility: $exists($value)
+                  - name: Kyverno enforcing mode
+                    source: spec.config.enforcingMode
+                    visibility: $exists($value)
+                  - name: Name pattern
+                    source: spec.config.namePattern
+                    visibility: $exists($value)
+                  - name: Required labels
+                    source: spec.config.requiredLabels
+                    widget: Labels
+                    visibility: $exists($value)
+                  - name: Request CPU
+                    source: spec.config.resourceManagement.requestsCPU
+                    visibility: $exists($value)
+                  - name: Request memory
+                    source: spec.config.resourceManagement.requestsMemory
+                    visibility: $exists($value)
+                  - name: Limit CPU
+                    source: spec.config.resourceManagement.limitsCPU
+                    visibility: $exists($value)
+                  - name: Limit memory
+                    source: spec.config.resourceManagement.limitsMemory
+                    visibility: $exists($value)
+                  - name: Max CPU
+                    source: spec.config.resourceManagement.maxCPU
+                    visibility: $exists($value)
+                  - name: Max memory
+                    source: spec.config.resourceManagement.maxMemory
+                    visibility: $exists($value)
+                  - name: Min CPU
+                    source: spec.config.resourceManagement.minCPU
+                    visibility: $exists($value)
+                  - name: Min memory
+                    source: spec.config.resourceManagement.minMemory
+                    visibility: $exists($value)
+                  - name: During days
+                    source: spec.config.chaosInterval.duringDays
+                    widget: JoinedArray
+                    separator: ', '
+                    visibility: $exists($value)
+                  - name: Start time
+                    source: spec.config.chaosInterval.startTime
+                    visibility: $exists($value)
+                  - name: End time
+                    source: spec.config.chaosInterval.endTime
+                    visibility: $exists($value)
+                  - name: Every Nth hour
+                    source: spec.config.chaosInterval.everyNthHour
+                    visibility: $exists($value)
+                  - name: Every Nth minute
+                    source: spec.config.chaosInterval.everyNthMinute
+                    visibility: $exists($value)
+                  - name: Every Nth second
+                    source: spec.config.chaosInterval.everyNthSecond
+                    visibility: $exists($value)
+          - name: Results 
+            children:
+              - name: Result resources
+                source: status.results
+                visibility: $exists($value)
+                widget: Table
+                collapsible:
+                  - name: message
+                    source: metadata.message
+                  - name: origin
+                    source: metadata.origin.name
+                    widget: ResourceLink
+                    resource:
+                      name: metadata.origin.name
+                      kind: metadata.origin.kind
+                      namespace: metadata.origin.namespace
+                children:
+                  - name: Name
+                    source: resource.name
+                    widget: ResourceLink
+                    sort: true
+                    search: true
+                    resource:
+                      name: resource.name
+                      kind: resource.kind
+                      namespace: resource.namespace
+                  - name: Namespace
+                    source: resource.namespace
+                    sort: true
+                    search: true
+                  - name: Kind
+                    source: resource.kind
+                    sort: true
+                    search: true
+                  - name: Status
+                    source: metadata.status
+                    sort: 
+                      default: true
+                    search: true
+                    widget: Badge
+                    highlights:
+                      positive:
+                        - passed
+                      negative:
+                        - failed
+                      critical:
+                        - skipped
+  form: |-
+    - simple: true
+      path: spec.type
+      required: true
+
+    - simple: true
+      path: spec.selector
+      widget: FormGroup
+
+    - simple: true
+      path: spec.selector.kinds
+      widget: SimpleList
+    - simple: true
+      path: spec.selector.kinds[]
+
+    - simple: true
+      path: spec.selector.include[].namespaces
+      widget: SimpleList
+    - simple: true
+      path: spec.selector.include[].namespaces[]
+      widget: Resource
+      resource:
+        scope: cluster
+        kind: Namespace
+        version: v1
+    - simple: true
+      path: spec.selector.include[].labels
+      widget: KeyValuePair
+
+    - simple: true
+      path: spec.selector.exclude[].namespaces
+      widget: SimpleList
+    - simple: true
+      path: spec.selector.exclude[].namespaces[]
+      widget: Resource
+      resource:
+        scope: cluster
+        kind: Namespace
+        version: v1
+    - simple: true
+      path: spec.selector.exclude[].labels
+      widget: KeyValuePair
+
+    - path: spec.config
+      widget: FormGroup
+    - path: spec.config.enforcingMode
+    - path: spec.config.requiredLabels
+      widget: KeyValuePair
+    - path: spec.config.namePattern
+    - path: spec.config.resourceManagement
+      widget: FormGroup
+    - path: spec.config.resourceManagement.requestsCPU
+    - path: spec.config.resourceManagement.requestsMemory
+    - path: spec.config.resourceManagement.limitsCPU
+    - path: spec.config.resourceManagement.limitsMemory
+    - path: spec.config.resourceManagement.maxCPU
+    - path: spec.config.resourceManagement.maxMemory
+    - path: spec.config.resourceManagement.minCPU
+    - path: spec.config.resourceManagement.minMemory
+    - path: spec.config.skipImages
+      widget: SimpleList
+    - path: spec.config.skipImages[]
+      widget: Text
+    - path: spec.config.registryCredentials
+      widget: GenericList
+    - path: spec.config.registryCredentials[].imageRepository
+      widget: Text
+    - path: spec.config.registryCredentials[].secretRef.name
+      widget: Text
+    - path: spec.config.chaosInterval
+      widget: FormGroup
+    - path: spec.config.chaosInterval.duringDays
+      widget: SimpleList
+    - path: spec.config.chaosInterval.duringDays[]
+    - path: spec.config.chaosInterval.startTime
+    - path: spec.config.chaosInterval.endTime
+    - path: spec.config.chaosInterval.everyNthHour
+    - path: spec.config.chaosInterval.everyNthMinute
+    - path: spec.config.chaosInterval.everyNthSecond
+  general: |-
+    resource:
+      kind: KamarotosPolicy
+      group: kamarotos.sap.com
+      version: v1
+    name: Kamarotos Policies
+    category: Kamarotos
+    urlPath: kamarotospolicies
+    scope: cluster
+  list: |-
+    - name: Type
+      source: spec.type
+      type: string
+
+    - name: Passed
+      source: status.summary.passed
+      placeholder: '0'
+      widget: Badge
+      highlights:
+        positive: $exists(data)
+
+    - name: Failed
+      source: status.summary.failed
+      placeholder: '0'
+      widget: Badge
+      highlights:
+        negative: $exists(data)
+        
+    - name: Skipped
+      source: status.summary.skipped
+      placeholder: '0'
+      widget: Badge
+      highlights:
+        critical: $exists(data)
+  translations: |-
+    en:
+      name: Kamarotos Policies
+      metadata.annotations: Annotations
+      spec.type: Type
+      spec.selector: Selector
+      spec.selector.namespaces: Namespaces
+      spec.selector.include: Included
+      spec.selector.include.namespaces: Included Namespaces
+      spec.selector.include.labels: Included Labels
+      spec.selector.exclude: Excluded
+      spec.selector.exclude.namespaces: Excluded Namespaces
+      spec.selector.exclude.labels: Excluded Labels
+      spec.selector.kinds: Kinds
+      spec.config: Configuration
+      spec.config.skipImages: Skip image
+      spec.config.namePattern: Name pattern
+      spec.config.enforcingMode: Kyverno enforcing mode
+      spec.config.requiredLabels: Required labels
+      spec.config.resourceManagement: Resource Management
+      spec.config.resourceManagement.requestsCPU: Request CPU
+      spec.config.resourceManagement.requestsMemory: Request memory
+      spec.config.resourceManagement.limitsCPU: Limit CPU
+      spec.config.resourceManagement.limitsMemory: Limit memory
+      spec.config.resourceManagement.maxCPU: Max CPU
+      spec.config.resourceManagement.maxMemory: Max memory
+      spec.config.resourceManagement.minCPU: Min CPU
+      spec.config.resourceManagement.minMemory: Min memory
+      spec.config.registryCredentials: Registry Credentials
+      spec.config.registryCredentials[].imageRepository: Image Repository
+      spec.config.registryCredentials[].secretRef.name: Secret name
+      spec.config.chaosInterval: Chaos Interval
+      spec.config.chaosInterval.duringDays: During Days
+      spec.config.chaosInterval.startTime: Start Time
+      spec.config.chaosInterval.endTime: End Time
+      spec.config.chaosInterval.everyNthHour: Every Nth hour
+      spec.config.chaosInterval.everyNthMinute: Every Nth minute
+      spec.config.chaosInterval.everyNthSecond: Every Nth second
+      status.results: Results
+      status.results.resource.namespace: Namespace
+      status.results.resource.kind: Kind
+      status.results.metadata.status: Status
+      status.results.metadata.message: message
+      status.results.metadata.origin: origin
+      status.summary: Status summary
+      status.summary.passed: Passed
+      status.summary.skipped: Skipped
+      status.summary.failed: Failed
