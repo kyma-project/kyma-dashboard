@@ -1,0 +1,98 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: servicebindings
+  namespace: kube-public
+  labels:
+    app.kubernetes.io/name: servicebindings
+    busola.io/extension: resource
+    busola.io/extension-version: '0.5'
+data:
+  details: |
+    header:
+      - name: Controlled By
+        source: spec.controlledBy
+      - name: Status
+        source: 'status.conditions[$count(status.conditions)-1].reason'
+        description: '$filter(status.conditions, function ($v, $i, $a) { $length($v.message) > 0 })[0].message'
+        highlights:
+          informative:
+          - NOTPROVISIONED
+        widget: Badge
+    body:
+      - name: Binding Data
+        widget: Panel
+        children:
+          - name: Service Instance Name
+            source: spec.serviceInstanceName
+          - name: Secret Name
+            source: spec.secretName
+          - name: External Name
+            source: spec.externalName
+          - name: Binding ID
+            source: status.bindingID
+          - name: Instance ID
+            source: spec.serviceInstanceID
+      - name: Parameters
+        source: spec.parameters
+        widget: CodeViewer
+      - name: Parameters from Secrets
+        source: spec.parametersFrom
+        widget: CodeViewer
+  form: |
+    - simple: true
+      path: spec.serviceInstanceName
+      required: true
+      placeholder: Start typing to select Service Binding from the list
+    - path: spec.externalName
+      placeholder: Defaults to the Service Binding name if empty
+    - path: spec.secretName
+    - path: spec.parameters
+      widget: KeyValuePair
+      defaultExpanded: false
+    - name: Parameters from Secrets
+      path: spec.parametersFrom
+      widget: GenericList
+      defaultExpanded: true
+      children:
+        - path: '[].secretKeyRef.name'
+          widget: Resource
+          resource:
+            kind: Secret
+            version: v1
+            scope: namespace
+          provideVar: secret
+          required: false
+        - path: '[].secretKeyRef.key'
+          required: false
+  general: |
+    resource:
+      kind: ServiceBinding
+      group: services.cloud.sap.com
+      version: v1
+    name: Service Bindings
+    category: Custom Resources
+    urlPath: servicebindings-x
+    scope: namespace
+    description: >-
+      {{[BTP Service Binding](https://github.com/SAP/sap-btp-service-operator#step-2-create-a-service-binding)}}
+      provides access details for an existing service instance.
+  list: |
+    - name: Controlled By
+      source: spec.controlledBy
+    - name: Service Instance Name
+      source: spec.serviceInstanceName
+    - name: External Name
+      source: spec.externalName
+    - name: Status
+      source: 'status.conditions[$count(status.conditions)-1].reason'
+      description: '$filter(status.conditions, function ($v, $i, $a) { $length($v.message) > 0 })[0].message'
+      highlights:
+        informative:
+        - NOTPROVISIONED
+      widget: Badge
+  translations: |
+    en:
+      metadata.annotations: Annotations
+      metadata.labels: Labels
+      metadata.creationTimestamp: Created at
