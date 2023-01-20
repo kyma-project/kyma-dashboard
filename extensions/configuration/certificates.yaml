@@ -10,33 +10,33 @@ metadata:
 data:
   details: |
     header:
-      - name: Status
+      - name: status
         source: 'status.state ? status.state : "UNKNOWN"'
         highlights:
           informative:
           - UNKNOWN
         widget: Badge
         description: status.message
-      - name: Expiration Date
+      - name: status.expirationDate
         source: status.expirationDate
-      - name: Common Name
+      - name: commonName
         source: spec.commonName
     body:
-      - name: References
+      - name: references
         widget: Panel
         children:
-          - name: Issuer
+          - name: issuer
             source: status.issuerRef.name
-          - name: Secret
+          - name: secret
             source: spec.secretRef.name
-          - name: CSR
+          - name: spec.csr
             source: spec.csr
-          - name: Annotations
+          - name: metadata.annotations
             source: metadata.annotations
             widget: Labels
-          - name: Renew
+          - name: spec.renew
             source: spec.renew
-          - name: DNS Names
+          - name: spec.dnsNames
             source: spec.dnsNames
             widget: Labels
   form: |
@@ -44,26 +44,25 @@ data:
       dynamicValue: 'false'
       simple: true
       type: boolean
-      name: Use a CSR
+      name: spec.useCSR
     - simple: true
       path: spec.commonName
       required: true
-      placeholder: Certificate CN (max 64 characters)
+      placeholder: certificateCN
       visibility: "$useCSR = false"
     - simple: true
       path: spec.csr
-      name: CSR
       required: true
-      placeholder: Certificate Signing Request
+      placeholder: spec.certSignReq
       visibility: "$useCSR"
-      decoded: true
+      decodable: true
+      decodedPlaceholder: 'blah blah'
     - path: spec.dnsNames
-      name: DNS Names
       widget: SimpleList
       children:
         - path: '[]'
-      placeholder: Additional domain names, one per line
-    - name: Issuer
+      placeholder: spec.additionalDomains
+    - name: issuer
       path: spec.issuerRef
       required: false
       widget: ResourceRef      
@@ -72,13 +71,12 @@ data:
         version: v1
     - path: spec.renew
     - var: useExistingSecret
+      name: spec.useExisting
       dynamicValue: 'false'
       type: boolean
-      name: Use the existing Secret
     - path: spec.secretName
       visibility: "$useExistingSecret = false"
-    - name: Secret to use
-      path: spec.secretRef
+    - path: spec.secretRef
       widget: ResourceRef      
       provideVar: secret
       resource:
@@ -93,20 +91,20 @@ data:
       group: cert.gardener.cloud
       version: v1alpha1
     name: Certificates
-    category: Configuration
-    urlPath: certificates
+    category: Custom Resources
+    urlPath: certificates-x
     scope: namespace
     description: >-
       {{[Certificate](https://cert-manager.io/docs/concepts/certificate/)}}
       provides a definition of a certificate that is then processed by the indicated issuer.
   list: |
-    - name: Common Name
+    - name: status.commonName
       source: status.commonName
-    - name: Issuer
+    - name: issuer
       source: status.issuerRef.name
-    - name: Expiration Date
+    - name: status.expirationDate
       source: status.expirationDate
-    - name: Status
+    - name: status
       source: 'status.state ? status.state : "UNKNOWN"'
       highlights:
         informative:
@@ -118,3 +116,18 @@ data:
       metadata.annotations: Annotations
       metadata.labels: Labels
       metadata.creationTimestamp: Created at
+      status: Status
+      status.expirationDate: Expiration Date
+      issuer: Issuer
+      commonName: Common Name
+      spec.secretRef: Secret to use
+      spec.useExisting: Use the existing Secret
+      spec.additionalDomains: Additional domain names, one per line
+      spec.dnsNames: DNS Names
+      spec.csr: CSR
+      spec.useCSR: Use a CSR
+      spec.certSignReq: Certificate Signing Request
+      spec.renew: Renew
+      certificateCN: Certificate CN (max 64 characters)
+      references: References
+      secret: Secret
