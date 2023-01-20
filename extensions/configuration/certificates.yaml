@@ -56,7 +56,7 @@ data:
       placeholder: spec.certSignReq
       visibility: "$useCSR"
       decodable: true
-      decodedPlaceholder: 'blah blah'
+      decodedPlaceholder: spec.certSignReqDecoded
     - path: spec.dnsNames
       widget: SimpleList
       children:
@@ -126,7 +126,8 @@ data:
       spec.dnsNames: DNS Names
       spec.csr: CSR
       spec.useCSR: Use a CSR
-      spec.certSignReq: Certificate Signing Request
+      spec.certSignReq: Plain text Certificate Signing Request
+      spec.certSignReqDecoded: Base64-encoded Certificate Signing Request 
       spec.renew: Renew
       certificateCN: Certificate CN (max 64 characters)
       references: References
