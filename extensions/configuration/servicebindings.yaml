@@ -10,9 +10,9 @@ metadata:
 data:
   details: |
     header:
-      - name: Controlled By
+      - name: spec.controlledBy
         source: spec.controlledBy
-      - name: Status
+      - name: status
         source: 'status.conditions[$count(status.conditions)-1].reason'
         description: '$filter(status.conditions, function ($v, $i, $a) { $length($v.message) > 0 })[0].message'
         highlights:
@@ -20,39 +20,38 @@ data:
           - NOTPROVISIONED
         widget: Badge
     body:
-      - name: Binding Data
+      - name: bindingData
         widget: Panel
         children:
-          - name: Service Instance Name
+          - name: spec.serviceInstanceName
             source: spec.serviceInstanceName
-          - name: Secret Name
+          - name: spec.secretName
             source: spec.secretName
-          - name: External Name
+          - name: spec.externalName
             source: spec.externalName
-          - name: Binding ID
+          - name: status.bindingID
             source: status.bindingID
-          - name: Instance ID
+          - name: spec.serviceInstanceID
             source: spec.serviceInstanceID
-      - name: Parameters
+      - name: spec.parameters
         source: spec.parameters
         widget: CodeViewer
-      - name: Parameters from Secrets
+      - name: spec.parametersFrom
         source: spec.parametersFrom
         widget: CodeViewer
   form: |
     - simple: true
       path: spec.serviceInstanceName
       required: true
-      placeholder: Start typing to select Service Binding from the list
+      placeholder: spec.serviceInstanceNamePlaceholder
     - path: spec.externalName
-      placeholder: Defaults to the Service Binding name if empty
+      placeholder: spec.externalNamePlaceholder
     - path: spec.secretName
     - path: spec.parameters
       widget: KeyValuePair
       defaultExpanded: false
-    - name: Parameters from Secrets
-      path: spec.parametersFrom
-      widget: GenericList
+    - path: spec.parametersFrom
+      widget: SimpleList
       defaultExpanded: true
       children:
         - path: '[].secretKeyRef.name'
@@ -64,6 +63,7 @@ data:
           provideVar: secret
           required: false
         - path: '[].secretKeyRef.key'
+          enum: '$keys($secret.data)'
           required: false
   general: |
     resource:
@@ -78,13 +78,13 @@ data:
       {{[BTP Service Binding](https://github.com/SAP/sap-btp-service-operator#step-2-create-a-service-binding)}}
       provides access details for an existing service instance.
   list: |
-    - name: Controlled By
+    - name: spec.controlledBy
       source: spec.controlledBy
-    - name: Service Instance Name
+    - name: spec.serviceInstanceName
       source: spec.serviceInstanceName
-    - name: External Name
+    - name: spec.externalName
       source: spec.externalName
-    - name: Status
+    - name: status
       source: 'status.conditions[$count(status.conditions)-1].reason'
       description: '$filter(status.conditions, function ($v, $i, $a) { $length($v.message) > 0 })[0].message'
       highlights:
@@ -96,3 +96,15 @@ data:
       metadata.annotations: Annotations
       metadata.labels: Labels
       metadata.creationTimestamp: Created at
+      status: Status
+      status.bindingID: Binding ID
+      spec.secretName: Secret Name
+      spec.externalName: External Name
+      spec.externalNamePlaceholder: Defaults to the Service Binding name if empty
+      spec.serviceInstanceName: Service Instance Name
+      spec.serviceInstanceNamePlaceholder: Start typing to select Service Binding from the list
+      spec.controlledBy: Controlled By
+      spec.parameters: Parameters
+      spec.parametersFrom: Parameters from Secrets
+      spec.serviceInstanceID: InstanceID
+      bindingData: Binding Data
