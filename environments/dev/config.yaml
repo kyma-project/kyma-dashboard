@@ -120,3 +120,5 @@ config:
                   - '--oidc-client-id=d6feea7d-2414-41e3-8462-44c496e10b61'
                   - '--oidc-use-pkce'
                   - '--grant-type=auto'
+    ISTIO:
+      isEnabled: true
