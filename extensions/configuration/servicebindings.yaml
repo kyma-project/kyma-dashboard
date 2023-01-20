@@ -65,14 +65,15 @@ data:
         - path: '[].secretKeyRef.key'
           enum: '$keys($secret.data)'
           required: false
+          placeholder: chooseSecretKey
   general: |
     resource:
       kind: ServiceBinding
       group: services.cloud.sap.com
       version: v1
     name: Service Bindings
-    category: Custom Resources
-    urlPath: servicebindings-x
+    category: Service Management
+    urlPath: servicebindings
     scope: namespace
     description: >-
       {{[BTP Service Binding](https://github.com/SAP/sap-btp-service-operator#step-2-create-a-service-binding)}}
@@ -106,5 +107,6 @@ data:
       spec.controlledBy: Controlled By
       spec.parameters: Parameters
       spec.parametersFrom: Parameters from Secrets
+      chooseSecretKey: Choose Secret Key
       spec.serviceInstanceID: InstanceID
       bindingData: Binding Data
