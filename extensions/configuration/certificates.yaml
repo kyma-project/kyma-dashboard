@@ -18,7 +18,7 @@ data:
         widget: Badge
         description: status.message
       - name: status.expirationDate
-        source: status.expirationDate
+        source: '$readableTimestamp(status.expirationDate)'
       - name: commonName
         source: spec.commonName
     body:
@@ -71,8 +71,9 @@ data:
       required: false
       widget: ResourceRef      
       resource:
-        kind: Secret
-        version: v1
+        kind: Issuer
+        group: cert.gardener.cloud
+        version: v1alpha1
     - path: spec.renew
     - var: useExistingSecret
       name: spec.useExisting
@@ -107,7 +108,7 @@ data:
     - name: issuer
       source: status.issuerRef.name
     - name: status.expirationDate
-      source: status.expirationDate
+      source: '$readableTimestamp(status.expirationDate)'
     - name: status
       source: 'status.state ? status.state : "UNKNOWN"'
       highlights:
