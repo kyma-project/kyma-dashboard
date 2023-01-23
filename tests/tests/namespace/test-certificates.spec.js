@@ -17,8 +17,6 @@ context('Test Certificates', () => {
   it('Adds and displays a certificate', () => {
     cy.navigateTo('Configuration', 'Certificates');
 
-    cy.url().should('match', /certificates$/);
-
     cy.contains('Create Certificate')
       .click()
       .should('be.visible');

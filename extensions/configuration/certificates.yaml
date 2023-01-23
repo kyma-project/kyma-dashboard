@@ -1,10 +1,10 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: certificates.cert.gardener.cloud
+  name: certificates
   namespace: kube-public
   labels:
-    app.kubernetes.io/name: certificates.cert.gardener.cloud
+    app.kubernetes.io/name: certificates
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
@@ -29,6 +29,10 @@ data:
             source: status.issuerRef.name
           - name: secret
             source: spec.secretRef.name
+            widget: ResourceLink
+            resource:
+              namespace: $root.metadata.namespace
+              kind: "'Secrets'"
           - name: spec.csr
             source: spec.csr
           - name: metadata.annotations
@@ -91,14 +95,14 @@ data:
       group: cert.gardener.cloud
       version: v1alpha1
     name: Certificates
-    category: Custom Resources
-    urlPath: certificates-x
+    category: Configuration
+    urlPath: certificates
     scope: namespace
     description: >-
       {{[Certificate](https://cert-manager.io/docs/concepts/certificate/)}}
       provides a definition of a certificate that is then processed by the indicated issuer.
   list: |
-    - name: status.commonName
+    - name: commonName
       source: status.commonName
     - name: issuer
       source: status.issuerRef.name
