@@ -68,25 +68,18 @@ data:
             widget: Labels
             placeholder: '-'
   form: |
-    - path: spec.responseTypes
-      widget: FormGroup
-      simple: true
-      children:
-        - value: false
-          simple: true
-          name: spec.responseTypes.IDToken
-          type: boolean
-          path: '[]'
-        - value: false
-          simple: true
-          name: spec.responseTypes.code
-          type: boolean
-          path: '[]'
-        - value: false
-          simple: true
-          name: spec.responseTypes.token
-          type: boolean
-          path: '[]'
+    - simple: true
+      path: spec.grantTypes
+      widget: MultiCheckbox
+      options:
+        - key: client_credentials
+          name: Client Credentials
+        - key: authorization_code
+          name: Authorization code
+        - key: implicit
+          name: Implicit
+        - key: refresh_token
+          name: Refresh Token      
     - name: spec.scope
       widget: Text
       simple: true
