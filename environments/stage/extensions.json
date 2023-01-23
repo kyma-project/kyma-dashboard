@@ -12,6 +12,9 @@
     "source": "extensions/gateway"
   },
   {
+    "source": "extensions/configuration"
+  },
+  {
     "source": "extensions/kyma"
   },
   {
