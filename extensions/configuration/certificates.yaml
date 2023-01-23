@@ -31,8 +31,9 @@ data:
             source: spec.secretRef.name
             widget: ResourceLink
             resource:
-              namespace: $root.metadata.namespace
-              kind: "'Secrets'"
+              namespace: $root.spec.secretRef.namespace
+              kind: "'Secret'"
+              name: $root.spec.secretRef.name
           - name: spec.csr
             source: spec.csr
           - name: metadata.annotations
