@@ -46,7 +46,7 @@ data:
             widget: Labels
   form: |
     - var: useCSR
-      dynamicValue: 'false'
+      dynamicValue: '$exists(spec.csr)'
       simple: true
       type: boolean
       name: spec.useCSR
@@ -123,7 +123,7 @@ data:
       metadata.labels: Labels
       metadata.creationTimestamp: Created at
       status: Status
-      status.expirationDate: Expiration Date
+      status.expirationDate: Expiration Time
       issuer: Issuer
       commonName: Common Name
       spec.secretRef: Secret to use
