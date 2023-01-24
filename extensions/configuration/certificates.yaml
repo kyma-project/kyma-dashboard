@@ -78,16 +78,16 @@ data:
     - path: spec.renew
     - var: useExistingSecret
       name: spec.useExisting
-      dynamicValue: 'false'
+      dynamicValue: "$exists(spec.secretRef)"
       type: boolean
     - path: spec.secretName
       visibility: "$useExistingSecret = false"
-    - path: spec.secretRef
-      widget: ResourceRef      
-      provideVar: secret
+    - path: spec.secretRef.name
+      widget: Resource      
       resource:
         kind: Secret
         version: v1
+        scope: namespace
       defaultExpanded: true
       required: true 
       visibility: "$useExistingSecret"
