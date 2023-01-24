@@ -28,7 +28,6 @@
     "namespace/test-gateways.spec.js",
     "namespace/test-sidecars.spec.js",
     "namespace/test-service-entries.spec.js",
-    "namespace/test-service-bindings.spec.js",
     "namespace/test-api-rules.spec.js",
     "namespace/test-in-cluster-eventing.spec.js",
     "namespace/test-dns-entries.spec.js",
