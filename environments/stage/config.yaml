@@ -93,3 +93,5 @@ config:
     GARDENER_LOGIN:
       isEnabled: false
       kubeconfig: null
+    ISTIO:
+      isEnabled: true
