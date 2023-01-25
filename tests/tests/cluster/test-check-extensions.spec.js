@@ -1,28 +1,30 @@
 /// <reference types="cypress" />
+import { useCategory } from '../../support/helpers';
 
-context('Test Extensions view', () => {
-  Cypress.skipAfterFail();
-
+context('Test Cluster Extensions views', () => {
   before(() => {
     cy.loginAndSelectCluster();
   });
 
   // Integration
-  it('Check Integration Extensions', () => {
-    cy.getLeftNav()
-      .contains('Integration')
-      .click();
+  describe('Test Integration Extensions', () => {
+    useCategory('Integration');
 
-    cy.checkExtension('Applications');
+    it('Test Applications', () => {
+      cy.checkExtension('Applications');
+    });
   });
 
   // Observability
-  it('Check Observability Extensions', () => {
-    cy.getLeftNav()
-      .contains('Observability')
-      .click();
+  describe('Test Observability Extensions', () => {
+    useCategory('Observability');
 
-    cy.checkExtension('Log Parsers');
-    cy.checkExtension('Log Pipelines');
+    it('Test Log Parsers', () => {
+      cy.checkExtension('Log Parsers');
+    });
+
+    it('Test Log Pipelines', () => {
+      cy.checkExtension('Log Pipelines');
+    });
   });
 });

@@ -3,9 +3,13 @@ Cypress.Commands.add('checkExtension', (resource, create = true) => {
     .contains(resource)
     .click();
 
-  cy.contains(resource).should('be.visible');
+  cy.get('[aria-label="title"]')
+    .contains(resource)
+    .should('be.visible');
 
   if (create) {
-    cy.contains('Create').should('be.visible');
+    cy.get('[type=button]')
+      .contains('Create')
+      .should('be.visible');
   }
 });

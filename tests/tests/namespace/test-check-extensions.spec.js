@@ -1,53 +1,73 @@
 /// <reference types="cypress" />
+import { useCategory } from '../../support/helpers';
 
-context('Test Extensions view', () => {
-  Cypress.skipAfterFail();
-
+context('Test Namespace Extensions view', () => {
   before(() => {
     cy.loginAndSelectCluster();
     cy.goToNamespaceDetails();
   });
 
   // Workloads
-  it('Check Workloads Extensions', () => {
-    cy.getLeftNav()
-      .contains('Workloads')
-      .click();
+  describe('Test Workloads Extensions', () => {
+    useCategory('Workloads');
 
-    cy.checkExtension('Functions');
+    it('Test Functions', () => {
+      cy.checkExtension('Functions');
+    });
   });
 
   // Discovery and Network
-  it('Check Discovery and Network Extensions', () => {
-    cy.getLeftNav()
-      .contains('Discovery and Network')
-      .click();
+  describe('Check Discovery and Network Extensions', () => {
+    useCategory('Discovery and Network');
 
-    cy.checkExtension('API Rules');
+    it('Test API Rules', () => {
+      cy.checkExtension('API Rules');
+    });
   });
 
   // Istio
-  it('Check Istio Extensions', () => {
-    cy.getLeftNav()
-      .contains('Istio')
-      .click();
+  describe('Check Istio Extensions', () => {
+    useCategory('Istio');
 
-    cy.checkExtension('Authorization Policies');
-    cy.checkExtension('Destination Rules');
-    cy.checkExtension('Gateways');
-    cy.checkExtension('Service Entries');
-    cy.checkExtension('Sidecars');
-    cy.checkExtension('Virtual Services');
+    it('Test Authorization Policies', () => {
+      cy.checkExtension('Authorization Policies');
+    });
+
+    it('Test Destination Rules', () => {
+      cy.checkExtension('Destination Rules');
+    });
+
+    it('Test Gateways', () => {
+      cy.checkExtension('Gateways');
+    });
+
+    it('Test Service Entries', () => {
+      cy.checkExtension('Service Entries');
+    });
+
+    it('Test Sidecars', () => {
+      cy.checkExtension('Sidecars');
+    });
+
+    it('Test Virtual Services', () => {
+      cy.checkExtension('Virtual Services');
+    });
   });
 
   // Configuration
-  it('Check Configuration Extensions', () => {
-    cy.getLeftNav()
-      .contains('Configuration')
-      .click();
+  describe('Check Configuration Extensions', () => {
+    useCategory('Configuration');
 
-    cy.checkExtension('DNS Entries');
-    cy.checkExtension('DNS Providers');
-    cy.checkExtension('Issuers');
+    it('Test DNS Entries', () => {
+      cy.checkExtension('DNS Entries');
+    });
+
+    it('Test DNS Providers', () => {
+      cy.checkExtension('DNS Providers');
+    });
+
+    it('Test Issuers', () => {
+      cy.checkExtension('Issuers');
+    });
   });
 });
