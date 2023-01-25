@@ -88,6 +88,7 @@ data:
         kind: Secret
         version: v1
         scope: namespace
+      filter: "$item.type ='kubernetes.io/tls'"
       defaultExpanded: true
       required: true 
       visibility: "$useExistingSecret"
