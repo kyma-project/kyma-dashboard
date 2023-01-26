@@ -2,6 +2,7 @@
 import 'cypress-file-upload';
 
 const CLIENT_NAME = 'test-oauth2-client';
+const AUTH2_NAME = 'enter-a-nice-name-to-test-oauth2';
 
 context('Test OAuth2 Clients', () => {
   Cypress.skipAfterFail();
@@ -18,7 +19,11 @@ context('Test OAuth2 Clients', () => {
 
     cy.contains('Advanced').click();
 
-    cy.get('[ariaLabel="OAuth2 Client name"]')
+    cy.get('[arialabel="OAuth2Client name"]')
+      .clear()
+      .type(AUTH2_NAME);
+
+    cy.get('[data-testid="spec.clientName"]')
       .clear()
       .type(CLIENT_NAME);
 
@@ -26,8 +31,11 @@ context('Test OAuth2 Clients', () => {
 
     cy.contains('label', 'Authorization Code').click();
 
-    cy.get('[ariaLabel="OAuth2 Client scope"]')
-      .first()
+    cy.contains('label', 'Implicit').click();
+
+    cy.contains('label', 'Code').click();
+
+    cy.get('[data-testid="spec.scope"]')
       .clear()
       .type('openid', {
         //for unknown reason Cypress can lose 'e' when typing openid, therefore slowing down the typing
@@ -43,13 +51,15 @@ context('Test OAuth2 Clients', () => {
   });
 
   it('Checking details', () => {
-    cy.contains(CLIENT_NAME).click();
-
     cy.contains(CLIENT_NAME).should('be.visible');
 
-    cy.contains('ID Token').should('be.visible');
+    cy.contains('id_token').should('be.visible');
 
-    cy.contains('Authorization Code').should('be.visible');
+    cy.contains('authorization_code').should('be.visible');
+
+    cy.contains('implicit').should('be.visible');
+
+    cy.contains('code').should('be.visible');
 
     cy.contains('openid').should('be.visible');
 
@@ -68,11 +78,7 @@ context('Test OAuth2 Clients', () => {
 
     cy.contains('label', 'ID Token').click();
 
-    cy.contains('label', 'Code').click();
-
     cy.contains('label', 'Authorization Code').click();
-
-    cy.contains('label', 'Implicit').click();
 
     cy.get('[value="openid"]')
       .clear()
@@ -84,9 +90,9 @@ context('Test OAuth2 Clients', () => {
   });
 
   it('Checking updates details', () => {
-    cy.contains('Code').should('be.visible');
+    cy.contains('code').should('be.visible');
 
-    cy.contains('Implicit').should('be.visible');
+    cy.contains('implicit').should('be.visible');
 
     cy.contains('email').should('be.visible');
 
@@ -101,6 +107,6 @@ context('Test OAuth2 Clients', () => {
   });
 
   it('Inpect list', () => {
-    cy.inspectList('OAuth2 Clients', CLIENT_NAME);
+    cy.inspectList('OAuth2 Clients', AUTH2_NAME);
   });
 });

@@ -136,7 +136,6 @@ data:
     - name: spec.scope
       widget: Text
       simple: true
-      required: true
       path: spec.scope
       inputInfo: 'You can provide more then one Scope, but they have to be separated by a Space'    
     - advanced: true
@@ -167,7 +166,7 @@ data:
       version: v1alpha1
     name: OAuth2 Clients
     category: Custom Resources
-    urlPath: oauth2clients-ex
+    urlPath: oauth2clients
     scope: namespace
     description: >-
       {{[OAuth2 Clients](https://kyma-project.io/docs/kyma/latest/03-tutorials/00-api-exposure/apix-05-expose-and-secure-workload-oauth2#register-an-o-auth2-client-and-get-tokens)}}
