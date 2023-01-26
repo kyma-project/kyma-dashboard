@@ -16,8 +16,10 @@ data:
         source: 'status.conditions[$count(status.conditions)-1].reason'
         description: '$filter(status.conditions, function ($v, $i, $a) { $length($v.message) > 0 })[0].message'
         highlights:
+          positive:
+            - Provisioned
           informative:
-          - NotProvisioned
+            - NotProvisioned
         widget: Badge
     body:
       - name: bindingData
@@ -111,8 +113,10 @@ data:
       source: 'status.conditions[$count(status.conditions)-1].reason'
       description: '$filter(status.conditions, function ($v, $i, $a) { $length($v.message) > 0 })[0].message'
       highlights:
+        positive:
+          - Provisioned
         informative:
-        - NotProvisioned
+          - NotProvisioned
       widget: Badge
   translations: |
     en:
