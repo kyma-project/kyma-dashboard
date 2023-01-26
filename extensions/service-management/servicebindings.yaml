@@ -25,26 +25,42 @@ data:
         children:
           - name: spec.serviceInstanceName
             source: spec.serviceInstanceName
+            widget: ResourceLink
+            resource:
+              namespace: $root.metadata.namespace
+              kind: "'ServiceInstance'"
+              name: $root.spec.serviceInstanceName
           - name: spec.secretName
             source: spec.secretName
+            widget: ResourceLink
+            resource:
+              namespace: $root.metadata.namespace
+              kind: "'Secret'"
+              name: $root.spec.secretName
           - name: spec.externalName
             source: spec.externalName
           - name: status.bindingID
             source: status.bindingID
-          - name: spec.serviceInstanceID
-            source: spec.serviceInstanceID
+          - name: status.instanceID
+            source: status.instanceID
       - name: spec.parameters
         source: spec.parameters
         widget: CodeViewer
+        visibility: $boolean($value)
       - name: spec.parametersFrom
         source: spec.parametersFrom
         widget: CodeViewer
+        visibility: $exists($value)
   form: |
     - simple: true
       path: spec.serviceInstanceName
       required: true
-      placeholder: spec.serviceInstanceNamePlaceholder
       widget: Resource
+      resource:
+        kind: ServiceInstance
+        scope: namespace
+        group: services.cloud.sap.com
+        version: v1
     - path: spec.externalName
       placeholder: spec.externalNamePlaceholder
     - path: spec.secretName
@@ -73,8 +89,8 @@ data:
       group: services.cloud.sap.com
       version: v1
     name: Service Bindings
-    category: Service Management
-    urlPath: servicebindings
+    category: Custom Resources
+    urlPath: servicebindings-x
     scope: namespace
     description: >-
       {{[BTP Service Binding](https://github.com/SAP/sap-btp-service-operator#step-2-create-a-service-binding)}}
@@ -84,6 +100,11 @@ data:
       source: metadata.ownerReferences.kind
     - name: spec.serviceInstanceName
       source: spec.serviceInstanceName
+      widget: ResourceLink
+      resource:
+        namespace: $root.metadata.namespace
+        kind: "'ServiceInstance'"
+        name: $root.spec.serviceInstanceName
     - name: spec.externalName
       source: spec.externalName
     - name: status
@@ -100,14 +121,13 @@ data:
       metadata.creationTimestamp: Created at
       status: Status
       status.bindingID: Binding ID
+      status.instanceID: InstanceID
       spec.secretName: Secret Name
       spec.externalName: External Name
       spec.externalNamePlaceholder: Defaults to the Service Binding name if empty
       spec.serviceInstanceName: Service Instance Name
-      spec.serviceInstanceNamePlaceholder: Start typing to select Service Binding from the list
       spec.controlledBy: Controlled By
       spec.parameters: Parameters
       spec.parametersFrom: Parameters from Secrets
       chooseSecretKey: Choose Secret Key
-      spec.serviceInstanceID: InstanceID
       bindingData: Binding Data
