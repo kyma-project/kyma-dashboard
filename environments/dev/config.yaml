@@ -75,6 +75,12 @@ config:
     EXTERNAL_NODES:
       isEnabled: true
       stage: SECONDARY
+    HIDDEN_NAMESPACES:
+      isEnabled: true
+      config:
+        namespaces:
+          - istio-system
+          - kube-system
     GZIP:
       isEnabled: true
     EXTENSIBILITY:
