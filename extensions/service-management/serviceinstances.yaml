@@ -21,6 +21,8 @@ data:
         description: '$filter(status.conditions, function ($v, $i, $a) { $length($v.message) > 0 })[0].message'
         widget: Badge
         highlights:
+          positive:
+            - Provisioned
           negative: "$item.reason = CREATEFAILED"
     body:
       - name: serviceinstancedata
@@ -40,6 +42,7 @@ data:
       - name: spec.parameters
         source: spec.parameters
         widget: CodeViewer
+        visibility: $boolean($value)
   form: |
     - simple: true
       path: spec.serviceOfferingName
@@ -77,6 +80,8 @@ data:
       description: '$filter(status.conditions, function ($v, $i, $a) { $length($v.message) > 0 })[0].message'
       widget: Badge
       highlights:
+        positive:
+          - Provisioned
         negative: "$item.reason = CREATEFAILED"
   translations: |
     en:
