@@ -11,7 +11,8 @@ data:
   details: |
     header:
       - name: spec.controlledBy
-        source: metadata.ownerReferences.kind
+        source: metadata.ownerReferences
+        widget: ControlledBy
       - name: status
         source: 'status.conditions[$count(status.conditions)-1].reason'
         description: '$filter(status.conditions, function ($v, $i, $a) { $length($v.message) > 0 })[0].message'
@@ -99,7 +100,8 @@ data:
       provides access details for an existing service instance.
   list: |
     - name: spec.controlledBy
-      source: metadata.ownerReferences.kind
+      source: metadata.ownerReferences
+      widget: ControlledBy
     - name: spec.serviceInstanceName
       source: spec.serviceInstanceName
       widget: ResourceLink
