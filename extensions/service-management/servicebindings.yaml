@@ -11,13 +11,13 @@ data:
   details: |
     header:
       - name: spec.controlledBy
-        source: spec.controlledBy
+        source: metadata.ownerReferences.kind
       - name: status
         source: 'status.conditions[$count(status.conditions)-1].reason'
         description: '$filter(status.conditions, function ($v, $i, $a) { $length($v.message) > 0 })[0].message'
         highlights:
           informative:
-          - NOTPROVISIONED
+          - NotProvisioned
         widget: Badge
     body:
       - name: bindingData
@@ -44,6 +44,7 @@ data:
       path: spec.serviceInstanceName
       required: true
       placeholder: spec.serviceInstanceNamePlaceholder
+      widget: Resource
     - path: spec.externalName
       placeholder: spec.externalNamePlaceholder
     - path: spec.secretName
@@ -80,7 +81,7 @@ data:
       provides access details for an existing service instance.
   list: |
     - name: spec.controlledBy
-      source: spec.controlledBy
+      source: metadata.ownerReferences.kind
     - name: spec.serviceInstanceName
       source: spec.serviceInstanceName
     - name: spec.externalName
@@ -90,7 +91,7 @@ data:
       description: '$filter(status.conditions, function ($v, $i, $a) { $length($v.message) > 0 })[0].message'
       highlights:
         informative:
-        - NOTPROVISIONED
+        - NotProvisioned
       widget: Badge
   translations: |
     en:
