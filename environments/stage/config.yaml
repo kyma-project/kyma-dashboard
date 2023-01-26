@@ -98,7 +98,7 @@ config:
         clusters:
           - name: garden-hasselhoff
             cluster:
-              server: 'https://api.dev.gardener.cloud.sap'
+              server: 'https://api.canary.gardener.cloud.sap'
         contexts:
           - context:
               cluster: garden-hasselhoff
