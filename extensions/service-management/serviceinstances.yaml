@@ -14,6 +14,7 @@ data:
         kind: ServiceBinding
         group: services.cloud.sap.com
         version: v1
+      filter: '$item.spec.serviceInstanceName = $root.metadata.name'
   details: |
     header:
       - name: status
@@ -23,7 +24,9 @@ data:
         highlights:
           positive:
             - Provisioned
-          negative: "$item.reason = CREATEFAILED"
+          informative: 
+            - NotProvisioned
+          negative: "$item.reason = CreateFailed"
     body:
       - name: serviceinstancedata
         widget: Panel
@@ -42,7 +45,7 @@ data:
       - name: spec.parameters
         source: spec.parameters
         widget: CodeViewer
-        visibility: $boolean($value)
+        visibility: '$exists($value) ? $boolean($value) : false'
   form: |
     - simple: true
       path: spec.serviceOfferingName
@@ -82,7 +85,9 @@ data:
       highlights:
         positive:
           - Provisioned
-        negative: "$item.reason = CREATEFAILED"
+        informative: 
+          - NotProvisioned
+        negative: "$item.reason = CreateFailed"
   translations: |
     en:
       metadata.annotations: Annotations
