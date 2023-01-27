@@ -6,7 +6,7 @@ context('Test Cluster Extensions views', () => {
     cy.loginAndSelectCluster();
   });
 
-  // Integration
+  // Integration XD
   describe('Test Integration Extensions', () => {
     useCategory('Integration');
 
