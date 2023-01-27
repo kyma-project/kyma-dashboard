@@ -12,7 +12,7 @@ data:
     moduleTemplates:
       resource:
         kind: ModuleTemplate
-        namespace: kcp-system
+        namespace: kyma-system
         group: operator.kyma-project.io
         version: v1alpha1
   details: |
