@@ -66,7 +66,7 @@ data:
       version: v1
     name: Service Instances
     category: Custom Resources
-    urlPath: serviceinstances-x
+    urlPath: serviceinstances
     scope: namespace
     description: >-
       {{[BTP Service Instance](https://github.com/SAP/sap-btp-service-operator#step-1-create-a-service-instance)}}
