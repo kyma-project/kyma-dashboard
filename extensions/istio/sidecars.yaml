@@ -79,7 +79,7 @@ data:
             widget: ResourceList
             disableCreate: true
             isCompact: true
-            visibility: $boolean($root.spec.workloadSelector.labels)
+            visibility: $exists($root.spec.workloadSelector.labels) and $boolean($root.spec.workloadSelector.labels)
           - source: spec.workloadSelector.labels
             widget: Panel
             name: Matches all Pods in the Namespace
@@ -88,7 +88,7 @@ data:
           - source: spec.workloadSelector.labels
             widget: Labels
             name: Workload Selector
-            visibility: $boolean($value)
+            visibility: $exists($value) and $boolean($value)
     resourceGraph:
       depth: 1
       colorVariant: 1
