@@ -13,7 +13,7 @@ data:
       - name: status
         source: 'status.state ? status.state : "UNKNOWN"'
         highlights:
-          informative:
+          unknown:
           - UNKNOWN
         widget: Badge
         description: status.message
@@ -114,7 +114,7 @@ data:
     - name: status
       source: 'status.state ? status.state : "UNKNOWN"'
       highlights:
-        informative:
+        unknown:
         - UNKNOWN
       widget: Badge
       description: status.message
