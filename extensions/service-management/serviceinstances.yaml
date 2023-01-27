@@ -65,7 +65,7 @@ data:
       group: services.cloud.sap.com
       version: v1
     name: Service Instances
-    category: Custom Resources
+    category: Service Management
     urlPath: serviceinstances
     scope: namespace
     description: >-
