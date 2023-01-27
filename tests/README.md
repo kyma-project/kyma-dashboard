@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project contains integration UI tests for Kyma-Dashboard.
+This project contains integration and smoke UI tests for Kyma-Dashboard.
 
 ## Prerequisites
 
@@ -60,6 +60,14 @@ To open the `tests runner`, pointing to a `local Kyma-Dashboard` instance, use t
 
 ```bash
 npm run start:local
+```
+
+### Smoke tests
+
+To run smoke tests, pointing to a local Kyma-Dashboard instance, use this command:
+
+```bash
+test:smoke-extensions
 ```
 
 ### Login via OIDC to a cluster (optional)
