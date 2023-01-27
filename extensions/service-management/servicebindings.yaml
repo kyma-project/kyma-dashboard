@@ -16,12 +16,13 @@ data:
       - name: status
         source: 'status.conditions[$count(status.conditions)-1].reason'
         description: '$filter(status.conditions, function ($v, $i, $a) { $length($v.message) > 0 })[0].message'
+        widget: Badge
         highlights:
           positive:
             - Provisioned
           informative:
             - NotProvisioned
-        widget: Badge
+          negative: "$item.reason = 'CreateFailed"
     body:
       - name: bindingData
         widget: Panel
@@ -49,11 +50,11 @@ data:
       - name: spec.parameters
         source: spec.parameters
         widget: CodeViewer
-        visibility: $boolean($value)
+        visibility: "$exists($value) ? $boolean($value) : false"
       - name: spec.parametersFrom
         source: spec.parametersFrom
         widget: CodeViewer
-        visibility: $exists($value)
+        visibility: "$exists($value) ? $boolean($value) : false"
   form: |
     - simple: true
       path: spec.serviceInstanceName
@@ -92,8 +93,8 @@ data:
       group: services.cloud.sap.com
       version: v1
     name: Service Bindings
-    category: Custom Resources
-    urlPath: servicebindings-x
+    category: Service Management
+    urlPath: servicebindings
     scope: namespace
     description: >-
       {{[BTP Service Binding](https://github.com/SAP/sap-btp-service-operator#step-2-create-a-service-binding)}}
@@ -119,6 +120,7 @@ data:
           - Provisioned
         informative:
           - NotProvisioned
+        negative: "$item.reason = 'CreateFailed"
       widget: Badge
   translations: |
     en:
