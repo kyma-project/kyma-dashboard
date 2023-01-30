@@ -8,3 +8,4 @@ import './views/api-rules-view';
 import './views/functions-view';
 import './loadFile';
 import './mockConfig';
+import './check-extension';
