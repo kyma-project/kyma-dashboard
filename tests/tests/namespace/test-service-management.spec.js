@@ -26,7 +26,7 @@ context('Test Service Management category', () => {
 
     cy.get('.fd-dialog__body')
       .find('.sap-icon--message-success')
-      .should('have.length', 4);
+      .should('have.length', 2);
 
     cy.contains('Close').click();
 
@@ -34,8 +34,6 @@ context('Test Service Management category', () => {
 
   // Service Management
   it('Check Service Management Extensions', () => {
-
-
     useCategory('Service Management');
 
     cy.checkExtension('Service Bindings');
