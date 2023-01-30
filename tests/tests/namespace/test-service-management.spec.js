@@ -1,8 +1,7 @@
 /// <reference types="cypress" />
 import 'cypress-file-upload';
 import jsyaml from 'js-yaml';
-
-const NAMESPACE = 'service-management';
+import { useCategory } from '../../support/helpers';
 
 context('Test Service Management category', () => {
   Cypress.skipAfterFail();
