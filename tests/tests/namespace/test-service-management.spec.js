@@ -4,22 +4,15 @@ import jsyaml from 'js-yaml';
 
 const NAMESPACE = 'service-management';
 
-context('Test extensibility variables', () => {
+context('Test Service Management category', () => {
   Cypress.skipAfterFail();
 
   before(() => {
-    cy.loginAndSelectCluster({
-      fileName: 'kubeconfig-k3s.yaml',
-      storage: 'Session storage',
-    });
-
+    cy.loginAndSelectCluster();
+    cy.goToNamespaceDetails();
   });
 
-  it('Creates the EXT test resources config', () => {
-    cy.getLeftNav()
-      .contains('Cluster Details')
-      .click();
-
+  it('Uploads Service Instance and Service Bindings YAMLs', () => {
     cy.contains('Upload YAML').click();
 
     cy.loadFiles(
@@ -39,19 +32,10 @@ context('Test extensibility variables', () => {
       .should('have.length', 4);
   });
 
-
-  it('Navigate to Test Resource Creation', () => {
-    cy.loginAndSelectCluster({
-      fileName: 'kubeconfig-k3s.yaml',
-      storage: 'Session storage',
-    });
-
-    cy.contains('Namespaces').click();
-
-    cy.contains('a', 'default').click();
-
-      // Service Management
+  // Service Management
   describe('Check Service Management Extensions', () => {
+    cy.loginAndSelectCluster();
+    cy.goToNamespaceDetails();
     useCategory('Service Management');
 
     it('Test Service Bindings', () => {
@@ -62,5 +46,4 @@ context('Test extensibility variables', () => {
       cy.checkExtension('Service Instances');
     });
   });
-  })
 })
