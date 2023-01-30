@@ -6,6 +6,10 @@ import { useCategory } from '../../support/helpers';
 context('Test Service Management category', () => {
   Cypress.skipAfterFail();
 
+  before(()=>{
+    cy.loginAndSelectCluster();
+    cy.goToNamespaceDetails();
+  })
 
     it('Uploads Service Instance and Service Bindings YAMLs', () => {
       cy.contains('Upload YAML').click();
