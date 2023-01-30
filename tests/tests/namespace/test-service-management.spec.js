@@ -21,9 +21,46 @@ context('Test extensibility variables', () => {
       .click();
 
     cy.contains('Upload YAML').click();
-  
-  })
 
-  // cy.goToNamespaceDetails();
-  
+    cy.loadFiles(
+      'examples/service-binding-mock-crd.yaml',
+      'examples/service-instance-mock-crd.yaml',
+      'examples/servicebindings.yaml',
+      'examples/serviceinstances.yaml'
+    ).then(resources => {
+      const input = resources.map(r => jsyaml.dump(r)).join('\n---\n');
+      cy.pasteToMonaco(input);
+    });
+
+    cy.contains('Submit').click();
+
+    cy.get('.fd-dialog__body')
+      .find('.sap-icon--message-success')
+      .should('have.length', 4);
+  });
+
+
+  it('Navigate to Test Resource Creation', () => {
+    cy.loginAndSelectCluster({
+      fileName: 'kubeconfig-k3s.yaml',
+      storage: 'Session storage',
+    });
+
+    cy.contains('Namespaces').click();
+
+    cy.contains('a', 'default').click();
+
+      // Service Management
+  describe('Check Service Management Extensions', () => {
+    useCategory('Service Management');
+
+    it('Test Service Bindings', () => {
+      cy.checkExtension('Service Bindings');
+    });
+
+    it('Test Service Instances', () => {
+      cy.checkExtension('Service Instances');
+    });
+  });
+  })
 })

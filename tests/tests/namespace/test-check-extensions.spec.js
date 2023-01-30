@@ -25,18 +25,18 @@ context('Test Namespace Extensions view', () => {
     });
   });
 
-  // Service Management
-  describe('Check Service Management Extensions', () => {
-    useCategory('Service Management');
+  // // Service Management
+  // describe('Check Service Management Extensions', () => {
+  //   useCategory('Service Management');
 
-    it('Test Service Bindings', () => {
-      cy.checkExtension('Service Bindings');
-    });
+  //   it('Test Service Bindings', () => {
+  //     cy.checkExtension('Service Bindings');
+  //   });
 
-    it('Test Service Instances', () => {
-      cy.checkExtension('Service Instances');
-    });
-  });
+  //   it('Test Service Instances', () => {
+  //     cy.checkExtension('Service Instances');
+  //   });
+  // });
 
   // Istio
   describe('Check Istio Extensions', () => {
