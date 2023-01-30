@@ -34,7 +34,6 @@ context('Test Service Management category', () => {
 
   // Service Management
   describe('Check Service Management Extensions', () => {
-    cy.loginAndSelectCluster();
     cy.goToNamespaceDetails();
     useCategory('Service Management');
 
