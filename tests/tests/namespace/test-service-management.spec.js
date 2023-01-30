@@ -6,10 +6,6 @@ import { useCategory } from '../../support/helpers';
 context('Test Service Management category', () => {
   Cypress.skipAfterFail();
 
-  before(() => {
-    cy.loginAndSelectCluster();
-    cy.goToNamespaceDetails();
-  });
 
     it('Uploads Service Instance and Service Bindings YAMLs', () => {
       cy.contains('Upload YAML').click();
@@ -28,10 +24,11 @@ context('Test Service Management category', () => {
         .find('.sap-icon--message-success')
         .should('have.length', 2);
   
-      cy.contains('Close').click();
     });
 
   describe('Check Service Management Extensions', () => {
+    cy.loginAndSelectCluster();
+    cy.goToNamespaceDetails();
     useCategory('Service Management');
 
     it('Test Service Bindings', () => {
