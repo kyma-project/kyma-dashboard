@@ -27,23 +27,18 @@ context('Test Service Management category', () => {
     cy.get('.fd-dialog__body')
       .find('.sap-icon--message-success')
       .should('have.length', 4);
+
+    cy.contains('Close').click();
+
   });
 
   // Service Management
-  describe('Check Service Management Extensions', () => {
-    before(() => {
-      cy.loginAndSelectCluster();
-      cy.goToNamespaceDetails();
-    });
+  it('Check Service Management Extensions', () => {
+
 
     useCategory('Service Management');
 
-    it('Test Service Bindings', () => {
-      cy.checkExtension('Service Bindings');
-    });
-
-    it('Test Service Instances', () => {
-      cy.checkExtension('Service Instances');
-    });
+    cy.checkExtension('Service Bindings');
+    cy.checkExtension('Service Instances');
   });
 });
