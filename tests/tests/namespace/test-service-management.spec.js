@@ -34,7 +34,11 @@ context('Test Service Management category', () => {
 
   // Service Management
   describe('Check Service Management Extensions', () => {
-    cy.goToNamespaceDetails();
+    before(()=>{
+      cy.loginAndSelectCluster();
+      cy.goToNamespaceDetails();
+    })
+
     useCategory('Service Management');
 
     it('Test Service Bindings', () => {
