@@ -1,0 +1,26 @@
+kind: CustomResourceDefinition
+apiVersion: apiextensions.k8s.io/v1
+metadata:
+  name: service-bindings.cloud.busola.example.com
+spec:
+  group: services.cloud.sap.com
+  names:
+    plural: servicebindings
+    singular: servicebinding
+    shortNames:
+      - tr
+    kind: ServiceBinding
+    listKind: ServiceBindingList
+  scope: Namespaced
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          description: A mocked Service Binding
+          type: object
+          properties:
+            spec:
+              description: Information about the resource
+              type: object
