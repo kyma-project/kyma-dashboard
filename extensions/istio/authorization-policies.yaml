@@ -155,7 +155,7 @@ data:
           - source: $podSelector()
             widget: ResourceList
             disableCreate: true
-            visibility: $boolean($root.spec.selector.matchLabels)
+            visibility: $exists($root.spec.selector.matchLabels) and $boolean($root.spec.selector.matchLabels)
           - source: spec.selector
             widget: Panel
             name: selector.matchesAllPods
@@ -164,7 +164,7 @@ data:
           - source: spec.selector.matchLabels
             widget: Labels
             name: spec.selector.matchLabels
-            visibility: $boolean($value)
+            visibility: $exists($value) and $boolean($value)
   form: |-
     - path: spec.selector.matchLabels
       widget: KeyValuePair

@@ -65,7 +65,7 @@ data:
           - source: $podSelector()
             widget: ResourceList
             disableCreate: true
-            visibility: $boolean($root.spec.selector)
+            visibility: $exists($root.spec.selector) and $boolean($root.spec.selector)
           - source: spec.selector
             widget: Panel
             name: selector.matchesAllPods
@@ -74,7 +74,7 @@ data:
           - source: spec.selector
             widget: Labels
             name: spec.selector
-            visibility: $boolean($value)
+            visibility: $exists($value) and $boolean($value)
     resourceGraph:
       depth: 1
       colorVariant: 1
