@@ -6,7 +6,7 @@ import { useCategory } from '../../support/helpers';
 context('Test Service Management category', () => {
   Cypress.skipAfterFail();
 
-  beforeEach(()=>{
+  before(()=>{
     cy.loginAndSelectCluster();
     cy.goToNamespaceDetails();
   })
@@ -30,6 +30,10 @@ context('Test Service Management category', () => {
     });
 
   describe('Check Service Management Extensions', () => {
+    before(()=>{
+      cy.loginAndSelectCluster();
+      cy.goToNamespaceDetails();
+    })
     useCategory('Service Management');
 
     it('Test Service Bindings', () => {
