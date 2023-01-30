@@ -18,7 +18,7 @@ context('Test Service Management category', () => {
       'examples/service-binding-mock-crd.yaml',
       'examples/service-instance-mock-crd.yaml',
       'examples/service-management/servicebindings.yaml',
-      'examples/service-management/serviceinstances.yaml'
+      'examples/service-management/serviceinstances.yaml',
     ).then(resources => {
       const input = resources.map(r => jsyaml.dump(r)).join('\n---\n');
       cy.pasteToMonaco(input);
@@ -33,10 +33,10 @@ context('Test Service Management category', () => {
 
   // Service Management
   describe('Check Service Management Extensions', () => {
-    before(()=>{
+    before(() => {
       cy.loginAndSelectCluster();
       cy.goToNamespaceDetails();
-    })
+    });
 
     useCategory('Service Management');
 
@@ -48,4 +48,4 @@ context('Test Service Management category', () => {
       cy.checkExtension('Service Instances');
     });
   });
-})
+});
