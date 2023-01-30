@@ -11,7 +11,6 @@ context('Test Service Management category', () => {
     cy.goToNamespaceDetails();
   });
 
-  describe(('Upload CRDs')=>{
     it('Uploads Service Instance and Service Bindings YAMLs', () => {
       cy.contains('Upload YAML').click();
   
@@ -31,7 +30,6 @@ context('Test Service Management category', () => {
   
       cy.contains('Close').click();
     });
-  })
 
   describe('Check Service Management Extensions', () => {
     useCategory('Service Management');
