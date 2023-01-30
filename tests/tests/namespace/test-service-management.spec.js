@@ -11,32 +11,37 @@ context('Test Service Management category', () => {
     cy.goToNamespaceDetails();
   });
 
-  it('Uploads Service Instance and Service Bindings YAMLs', () => {
-    cy.contains('Upload YAML').click();
-
-    cy.loadFiles(
-      'examples/service-binding-mock-crd.yaml',
-      'examples/service-instance-mock-crd.yaml',
-    ).then(resources => {
-      const input = resources.map(r => jsyaml.dump(r)).join('\n---\n');
-      cy.pasteToMonaco(input);
+  describe(('Upload CRDs')=>{
+    it('Uploads Service Instance and Service Bindings YAMLs', () => {
+      cy.contains('Upload YAML').click();
+  
+      cy.loadFiles(
+        'examples/service-binding-mock-crd.yaml',
+        'examples/service-instance-mock-crd.yaml',
+      ).then(resources => {
+        const input = resources.map(r => jsyaml.dump(r)).join('\n---\n');
+        cy.pasteToMonaco(input);
+      });
+  
+      cy.contains('Submit').click();
+  
+      cy.get('.fd-dialog__body')
+        .find('.sap-icon--message-success')
+        .should('have.length', 2);
+  
+      cy.contains('Close').click();
     });
+  })
 
-    cy.contains('Submit').click();
-
-    cy.get('.fd-dialog__body')
-      .find('.sap-icon--message-success')
-      .should('have.length', 2);
-
-    cy.contains('Close').click();
-
-  });
-
-  // Service Management
-  it('Check Service Management Extensions', () => {
+  describe('Check Service Management Extensions', () => {
     useCategory('Service Management');
 
-    cy.checkExtension('Service Bindings');
-    cy.checkExtension('Service Instances');
+    it('Test Service Bindings', () => {
+      cy.checkExtension('Service Bindings');
+    });
+
+    it('Test Service Instances', () => {
+      cy.checkExtension('Service Instances');
+    });
   });
 });
