@@ -1,10 +1,10 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: oauth2clients.hydra.ory.sh
+  name: oauth2clients
   namespace: kube-public
   labels:
-    app.kubernetes.io/name: oauth2clients.hydra.ory.sh
+    app.kubernetes.io/name: oauth2clients
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
@@ -22,11 +22,8 @@ data:
             - ok
           negative: 
             - error
-        type: string
         name: status
-        isSelected: true
         widget: Badge
-        description: status.message
     body: 
       - name: configuration
         widget: Panel
@@ -79,7 +76,7 @@ data:
         source: $secret().items.data
         decodable: true
         children:
-          - name: secret.client_secret
+          - name: secret.client_id
             source: client_id
             widget: Labels
             placeholder: '-' 
@@ -96,7 +93,7 @@ data:
       simple: true
       required: true
       widget: MultiCheckbox
-      name: Response Types2
+      name: Response Types
       options:
         - key: id_token
           name: ID Token
@@ -138,22 +135,19 @@ data:
       simple: true
       path: spec.scope
       inputInfo: 'You can provide more then one Scope, but they have to be separated by a Space'    
-    - advanced: true
-      widget: SimpleList
+    - widget: SimpleList
       name: spec.redirectUris
       defaultExpanded: true
       path: spec.redirectUris
       children:
         - path: '[]'
-    - advanced: true
-      name: spec.postLogoutRedirectUris
+    - name: spec.postLogoutRedirectUris
       path: spec.postLogoutRedirectUris
       widget: SimpleList
       defaultExpanded: true
       children:
         - path: '[]'
-    - advanced: true
-      path: spec.audience
+    - path: spec.audience
       name: spec.audience
       widget: SimpleList
       defaultExpanded: true
@@ -165,7 +159,7 @@ data:
       group: hydra.ory.sh
       version: v1alpha1
     name: OAuth2 Clients
-    category: Custom Resources
+    category: Configuration
     urlPath: oauth2clients
     scope: namespace
     description: >-
@@ -180,9 +174,7 @@ data:
           - ok
         negative: 
           - error
-      type: string
       name: status
-      isSelected: true
       widget: Badge
       description: status.message
   presets: |-

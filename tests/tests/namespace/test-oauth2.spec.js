@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
 import 'cypress-file-upload';
 
-const CLIENT_NAME = 'test-oauth2-client';
-const AUTH2_NAME = 'enter-a-nice-name-to-test-oauth2';
+const CLIENT_NAME = 'client';
+const AUTH2_NAME = 'oauth2';
 
 context('Test OAuth2 Clients', () => {
   Cypress.skipAfterFail();
@@ -64,13 +64,9 @@ context('Test OAuth2 Clients', () => {
     cy.contains('openid').should('be.visible');
 
     // don't check Secret section, as Secret may not be created yet
-    // cy
-    //   .contains('client_id')
-    //   .should('be.visible');
+    cy.contains('client_id').should('be.visible');
 
-    // cy
-    //   .contains('client_secret')
-    //   .should('be.visible');
+    cy.contains('client_secret').should('be.visible');
   });
 
   it('Edit client', () => {
@@ -82,7 +78,7 @@ context('Test OAuth2 Clients', () => {
 
     cy.get('[value="openid"]')
       .clear()
-      .type('email{downarrow}');
+      .type('email');
 
     cy.get('[role="dialog"]')
       .contains('button', 'Update')
