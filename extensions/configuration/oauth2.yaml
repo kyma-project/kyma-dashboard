@@ -166,8 +166,13 @@ data:
       {{[OAuth2 Clients](https://kyma-project.io/docs/kyma/latest/03-tutorials/00-api-exposure/apix-05-expose-and-secure-workload-oauth2#register-an-o-auth2-client-and-get-tokens)}}
       allows an application to acquire an OAuth2 token to access protected resources.
   list: |-
-    - source: spec.secretName
-      name: spec.secretName
+    - name: spec.secretName
+      widget: ResourceLink
+      source: spec.secretName
+      resource:
+        name: spec.secretName
+        namespace: $root.metadata.namespace
+        kind: "'secret'"
     - source: 'status.state ? "error" : "ok"'
       highlights:
         positive:
