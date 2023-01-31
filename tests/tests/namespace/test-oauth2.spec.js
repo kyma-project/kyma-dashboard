@@ -2,7 +2,7 @@
 import 'cypress-file-upload';
 
 const CLIENT_NAME = 'client';
-const AUTH2_NAME = 'oauth2';
+const AUTH2_NAME = `test-oauth2-${Math.floor(Math.random() * 9999) + 1000}`;
 
 context('Test OAuth2 Clients', () => {
   Cypress.skipAfterFail();
