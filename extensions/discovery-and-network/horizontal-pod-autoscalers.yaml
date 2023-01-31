@@ -8,10 +8,38 @@ metadata:
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
+  dataSources: |
+    myEvents:
+      resource:
+        kind: Event
+        group: events.k8s.io
+        version: v1
   details: |-
     header:
+      - name: Status
+        source: status.conditions.type
+        widget: Labels
     body:
-
+      - name: Specification
+        widget: Panel
+        children:
+          - name: Min Pods
+            source: spec.minReplicas
+          - name: Current Replicas
+            source: status.currentReplicas
+          - name: Max Pods
+            source: spec.maxReplicas
+          - name: Scale Target Reference
+            source: spec.scaleTargetRef
+            widget: ControlledBy
+      - name: Metrics
+        widget: Panel
+        children:
+          - name: Resource CPU on Pods
+            source: $join([$string(status.currentMetrics.resource.current.averageUtilization),' / ',$string(spec.metrics.resource.target.averageUtilization),'%'])
+      - name: Events
+        source: '$myEvents()'
+        widget: ResourceList
   form: |-
 
   general: |-
