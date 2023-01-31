@@ -1,0 +1,35 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: Horizontal Pod Autoscalers
+  namespace: kube-public
+  labels:
+    app.kubernetes.io/name: Horizontal Pod Autoscalers
+    busola.io/extension: resource
+    busola.io/extension-version: '0.5'
+data:
+  details: |-
+    header:
+    body:
+
+  form: |-
+
+  general: |-
+    resource: 
+      kind: Issuer
+      group: cert.gardener.cloud
+      version: v1alpha1
+    name: Issuers
+    category: Configuration
+    urlPath: issuers
+    scope: namespace
+    description: >-
+      {{[Horizontal Pod Autoscalers](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2/)}}
+      automatically manages the number of Pod replicas to match the demand.
+  list: |-
+
+  translations: |-
+    en:
+      metadata.annotations: Annotations
+      metadata.labels: Labels
+      metadata.creationTimestamp: Created at
