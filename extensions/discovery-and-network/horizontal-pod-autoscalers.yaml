@@ -1,10 +1,10 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: Horizontal Pod Autoscalers
+  name: horizontal-pod-autoscalers
   namespace: kube-public
   labels:
-    app.kubernetes.io/name: Horizontal Pod Autoscalers
+    app.kubernetes.io/name: horizontal-pod-autoscalers
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
@@ -16,18 +16,28 @@ data:
 
   general: |-
     resource: 
-      kind: Issuer
-      group: cert.gardener.cloud
-      version: v1alpha1
-    name: Issuers
-    category: Configuration
-    urlPath: issuers
+      kind: HorizontalPodAutoscaler
+      group: autoscaling
+      version: v2
+    name: Horizontal Pod Autoscalers
+    category: Discovery and Network
+    urlPath: horizontalpodautoscalers-x
     scope: namespace
     description: >-
       {{[Horizontal Pod Autoscalers](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2/)}}
       automatically manages the number of Pod replicas to match the demand.
   list: |-
-
+    - name: Metrics
+      source: $join([$string(status.currentMetrics.resource.current.averageValue),' / ',$string(spec.metrics.resource.target.averageUtilization),'%'])
+    - name: Min Pods
+      source: spec.minReplicas
+    - name: Max Pods
+      source: spec.maxReplicas
+    - name: Replicas
+      source: status.currentReplicas
+    - name: Status
+      source: status.conditions.type
+      widget: Labels
   translations: |-
     en:
       metadata.annotations: Annotations
