@@ -63,7 +63,6 @@ context('Test OAuth2 Clients', () => {
 
     cy.contains('openid').should('be.visible');
 
-    // don't check Secret section, as Secret may not be created yet
     cy.contains('client_id').should('be.visible');
 
     cy.contains('client_secret').should('be.visible');
@@ -78,7 +77,7 @@ context('Test OAuth2 Clients', () => {
 
     cy.get('[value="openid"]')
       .clear()
-      .type('email');
+      .type('read');
 
     cy.get('[role="dialog"]')
       .contains('button', 'Update')
@@ -90,16 +89,11 @@ context('Test OAuth2 Clients', () => {
 
     cy.contains('implicit').should('be.visible');
 
-    cy.contains('email').should('be.visible');
+    cy.contains('read').should('be.visible');
 
-    // don't check Secret section, as Secret may not be created yet
-    // cy
-    //   .contains('client_id')
-    //   .should('be.visible');
+    cy.contains('client_id').should('be.visible');
 
-    // cy
-    //   .contains('client_secret')
-    //   .should('be.visible');
+    cy.contains('client_secret').should('be.visible');
   });
 
   it('Inpect list', () => {

@@ -145,12 +145,14 @@ data:
       path: spec.postLogoutRedirectUris
       widget: SimpleList
       defaultExpanded: true
+      inputInfo: "Input must consist of two parts, which are separated by ':' (e.g. 'test:temp')"      
       children:
         - path: '[]'
     - path: spec.audience
       name: spec.audience
       widget: SimpleList
       defaultExpanded: true
+      inputInfo: "Input must consist of two parts, which are separated by ':' (e.g. 'test:temp')"      
       children:
         - path: '[]'
   general: |-
