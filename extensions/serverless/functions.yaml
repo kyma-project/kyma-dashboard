@@ -1,10 +1,10 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: functions
-  namespace: kube-public
+  name: lq-functions
+  namespace: lq
   labels:
-    app.kubernetes.io/name: functions
+    app.kubernetes.io/name: lq-functions
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
@@ -199,12 +199,13 @@ data:
           $language = 'nodejs' ? 'nodejs16' :
           $language = 'python' ? 'python39' :
           ''
-    - path: spec.runtimeImageOverride
     - path: spec.source.inline
       visibility: $sourceType = 'Inline'
+      simple: true
       children:
         - path: source
           widget: CodeEditor
+          simple: true
           language: '$contains($root.spec.runtime, "node") ? "javascript" : "python"'
           defaultExpanded: true
           subscribe:
@@ -325,8 +326,8 @@ data:
       group: serverless.kyma-project.io
       version: v1alpha2
     name: Functions
-    category: Workloads
-    urlPath: functions
+    category: LQ
+    urlPath: functions-lq
     scope: namespace
     description: >-
       {{[Function](https://kyma-project.io/docs/kyma/latest/05-technical-reference/00-custom-resources/svls-01-function/#documentation-content/)}}
@@ -442,7 +443,6 @@ data:
       Requests: Requests
       Limits: Limits
       spec.runtime: Runtime
-      spec.runtimeImageOverride: Runtime Image Override
       Status: Status
       Runtime: Runtime
       'Source Type': Source Type
