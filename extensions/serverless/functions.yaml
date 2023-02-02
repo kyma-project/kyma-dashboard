@@ -137,6 +137,7 @@ data:
               - widget: Panel
                 description: resources.description
                 name: resources.scalingOptions
+                visibility: $exists(spec.scaleConfig.minReplicas) or $exists(spec.scaleConfig.maxReplicas)
                 children:
                   - name: resources.minReplicas
                     source: spec.scaleConfig.minReplicas
