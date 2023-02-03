@@ -22,7 +22,8 @@ data:
             - Provisioned
           informative:
             - NotProvisioned
-          negative: "$item.reason = 'CreateFailed"
+          negative: 
+            - CreateFailed
     body:
       - name: bindingData
         widget: Panel
@@ -120,7 +121,8 @@ data:
           - Provisioned
         informative:
           - NotProvisioned
-        negative: "$item.reason = 'CreateFailed"
+        negative: 
+          - CreateFailed
       widget: Badge
   translations: |
     en:
