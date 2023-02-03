@@ -487,7 +487,6 @@ data:
       'Python Function': Python Function
   presets: |-
     - name: Node.js Function
-      default: true
       value:
         spec:
           runtime: nodejs14
