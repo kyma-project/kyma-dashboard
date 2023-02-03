@@ -10,6 +10,17 @@ metadata:
 data:
   details: |-
     header:
+      - name: Replicas
+        widget: Badge
+        source: "$string($count($filter($replicas().items, function($r){
+        $r.status.phase = 'Running'}))) & '/' & $string($count($replicas().items))"
+        highlights:
+          negative: "$count($replicas().items) != $count($filter($replicas().items, function($r){
+        $r.status.phase = 'Running'}))"
+          warning: "$count($replicas().items) = 0 and $count($filter($replicas().items, function($r){
+        $r.status.phase = 'Running'}) = 0)" # this condition needs to be above 'positive'
+          positive: "$count($replicas().items) = $count($filter($replicas().items, function($r){
+        $r.status.phase = 'Running'}))"
       - name: header.status
         widget: Badge
         highlights:
@@ -80,6 +91,20 @@ data:
                     source: reference
                   - name: code.gitRepository.baseDir
                     source: baseDir
+                  - name: code.gitRepository.auth
+                    visibility: $exists($value)
+                    widget: Panel
+                    source: auth
+                    children:
+                      - name: code.gitRepository.auth.secretName
+                        widget: ResourceLink
+                        source: secretName 
+                        resource:
+                          kind: "'Secret'"
+                          name: secretName
+                          namespace: $root.metadata.namespace
+                      - name: code.gitRepository.auth.type
+                        source: type
               - source: spec.env
                 widget: Table
                 name: code.env
@@ -413,6 +438,8 @@ data:
       code.gitRepository.reference: Reference
       code.gitRepository.baseDir: Base Directory
       code.gitRepository.auth: Auth
+      code.gitRepository.auth.secretName: Secret name
+      code.gitRepository.auth.type: Type
       code.env: Environment Variables
       code.env.name: Name
       code.env.value: Value
