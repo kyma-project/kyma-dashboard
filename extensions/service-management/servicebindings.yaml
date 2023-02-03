@@ -69,8 +69,8 @@ data:
       placeholder: spec.externalNamePlaceholder
     - path: spec.secretName
     - path: spec.parameters
-      widget: KeyValuePair
-      defaultExpanded: false
+      widget: CodeEditor
+      language: "'JSON'"
     - path: spec.parametersFrom
       widget: SimpleList
       defaultExpanded: true
