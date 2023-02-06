@@ -218,7 +218,7 @@ data:
                   return message;
                 }
               }" :
-              $language = 'python' ? "def main(event, context):
+              $language = 'python' ? $exists($root.spec.source.inline.source) ? $root.spec.source.inline.source : "def main(event, context):
                   message = 'Hello World from the Kyma Function '+context['function-name']+' running on '+context['runtime']+ '!';
                   print(message)
                   return message" :
