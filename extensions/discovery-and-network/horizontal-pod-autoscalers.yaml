@@ -35,13 +35,68 @@ data:
       - name: Metrics
         widget: Panel
         children:
+          - name: Resource memory on Pods
+            visibility: $count($filter(status.currentMetrics, function($v, $i, $a) {$v.resource.name = "memory"})) > 0
+            source: |
+                    $join([$string($filter(status.currentMetrics, function($v, $i, $a) {
+                      $v.resource.name = "memory"})[0].resource.current.averageUtilization),'% / ',
+                          $string($filter(spec.metrics, function($v, $i, $a) {
+                      $v.resource.name = "memory"})[0].resource.target.averageUtilization),'%'])
           - name: Resource CPU on Pods
-            source: $join([$string(status.currentMetrics.resource.current.averageUtilization),' / ',$string(spec.metrics.resource.target.averageUtilization),'%'])
+            visibility: $count($filter(status.currentMetrics, function($v, $i, $a) {$v.resource.name = "cpu"})) > 0
+            source: |
+                    $join([$string($filter(status.currentMetrics, function($v, $i, $a) {
+                      $v.resource.name = "cpu"})[0].resource.current.averageUtilization),'% / ',
+                          $string($single(spec.metrics, function($v, $i, $a) {
+                      $v.resource.name = "cpu"}).resource.target.averageUtilization),'%'])
       - name: Events
         source: '$myEvents()'
         widget: ResourceList
   form: |-
-
+    - name: Scale Target Reference
+      simple: true
+      path: spec.scaleTargetRef
+      widget: FormGroup
+      required: true
+      defaultExpanded: true
+      children:
+        - simple: true
+          required: true
+          path: kind
+          enum:
+            - Pod
+            - Deployment
+            - ReplicaSet
+        - simple: true
+          required: true
+          path: name
+        - simple: true
+          required: true
+          path: apiVersion
+    - name: Metrics
+      simple: true
+      required: true
+      path: spec.metrics
+      widget: GenericList
+      defaultExpanded: true
+      children:
+        - path: '[].type'
+          simple: true
+          enum:
+            - ContainerResource
+            - External
+            - Object
+            - Pods
+            - Resource
+        - path: '[].port'
+    - name: Min Pods
+      simple: true
+      required: true
+      path: spec.minReplicas
+    - name: Max Pods
+      simple: true
+      required: true
+      path: spec.maxReplicas
   general: |-
     resource: 
       kind: HorizontalPodAutoscaler
@@ -56,7 +111,9 @@ data:
       automatically manages the number of Pod replicas to match the demand.
   list: |-
     - name: Metrics
-      source: $join([$string(status.currentMetrics.resource.current.averageValue),' / ',$string(spec.metrics.resource.target.averageUtilization),'%'])
+      source: |
+              $join([$string(status.currentMetrics[0].resource.current.averageUtilization),'% / ',
+                  $string(spec.metrics[0].resource.target.averageUtilization),'%',$count(spec.metrics) > 1 ? ' and 1 more' : ''])
     - name: Min Pods
       source: spec.minReplicas
     - name: Max Pods
@@ -66,6 +123,15 @@ data:
     - name: Status
       source: status.conditions.type
       widget: Labels
+  presets: |-
+    - name: Default
+      default: true
+      value: 
+        spec:
+          minReplicas: 1
+          maxReplicas: 10
+          metrics:
+          - type: ''
   translations: |-
     en:
       metadata.annotations: Annotations
