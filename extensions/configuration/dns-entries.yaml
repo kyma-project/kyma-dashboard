@@ -84,7 +84,6 @@ data:
           - UNKNOWN
       type: string
       name: status
-      isSelected: true
       widget: Badge
       description: status.message
   presets: |-
