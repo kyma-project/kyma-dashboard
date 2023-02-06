@@ -17,7 +17,7 @@ data:
   details: |-
     header:
       - name: Status
-        source: status.conditions.type
+        source: $filter(status.conditions, function($v, $i, $a) {$v.status = 'True'}).type
         widget: Labels
     body:
       - name: Specification
@@ -121,7 +121,7 @@ data:
     - name: Replicas
       source: status.currentReplicas
     - name: Status
-      source: status.conditions.type
+      source: $filter(status.conditions, function($v, $i, $a) {$v.status = 'True'}).type
       widget: Labels
   presets: |-
     - name: Default
