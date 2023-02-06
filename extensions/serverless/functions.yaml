@@ -196,7 +196,7 @@ data:
         []
       subscribe:
         language: |
-          $language = 'nodejs' ? 'nodejs14' :
+          $language = 'nodejs' ? $exists($root.spec.runtime) ? $root.spec.runtime : 'nodejs16' :
           $language = 'python' ? 'python39' :
           ''
     - path: spec.runtimeImageOverride
@@ -209,7 +209,7 @@ data:
           defaultExpanded: true
           subscribe:
             language: |-
-              $language = 'nodejs' ? "module.exports = {
+              $language = 'nodejs' ? $exists($root.spec.source.inline.source) ? $root.spec.source.inline.source : "module.exports = {
                 main: async function (event, context) {
                   const message = `Hello World`
                     + ` from the Kyma Function ${context['function-name']}`
