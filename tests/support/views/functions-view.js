@@ -19,6 +19,12 @@ Cypress.Commands.add('createSimpleFunction', functionName => {
 
   cy.navigateToFunctionCreate(functionName);
 
+  cy.get('[placeholder="Choose preset"]').click();
+
+  cy.get('[role=option]')
+    .contains('Node.js Function')
+    .click();
+
   cy.get('[role="dialog"]')
     .contains('button', 'Create')
     .click();
@@ -28,6 +34,12 @@ Cypress.Commands.add(
   'createFunction',
   (functionName, functionPath, dependenciesPath) => {
     cy.navigateToFunctionCreate(functionName);
+
+    cy.get('[placeholder="Choose preset"]').click();
+
+    cy.get('[role=option]')
+      .contains('Node.js Function')
+      .click();
 
     //paste code to the Source Tab code editor
     cy.get('[aria-label="expand Source"]')
