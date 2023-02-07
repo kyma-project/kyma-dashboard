@@ -225,6 +225,16 @@ data:
           $language = 'nodejs' ? 'nodejs16' :
           $language = 'python' ? 'python39' :
           ''
+    - path: spec.resourceConfiguration.function.profile
+      simple: true
+      advanced: false
+      widget: Text
+      enum:
+        - XS
+        - S
+        - M
+        - L
+        - XL
     - path: spec.source.inline
       visibility: $sourceType = 'Inline'
       simple: true
@@ -292,9 +302,45 @@ data:
     - path: spec.resourceConfiguration.function
       widget: FormGroup
       children:
+        - path: profile	
+          widget: Text
+          enum:
+            - XS
+            - S
+            - M
+            - L
+            - XL
+          subscribe:
+            changeResources: |-
+              $root.spec.resourceConfiguration.function.resources.limits.cpu = '100m' and 
+              $root.spec.resourceConfiguration.function.resources.limits.memory = '128Mi' and
+              $root.spec.resourceConfiguration.function.resources.requests.cpu = '50m' and
+              $root.spec.resourceConfiguration.function.resources.requests.memory = '64Mi' ? 'XS' :
+
+              $root.spec.resourceConfiguration.function.resources.limits.cpu = '200m' and 
+              $root.spec.resourceConfiguration.function.resources.limits.memory = '256Mi' and
+              $root.spec.resourceConfiguration.function.resources.requests.cpu = '100m' and
+              $root.spec.resourceConfiguration.function.resources.requests.memory = '128Mi' ? 'S' :
+
+              $root.spec.resourceConfiguration.function.resources.limits.cpu = '400m' and 
+              $root.spec.resourceConfiguration.function.resources.limits.memory = '512Mi' and
+              $root.spec.resourceConfiguration.function.resources.requests.cpu = '200m' and
+              $root.spec.resourceConfiguration.function.resources.requests.memory = '256Mi' ? 'M' :
+
+              $root.spec.resourceConfiguration.function.resources.limits.cpu = '800m' and 
+              $root.spec.resourceConfiguration.function.resources.limits.memory = '1024Mi' and
+              $root.spec.resourceConfiguration.function.resources.requests.cpu = '400m' and
+              $root.spec.resourceConfiguration.function.resources.requests.memory = '512Mi' ? 'L' :
+
+              $root.spec.resourceConfiguration.function.resources.limits.cpu = '1600m' and 
+              $root.spec.resourceConfiguration.function.resources.limits.memory = '2048Mi' and
+              $root.spec.resourceConfiguration.function.resources.requests.cpu = '800m' and
+              $root.spec.resourceConfiguration.function.resources.requests.memory = '1024Mi' ? 'XL' : ''
         - path: resources.limits
           widget: KeyValuePair
+          trigger: [changeResources]
         - path: resources.requests
+          trigger: [changeResources]
           widget: KeyValuePair
     - path: spec.resourceConfiguration.build
       widget: FormGroup
@@ -479,6 +525,7 @@ data:
       spec.runtime.python39: Python 3.9
       spec.resourceConfiguration.build: Build
       spec.resourceConfiguration.function: Function
+      spec.resourceConfiguration.function.profile: Profile
       placeholders.spec.runtime: Choose Function runtime
       spec.env.name: Variable Name
       spec.env.source: Source
