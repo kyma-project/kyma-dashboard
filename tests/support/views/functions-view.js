@@ -5,6 +5,17 @@ Cypress.Commands.add('navigateToFunctionCreate', functionName => {
 
   cy.contains('Create Function').click();
 
+  cy.get('[role="document"]').as('form');
+
+  cy.get('@form')
+    .find('.fd-select__text-content:visible')
+    .contains('Choose preset')
+    .click();
+
+  cy.get('[role="list"]')
+    .contains('Node.js Function')
+    .click();
+
   cy.contains('Advanced').click();
 
   cy.get('.advanced-form')
@@ -19,17 +30,6 @@ Cypress.Commands.add('createSimpleFunction', functionName => {
 
   cy.navigateToFunctionCreate(functionName);
 
-  cy.get('[role="document"]').as('form');
-
-  cy.get('@form')
-    .find('.fd-select__text-content:visible')
-    .contains('Choose preset')
-    .click();
-
-  cy.get('[role="list"]')
-    .contains('Node.js Function')
-    .click();
-
   cy.get('[role="dialog"]')
     .contains('button', 'Create')
     .click();
@@ -39,17 +39,6 @@ Cypress.Commands.add(
   'createFunction',
   (functionName, functionPath, dependenciesPath) => {
     cy.navigateToFunctionCreate(functionName);
-
-    cy.get('[role="document"]').as('form');
-
-    cy.get('@form')
-      .find('.fd-select__text-content:visible')
-      .contains('Choose preset')
-      .click();
-
-    cy.get('[role="list"]')
-      .contains('Node.js Function')
-      .click();
 
     //paste code to the Source Tab code editor
     cy.get('[aria-label="expand Source"]')
