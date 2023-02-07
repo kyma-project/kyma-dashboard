@@ -1,8 +1,8 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: functions
-  namespace: kube-public
+  name: functions2
+  namespace: lq
   labels:
     app.kubernetes.io/name: functions
     busola.io/extension: resource
@@ -196,7 +196,7 @@ data:
         []
       subscribe:
         language: |
-          $language = 'nodejs' ? 'nodejs16' :
+          $language = 'nodejs' ? ($exists($root.spec.runtime) and $root.spec.runtime != 'python39') ? $root.spec.runtime : 'nodejs16' :
           $language = 'python' ? 'python39' :
           ''
     - path: spec.runtimeImageOverride
@@ -209,7 +209,7 @@ data:
           defaultExpanded: true
           subscribe:
             language: |-
-              $language = 'nodejs' ? "module.exports = {
+             $language = 'nodejs'  ? ( $root.spec.source.inline.source !=  "module.exports = {
                 main: async function (event, context) {
                   const message = `Hello World`
                     + ` from the Kyma Function ${context['function-name']}`
@@ -217,12 +217,23 @@ data:
                   console.log(message);
                   return message;
                 }
-              }" :
-              $language = 'python' ? "def main(event, context):
+              }" ? $root.spec.source.inline.source: "module.exports = {
+                main: async function (event, context) {
+                  const message = `Hello World`
+                    + ` from the Kyma Function ${context['function-name']}`
+                    + ` running on ${context.runtime}!`;
+                  console.log(message);
+                  return message;
+                }
+              }"):
+                  ( $root.spec.source.inline.source != "def main(event, context)
                   message = 'Hello World from the Kyma Function '+context['function-name']+' running on '+context['runtime']+ '!';
                   print(message)
-                  return message" :
-              ''
+                  return message" ? $root.spec.source.inline.source : 
+                  "def main(event, context):
+                  message = 'Hello World from the Kyma Function '+context['function-name']+' running on '+context['runtime']+ '!';
+                  print(message)
+                  return message" )
         - path: dependencies
           widget: CodeEditor
           language: '$contains($root.spec.runtime, "node") ? "javascript" : "plaintext"'
@@ -325,8 +336,8 @@ data:
       group: serverless.kyma-project.io
       version: v1alpha2
     name: Functions
-    category: Workloads
-    urlPath: functions
+    category: LQ
+    urlPath: functions-b
     scope: namespace
     description: >-
       {{[Function](https://kyma-project.io/docs/kyma/latest/05-technical-reference/00-custom-resources/svls-01-function/#documentation-content/)}}
@@ -459,7 +470,6 @@ data:
       'Python Function': Python Function
   presets: |-
     - name: Node.js Function
-      default: true
       value:
         spec:
           runtime: nodejs14
