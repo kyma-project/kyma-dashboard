@@ -19,7 +19,9 @@ Cypress.Commands.add('createSimpleFunction', functionName => {
 
   cy.navigateToFunctionCreate(functionName);
 
-  cy.get('[placeholder="Choose preset"]').click();
+  cy.get('[data-testid="select-dropdown"]')
+    .contains('Choose preset')
+    .click();
 
   cy.get('[role=option]')
     .contains('Node.js Function')
@@ -35,7 +37,9 @@ Cypress.Commands.add(
   (functionName, functionPath, dependenciesPath) => {
     cy.navigateToFunctionCreate(functionName);
 
-    cy.get('[placeholder="Choose preset"]').click();
+    cy.get('[data-testid="select-dropdown"]')
+      .contains('Choose preset')
+      .click();
 
     cy.get('[role=option]')
       .contains('Node.js Function')
