@@ -225,16 +225,14 @@ data:
           $language = 'nodejs' ? 'nodejs16' :
           $language = 'python' ? 'python39' :
           ''
-    - path: spec.resourceConfiguration.function.profile
-      simple: true
-      advanced: false
-      widget: Text
-      enum:
-        - XS
-        - S
-        - M
-        - L
-        - XL
+    # - path: spec.resourceConfiguration.function.profile
+    #   simple: true
+    #   advanced: false
+    #   widget: Text
+    #   var: functionProfile
+    #   type: string
+    #   trigger: [changeProfile]
+    #   enum: [XS, S, M, L, XL]
     - path: spec.source.inline
       visibility: $sourceType = 'Inline'
       simple: true
@@ -304,12 +302,11 @@ data:
       children:
         - path: profile	
           widget: Text
-          enum:
-            - XS
-            - S
-            - M
-            - L
-            - XL
+          var: functionProfile
+          type: string
+          trigger: [functionProfile]
+          # dynamicValue: "$root.spec.resourceConfiguration.function.profile or 'XS'"
+          enum: [XS, S, M, L, XL]
           subscribe:
             changeResources: |-
               $root.spec.resourceConfiguration.function.resources.limits.cpu = '100m' and 
@@ -339,9 +336,23 @@ data:
         - path: resources.limits
           widget: KeyValuePair
           trigger: [changeResources]
+          subscribe:
+            functionProfile: |
+              $functionProfile = 'XS' ? {'cpu': '100m', 'memory': '128Mi'} :
+              $functionProfile = 'S' ? {'cpu': '200m', 'memory': '256Mi'} :
+              $functionProfile = 'M' ? {'cpu': '400m', 'memory': '512Mi'} :
+              $functionProfile = 'L' ? {'cpu': '800m', 'memory': '1024Mi'} :
+              $functionProfile = 'XL' ? {'cpu': '1600m', 'memory': '2048Mi'} : {}
         - path: resources.requests
           trigger: [changeResources]
           widget: KeyValuePair
+          subscribe:
+            functionProfile: |
+              $functionProfile = 'XS' ? {'cpu': '50m', 'memory': '64Mi'} :
+              $functionProfile = 'S' ? {'cpu': '100m', 'memory': '128Mi'} :
+              $functionProfile = 'M' ? {'cpu': '200m', 'memory': '256Mi'} :
+              $functionProfile = 'L' ? {'cpu': '400m', 'memory': '512Mi'} :
+              $functionProfile = 'XL' ? {'cpu': '800m', 'memory': '1024Mi'} : {}
     - path: spec.resourceConfiguration.build
       widget: FormGroup
       children:
