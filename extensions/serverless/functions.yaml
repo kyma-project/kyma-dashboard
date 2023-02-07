@@ -196,7 +196,7 @@ data:
         []
       subscribe:
         language: |
-          $language = 'nodejs' ? 'nodejs14' :
+          $language = 'nodejs' ? 'nodejs16' :
           $language = 'python' ? 'python39' :
           ''
     - path: spec.runtimeImageOverride
