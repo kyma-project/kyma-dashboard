@@ -13,17 +13,19 @@ Cypress.Commands.add('navigateToFunctionCreate', functionName => {
 });
 
 Cypress.Commands.add('createSimpleFunction', functionName => {
+  cy.get('[role="document"]').as('form');
   cy.getLeftNav()
     .contains('Workloads')
     .click();
 
   cy.navigateToFunctionCreate(functionName);
 
-  cy.get('[data-testid="select-dropdown"]')
+  cy.get('@form')
+    .find('.fd-select__text-content:visible')
     .contains('Choose preset')
     .click();
 
-  cy.get('[role=option]')
+  cy.get('[role="list"]')
     .contains('Node.js Function')
     .click();
 
@@ -35,13 +37,16 @@ Cypress.Commands.add('createSimpleFunction', functionName => {
 Cypress.Commands.add(
   'createFunction',
   (functionName, functionPath, dependenciesPath) => {
+    cy.get('[role="document"]').as('form');
+
     cy.navigateToFunctionCreate(functionName);
 
-    cy.get('[data-testid="select-dropdown"]')
+    cy.get('@form')
+      .find('.fd-select__text-content:visible')
       .contains('Choose preset')
       .click();
 
-    cy.get('[role=option]')
+    cy.get('[role="list"]')
       .contains('Node.js Function')
       .click();
 
