@@ -113,14 +113,7 @@ context('Test API Rules in the Function details view', () => {
 
     // > Methods
 
-    cy.get('[data-testid="spec.rules.0.methods.1"]:visible').type('POST');
-
-    cy.get('[data-testid="spec.rules.0.methods.1"]:visible', {
-      log: false,
-    })
-      .find('span')
-      .find('[aria-label="Combobox input arrow"]:visible', { log: false })
-      .click();
+    cy.get('[data-testid="spec.rules.0.methods.POST"]:visible').click();
 
     cy.get('[role=dialog]')
       .contains('button', 'Create')
@@ -196,9 +189,11 @@ context('Test API Rules in the Function details view', () => {
       .type('https://trusted.com');
 
     // > Methods
-    cy.get('[data-testid="spec.rules.1.methods.0"]:visible')
-      .clear()
-      .type('POST');
+    cy.get('[data-testid="spec.rules.1.methods.GET"]:visible')
+      .click();
+
+    cy.get('[data-testid="spec.rules.1.methods.POST"]:visible')
+      .click();
 
     cy.get('[role=dialog]')
       .contains('button', 'Update')
