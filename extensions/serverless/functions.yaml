@@ -1,10 +1,10 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: lq-functions
-  namespace: lq
+  name: functions
+  namespace: kube-public
   labels:
-    app.kubernetes.io/name: lq-functions
+    app.kubernetes.io/name: functions
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
@@ -399,8 +399,8 @@ data:
       group: serverless.kyma-project.io
       version: v1alpha2
     name: Functions
-    category: LQ
-    urlPath: functions-lq
+    category: Workloads
+    urlPath: functions
     scope: namespace
     description: >-
       {{[Function](https://kyma-project.io/docs/kyma/latest/05-technical-reference/00-custom-resources/svls-01-function/#documentation-content/)}}
