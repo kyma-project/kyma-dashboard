@@ -2,7 +2,7 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: functions
-  namespace: kube-public
+  namespace: lq
   labels:
     app.kubernetes.io/name: functions
     busola.io/extension: resource
@@ -287,6 +287,7 @@ data:
     - path: spec.source.gitRepository
       widget: FormGroup
       visibility: $sourceType = 'Git Repository'
+      defaultExpanded: true
       children:
         - path: url
         - path: baseDir
@@ -399,8 +400,8 @@ data:
       group: serverless.kyma-project.io
       version: v1alpha2
     name: Functions
-    category: Workloads
-    urlPath: functions
+    category: LQ
+    urlPath: functions-lq
     scope: namespace
     description: >-
       {{[Function](https://kyma-project.io/docs/kyma/latest/05-technical-reference/00-custom-resources/svls-01-function/#documentation-content/)}}
