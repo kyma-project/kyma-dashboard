@@ -541,7 +541,14 @@ data:
         spec:
           resourceConfiguration:
             function:
-              profile: 'XS'
+              profile: XS
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 128Mi
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
     - name: Node.js Function
       value:
         spec:
