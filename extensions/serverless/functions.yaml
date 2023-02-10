@@ -298,13 +298,13 @@ data:
       children:
         - path: resources.limits
           widget: KeyValuePair
-        - visibility: $exists($root.spec.resourceConfiguration.function.resources.limits)
+        - visibility: $boolean($root.spec.resourceConfiguration.function.profile)
           severity: warning
           alert: "'alert.resources.limits'"
           widget: Alert
         - path: resources.requests
           widget: KeyValuePair
-        - visibility: $exists($root.spec.resourceConfiguration.function.resources.requests)
+        - visibility: $boolean($root.spec.resourceConfiguration.function.profile)
           severity: warning
           alert: "'alert.resources.requests'"
           widget: Alert
@@ -498,8 +498,8 @@ data:
       envType: Variable Type
       'Node.js Function': Node.js Function
       'Python Function': Python Function
-      alert.resources.requests: If you want to provide your own requests configuration, make sure that the Function profile field is empty.
-      alert.resources.limits: If you want to provide your own limits configuration, make sure that the Function profile field is empty.
+      alert.resources.requests: If you want to provide your own requests configuration, leave the Function profile field empty.
+      alert.resources.limits: If you want to provide your own limits configuration, leave the Function profile field empty.
   presets: |-
     - name: Default
       default: true
