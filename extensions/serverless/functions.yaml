@@ -207,6 +207,7 @@ data:
       type: string
       name: Language
       var: language
+      required: true
       enum: [nodejs, python]
       trigger: [language]
       dynamicValue: |
