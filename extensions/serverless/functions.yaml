@@ -203,6 +203,7 @@ data:
         - Git Repository
       dynamicValue: '$exists(spec.source.gitRepository) ? "Git Repository" : "Inline"'
       name: header.sourceType
+      trigger: [sourceType]
     - simple: true
       type: string
       name: Language
@@ -239,6 +240,21 @@ data:
           language: '$contains($root.spec.runtime, "node") ? "javascript" : "python"'
           defaultExpanded: true
           subscribe:
+            sourceType: |-
+              $sourceType = 'Inline' ? $language = 'nodejs' ? $exists($root.metadata.creationTimestamp) ? $root.spec.source.inline.source : "module.exports = {
+                main: async function (event, context) {
+                  const message = `Hello World`
+                    + ` from the Kyma Function ${context['function-name']}`
+                    + ` running on ${context.runtime}!`;
+                  console.log(message);
+                  return message;
+                }
+              }" :
+              $language = 'python' ? $exists($root.metadata.creationTimestamp) ? $root.spec.source.inline.source : "def main(event, context):
+                  message = 'Hello World from the Kyma Function '+context['function-name']+' running on '+context['runtime']+ '!';
+                  print(message)
+                  return message" :
+              '' : ''
             language: |-
               $language = 'nodejs' ? $exists($root.metadata.creationTimestamp) ? $root.spec.source.inline.source : "module.exports = {
                 main: async function (event, context) {
