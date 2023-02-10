@@ -226,36 +226,8 @@ data:
           $language = 'python' ? 'python39' :
           ''
     - path: spec.resourceConfiguration.function.profile
-      type: string
       simple: true
-      trigger: [profile]
       enum: ['XS', 'S', 'M', 'L', 'XL']
-      subscribe:
-        changeResources: |-
-          $root.spec.resourceConfiguration.function.resources.limits.cpu = '100m' and 
-          $root.spec.resourceConfiguration.function.resources.limits.memory = '128Mi' and
-          $root.spec.resourceConfiguration.function.resources.requests.cpu = '50m' and
-          $root.spec.resourceConfiguration.function.resources.requests.memory = '64Mi' ? 'XS' :
-
-          $root.spec.resourceConfiguration.function.resources.limits.cpu = '200m' and 
-          $root.spec.resourceConfiguration.function.resources.limits.memory = '256Mi' and
-          $root.spec.resourceConfiguration.function.resources.requests.cpu = '100m' and
-          $root.spec.resourceConfiguration.function.resources.requests.memory = '128Mi' ? 'S' :
-
-          $root.spec.resourceConfiguration.function.resources.limits.cpu = '400m' and 
-          $root.spec.resourceConfiguration.function.resources.limits.memory = '512Mi' and
-          $root.spec.resourceConfiguration.function.resources.requests.cpu = '200m' and
-          $root.spec.resourceConfiguration.function.resources.requests.memory = '256Mi' ? 'M' :
-
-          $root.spec.resourceConfiguration.function.resources.limits.cpu = '800m' and 
-          $root.spec.resourceConfiguration.function.resources.limits.memory = '1024Mi' and
-          $root.spec.resourceConfiguration.function.resources.requests.cpu = '400m' and
-          $root.spec.resourceConfiguration.function.resources.requests.memory = '512Mi' ? 'L' :
-
-          $root.spec.resourceConfiguration.function.resources.limits.cpu = '1600m' and 
-          $root.spec.resourceConfiguration.function.resources.limits.memory = '2048Mi' and
-          $root.spec.resourceConfiguration.function.resources.requests.cpu = '800m' and
-          $root.spec.resourceConfiguration.function.resources.requests.memory = '1024Mi' ? 'XL' : ''
     - path: spec.source.inline
       visibility: $sourceType = 'Inline'
       simple: true
@@ -326,10 +298,16 @@ data:
       children:
         - path: resources.limits
           widget: KeyValuePair
-          trigger: [changeResources]
+        - visibility: $exists($root.spec.resourceConfiguration.function.resources.limits)
+          severity: warning
+          alert: "'alert.resources.limits'"
+          widget: Alert
         - path: resources.requests
-          trigger: [changeResources]
           widget: KeyValuePair
+        - visibility: $exists($root.spec.resourceConfiguration.function.resources.requests)
+          severity: warning
+          alert: "'alert.resources.requests'"
+          widget: Alert
     - path: spec.resourceConfiguration.build
       widget: FormGroup
       children:
@@ -520,6 +498,8 @@ data:
       envType: Variable Type
       'Node.js Function': Node.js Function
       'Python Function': Python Function
+      alert.resources.requests: If you want to provide your own requests configuration, make sure that the Function profile field is empty.
+      alert.resources.limits: If you want to provide your own limits configuration, make sure that the Function profile field is empty.
   presets: |-
     - name: Default
       default: true
