@@ -327,23 +327,9 @@ data:
         - path: resources.limits
           widget: KeyValuePair
           trigger: [changeResources]
-          subscribe:
-            profile: |
-              $root.spec.resourceConfiguration.function.profile = 'XS' ? {'cpu': '100m', 'memory': '128Mi'} :
-              $root.spec.resourceConfiguration.function.profile = 'S' ? {'cpu': '200m', 'memory': '256Mi'} :
-              $root.spec.resourceConfiguration.function.profile = 'M' ? {'cpu': '400m', 'memory': '512Mi'} :
-              $root.spec.resourceConfiguration.function.profile = 'L' ? {'cpu': '800m', 'memory': '1024Mi'} :
-              $root.spec.resourceConfiguration.function.profile = 'XL' ? {'cpu': '1600m', 'memory': '2048Mi'} : {}
         - path: resources.requests
           trigger: [changeResources]
           widget: KeyValuePair
-          subscribe:
-            profile: |
-              $root.spec.resourceConfiguration.function.profile = 'XS' ? {'cpu': '50m', 'memory': '64Mi'} :
-              $root.spec.resourceConfiguration.function.profile = 'S' ? {'cpu': '100m', 'memory': '128Mi'} :
-              $root.spec.resourceConfiguration.function.profile = 'M' ? {'cpu': '200m', 'memory': '256Mi'} :
-              $root.spec.resourceConfiguration.function.profile = 'L' ? {'cpu': '400m', 'memory': '512Mi'} :
-              $root.spec.resourceConfiguration.function.profile = 'XL' ? {'cpu': '800m', 'memory': '1024Mi'} : {}
     - path: spec.resourceConfiguration.build
       widget: FormGroup
       children:
@@ -542,13 +528,6 @@ data:
           resourceConfiguration:
             function:
               profile: XS
-              resources:
-                limits:
-                  cpu: 100m
-                  memory: 128Mi
-                requests:
-                  cpu: 50m
-                  memory: 64Mi
     - name: Node.js Function
       value:
         spec:
