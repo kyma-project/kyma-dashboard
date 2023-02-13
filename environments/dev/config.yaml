@@ -17,6 +17,8 @@ config:
             message: Resource managed by Istio control plane
           - match:
               $.metadata.labels['applicationconnector.kyma-project.io/managed-by']: compass-runtime-agent
+          - match:
+              $.metadata.labels['app.kubernetes.io/created-by']: Dev Config
     LEGAL_LINKS:
       config:
         legal-disclosure:
