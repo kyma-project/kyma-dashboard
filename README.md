@@ -2,7 +2,7 @@
 
 ## Overview (mandatory)
 
-This project contains configuration and extensions neccessary to deploy Busola on dev, stage and prod environments.
+This project contains configuration and extensions neccessary to deploy [Busola](https://github.com/kyma-project/busola) on dev, stage and prod environments.
 
 ## Prerequisites
 
@@ -43,10 +43,10 @@ When developing new extensions in Kyma Dashboard, adhere to the following rules.
 
 2. Configure extension in `environments/dev/extensions.json`. Do the same for `stage` and `prod` environments.
 
-3. Add test for the ne extension in `tests` directory
+3. Add test for the extension in `tests` directory
 
 4. Make sure to add smoke tests for your extension in `tests/tests/cluster/test-check-extensions.spec.js` or `tests/tests/namespace/test-check-extensions.spec.js` files.
 
 ### Run tests
 
-For the information on how to run tests and configure them, go to the [`tests`](tests) directory.
+For the information on how to run tests and configure them, go to the [`tests`](./tests) directory.
