@@ -3,6 +3,10 @@ apiVersion: v1
 metadata:
   name: subscriptions.eventing.kyma-project.io
   namespace: kube-public
+  labels:
+    app.kubernetes.io/name: subscriptions.eventing.kyma-project.io
+    busola.io/extension: resource
+    busola.io/extension-version: '0.5'
 data:
   details: |
     header: 
@@ -79,10 +83,12 @@ data:
         kind: Service
         version: v1
       type: string
-      trigger: [server]
+      trigger: [sink]
     - path: spec.sink
+      widget: Text
+      simple: true
       subscribe:
-        server: "'http://' & $sinkService & '.' & metadata.namespace &'.svc.cluster.local'"  
+        sink: "'http://' & $sinkService & '.' & metadata.namespace &'.svc.cluster.local'"
     - widget: GenericList
       path: spec.filter.filters
       simple: true
@@ -91,6 +97,24 @@ data:
         - path: '[]'
           simple: true
           children:
+            - var: app
+              name: spec.filter.eventType.Application
+              simple: true
+              widget: Resource
+              required: true
+              resource:
+                scope: cluster
+                kind: Application
+                group: applicationconnector.kyma-project.io
+                version: v1alpha1
+            - var: event
+              name: spec.filter.eventType.Event.name
+              simple: true
+              required: true
+              placeholder: spec.filter.eventType.Event.placeholder
+              inputInfo: spec.filter.eventType.event.inputInfo
+              type: string
+              trigger: [eventTypeValue]
             - var: version
               name: spec.filter.eventType.version.name
               simple: true
@@ -103,30 +127,13 @@ data:
               required: true
               placeholder: spec.filter.eventType.version.placeholder
               type: string
-              trigger: [server]
-            - var: event
-              name: spec.filter.eventType.Event.name
-              simple: true
-              required: true
-              placeholder: spec.filter.eventType.Event.placeholder
-              inputInfo: spec.filter.eventType.event.inputInfo
-              type: string
-              trigger: [server]
-            - var: app
-              name: spec.filter.eventType.Application
-              simple: true
-              widget: Resource
-              required: true
-              resource:
-                scope: cluster
-                kind: Application
-                group: applicationconnector.kyma-project.io
-                version: v1alpha1
+              trigger: [eventTypeValue]
             - path: 'eventType.value'
+              name: Event type
               widget: Text
               simple: true
               subscribe:
-                server: "'sap.kyma.custom.' & $app & '.' & $event & '.' & $version"
+                eventTypeValue: "'sap.kyma.custom.' & $app & '.' & $event & '.' & $version"
             - path: 'eventSource.value'
               name: spec.filter.eventSource
               required: false
@@ -175,6 +182,7 @@ data:
       spec.filter.eventType.Event.placeholder: For example, order.cancelled    
       spec.filter.eventType.event.inputInfo: The name must consist of at least two parts divided by a dot.
       spec.filter.eventType.Application: Application name
+      spec.filter.eventType.value: Event type
       spec.filter.eventSource: Event source
       spec.filter.event.property: Property
       spec.filter.event.type: Type
