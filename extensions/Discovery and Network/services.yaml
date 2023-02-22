@@ -68,10 +68,10 @@ data:
     - widget: KeyValuePair
       path: spec.selector
       simple: true
-      name: Selectors
-      placeholder: Enter Selectors
+      name: Enter Selectors
+      placeholder: spec.selector
     - path: spec.type
-      name: Type
+      name: spec.type
       placeholder: Enter Type 
       trigger: [server]   
     - widget: GenericList
@@ -83,103 +83,102 @@ data:
           children:
             - path: name
               simple: true
-              name: Name
-              placeholder: enter Ports Name
+              name: spec.ports.name
+              placeholder: spec.ports.name.placeholder
             - path: protocol
               simple: true
-              name: Protocol
-              placeholder: enter the Protocol
+              name: spec.ports.protocol
+              placeholder: spec.ports.protocol.placeholder
               widget: Text
               required: true
             - path: port
               simple: true
-              name: Port
-              placeholder: enter Port
+              name: spec.ports.port
+              placeholder: spec.ports.port.placeholder
               required: true
             - path: targetPort
               simple: true
-              name: Target Port
-              placeholder: enter Target Port
+              name:  spec.ports.targetPort
+              placeholder: spec.ports.targetPort.placeholder
               widget: Text
               required: true
               inputInfo: Number or name of the port to access on the pods targeted by the service. Number must be in the range 1 to 65535.
             - path: nodePort
               simple: true
-              name: Node Port
-              placeholder: enter Node Port
+              name: spec.ports.nodePort
+              placeholder: spec.ports.nodePort.placeholder
             - path: appProtocol
               simple: true
-              name: Application Protocol
-              placeholder: enter Application Protocol
+              name: spec.ports.applicationProtocol
+              placeholder: spec.ports.applicationProtocol.placeholder
       template:
         protocol: 'TCP'
         port: 80
         targetPort: 9376 
     - widget: SimpleList
       path: spec.ipFamilies
-      name: IP Family
+      name: spec.ipFamilies
       visibility: "$root.spec.type != 'ExternalName'"
       children:
         - path: '[]'
-      placeholder: Enter IP Family
+      placeholder: spec.ipFamilies.placeholder
     - path: spec.ipFamilyPolicy
-      name: IP Family Policy
-      placeholder: Enter ip Family Policy
+      name: spec.ipFamilyPolicy
+      placeholder: spec.ipFamilyPolicy.placeholder
       enum: 
         - SingleStack
         - PreferDualStack
         - RequireDualStack
       visibility: "$root.spec.type != 'ExternalName'"
-
     - widget: SimpleList
       path: spec.clusterIPs
-      name: cluster IPs
+      name: spec.clusterIPs
       children:
         - path: '[]'
-      placeholder: Enter IP addresses assigned to this service
+      placeholder: spec.clusterIPs.placeholder
       visibility: "$root.spec.type != 'ExternalName'"
     - path: spec.clusterIP
-      name: Cluster IP
-      placeholder: Enter IP address of the service
+      name: spec.clusterIP
+      placeholder: spec.clusterIP.placeholder
       visibility: "$root.spec.type != 'ExternalName'"
     - widget: SimpleList
       path: spec.externalIPs
-      name: external IPs
+      name: spec.externalIPs
       children:
         - path: '[]'
-      placeholder: Enter external IP addresses assigned to this service
+      placeholder: spec.externalIPs.placeholder
     - path: spec.sessionAffinity
-      name: session Affinity
-      placeholder: Enter session Affinity
+      name: spec.sessionAffinity 
+      placeholder: spec.sessionAffinity.placeholder 
     - path: spec.externalTrafficPolicy
-      name: external Traffic Policy
-      placeholder: Enter external Traffic Policy
+      name: spec.externalTrafficPolicy
+      placeholder: spec.externalTrafficPolicy.placeholder
     - path: spec.internalTrafficPolicy
-      name: internal Traffic Policy
-      placeholder: Enter internal Traffic Policy  
+      name: spec.internalTrafficPolicy
+      placeholder: spec.internalTrafficPolicy.placeholder
     - widget: SimpleList
       path: spec.loadBalancerSourceRanges
-      name: loadBalancer Source Ranges
+      name: spec.loadBalancerSourceRanges
       children:
         - path: '[]'
-      placeholder: Enter loadBalancer Source Ranges   
+      placeholder: spec.loadBalancerSourceRanges.placeholder
     - path: spec.loadBalancerClass
-      name: loadBalancer Class
-      placeholder: Enter session Affinity  
+      name: spec.loadBalancerClass
+      placeholder: spec.loadBalancerClass.placeholder
       visibility: "$root.spec.type = 'LoadBalancer'"
     - path: spec.externalName
       name: loadBalancer Class
-      placeholder: Enter loadBalancer Class
+      placeholder: spec.externalName.placeholder
       visibility: "$root.spec.type = 'ExternalName'"
     - path: spec.loadBalancerIP
       name: loadBalancer IP
-      placeholder: Enter session Affinity    
+      placeholder: spec.loadBalancerIP.placeholder
     - path: spec.healthCheckNodePort
-      name: health Check Node Port
-      placeholder: Enter health Check Node Port
+      name: spec.healthCheckNodePort
+      placeholder: spec.healthCheckNodePort.placeholder
       visibility: "$root.spec.type = 'LoadBalancer' and $root.spec.externalTrafficPolicy = 'Local'"
     - path: spec.allocateLoadBalancerNodePorts
-      name: allocate LoadBalancer Node Ports
+      name: spec.allocateLoadBalancerNodePorts
       visibility: "$root.spec.type = 'LoadBalancer'"
       subscribe:
         server: "$root.spec.type = 'LoadBalancer'"
@@ -242,4 +241,46 @@ data:
           allocateLoadBalancerNodePorts: true
   translations: |-
     en:
-      Cluster IP: Cluster IP
+      spec.selector: Selectors
+      spec.selector.placeholder: Enter Selectors
+      spec.type: Type
+      spec.type.placeholder: Enter Type
+      spec.ports.name: Name
+      spec.ports.name.placeholder: enter Ports Name
+      spec.ports.protocol: Protocol
+      spec.ports.protocol.placeholder: Enter the Protocol
+      spec.ports.port: Port
+      spec.ports.port.placeholder: Enter Port
+      spec.ports.targetPort: Target Port
+      spec.ports.targetPort.placeholder: Enter Target Port
+      spec.ports.nodePort: Node Port 
+      spec.ports.nodePort.placeholder: Enter Node Port
+      spec.ports.applicationProtocol: Application Protocol
+      spec.ports.applicationProtocol.placeholder: Enter Application Protocol
+      spec.ipFamilies: IP Family 
+      spec.ipFamilies.placeholder: Enter IP Family
+      spec.ipFamilyPolicy: IP Family Policy
+      spec.ipFamilyPolicy.placeholder: Enter IP Family Policy
+      spec.clusterIPs: Cluster IPs
+      spec.clusterIPs.placeholder: Enter IP addresses assigned to this service
+      spec.clusterIP: Cluster IP
+      spec.clusterIP.placeholder: Enter IP address of the service
+      spec.externalIPs: External IPs
+      spec.externalIPs.placeholder: Enter external IP addresses assigned to this service
+      spec.sessionAffinity: Session Affinity
+      spec.sessionAffinity.placeholder: Enter Session Affinity
+      spec.externalTrafficPolicy: External Traffic Policy
+      spec.externalTrafficPolicy.placeholder: Enter External Traffic Policy
+      spec.internalTrafficPolicy: Internal Traffic Policy
+      spec.internalTrafficPolicy.placeholder: Enter Internal Traffic Policy
+      spec.loadBalancerSourceRanges: LoadBalancer Source Ranges
+      spec.loadBalancerSourceRanges.placeholder: Enter LoadBalancer Source Ranges
+      spec.loadBalancerClass: LoadBalancer Class
+      spec.loadBalancerClass.placeholder: Enter LoadBalancer Class
+      spec.externalName: external Name
+      spec.externalName.placeholder: Enter external Name
+      spec.loadBalancerIP: LoadBalancer IP
+      spec.loadBalancerIP.placeholder: Enter LoadBalancer IP
+      spec.healthCheckNodePort: healthcheck nodePort
+      spec.healthCheckNodePort.placeholder: Enter healthcheck nodePort
+      spec.allocateLoadBalancerNodePorts: allocate LoadBalancer NodePorts
