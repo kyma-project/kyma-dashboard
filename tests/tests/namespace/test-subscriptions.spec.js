@@ -6,12 +6,11 @@ const APPLICATION_NAME = 'a-busola-test-3690';
 const SUBSCRIPTION_NAME = 'test-subscription';
 const SUBSCRIPTION_EVENT_NAME = 'order.cancelled';
 const SUBSCRIPTION_EVENT_VERSION = 'v1';
-const SUBSCRIPTION_EVENT_TYPE = 'http://service.baby-yoda.svc.cluster.local';
 const SUBSCRIPTION_SINK =
   'sap.kyma.custom.a-busola-test-3690.order.cancelled.v1';
-const SUBSCRIPTION_SEC_EVENT_VERSION = 'v2';
-const SUBSCRIPTION_SEC_SINK =
-  'sap.kyma.custom.a-busola-test-3690.order.cancelled.v2';
+const SUBSCRIPTION_EVENT_VERSION_2 = 'v4';
+const SUBSCRIPTION_SINK_2 =
+  'sap.kyma.custom.a-busola-test-3690.order.cancelled.v4';
 
 context('Test Subscriptions', () => {
   Cypress.skipAfterFail();
@@ -34,21 +33,25 @@ context('Test Subscriptions', () => {
 
     // add port
     cy.contains('Add').click();
+
+    cy.get('[role="dialog"]')
+      .contains('button', 'Create')
+      .click();
   });
 
   it('Create Subscription', () => {
     cy.wait(500);
     cy.navigateTo('Configuration', 'Subscriptions');
 
-    cy.contains('Create subscription').click();
+    cy.contains('Create Subscription').click();
 
     // name
-    cy.get('[arialabel="Subscription name""]:visible')
+    cy.get('[arialabel="Subscription name"]:visible')
       .click()
       .type(SUBSCRIPTION_NAME);
 
     // service
-    cy.get('[ariaLabel="Service name"]:visible')
+    cy.get('[aria-label="Choose Service"]:visible')
       .click()
       .type(SERVICE_NAME);
 
@@ -59,6 +62,7 @@ context('Test Subscriptions', () => {
     cy.get('[aria-label="Choose Application"]:visible')
       .click()
       .type(APPLICATION_NAME);
+    cy.contains(APPLICATION_NAME).click({ force: true });
 
     // event name
     cy.get('[placeholder="For example, order.cancelled"]:visible')
@@ -69,36 +73,29 @@ context('Test Subscriptions', () => {
     cy.get('[placeholder="For example, v1"]:visible')
       .click()
       .type(SUBSCRIPTION_EVENT_VERSION);
+    cy.contains(SUBSCRIPTION_EVENT_VERSION).click({ force: true });
 
-    // Sink
-    cy.contains(SUBSCRIPTION_SINK);
-
-    // event type
-    cy.contains(SUBSCRIPTION_EVENT_TYPE);
+    cy.get('[role="dialog"]')
+      .contains('button', 'Create')
+      .click();
   });
 
   it('Inspect details', () => {
     // Sink
     cy.contains(SUBSCRIPTION_SINK);
-    // event type
-    cy.contains(SUBSCRIPTION_EVENT_TYPE);
-
-    cy.get('[role=status]').should('have.text', 'Error');
   });
 
-  it('Edit DNS Provider', () => {
+  it('Edit Subscriptions', () => {
     cy.contains('Edit').click();
 
     // Sink
     cy.contains(SUBSCRIPTION_SINK);
 
-    // event type
-    cy.contains(SUBSCRIPTION_EVENT_TYPE);
-
     // application
     cy.get('[aria-label="Choose Application"]:visible')
       .click()
       .type(APPLICATION_NAME);
+    cy.contains(APPLICATION_NAME).click({ force: true });
 
     // event name
     cy.get('[placeholder="For example, order.cancelled"]:visible')
@@ -108,17 +105,28 @@ context('Test Subscriptions', () => {
     // event version
     cy.get('[placeholder="For example, v1"]:visible')
       .click()
-      .type(SUBSCRIPTION_SINK_2);
+      .type(SUBSCRIPTION_EVENT_VERSION_2);
+    cy.contains(SUBSCRIPTION_EVENT_VERSION).click({ force: true });
 
+    cy.get('[role="dialog"]')
+      .contains('button', 'Update')
+      .click();
+  });
+
+  it('Checking changes', () => {
     // Sink
     cy.contains(SUBSCRIPTION_SINK_2);
   });
 
-  it('Inspect list', () => {
-    // Sink
-    cy.contains(SUBSCRIPTION_SINK_2);
+  it('delete created service', () => {
+    cy.navigateTo('Discovery and Network', 'Services');
 
-    // event type
-    cy.contains(SUBSCRIPTION_EVENT_TYPE);
+    cy.get('[role="search"] [aria-label="search-input"]').type(SERVICE_NAME);
+
+    cy.get('tbody tr [aria-label="Delete"]').click({ force: true });
+
+    cy.contains('button', 'Delete')
+      .filter(':visible', { log: false })
+      .click({ force: true });
   });
 });
