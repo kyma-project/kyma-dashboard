@@ -27,9 +27,9 @@ context('Test Subscriptions', () => {
     cy.contains('Create Service').click();
 
     // name
-    cy.get('[ariaLabel="Service name"]:visible')
+    cy.get('[class="mtk5"]:visible')
       .click()
-      .type(SERVICE_NAME);
+      .clear.type(SERVICE_NAME);
 
     // add port
     cy.contains('Add').click();
