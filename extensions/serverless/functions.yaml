@@ -10,6 +10,17 @@ metadata:
 data:
   details: |-
     header:
+      - name: Replicas
+        widget: Badge
+        source: "$string($count($filter($replicas().items, function($r){
+        $r.status.phase = 'Running'}))) & '/' & $string($count($replicas().items))"
+        highlights:
+          negative: "$count($replicas().items) != $count($filter($replicas().items, function($r){
+        $r.status.phase = 'Running'}))"
+          warning: "$count($replicas().items) = 0 and $count($filter($replicas().items, function($r){
+        $r.status.phase = 'Running'}) = 0)" # this condition needs to be above 'positive'
+          positive: "$count($replicas().items) = $count($filter($replicas().items, function($r){
+        $r.status.phase = 'Running'}))"
       - name: header.status
         widget: Badge
         highlights:
@@ -80,6 +91,20 @@ data:
                     source: reference
                   - name: code.gitRepository.baseDir
                     source: baseDir
+                  - name: code.gitRepository.auth
+                    visibility: $exists($value)
+                    widget: Panel
+                    source: auth
+                    children:
+                      - name: code.gitRepository.auth.secretName
+                        widget: ResourceLink
+                        source: secretName 
+                        resource:
+                          kind: "'Secret'"
+                          name: secretName
+                          namespace: $root.metadata.namespace
+                      - name: code.gitRepository.auth.type
+                        source: type
               - source: spec.env
                 widget: Table
                 name: code.env
@@ -137,6 +162,7 @@ data:
               - widget: Panel
                 description: resources.description
                 name: resources.scalingOptions
+                visibility: $exists(spec.scaleConfig.minReplicas) or $exists(spec.scaleConfig.maxReplicas)
                 children:
                   - name: resources.minReplicas
                     source: spec.scaleConfig.minReplicas
@@ -177,10 +203,12 @@ data:
         - Git Repository
       dynamicValue: '$exists(spec.source.gitRepository) ? "Git Repository" : "Inline"'
       name: header.sourceType
+      trigger: [sourceType]
     - simple: true
       type: string
       name: Language
       var: language
+      required: true
       enum: [nodejs, python]
       trigger: [language]
       dynamicValue: |
@@ -196,20 +224,24 @@ data:
         []
       subscribe:
         language: |
-          $language = 'nodejs' ? 'nodejs14' :
+          $language = 'nodejs' ? ($exists($root.spec.runtime) and $root.spec.runtime != 'python39') ? $root.spec.runtime : 'nodejs16' :
           $language = 'python' ? 'python39' :
           ''
-    - path: spec.runtimeImageOverride
+    - path: spec.resourceConfiguration.function.profile
+      simple: true
+      enum: ['XS', 'S', 'M', 'L', 'XL']
     - path: spec.source.inline
       visibility: $sourceType = 'Inline'
+      simple: true
       children:
         - path: source
           widget: CodeEditor
+          simple: true
           language: '$contains($root.spec.runtime, "node") ? "javascript" : "python"'
           defaultExpanded: true
           subscribe:
-            language: |-
-              $language = 'nodejs' ? "module.exports = {
+            sourceType: |-
+              $sourceType = 'Inline' ? $language = 'nodejs' ? $exists($root.metadata.creationTimestamp) ? $root.spec.source.inline.source : "module.exports = {
                 main: async function (event, context) {
                   const message = `Hello World`
                     + ` from the Kyma Function ${context['function-name']}`
@@ -218,7 +250,22 @@ data:
                   return message;
                 }
               }" :
-              $language = 'python' ? "def main(event, context):
+              $language = 'python' ? $exists($root.metadata.creationTimestamp) ? $root.spec.source.inline.source : "def main(event, context):
+                  message = 'Hello World from the Kyma Function '+context['function-name']+' running on '+context['runtime']+ '!';
+                  print(message)
+                  return message" :
+              '' : ''
+            language: |-
+              $language = 'nodejs' ? $exists($root.metadata.creationTimestamp) ? $root.spec.source.inline.source : "module.exports = {
+                main: async function (event, context) {
+                  const message = `Hello World`
+                    + ` from the Kyma Function ${context['function-name']}`
+                    + ` running on ${context.runtime}!`;
+                  console.log(message);
+                  return message;
+                }
+              }" :
+              $language = 'python' ? $exists($root.metadata.creationTimestamp) ? $root.spec.source.inline.source : "def main(event, context):
                   message = 'Hello World from the Kyma Function '+context['function-name']+' running on '+context['runtime']+ '!';
                   print(message)
                   return message" :
@@ -229,6 +276,7 @@ data:
     - path: spec.source.gitRepository
       widget: FormGroup
       visibility: $sourceType = 'Git Repository'
+      defaultExpanded: true
       children:
         - path: url
         - path: baseDir
@@ -267,8 +315,16 @@ data:
       children:
         - path: resources.limits
           widget: KeyValuePair
+        - visibility: $boolean($root.spec.resourceConfiguration.function.profile)
+          severity: warning
+          alert: "'alert.resources.limits'"
+          widget: Alert
         - path: resources.requests
           widget: KeyValuePair
+        - visibility: $boolean($root.spec.resourceConfiguration.function.profile)
+          severity: warning
+          alert: "'alert.resources.requests'"
+          widget: Alert
     - path: spec.resourceConfiguration.build
       widget: FormGroup
       children:
@@ -411,6 +467,8 @@ data:
       code.gitRepository.reference: Reference
       code.gitRepository.baseDir: Base Directory
       code.gitRepository.auth: Auth
+      code.gitRepository.auth.secretName: Secret name
+      code.gitRepository.auth.type: Type
       code.env: Environment Variables
       code.env.name: Name
       code.env.value: Value
@@ -442,7 +500,6 @@ data:
       Requests: Requests
       Limits: Limits
       spec.runtime: Runtime
-      spec.runtimeImageOverride: Runtime Image Override
       Status: Status
       Runtime: Runtime
       'Source Type': Source Type
@@ -451,15 +508,24 @@ data:
       spec.runtime.python39: Python 3.9
       spec.resourceConfiguration.build: Build
       spec.resourceConfiguration.function: Function
+      spec.resourceConfiguration.function.profile: Function profile
       placeholders.spec.runtime: Choose Function runtime
       spec.env.name: Variable Name
       spec.env.source: Source
       envType: Variable Type
       'Node.js Function': Node.js Function
       'Python Function': Python Function
+      alert.resources.requests: If you want to provide your own requests configuration, leave the Function profile field empty.
+      alert.resources.limits: If you want to provide your own limits configuration, leave the Function profile field empty.
   presets: |-
-    - name: Node.js Function
+    - name: Default
       default: true
+      value:
+        spec:
+          resourceConfiguration:
+            function:
+              profile: XS
+    - name: Node.js Function
       value:
         spec:
           runtime: nodejs14

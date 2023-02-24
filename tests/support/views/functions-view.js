@@ -5,6 +5,17 @@ Cypress.Commands.add('navigateToFunctionCreate', functionName => {
 
   cy.contains('Create Function').click();
 
+  cy.get('[role="document"]').as('form');
+
+  cy.get('@form')
+    .find('.fd-select__text-content:visible')
+    .contains('Choose preset')
+    .click();
+
+  cy.get('[role="list"]')
+    .contains('Node.js Function')
+    .click();
+
   cy.contains('Advanced').click();
 
   cy.get('.advanced-form')

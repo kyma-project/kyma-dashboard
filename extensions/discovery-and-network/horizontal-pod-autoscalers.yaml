@@ -8,12 +8,7 @@ metadata:
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
-  dataSources: |
-    myEvents:
-      resource:
-        kind: Event
-        group: events.k8s.io
-        version: v1
+  dataSources: ''
   details: |-
     header:
       - name: Status
@@ -49,9 +44,11 @@ data:
                       $v.resource.name = "cpu"})[0].resource.current.averageUtilization),'% / ',
                           $string($single(spec.metrics, function($v, $i, $a) {
                       $v.resource.name = "cpu"}).resource.target.averageUtilization),'%'])
-      - name: Events
-        source: '$myEvents()'
-        widget: ResourceList
+      - widget: EventList
+        filter: $matchEvents($item, $root.kind, $root.metadata.name)
+        name: Events
+        defaultType: information
+        hideInvolvedObjects: true
   form: |-
     - name: Scale Target Reference
       simple: true
@@ -102,7 +99,7 @@ data:
       kind: HorizontalPodAutoscaler
       group: autoscaling
       version: v2
-    name: Horizontal Pod Autoscalers
+    name: Horizontal Pod Autoscalers X
     category: Discovery and Network
     urlPath: horizontalpodautoscalers-x
     scope: namespace

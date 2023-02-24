@@ -268,18 +268,14 @@ data:
           simple: true
           path: '[].methods'
           name: rules.methods 
-          widget: SimpleList
-          defaultExpanded: true
-          children:
-            - path: '[]' 
-              simple: true
-              enum:
-                - GET
-                - POST
-                - PUT
-                - DELETE
-                - PATCH
-                - HEAD
+          widget: MultiCheckbox
+          options:
+            - key: GET
+            - key: POST
+            - key: PUT
+            - key: DELETE
+            - key: PATCH
+            - key: HEAD
         - path: '[].mutators' 
           name: mutators 
           widget: GenericList
