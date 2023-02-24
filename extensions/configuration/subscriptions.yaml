@@ -83,6 +83,7 @@ data:
         kind: Service
         version: v1
       type: string
+      placeholder: spec.service.placeholder
       trigger: [sink]
     - path: spec.sink
       widget: Text
@@ -102,6 +103,7 @@ data:
               simple: true
               widget: Resource
               required: true
+              placeholder: spec.filter.eventType.Application.placeholder
               resource:
                 scope: cluster
                 kind: Application
@@ -174,6 +176,7 @@ data:
       placeholder.eventType: Enter the event type, for example, sap.kyma.custom.test-app.order.cancelled.v1
       placeholder.sinkService: Enter only the sink Service, for example, http://{service}.default.svc.cluster.local
       spec.service: Service
+      spec.service.placeholder: Choose Service for the sink
       spec.filters: Filters
       spec.filter.eventType: Event Type
       spec.filter.eventType.version.name: Event version
@@ -182,6 +185,7 @@ data:
       spec.filter.eventType.Event.placeholder: For example, order.cancelled    
       spec.filter.eventType.event.inputInfo: The name must consist of at least two parts divided by a dot.
       spec.filter.eventType.Application: Application name
+      spec.filter.eventType.Application.placeholder: Choose Application name
       spec.filter.eventType.value: Event type
       spec.filter.eventSource: Event source
       spec.filter.event.property: Property
