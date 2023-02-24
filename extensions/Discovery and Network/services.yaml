@@ -173,6 +173,7 @@ data:
     - path: spec.loadBalancerIP
       name: loadBalancer IP
       placeholder: spec.loadBalancerIP.placeholder
+      visibility: "$root.spec.type = 'LoadBalancer'"
     - path: spec.healthCheckNodePort
       name: spec.healthCheckNodePort
       placeholder: spec.healthCheckNodePort.placeholder
