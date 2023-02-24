@@ -1851,3 +1851,7 @@ data:
       Target Port: Target Port
       Subsets: Subsets
       Labels: Labels
+      consistentHash: Consistent Hash
+      simple: Simple
+      failover: Failover
+      distribute: Distribute

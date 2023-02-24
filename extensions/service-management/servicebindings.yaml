@@ -22,7 +22,8 @@ data:
             - Provisioned
           informative:
             - NotProvisioned
-          negative: "$item.reason = 'CreateFailed"
+          negative: 
+            - CreateFailed
     body:
       - name: bindingData
         widget: Panel
@@ -69,8 +70,8 @@ data:
       placeholder: spec.externalNamePlaceholder
     - path: spec.secretName
     - path: spec.parameters
-      widget: KeyValuePair
-      defaultExpanded: false
+      widget: CodeEditor
+      language: "'JSON'"
     - path: spec.parametersFrom
       widget: SimpleList
       defaultExpanded: true
@@ -120,7 +121,8 @@ data:
           - Provisioned
         informative:
           - NotProvisioned
-        negative: "$item.reason = 'CreateFailed"
+        negative: 
+          - CreateFailed
       widget: Badge
   translations: |
     en:

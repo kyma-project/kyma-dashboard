@@ -58,6 +58,10 @@ context('Test Namespace Extensions view', () => {
   describe('Check Configuration Extensions', () => {
     useCategory('Configuration');
 
+    it('Test Certificates', () => {
+      cy.checkExtension('Certificates');
+    });
+
     it('Test DNS Entries', () => {
       cy.checkExtension('DNS Entries');
     });
@@ -66,12 +70,17 @@ context('Test Namespace Extensions view', () => {
       cy.checkExtension('DNS Providers');
     });
 
+
     it('Test Issuers', () => {
       cy.checkExtension('Issuers');
     });
 
     it('Test Subscriptions', () => {
       cy.checkExtension('Subscriptions');
+
+    it('Test OAuth2 Clients', () => {
+      cy.checkExtension('OAuth2 Clients');
+
     });
   });
 });

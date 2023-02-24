@@ -17,7 +17,6 @@ context('Test DNS Providers', () => {
   });
 
   it('Create DNS Provider', () => {
-    cy.wait(500);
     cy.navigateTo('Configuration', 'DNS Providers');
 
     cy.contains('Create DNS Provider').click();
@@ -37,10 +36,12 @@ context('Test DNS Providers', () => {
       .filter(':visible')
       .click()
       .type(Cypress.env('NAMESPACE_NAME'));
+
     cy.get('.fd-list__item')
       .contains(Cypress.env('NAMESPACE_NAME'))
       .scrollIntoView()
       .click();
+
     cy.get('[placeholder^="Select name"]:visible', { log: false }).type(
       'default',
     );
