@@ -50,6 +50,54 @@ data:
         defaultType: information
         hideInvolvedObjects: true
   form: |-
+    - name: Min Pods
+      simple: true
+      path: spec.minReplicas
+    - name: Max Pods
+      simple: true
+      required: true
+      path: spec.maxReplicas
+    - path: spec.behavior
+      widget: FormGroup
+      children:
+        - path: scaleDown
+          widget: FormGroup
+          children:
+            - path: selectPolicy
+              enum:
+                - Min
+                - Max
+                - Disabled
+            - path: stabilizationWindowSeconds
+            - path: policies
+              defaultExpanded: true
+              widget: GenericList
+              children:
+                - path: '[].type'
+                  enum:
+                    - Pods
+                    - Percent
+                - path: '[].value'
+                - path: '[].periodSeconds'
+        - path: scaleUp
+          widget: FormGroup
+          children:
+            - path: selectPolicy
+              enum:
+                - Min
+                - Max
+                - Disabled
+            - path: stabilizationWindowSeconds
+            - path: policies
+              defaultExpanded: true
+              widget: GenericList
+              children:
+                - path: '[].type'
+                  enum:
+                    - Pods
+                    - Percent
+                - path: '[].value'
+                - path: '[].periodSeconds'
     - name: Scale Target Reference
       simple: true
       path: spec.scaleTargetRef
@@ -70,30 +118,148 @@ data:
         - simple: true
           required: true
           path: apiVersion
-    - name: Metrics
+    - path: spec.metrics
       simple: true
-      required: true
-      path: spec.metrics
       widget: GenericList
       defaultExpanded: true
       children:
-        - path: '[].type'
+        - simple: true
+          path: '[].type'
+          required: true
+          enum:
+            - Resource
+            - Pods
+            - Object
+            - External
+        - path: '[].resource.name'
+          name: Name
           simple: true
           enum:
-            - ContainerResource
-            - External
-            - Object
-            - Pods
-            - Resource
-        - path: '[].port'
-    - name: Min Pods
-      simple: true
-      required: true
-      path: spec.minReplicas
-    - name: Max Pods
-      simple: true
-      required: true
-      path: spec.maxReplicas
+            - cpu
+            - memory
+          visibility: "$item.type = 'Resource'" 
+        - path: '[].resource.target'
+          widget: FormGroup
+          simple: true
+          visibility: "$item.type = 'Resource'"
+          defaultExpanded: true
+          children:
+            - path: type
+              simple: true
+              enum:
+                - Utilization
+                - AverageValue
+                - Value
+            - path: averageUtilization
+              simple: true
+              visibility: "$item.resource.target.type = 'Utilization'"
+            - path: averageValue
+              simple: true
+              visibility: "$item.resource.target.type = 'AverageValue'"
+            - path: value
+              simple: true
+              visibility: "$item.resource.target.type = 'Value'"
+        - path: '[].pods.metric.name'
+          simple: true
+          enum:
+            - packets-per-second
+          visibility: "$item.type = 'Pods'"
+        - path: '[].pods.metric.selector.matchLabels'
+          visibility: "$item.type = 'Pods'"
+          widget: KeyValuePair
+        - path: '[].pods.target'
+          widget: FormGroup
+          simple: true
+          visibility: "$item.type = 'Pods'"
+          defaultExpanded: true
+          children:
+            - path: type
+              simple: true
+              enum:
+                - Utilization
+                - AverageValue
+                - Value
+            - path: averageUtilization
+              simple: true
+              visibility: "$item.pods.target.type = 'Utilization'"
+            - path: averageValue
+              simple: true
+              visibility: "$item.pods.target.type = 'AverageValue'"
+            - path: value
+              simple: true
+              visibility: "$item.pods.target.type = 'Value'"
+        - path: '[].object.metric.name'
+          simple: true
+          enum:
+            - requests-per-second
+          visibility: "$item.type = 'Object'"
+        - path: '[].object.metric.selector.matchLabels'
+          visibility: "$item.type = 'Object'"
+          widget: KeyValuePair
+        - path: '[].object.describedObject'
+          widget: FormGroup
+          simple: true
+          visibility: "$item.type = 'Object'"
+          defaultExpanded: true
+          children:
+            - path: kind
+              simple: true
+              required: true
+            - path: name
+              simple: true
+              required: true
+            - path: apiVersion
+              simple: true
+        - path: '[].object.target'
+          widget: FormGroup
+          simple: true
+          visibility: "$item.type = 'Object'"
+          defaultExpanded: true
+          children:
+            - path: type
+              simple: true
+              enum:
+                - Utilization
+                - AverageValue
+                - Value
+            - path: averageUtilization
+              simple: true
+              visibility: "$item.object.target.type = 'Utilization'"
+            - path: averageValue
+              simple: true
+              visibility: "$item.object.target.type = 'AverageValue'"
+            - path: value
+              simple: true
+              visibility: "$item.object.target.type = 'Value'"
+        - path: '[].external.metric.name'
+          simple: true
+          enum:
+            - requests-per-second
+          visibility: "$item.type = 'External'"
+        - path: '[].external.metric.selector.matchLabels'
+          visibility: "$item.type = 'External'"
+          widget: KeyValuePair
+        - path: '[].external.target'
+          widget: FormGroup
+          simple: true
+          visibility: "$item.type = 'External'"
+          defaultExpanded: true
+          children:
+            - path: type
+              simple: true
+              enum:
+                - Utilization
+                - AverageValue
+                - Value
+            - path: averageUtilization
+              simple: true
+              visibility: "$item.external.target.type = 'Utilization'"
+            - path: averageValue
+              simple: true
+              visibility: "$item.external.target.type = 'AverageValue'"
+            - path: value
+              simple: true
+              visibility: "$item.external.target.type = 'Value'"
   general: |-
     resource: 
       kind: HorizontalPodAutoscaler
