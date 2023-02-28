@@ -267,9 +267,9 @@ data:
       kind: HorizontalPodAutoscaler
       group: autoscaling
       version: v2
-    name: Horizontal Pod Autoscalers X
+    name: Horizontal Pod Autoscalers
     category: Discovery and Network
-    urlPath: horizontalpodautoscalers-x
+    urlPath: horizontalpodautoscalers
     scope: namespace
     description: >-
       {{[Horizontal Pod Autoscalers](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2/)}}

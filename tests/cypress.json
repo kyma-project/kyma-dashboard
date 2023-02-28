@@ -27,6 +27,7 @@
     "namespace/test-virtual-services.spec.js",
     "namespace/test-authorization-policies.spec.js",
     "namespace/test-gateways.spec.js",
+    "namespace/test-hpa.spec.js",
     "namespace/test-oauth2.spec.js",
     "namespace/test-sidecars.spec.js",
     "namespace/test-service-entries.spec.js",
