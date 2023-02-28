@@ -11,23 +11,23 @@ data:
   dataSources: ''
   details: |-
     header:
-      - name: Status
+      - name: status
         source: $filter(status.conditions, function($v, $i, $a) {$v.status = 'True'}).type
         widget: Labels
     body:
-      - name: Specification
+      - name: sspecification
         widget: Panel
         children:
-          - name: Min Pods
+          - name: minReplicas
             source: spec.minReplicas
-          - name: Current Replicas
+          - name: currentReplicas
             source: status.currentReplicas
-          - name: Max Pods
+          - name: maxReplicas
             source: spec.maxReplicas
-          - name: Scale Target Reference
+          - name: scaleTargetReference
             source: spec.scaleTargetRef
             widget: ControlledBy
-      - name: Metrics
+      - name: metrics
         widget: Panel
         children:
           - name: Resource memory on Pods
@@ -46,19 +46,20 @@ data:
                       $v.resource.name = "cpu"}).resource.target.averageUtilization),'%'])
       - widget: EventList
         filter: $matchEvents($item, $root.kind, $root.metadata.name)
-        name: Events
+        name: events
         defaultType: information
         hideInvolvedObjects: true
   form: |-
-    - name: Min Pods
+    - name: minReplicas
       simple: true
       path: spec.minReplicas
-    - name: Max Pods
+    - name: maxReplicas
       simple: true
       required: true
       path: spec.maxReplicas
     - path: spec.behavior
       widget: FormGroup
+      defaultExpanded: true
       children:
         - path: scaleDown
           widget: FormGroup
@@ -98,7 +99,8 @@ data:
                     - Percent
                 - path: '[].value'
                 - path: '[].periodSeconds'
-    - name: Scale Target Reference
+                  defaultValue: 0
+    - name: scaleTargetReference
       simple: true
       path: spec.scaleTargetRef
       widget: FormGroup
@@ -115,8 +117,8 @@ data:
         - simple: true
           required: true
           path: name
-        - simple: true
-          required: true
+        - name: apiVersion
+          simple: true
           path: apiVersion
     - path: spec.metrics
       simple: true
@@ -132,7 +134,6 @@ data:
             - Object
             - External
         - path: '[].resource.name'
-          name: Name
           simple: true
           enum:
             - cpu
@@ -208,7 +209,8 @@ data:
             - path: name
               simple: true
               required: true
-            - path: apiVersion
+            - name: apiVersion
+              path: apiVersion
               simple: true
         - path: '[].object.target'
           widget: FormGroup
@@ -273,17 +275,17 @@ data:
       {{[Horizontal Pod Autoscalers](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2/)}}
       automatically manages the number of Pod replicas to match the demand.
   list: |-
-    - name: Metrics
+    - name: metrics
       source: |
               $join([$string(status.currentMetrics[0].resource.current.averageUtilization),'% / ',
                   $string(spec.metrics[0].resource.target.averageUtilization),'%',$count(spec.metrics) > 1 ? ' and 1 more' : ''])
-    - name: Min Pods
+    - name: minReplicas
       source: spec.minReplicas
-    - name: Max Pods
+    - name: maxReplicas
       source: spec.maxReplicas
-    - name: Replicas
+    - name: currentReplicas
       source: status.currentReplicas
-    - name: Status
+    - name: status
       source: $filter(status.conditions, function($v, $i, $a) {$v.status = 'True'}).type
       widget: Labels
   presets: |-
@@ -300,3 +302,12 @@ data:
       metadata.annotations: Annotations
       metadata.labels: Labels
       metadata.creationTimestamp: Created at
+      status: Status
+      currentReplicas: Current Replicas
+      minReplicas: Min Replicas
+      maxReplicas: Max Replicas
+      metrics: Metrics
+      apiVersion: API version
+      scaleTargetReference: Scale Target Reference
+      events: Events
+      specification: Specification
