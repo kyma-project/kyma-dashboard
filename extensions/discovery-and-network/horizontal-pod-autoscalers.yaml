@@ -295,8 +295,6 @@ data:
         spec:
           minReplicas: 1
           maxReplicas: 10
-          metrics:
-          - type: ''
   translations: |-
     en:
       metadata.annotations: Annotations

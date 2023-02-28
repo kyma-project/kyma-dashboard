@@ -1,18 +1,12 @@
 /// <reference types="cypress" />
 import 'cypress-file-upload';
-import { loadFile } from '../../support/loadFile';
 
 const HPA_NAME = 'test-hpa';
 const DOCKER_IMAGE = 'nginx';
 const DEPLOYEMENT_NAME = 'no-pod';
-
-async function loadHPA(namespaceName) {
-  const HPA = await loadFile('test-HPA.yaml');
-
-  HPA.metadata.namespace = namespaceName;
-
-  return HPA;
-}
+const MAX_REPLICAS = 3;
+const SCALE_TARGET_REF_KIND = 'Deployment';
+const SCALE_TARGET_REF_NAME = 'no-pod';
 
 context('Test HPA', () => {
   Cypress.skipAfterFail();
@@ -47,10 +41,19 @@ context('Test HPA', () => {
 
     cy.contains('Create Horizontal Pod Autoscaler').click();
 
-    cy.wrap(loadHPA(Cypress.env('NAMESPACE_NAME'))).then(HPA_CONFIG => {
-      const HPA = JSON.stringify(HPA_CONFIG);
-      cy.pasteToMonaco(HPA);
-    });
+    cy.get('[arialabel="HorizontalPodAutoscaler name"]:visible').type(HPA_NAME);
+
+    cy.get('[data-testid="spec.maxReplicas"]:visible')
+      .clear()
+      .type(MAX_REPLICAS);
+
+    cy.get('[data-testid="spec.scaleTargetRef.name"]:visible').type(
+      SCALE_TARGET_REF_NAME,
+    );
+
+    cy.get('[data-testid="spec.scaleTargetRef.kind"]:visible').type(
+      SCALE_TARGET_REF_KIND,
+    );
 
     cy.get('[role="dialog"]')
       .contains('button', 'Create')
@@ -60,9 +63,7 @@ context('Test HPA', () => {
   });
 
   it('Check HPA details', () => {
-    cy.get('[data-testid=hpa-spec-ref]')
-      .contains(`Deployment (${DEPLOYEMENT_NAME})`)
-      .should('be.visible');
+    cy.contains(`Deployment (${DEPLOYEMENT_NAME})`).should('be.visible');
 
     cy.contains('#content-wrap', 'Events').should('be.visible');
   });
@@ -76,9 +77,7 @@ context('Test HPA', () => {
       .contains(HPA_NAME)
       .click();
 
-    cy.get('[data-testid=hpa-spec-ref]')
-      .contains(DEPLOYEMENT_NAME)
-      .click();
+    cy.contains(DEPLOYEMENT_NAME).click();
 
     cy.url().should('match', /deployments/);
 
