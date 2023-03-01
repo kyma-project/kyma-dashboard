@@ -21,6 +21,9 @@
     "source": "extensions/service-management"
   },
   {
+    "source": "extensions/subscriptions"
+  },
+  {
     "source": "https://raw.githubusercontent.com/kyma-project/kyma/main/resources/telemetry/charts/operator/templates/logparser_busola_extension_cm.yaml"
   },
   {
