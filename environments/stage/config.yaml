@@ -87,6 +87,8 @@ config:
       isEnabled: false
     EXTENSIBILITY:
       isEnabled: true
+    EXTENSIBILITY_WIDGETS:
+      isEnabled: false
     EVENTING:
       isEnabled: true
       selectors:
