@@ -8,6 +8,7 @@ const API_RULE_AND_FUNCTION_NAME = 'in-cluster-eventing-publisher';
 const API_RULE_SUBDOMAIN = API_RULE_AND_FUNCTION_NAME + '-' + random;
 const API_RULE_PORT_NUMBER = 80;
 const API_RULE_HOST_EXPECTED_PREFIX = `https://${API_RULE_SUBDOMAIN}.`;
+const APP_NAME = Cypress.env('NAMESPACE_NAME');
 
 context('Test in-cluster eventing', () => {
   Cypress.skipAfterFail();
@@ -33,23 +34,29 @@ context('Test in-cluster eventing', () => {
 
     cy.contains('button', 'Create Subscription').click();
 
-    cy.contains('Advanced').click();
-
+    cy.contains('Add').click();
     cy.get('[ariaLabel="Subscription name"]:visible')
       .clear()
       .type(`${FUNCTION_RECEIVER_NAME}-subscription`);
 
-    cy.contains('Choose Service for the sink').click();
+    cy.get('[aria-label="Choose Service"]:visible')
+      .click()
+      .type(FUNCTION_RECEIVER_NAME);
+    //cy.contains(FUNCTION_RECEIVER_NAME).click({ force: true });
+    //cy.contains(`${FUNCTION_RECEIVER_NAME}:visible`).click({ force: true });
 
-    cy.get('[role="option"]')
-      .contains(FUNCTION_RECEIVER_NAME)
-      .click();
+    cy.get('[placeholder="For example, order.cancelled"]:visible')
+      .click()
+      .type('order.created');
 
-    cy.get(
-      '[placeholder="Enter the event type, for example, sap.kyma.custom.test-app.order.cancelled.v1"]',
-    )
-      .clear()
-      .type('sap.kyma.custom.nonexistingapp.order.created.v1');
+    cy.get('[placeholder="For example, v1"]:visible')
+      .click()
+      .type('v1');
+    cy.contains('v1').click({ force: true });
+
+    cy.get('[aria-label="Choose Application"]:visible')
+      .click()
+      .type(APP_NAME);
 
     cy.get('[role="dialog"]')
       .contains('button', 'Create')
