@@ -104,6 +104,7 @@ data:
               advanced: false
               widget: Resource
               required: true
+              trigger: [eventTypeValue]
               resource:
                 scope: cluster
                 kind: Application
