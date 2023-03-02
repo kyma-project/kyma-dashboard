@@ -1,10 +1,10 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: subscriptions.eventing.kyma-project.io
+  name: subscriptions
   namespace: kube-public
   labels:
-    app.kubernetes.io/name: subscriptions.eventing.kyma-project.io
+    app.kubernetes.io/name: subscriptions
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
@@ -101,6 +101,7 @@ data:
             - var: app
               name: spec.filter.eventType.Application
               simple: true
+              advanced: false
               widget: Resource
               required: true
               resource:
@@ -111,6 +112,7 @@ data:
             - var: event
               name: spec.filter.eventType.Event.name
               simple: true
+              advanced: false
               required: true
               placeholder: spec.filter.eventType.Event.placeholder
               inputInfo: spec.filter.eventType.event.inputInfo
@@ -119,6 +121,7 @@ data:
             - var: version
               name: spec.filter.eventType.version.name
               simple: true
+              advanced: false
               enum:
                 - v1
                 - v2
@@ -133,9 +136,15 @@ data:
               name: Event type
               widget: Text
               simple: true
+              advanced: false
               readOnly: true
               subscribe:
                 eventTypeValue: "'sap.kyma.custom.' & $app & '.' & $event & '.' & $version"
+            - path: 'eventType.value'
+              name: Event type
+              widget: Text
+              inputInfo: spec.filter.eventType.inputInfo
+              placeholder: placeholder.eventType
             - path: 'eventSource.value'
               name: spec.filter.eventSource
               required: false
@@ -147,7 +156,7 @@ data:
         eventType:
           property: type
           type: exact
-          value: sap.kyma.custom
+          value: sap.kyma.custom.
   general: |
     resource:
       kind: Subscription
@@ -198,6 +207,7 @@ data:
       spec.filter.eventType.event.inputInfo: The name must consist of at least two parts divided by a dot.
       spec.filter.eventType.Application: Application name
       spec.filter.eventType.value: Event type
+      spec.filter.eventType.inputInfo: Event type must consist of minimum seven elements separated by dots. Prefix should be sap.kyma.custom. You can add more event types.
       spec.filter.eventSource: Event source
       spec.filter.event.property: Property
       spec.filter.event.type: Type
