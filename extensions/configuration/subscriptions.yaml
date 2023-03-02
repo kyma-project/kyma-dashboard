@@ -83,11 +83,11 @@ data:
         kind: Service
         version: v1
       type: string
-      placeholder: spec.service.placeholder
       trigger: [sink]
     - path: spec.sink
       widget: Text
       simple: true
+      readOnly: true
       subscribe:
         sink: "'http://' & $sinkService & '.' & metadata.namespace &'.svc.cluster.local'"
     - widget: GenericList
@@ -103,7 +103,6 @@ data:
               simple: true
               widget: Resource
               required: true
-              placeholder: spec.filter.eventType.Application.placeholder
               resource:
                 scope: cluster
                 kind: Application
@@ -134,6 +133,7 @@ data:
               name: Event type
               widget: Text
               simple: true
+              readOnly: true
               subscribe:
                 eventTypeValue: "'sap.kyma.custom.' & $app & '.' & $event & '.' & $version"
             - path: 'eventSource.value'
@@ -147,15 +147,15 @@ data:
         eventType:
           property: type
           type: exact
-          value: ''
+          value: sap.kyma.custom
   general: |
     resource:
       kind: Subscription
       group: eventing.kyma-project.io
       version: v1alpha1
     name: Subscriptions
-    category: Custom Resources
-    urlPath: subscriptions-ex
+    category: Cherry
+    urlPath: subscriptions-cherry
     scope: namespace
     description: >-
       {{[Subscription](https://kyma-project.io/docs/kyma/latest/05-technical-reference/00-custom-resources/evnt-01-subscription#documentation-content)}}
@@ -168,15 +168,27 @@ data:
     - name: status.cleanEventTypes
       source: status.cleanEventTypes
       widget: Labels
+  presets: |-
+    - name: template
+      default: true
+      value:
+        spec:
+          sink: http://.cherry.svc.cluster.local
+          filter: 
+            filters:
+              - eventSource:
+                  property: source
+                  type: exact
+                  value: ''
+                eventType:
+                  property: type
+                  type: exact
+                  value: sap.kyma.custom.
   translations: |-
     en:
-      inputInfo.sink: Sink structure, 'http://{SERVICE}.{NAMESPACE}.svc.cluster.local'
-      inputInfo.eventType: Event Type structure, 'sap.kyma.custom.{APP}.{EVENT.NAME}.{VERSION}'
       events: Events
       placeholder.eventType: Enter the event type, for example, sap.kyma.custom.test-app.order.cancelled.v1
-      placeholder.sinkService: Enter only the sink Service, for example, http://{service}.default.svc.cluster.local
       spec.service: Service
-      spec.service.placeholder: Choose Service for the sink
       spec.filters: Filters
       spec.filter.eventType: Event Type
       spec.filter.eventType.version.name: Event version
@@ -185,7 +197,6 @@ data:
       spec.filter.eventType.Event.placeholder: For example, order.cancelled    
       spec.filter.eventType.event.inputInfo: The name must consist of at least two parts divided by a dot.
       spec.filter.eventType.Application: Application name
-      spec.filter.eventType.Application.placeholder: Choose Application name
       spec.filter.eventType.value: Event type
       spec.filter.eventSource: Event source
       spec.filter.event.property: Property
