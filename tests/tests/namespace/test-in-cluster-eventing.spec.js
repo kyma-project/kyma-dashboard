@@ -186,7 +186,7 @@ context('Test in-cluster eventing', () => {
       .clear()
       .type(`${API_RULE_AND_FUNCTION_NAME}-subscription`);
 
-    cy.get('[placeholder="Choose Application name"]:visible')
+    cy.get('[aria-label="Choose Application"]:visible')
       .clear()
       .type(Cypress.env('APP_NAME'))
       .click();
