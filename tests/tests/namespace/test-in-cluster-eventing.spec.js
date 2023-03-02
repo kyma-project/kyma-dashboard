@@ -41,8 +41,6 @@ context('Test in-cluster eventing', () => {
       .clear()
       .type(`${FUNCTION_RECEIVER_NAME}-subscription`);
 
-    cy.contains('Add').click();
-
     cy.get('[placeholder="For example, v1"]:visible')
       .click()
       .type('v1');
