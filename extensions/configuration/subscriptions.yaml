@@ -16,7 +16,7 @@ data:
         description: status.conditions.message
       - name: spec.sink
         source: spec.sink
-      - source: spec.sink
+      - source: '$substringBefore($substringAfter(spec.sink, "http://"), ".")'
         widget: ResourceLink
         name: spec.sink.controlledBy
         resource:
@@ -47,25 +47,25 @@ data:
         collapsible:
           - widget: Columns
             children:
-              - source: '$item.eventType'
+              - source: $item.eventType
                 widget: Panel
                 name: spec.filter.eventType
                 children:
-                  - source: '$parent.property'
+                  - source: property
                     name: spec.filter.event.property
-                  - source: '$parent.type'
+                  - source: type
                     name: spec.filter.event.type
-                  - source: '$parent.value'
+                  - source: value
                     name: spec.filter.event.value
-              - source: '$item.eventSource'
+              - source: $item.eventSource
                 widget: Panel
                 name: spec.filter.eventSource
                 children:
-                  - source: '$parent.property'
+                  - source: property
                     name: spec.filter.event.property
-                  - source: '$parent.type'
+                  - source: type
                     name: spec.filter.event.type
-                  - source: '$parent.value = "" ? "Handled by the NATS backend" : $parent.value'
+                  - source: 'value = "" ? "Handled by the NATS backend" : $parent.value'
                     name: spec.filter.event.value
       - widget: EventList
         filter: "$matchEvents($$, $root.kind, $root.metadata.name)"
@@ -213,7 +213,7 @@ data:
       spec.filter.event.type: Type
       spec.filter.event.value: Event type
       spec.sink: Sink
-      spec.sink.controlledBy: Controlled By
+      spec.sink.controlledBy: Controlled By Service
       status.cleanEventTypes: Event Types
       status.conditions: Condidtions
       status.conditions.lastTransitionTime: Last Transition
