@@ -183,7 +183,7 @@ data:
       default: true
       value:
         spec:
-          sink: http://.cherry.svc.cluster.local
+          sink: http://.default.svc.cluster.local
           filter: 
             filters:
               - eventSource:
