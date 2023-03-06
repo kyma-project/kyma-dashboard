@@ -70,9 +70,12 @@ context('Test Namespace Extensions view', () => {
       cy.checkExtension('DNS Providers');
     });
 
-
     it('Test Issuers', () => {
       cy.checkExtension('Issuers');
+    });
+
+    it('Test Subscriptions', () => {
+      cy.checkExtension('Subscriptions');
     });
 
     it('Test OAuth2 Clients', () => {

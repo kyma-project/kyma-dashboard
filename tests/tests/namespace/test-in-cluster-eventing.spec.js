@@ -33,23 +33,25 @@ context('Test in-cluster eventing', () => {
 
     cy.contains('button', 'Create Subscription').click();
 
-    cy.contains('Advanced').click();
+    cy.get('[aria-label="Choose Service"]:visible')
+      .click()
+      .type(FUNCTION_RECEIVER_NAME);
 
     cy.get('[ariaLabel="Subscription name"]:visible')
       .clear()
       .type(`${FUNCTION_RECEIVER_NAME}-subscription`);
 
-    cy.contains('Choose Service for the sink').click();
+    cy.get('[placeholder="For example, v1"]:visible')
+      .click()
+      .type('v1');
 
-    cy.get('[role="option"]')
-      .contains(FUNCTION_RECEIVER_NAME)
-      .click();
+    cy.get('[placeholder="For example, order.cancelled"]:visible')
+      .click()
+      .type('order.created');
 
-    cy.get(
-      '[placeholder="Enter the event type, for example, sap.kyma.custom.test-app.order.cancelled.v1"]',
-    )
-      .clear()
-      .type('sap.kyma.custom.nonexistingapp.order.created.v1');
+    cy.get('[aria-label="Choose Application"]:visible')
+      .click()
+      .type(Cypress.env('APP_NAME'));
 
     cy.get('[role="dialog"]')
       .contains('button', 'Create')
@@ -176,15 +178,15 @@ context('Test in-cluster eventing', () => {
 
     cy.contains('Create Subscription').click();
 
+    cy.get('[aria-label="Choose Service"]:visible')
+      .click()
+      .type(API_RULE_AND_FUNCTION_NAME);
+
     cy.get('[ariaLabel="Subscription name"]:visible')
       .clear()
       .type(`${API_RULE_AND_FUNCTION_NAME}-subscription`);
 
-    cy.contains('Choose Service for the sink').click();
-
-    cy.contains(API_RULE_AND_FUNCTION_NAME).click();
-
-    cy.get('[placeholder="Choose Application name"]:visible')
+    cy.get('[aria-label="Choose Application"]:visible')
       .clear()
       .type(Cypress.env('APP_NAME'))
       .click();
