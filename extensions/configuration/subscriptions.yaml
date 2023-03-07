@@ -1,0 +1,223 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: subscriptions
+  namespace: kube-public
+  labels:
+    app.kubernetes.io/name: subscriptions
+    busola.io/extension: resource
+    busola.io/extension-version: '0.5'
+data:
+  details: |
+    header: 
+      - name: status.conditions.status
+        source: 'status.ready = false ? "error" : "ready"'
+        widget: Badge
+        description: status.conditions.message
+      - name: spec.sink
+        source: spec.sink
+      - source: '$substringBefore($substringAfter(spec.sink, "http://"), ".")'
+        widget: ResourceLink
+        name: spec.sink.controlledBy
+        resource:
+          name: '$substringBefore($substringAfter(spec.sink, "http://"), ".")'
+          namespace: $root.metadata.namespace
+          kind: "'Service'"
+    body: 
+      - source: status.conditions
+        widget: Table
+        name: status.conditions
+        children:
+          - source: 'status.ready = false ? "error" : "ready"'
+            name: status.type
+            widget: Badge
+            description: status.conditions.message
+          - source: '$item.status'
+            name: status.conditions.status
+          - source: '$item.reason'
+            name: status.conditions.reason
+          - source: '$readableTimestamp($item.lastTransitionTime)'
+            name: status.conditions.lastTransitionTime
+      - source: spec.filter.filters
+        widget: Table
+        name: spec.filters
+        disablePadding: true
+        showHeader: false
+        collapsibleTitle: '"Filter #" & $string($index + 1) & " " & ($item.eventType.value)'
+        collapsible:
+          - widget: Columns
+            children:
+              - source: $item.eventType
+                widget: Panel
+                name: spec.filter.eventType
+                children:
+                  - source: property
+                    name: spec.filter.event.property
+                  - source: type
+                    name: spec.filter.event.type
+                  - source: value
+                    name: spec.filter.event.value
+              - source: $item.eventSource
+                widget: Panel
+                name: spec.filter.eventSource
+                children:
+                  - source: property
+                    name: spec.filter.event.property
+                  - source: type
+                    name: spec.filter.event.type
+                  - source: 'value = "" ? "Handled by the NATS backend" : $parent.value'
+                    name: spec.filter.event.value
+      - widget: EventList
+        filter: "$matchEvents($$, $root.kind, $root.metadata.name)"
+        name: events
+        defaultType: NORMAL
+        hideInvolvedObjects: true
+  form: |
+    - var: sinkService
+      name: spec.service
+      simple: true
+      required: true
+      widget: Resource
+      resource:
+        scope: namespace
+        kind: Service
+        version: v1
+      type: string
+      trigger: [sink]
+    - path: spec.sink
+      widget: Text
+      simple: true
+      readOnly: true
+      subscribe:
+        sink: "'http://' & $sinkService & '.' & metadata.namespace &'.svc.cluster.local'"
+    - widget: GenericList
+      path: spec.filter.filters
+      simple: true
+      defaultExpanded: true
+      children:
+        - path: '[]'
+          simple: true
+          children:
+            - var: app
+              name: spec.filter.eventType.Application
+              simple: true
+              advanced: false
+              widget: Resource
+              required: true
+              trigger: [eventTypeValue]
+              resource:
+                scope: cluster
+                kind: Application
+                group: applicationconnector.kyma-project.io
+                version: v1alpha1
+            - var: event
+              name: spec.filter.eventType.Event.name
+              simple: true
+              advanced: false
+              required: true
+              placeholder: spec.filter.eventType.Event.placeholder
+              inputInfo: spec.filter.eventType.event.inputInfo
+              type: string
+              trigger: [eventTypeValue]
+            - var: version
+              name: spec.filter.eventType.version.name
+              simple: true
+              advanced: false
+              enum:
+                - v1
+                - v2
+                - v3
+                - v4
+              description: Choose a protocol type from the dropdown.
+              required: true
+              placeholder: spec.filter.eventType.version.placeholder
+              type: string
+              trigger: [eventTypeValue]
+            - path: 'eventType.value'
+              name: Event type
+              widget: Text
+              simple: true
+              advanced: false
+              readOnly: true
+              subscribe:
+                eventTypeValue: "'sap.kyma.custom.' & $app & '.' & $event & '.' & $version"
+            - path: 'eventType.value'
+              name: Event type
+              widget: Text
+              inputInfo: spec.filter.eventType.inputInfo
+              placeholder: placeholder.eventType
+            - path: 'eventSource.value'
+              name: spec.filter.eventSource
+              required: false
+      template:
+        eventSource:
+          property: source
+          type: exact
+          value: ''
+        eventType:
+          property: type
+          type: exact
+          value: sap.kyma.custom.
+  general: |
+    resource:
+      kind: Subscription
+      group: eventing.kyma-project.io
+      version: v1alpha1
+    name: Subscriptions
+    category: Configuration
+    urlPath: subscriptions
+    scope: namespace
+    description: >-
+      {{[Subscription](https://kyma-project.io/docs/kyma/latest/05-technical-reference/00-custom-resources/evnt-01-subscription#documentation-content)}}
+      is used to subscribe to events.
+  list: |-
+    - name: status.conditions.status
+      source: 'status.ready = false ? "error" : "ready"'
+      widget: Badge
+      description: status.conditions.message
+    - name: status.cleanEventTypes
+      source: status.cleanEventTypes
+      widget: Labels
+  presets: |-
+    - name: template
+      default: true
+      value:
+        spec:
+          sink: http://.default.svc.cluster.local
+          filter: 
+            filters:
+              - eventSource:
+                  property: source
+                  type: exact
+                  value: ''
+                eventType:
+                  property: type
+                  type: exact
+                  value: sap.kyma.custom.
+  translations: |-
+    en:
+      events: Events
+      placeholder.eventType: Enter the event type, for example, sap.kyma.custom.test-app.order.cancelled.v1
+      spec.service: Service
+      spec.filters: Filters
+      spec.filter.eventType: Event Type
+      spec.filter.eventType.version.name: Event version
+      spec.filter.eventType.version.placeholder: For example, v1
+      spec.filter.eventType.Event.name: Event name
+      spec.filter.eventType.Event.placeholder: For example, order.cancelled    
+      spec.filter.eventType.event.inputInfo: The name must consist of at least two parts divided by a dot.
+      spec.filter.eventType.Application: Application name
+      spec.filter.eventType.value: Event type
+      spec.filter.eventType.inputInfo: Event type must consist of minimum seven elements separated by dots. Prefix should be sap.kyma.custom. You can add more event types.
+      spec.filter.eventSource: Event source
+      spec.filter.event.property: Property
+      spec.filter.event.type: Type
+      spec.filter.event.value: Event type
+      spec.sink: Sink
+      spec.sink.controlledBy: Controlled By Service
+      status.cleanEventTypes: Event Types
+      status.conditions: Condidtions
+      status.conditions.lastTransitionTime: Last Transition
+      status.conditions.reason: Reason
+      status.conditions.status: Status
+      status.type: Type

@@ -15,7 +15,7 @@ data:
         source: $filter(status.conditions, function($v, $i, $a) {$v.status = 'True'}).type
         widget: Labels
     body:
-      - name: sspecification
+      - name: specification
         widget: Panel
         children:
           - name: minReplicas
