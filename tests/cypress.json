@@ -27,11 +27,13 @@
     "namespace/test-virtual-services.spec.js",
     "namespace/test-authorization-policies.spec.js",
     "namespace/test-gateways.spec.js",
+    "namespace/test-oauth2.spec.js",
     "namespace/test-sidecars.spec.js",
     "namespace/test-service-entries.spec.js",
     "namespace/test-api-rules.spec.js",
     "namespace/test-in-cluster-eventing.spec.js",
     "namespace/test-dns-entries.spec.js",
+    "namespace/test-subscriptions.spec.js",
     "namespace/run-after.spec.js"
   ]
 }

@@ -3,8 +3,6 @@ FROM eu.gcr.io/kyma-project/busola:${LOCAL_IMAGE}
 COPY  --from=extensions-local /build/environments/${ENV}/dist/extensions.yaml /app/core-ui/extensions/extensions.yaml
 COPY  ./environments/${ENV}/config.yaml /app/core-ui/config/config.yaml
 RUN yq eval -i '.config.features.KUBECONFIG_ID.config.kubeconfigUrl = "/kubeconfig"' core-ui/config/config.yaml
-RUN rm -rf /app/core-ui/kubeconfig &&\
-    ln -s /app/core-ui/public/kubeconfig /app/core-ui/kubeconfig
 
 EXPOSE 3001
 ENV NODE_ENV=production ADDRESS=0.0.0.0 IS_DOCKER=true

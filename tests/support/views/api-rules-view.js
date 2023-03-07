@@ -59,12 +59,7 @@ Cypress.Commands.add(
 
     // Rules
     // > Methods
-    cy.get('[data-testid="spec.rules.0.methods.1"]:visible').type('POST');
-
-    cy.get('[data-testid="spec.rules.0.methods.1"]:visible', { log: false })
-      .find('span')
-      .find('[aria-label="Combobox input arrow"]:visible', { log: false })
-      .click();
+    cy.get('[data-testid="spec.rules.0.methods.POST"]:visible').click();
 
     cy.get('[role=dialog]')
       .contains('button', 'Create')

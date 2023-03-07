@@ -17,6 +17,7 @@
   "testFiles": [
     "cluster/test-check-extensions.spec.js",
     "namespace/run-before.spec.js",
+    "namespace/test-smoke-service-management.spec.js",
     "namespace/test-check-extensions.spec.js",
     "namespace/run-after.spec.js"
   ]
