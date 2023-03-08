@@ -70,7 +70,7 @@ context('Test Namespace Extensions view', () => {
       cy.checkExtension('DNS Providers');
     });
 
-    it('Test HPA', () => {
+    it('Test Horizontal Pod Autoscalers', () => {
       cy.checkExtension('Horizontal Pod Autoscalers');
     });
 
