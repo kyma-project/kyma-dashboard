@@ -11,23 +11,23 @@ data:
   dataSources: ''
   details: |-
     header:
-      - name: status
+      - name: Status
         source: $filter(status.conditions, function($v, $i, $a) {$v.status = 'True'}).type
         widget: Labels
     body:
-      - name: specification
+      - name: Specification
         widget: Panel
         children:
-          - name: minReplicas
+          - name: Min Replicas
             source: spec.minReplicas
-          - name: currentReplicas
+          - name: Current Replicas
             source: status.currentReplicas
-          - name: maxReplicas
+          - name: Max Replicas
             source: spec.maxReplicas
-          - name: scaleTargetReference
+          - name: Scale Target Reference
             source: spec.scaleTargetRef
             widget: ControlledBy
-      - name: metrics
+      - name: Metrics
         widget: Panel
         children:
           - name: Resource memory on Pods
@@ -46,7 +46,7 @@ data:
                       $v.resource.name = "cpu"}).resource.target.averageUtilization),'%'])
       - widget: EventList
         filter: $matchEvents($item, $root.kind, $root.metadata.name)
-        name: events
+        name: Events
         defaultType: information
         hideInvolvedObjects: true
   form: |-
@@ -100,7 +100,7 @@ data:
                 - path: '[].value'
                 - path: '[].periodSeconds'
                   defaultValue: 0
-    - name: scaleTargetReference
+    - name: Scale Target Reference
       simple: true
       path: spec.scaleTargetRef
       widget: FormGroup
@@ -117,7 +117,7 @@ data:
         - simple: true
           required: true
           path: name
-        - name: apiVersion
+        - name: API version
           simple: true
           path: apiVersion
     - path: spec.metrics
@@ -209,7 +209,7 @@ data:
             - path: name
               simple: true
               required: true
-            - name: apiVersion
+            - name: API version
               path: apiVersion
               simple: true
         - path: '[].object.target'
@@ -275,17 +275,15 @@ data:
       {{[Horizontal Pod Autoscalers](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2/)}}
       automatically manages the number of Pod replicas to match the demand.
   list: |-
-    - name: metrics
-      source: |
-              $join([$string(status.currentMetrics[0].resource.current.averageUtilization),'% / ',
-                  $string(spec.metrics[0].resource.target.averageUtilization),'%',$count(spec.metrics) > 1 ? ' and 1 more' : ''])
-    - name: minReplicas
+    - name: Metrics
+      source: $count(spec.metrics)
+    - name: Min Replicas
       source: spec.minReplicas
-    - name: maxReplicas
+    - name: Max Replicas
       source: spec.maxReplicas
-    - name: currentReplicas
+    - name: Current Replicas
       source: status.currentReplicas
-    - name: status
+    - name: Status
       source: $filter(status.conditions, function($v, $i, $a) {$v.status = 'True'}).type
       widget: Labels
   presets: |-
@@ -295,17 +293,3 @@ data:
         spec:
           minReplicas: 1
           maxReplicas: 10
-  translations: |-
-    en:
-      metadata.annotations: Annotations
-      metadata.labels: Labels
-      metadata.creationTimestamp: Created at
-      status: Status
-      currentReplicas: Current Replicas
-      minReplicas: Min Replicas
-      maxReplicas: Max Replicas
-      metrics: Metrics
-      apiVersion: API version
-      scaleTargetReference: Scale Target Reference
-      events: Events
-      specification: Specification
