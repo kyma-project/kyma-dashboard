@@ -59,10 +59,10 @@ data:
       path: spec.maxReplicas
     - path: spec.behavior
       widget: FormGroup
-      defaultExpanded: true
       children:
         - path: scaleDown
           widget: FormGroup
+          defaultExpanded: true
           children:
             - path: selectPolicy
               enum:
@@ -82,6 +82,7 @@ data:
                 - path: '[].periodSeconds'
         - path: scaleUp
           widget: FormGroup
+          defaultExpanded: true
           children:
             - path: selectPolicy
               enum:
@@ -166,6 +167,8 @@ data:
             - packets-per-second
           visibility: "$item.type = 'Pods'"
         - path: '[].pods.metric.selector.matchLabels'
+          simple: true
+          defaultExpanded: false
           visibility: "$item.type = 'Pods'"
           widget: KeyValuePair
         - path: '[].pods.target'
@@ -195,6 +198,8 @@ data:
             - requests-per-second
           visibility: "$item.type = 'Object'"
         - path: '[].object.metric.selector.matchLabels'
+          simple: true
+          defaultExpanded: false
           visibility: "$item.type = 'Object'"
           widget: KeyValuePair
         - path: '[].object.describedObject'
@@ -239,6 +244,8 @@ data:
             - requests-per-second
           visibility: "$item.type = 'External'"
         - path: '[].external.metric.selector.matchLabels'
+          simple: true
+          defaultExpanded: false
           visibility: "$item.type = 'External'"
           widget: KeyValuePair
         - path: '[].external.target'
@@ -286,10 +293,3 @@ data:
     - name: Status
       source: $filter(status.conditions, function($v, $i, $a) {$v.status = 'True'}).type
       widget: Labels
-  presets: |-
-    - name: Default
-      default: true
-      value: 
-        spec:
-          minReplicas: 1
-          maxReplicas: 10
