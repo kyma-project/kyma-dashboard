@@ -151,16 +151,12 @@ data:
               enum:
                 - Utilization
                 - AverageValue
-                - Value
             - path: averageUtilization
               simple: true
               visibility: "$item.resource.target.type = 'Utilization'"
             - path: averageValue
               simple: true
               visibility: "$item.resource.target.type = 'AverageValue'"
-            - path: value
-              simple: true
-              visibility: "$item.resource.target.type = 'Value'"
         - path: '[].pods.metric.name'
           simple: true
           enum:
@@ -180,12 +176,7 @@ data:
             - path: type
               simple: true
               enum:
-                - Utilization
                 - AverageValue
-                - Value
-            - path: averageUtilization
-              simple: true
-              visibility: "$item.pods.target.type = 'Utilization'"
             - path: averageValue
               simple: true
               visibility: "$item.pods.target.type = 'AverageValue'"
@@ -226,12 +217,8 @@ data:
             - path: type
               simple: true
               enum:
-                - Utilization
                 - AverageValue
                 - Value
-            - path: averageUtilization
-              simple: true
-              visibility: "$item.object.target.type = 'Utilization'"
             - path: averageValue
               simple: true
               visibility: "$item.object.target.type = 'AverageValue'"
@@ -257,12 +244,8 @@ data:
             - path: type
               simple: true
               enum:
-                - Utilization
                 - AverageValue
                 - Value
-            - path: averageUtilization
-              simple: true
-              visibility: "$item.external.target.type = 'Utilization'"
             - path: averageValue
               simple: true
               visibility: "$item.external.target.type = 'AverageValue'"
