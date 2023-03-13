@@ -84,7 +84,7 @@ config:
       isEnabled: false
     EXTENSIBILITY:
       isEnabled: true
-    EXTENSIBILITY_WIDGETS:
+    EXTENSIBILITY_INJECTIONS:
       isEnabled: false
     EVENTING:
       isEnabled: true
