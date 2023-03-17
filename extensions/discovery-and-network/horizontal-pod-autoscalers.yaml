@@ -24,9 +24,15 @@ data:
             source: status.currentReplicas
           - name: Max Replicas
             source: spec.maxReplicas
-          - name: Scale Target Reference
-            source: spec.scaleTargetRef
-            widget: ControlledBy
+          - name: Scale Target Reference - Kind
+            source: spec.scaleTargetRef.kind
+          - name: Scale Target Reference - Name
+            source: spec.scaleTargetRef.name
+            widget: ResourceLink
+            resource: 
+              name: spec.scaleTargetRef.name
+              namespace: $root.metadata.namespace
+              kind: spec.scaleTargetRef.kind
       - name: Metrics
         widget: Panel
         children:
