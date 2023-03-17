@@ -214,8 +214,11 @@ data:
               visibility: "$item.resource.target.type = 'AverageValue'"
         - path: '[].pods.metric.name'
           simple: true
-          enum:
-            - packets-per-second
+          widget: Resource
+          resource:
+            scope: namespace
+            kind: Pod
+            version: v1
           visibility: "$item.type = 'Pods'"
         - path: '[].pods.metric.selector.matchLabels'
           simple: true
@@ -240,8 +243,6 @@ data:
               visibility: "$item.pods.target.type = 'Value'"
         - path: '[].object.metric.name'
           simple: true
-          enum:
-            - requests-per-second
           visibility: "$item.type = 'Object'"
         - path: '[].object.metric.selector.matchLabels'
           simple: true
@@ -282,8 +283,6 @@ data:
               visibility: "$item.object.target.type = 'Value'"
         - path: '[].external.metric.name'
           simple: true
-          enum:
-            - requests-per-second
           visibility: "$item.type = 'External'"
         - path: '[].external.metric.selector.matchLabels'
           simple: true
