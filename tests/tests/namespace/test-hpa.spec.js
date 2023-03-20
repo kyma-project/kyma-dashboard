@@ -63,7 +63,8 @@ context('Test HPA', () => {
   });
 
   it('Check HPA details', () => {
-    cy.contains(`Deployment (${DEPLOYEMENT_NAME})`).should('be.visible');
+    cy.contains('Deployment').should('be.visible');
+    cy.contains(`${DEPLOYEMENT_NAME}`).should('be.visible');
 
     cy.contains('#content-wrap', 'Events').should('be.visible');
   });
