@@ -34,71 +34,48 @@ data:
               namespace: $root.metadata.namespace
               kind: spec.scaleTargetRef.kind
       - name: Metrics
-        widget: Panel
+        source: spec.metrics
+        widget: Table
+        showHeader: true
         children:
-          - name: Resource memory
-            visibility: $count($filter(spec.metrics, function($v, $i, $a) {$v.resource.name = "memory" and $v.resource.target.type = "Utilization"})) > 0
-            source: |
-                    $join([$string($filter(status.currentMetrics, function($v, $i, $a) {
-                      $v.resource.name = "memory"})[0].resource.current.averageUtilization),'% / ',
-                          $string($filter(spec.metrics, function($v, $i, $a) {
-                      $v.resource.name = "memory" and $v.resource.target.type = "Utilization"})[0].resource.target.averageUtilization),'%'])
-          - name: Resource memory
-            visibility: $count($filter(spec.metrics, function($v, $i, $a) {$v.resource.name = "memory" and $v.resource.target.type = "AverageValue"})) > 0
-            source: |
-                    $join([$string($filter(status.currentMetrics, function($v, $i, $a) {
-                      $v.resource.name = "memory"})[0].resource.current.averageValue),' / ',
-                          $string($filter(spec.metrics, function($v, $i, $a) {
-                      $v.resource.name = "memory" and $v.resource.target.type = "AverageValue"})[0].resource.target.averageValue)])
-          - name: Resource CPU
-            visibility: $count($filter(spec.metrics, function($v, $i, $a) {$v.resource.name = "cpu" and $v.resource.target.type = "Utilization"})) > 0
-            source: |
-                    $join([$string($filter(status.currentMetrics, function($v, $i, $a) {
-                      $v.resource.name = "cpu"})[0].resource.current.averageUtilization),'% / ',
-                          $string($filter(spec.metrics, function($v, $i, $a) {
-                      $v.resource.name = "cpu" and $v.resource.target.type = "Utilization"})[0].resource.target.averageUtilization),'%'])
-          - name: Resource CPU
-            visibility: $count($filter(spec.metrics, function($v, $i, $a) {$v.resource.name = "cpu" and $v.resource.target.type = "AverageValue"})) > 0
-            source: |
-                    $join([$string($filter(status.currentMetrics, function($v, $i, $a) {
-                      $v.resource.name = "cpu"})[0].resource.current.averageValue),' / ',
-                          $string($filter(spec.metrics, function($v, $i, $a) {
-                      $v.resource.name = "cpu" and $v.resource.target.type = "AverageValue"})[0].resource.target.averageValue)])
-          - name: Pods
-            visibility: $count($filter(spec.metrics, function($v, $i, $a) {$v.type = "Pods"})) > 0
-            source: |
-                    $join([$string($filter(status.currentMetrics, function($v, $i, $a) {
-                      $v.type = "Pods"})[0].pods.current.averageValue),' / ',
-                          $string($filter(spec.metrics, function($v, $i, $a) {
-                      $v.type = "Pods"})[0].pods.target.averageValue)])
-          - name: External
-            visibility: $count($filter(spec.metrics, function($v, $i, $a) {$v.type = "External" and $v.external.target.type = "AverageValue"})) > 0
-            source: |
-                    $join([$string($filter(status.currentMetrics, function($v, $i, $a) {
-                      $v.type = "External"})[0].external.current.averageValue),' / ',
-                          $string($filter(spec.metrics, function($v, $i, $a) {
-                      $v.type = "External" and $v.external.target.type = "AverageValue"})[0].external.target.averageValue)])
-          - name: External
-            visibility: $count($filter(spec.metrics, function($v, $i, $a) {$v.type = "External" and $v.external.target.type = "Value"})) > 0
-            source: |
-                    $join([$string($filter(status.currentMetrics, function($v, $i, $a) {
-                      $v.type = "External"})[0].external.current.value),' / ',
-                          $string($filter(spec.metrics, function($v, $i, $a) {
-                      $v.type = "External" and $v.external.target.type = "Value"})[0].external.target.value)])
-          - name: Object
-            visibility: $count($filter(spec.metrics, function($v, $i, $a) {$v.type = "Object" and $v.object.target.type = "AverageValue"})) > 0
-            source: |
-                    $join([$string($filter(status.currentMetrics, function($v, $i, $a) {
-                      $v.type = "Object"})[0].object.current.averageValue),' / ',
-                          $string($filter(spec.metrics, function($v, $i, $a) {
-                      $v.type = "Object" and $v.object.target.type = "AverageValue"})[0].object.target.averageValue)])
-          - name: Object
-            visibility: $count($filter(spec.metrics, function($v, $i, $a) {$v.type = "Object" and $v.object.target.type = "Value"})) > 0
-            source: |
-                    $join([$string($filter(status.currentMetrics, function($v, $i, $a) {
-                      $v.type = "Object"})[0].object.current.value),' / ',
-                          $string($filter(spec.metrics, function($v, $i, $a) {
-                      $v.type = "Object" and $v.object.target.type = "Value"})[0].object.target.value)])
+          - name: Type
+            search: true
+            source: type
+          - name: Name
+            search: true
+            source: '$item.type = "Resource" ? $item.resource.name : $item.type = "Pods" ? $item.pods.metric.name : 
+                    $item.type = "Object" ? $item.object.metric.name : $item.external.metric.name'
+          - name: Target Type
+            source: '$item.type = "Resource" ? $item.resource.target.type : $item.type = "Pods" ? $item.pods.target.type : 
+                    $item.type = "Object" ? $item.object.target.type : $item.external.target.type'
+          - name: Current Metric
+            source: '$item.type = "Resource" ?
+                      ($item.resource.target.type = "Utilization" ? 
+                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.resource.name = $item.resource.name}) ? 
+                          ($single(status.currentMetrics, function($v, $i, $a) {$v.resource.name = $item.resource.name}).resource.current.averageUtilization & "%") : "-"),
+                          " / ",$string($item.resource.target.averageUtilization),"%"]):
+                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.resource.name = $item.resource.name}) ? 
+                          $single(status.currentMetrics, function($v, $i, $a) {$v.resource.name = $item.resource.name}).resource.current.averageValue : "-"),
+                          " / ",$string($item.resource.target.averageValue)])) :
+                    $item.type = "Pods" ? 
+                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.pods.metric.name = $item.pods.metric.name}) ? 
+                          $single(status.currentMetrics, function($v, $i, $a) {$v.pods.metric.name = $item.pods.metric.name}).pods.current.averageValue : "-"),
+                          " / ",$string($item.pods.target.averageValue)]) :
+                    $item.type = "Object" ? 
+                      ($item.object.target.type = "AverageValue" ? 
+                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.object.metric.name = $item.object.metric.name}) ? 
+                          $single(status.currentMetrics, function($v, $i, $a) {$v.object.metric.name = $item.object.metric.name}).object.current.averageValue : "-"),
+                          " / ",$string($item.object.target.averageValue)]):
+                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.object.metric.name = $item.object.metric.name}) ? 
+                          $single(status.currentMetrics, function($v, $i, $a) {$v.object.metric.name = $item.object.metric.name}).object.current.value : "-"),
+                          " / ",$string($item.object.target.value)])) :
+                    ($item.external.target.type = "AverageValue" ? 
+                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.external.metric.name = $item.external.metric.name}) ? 
+                          $single(status.currentMetrics, function($v, $i, $a) {$v.external.metric.name = $item.external.metric.name}).external.current.averageValue : "-"),
+                          " / ",$string($item.external.target.averageValue)]):
+                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.external.metric.name = $item.external.metric.name}) ? 
+                          $single(status.currentMetrics, function($v, $i, $a) {$v.external.metric.name = $item.external.metric.name}).external.current.value : "-"),
+                          " / ",$string($item.external.target.value)]))'
       - widget: EventList
         filter: $matchEvents($item, $root.kind, $root.metadata.name)
         name: Events
