@@ -133,6 +133,7 @@ data:
     - widget: SimpleList
       path: spec.clusterIPs
       name: spec.clusterIPs
+      defaultexpanded: true
       children:
         - path: '[]'
       placeholder: spec.clusterIPs.placeholder
@@ -159,6 +160,7 @@ data:
     - widget: SimpleList
       path: spec.loadBalancerSourceRanges
       name: spec.loadBalancerSourceRanges
+      visibility: "$root.spec.type = 'LoadBalancer'"
       children:
         - path: '[]'
       placeholder: spec.loadBalancerSourceRanges.placeholder
@@ -167,11 +169,11 @@ data:
       placeholder: spec.loadBalancerClass.placeholder
       visibility: "$root.spec.type = 'LoadBalancer'"
     - path: spec.externalName
-      name: loadBalancer Class
+      name: spec.externalName
       placeholder: spec.externalName.placeholder
       visibility: "$root.spec.type = 'ExternalName'"
     - path: spec.loadBalancerIP
-      name: loadBalancer IP
+      name: spec.loadBalancerIP
       placeholder: spec.loadBalancerIP.placeholder
       visibility: "$root.spec.type = 'LoadBalancer'"
     - path: spec.healthCheckNodePort
@@ -183,6 +185,13 @@ data:
       visibility: "$root.spec.type = 'LoadBalancer'"
       subscribe:
         server: "$root.spec.type = 'LoadBalancer'"
+    - path: spec.publishNotReadyAddresses
+      name: spec.publishNotReadyAddresses        
+    - path: spec.sessionAffinityConfig.clientIP.timeoutSeconds
+      visibility: "$root.spec.sessionAffinity = 'ClientIP'"
+      name: Timeout seconds
+      placeholder: enter timeout seconds
+      inputInfo: Default value is 10800(for 3 hours)
 
   list: |-
     - name: Controlled By
@@ -278,10 +287,11 @@ data:
       spec.loadBalancerSourceRanges.placeholder: Enter LoadBalancer Source Ranges
       spec.loadBalancerClass: LoadBalancer Class
       spec.loadBalancerClass.placeholder: Enter LoadBalancer Class
-      spec.externalName: external Name
-      spec.externalName.placeholder: Enter external Name
+      spec.externalName: External Name
+      spec.externalName.placeholder: Enter external name
       spec.loadBalancerIP: LoadBalancer IP
       spec.loadBalancerIP.placeholder: Enter LoadBalancer IP
-      spec.healthCheckNodePort: healthcheck nodePort
-      spec.healthCheckNodePort.placeholder: Enter healthcheck nodePort
-      spec.allocateLoadBalancerNodePorts: allocate LoadBalancer NodePorts
+      spec.healthCheckNodePort: Health Check NodePort
+      spec.healthCheckNodePort.placeholder: Enter Health Check NodePort
+      spec.allocateLoadBalancerNodePorts: Allocate LoadBalancer NodePorts
+      spec.publishNotReadyAddresses: Publish not Ready Addresses
