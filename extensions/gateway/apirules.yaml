@@ -252,7 +252,7 @@ data:
                   name: accessStrategies.required_scope
                   simple: true
                   widget: SimpleList
-                  visibility: '$item.handler="oauth2_introspection"'
+                  visibility: '$item.handler="oauth2_introspection" or $item.handler="oauth2_client_credentials" or $item.handler="oauth2_client_credentials"'
                   children:
                     - path: '[]'
                       simple: true
