@@ -73,7 +73,6 @@ data:
     - path: spec.type
       name: spec.type
       placeholder: Enter Type 
-      trigger: [server]   
     - widget: GenericList
       path: spec.ports
       simple: true
@@ -154,6 +153,7 @@ data:
     - path: spec.externalTrafficPolicy
       name: spec.externalTrafficPolicy
       placeholder: spec.externalTrafficPolicy.placeholder
+      visibility: "$root.spec.type = 'NodePort' or $root.spec.type = 'LoadBalancer'"
     - path: spec.internalTrafficPolicy
       name: spec.internalTrafficPolicy
       placeholder: spec.internalTrafficPolicy.placeholder
@@ -183,10 +183,8 @@ data:
     - path: spec.allocateLoadBalancerNodePorts
       name: spec.allocateLoadBalancerNodePorts
       visibility: "$root.spec.type = 'LoadBalancer'"
-      subscribe:
-        server: "$root.spec.type = 'LoadBalancer'"
     - path: spec.publishNotReadyAddresses
-      name: spec.publishNotReadyAddresses        
+      name: spec.publishNotReadyAddresses
     - path: spec.sessionAffinityConfig.clientIP.timeoutSeconds
       visibility: "$root.spec.sessionAffinity = 'ClientIP'"
       name: Timeout seconds
@@ -236,7 +234,7 @@ data:
     resource:
       kind: Service
       version: v1
-    urlPath: services-ex
+    urlPath: services
     scope: namespace
     name: Services
     category: Discovery and Network
@@ -248,7 +246,6 @@ data:
           selector: 
             app: ''
           type: 'ClusterIP'
-          allocateLoadBalancerNodePorts: true
   translations: |-
     en:
       spec.selector: Selectors
