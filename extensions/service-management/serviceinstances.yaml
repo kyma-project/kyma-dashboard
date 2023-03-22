@@ -26,7 +26,8 @@ data:
             - Provisioned
           informative: 
             - NotProvisioned
-          negative: "$item.reason = CreateFailed"
+          negative:
+            - CreateFailed
     body:
       - name: serviceinstancedata
         widget: Panel
@@ -57,8 +58,8 @@ data:
     - path: spec.externalName
       placeholder: spec.externalNamePlaceholder
     - path: spec.parameters
-      widget: KeyValuePair
-      defaultExpanded: false
+      widget: CodeEditor
+      language: "'JSON'"
   general: |
     resource:
       kind: ServiceInstance
@@ -87,7 +88,8 @@ data:
           - Provisioned
         informative: 
           - NotProvisioned
-        negative: "$item.reason = CreateFailed"
+        negative: 
+          - CreateFailed
   translations: |
     en:
       metadata.annotations: Annotations
