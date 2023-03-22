@@ -77,9 +77,8 @@ data:
                           $single(status.currentMetrics, function($v, $i, $a) {$v.external.metric.name = $item.external.metric.name}).external.current.value : "-"),
                           " / ",$string($item.external.target.value)]))'
       - widget: EventList
-        filter: $matchEvents($item, $root.kind, $root.metadata.name)
         name: Events
-        defaultType: information
+        filter: "$matchEvents($$, $root.kind, $root.metadata.name)"
         hideInvolvedObjects: true
   form: |-
     - name: minReplicas
