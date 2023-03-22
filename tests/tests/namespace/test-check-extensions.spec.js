@@ -77,5 +77,14 @@ context('Test Namespace Extensions view', () => {
     it('Test Services', () => {
       cy.checkExtension('Services');
     });
+
+    it('Test Subscriptions', () => {
+      cy.checkExtension('Subscriptions');
+    });
+
+    it('Test OAuth2 Clients', () => {
+      cy.checkExtension('OAuth2 Clients');
+
+    });
   });
 });

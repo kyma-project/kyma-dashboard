@@ -15,6 +15,9 @@
     "source": "extensions/kyma"
   },
   {
+    "source": "extensions/service-management"
+  },
+  {
     "source": "extensions/configuration"
   },
   {
