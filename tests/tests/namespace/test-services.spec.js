@@ -37,7 +37,7 @@ context('Test Services', () => {
       .contains('Add')
       .click({ force: true });
 
-    cy.get('[placeholder="enter Ports Name"]:visible').type(SERVICE_PORT_NAME);
+    cy.get('[placeholder="Enter Ports Name"]:visible').type(SERVICE_PORT_NAME);
 
     cy.get('[placeholder="Enter Target Port"]:visible')
       .clear()
