@@ -20,11 +20,13 @@ context('Test Services', () => {
     cy.contains('Create Service').click();
 
     cy.get('[arialabel="Service name"]:visible').type(SERVICE_NAME);
+
     cy.get('[arialabel="Delete"]:visible').click();
 
     cy.get('[placeholder="Enter key"]:visible')
       .click()
       .type(SERVICE_KEY);
+
     cy.get('[index="-1"]:visible')
       .click()
       .type(SERVICE_VALUE);
