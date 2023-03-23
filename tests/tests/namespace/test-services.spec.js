@@ -1,5 +1,5 @@
 const SERVICE_NAME = 'service';
-const SERVICE_KEY = `app`; //SERVICE
+const SERVICE_KEY = `app`;
 const SERVICE_VALUE = 'proxy';
 const SERVICE_TARGET_PORT = 'http-web-svc';
 const SERVICE_PORT_NAME = 'service-port';

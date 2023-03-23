@@ -83,11 +83,11 @@ data:
             - path: name
               simple: true
               name: Ports Name
-              placeholder: enter Ports Name
+              placeholder: Enter Ports Name
             - path: protocol
               simple: true
               name: Protocol
-              placeholder: Enter the Protocol
+              placeholder: Enter Protocol
               widget: Text
               required: true
             - path: port
@@ -163,7 +163,7 @@ data:
       visibility: "$root.spec.type = 'LoadBalancer'"
       children:
         - path: '[]'
-      placeholder: Enter LoadBalancer Source Ranges
+      placeholder: Enter LoadBalancer source ranges
     - path: spec.loadBalancerClass
       name: LoadBalancer Class
       placeholder: Enter LoadBalancer Class
@@ -184,7 +184,7 @@ data:
       name: Allocate LoadBalancer NodePorts
       visibility: "$root.spec.type = 'LoadBalancer'"
     - path: spec.publishNotReadyAddresses
-      name: Publish not Ready Addresses
+      name: Publish Not Ready Addresses
     - path: spec.sessionAffinityConfig.clientIP.timeoutSeconds
       visibility: "$root.spec.sessionAffinity = 'ClientIP'"
       name: Timeout seconds
