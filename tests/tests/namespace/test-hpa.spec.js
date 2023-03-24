@@ -4,6 +4,7 @@ import 'cypress-file-upload';
 const HPA_NAME = 'test-hpa';
 const DOCKER_IMAGE = 'nginx';
 const DEPLOYEMENT_NAME = 'no-pod';
+const MIN_REPLICAS = 2;
 const MAX_REPLICAS = 3;
 const SCALE_TARGET_REF_KIND = 'Deployment';
 const SCALE_TARGET_REF_NAME = 'no-pod';
@@ -83,5 +84,25 @@ context('Test HPA', () => {
     cy.url().should('match', /deployments/);
 
     cy.contains(HPA_NAME).should('be.visible');
+  });
+
+  it('Check Edit HPA', () => {
+    cy.get('[role=row]')
+      .contains(HPA_NAME)
+      .click();
+
+    cy.contains('Edit').click();
+
+    cy.get('[data-testid="spec.minReplicas"]:visible')
+      .clear()
+      .type(MIN_REPLICAS);
+
+    cy.get('[role="dialog"]')
+      .contains('button', 'Update')
+      .click();
+
+    cy.contains('Min Replicas')
+      .parent()
+      .contains(MIN_REPLICAS);
   });
 });
