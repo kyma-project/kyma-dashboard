@@ -33,6 +33,48 @@ data:
               name: spec.scaleTargetRef.name
               namespace: $root.metadata.namespace
               kind: spec.scaleTargetRef.kind
+      - widget: Columns
+        children:
+          - name: Scale-down behavior
+            source: spec.behavior.scaleDown
+            widget: Panel
+            visibility: $exists(spec.behavior.scaleDown)
+            children:
+              - name: Stabilization window (seconds)
+                source: stabilizationWindowSeconds
+              - name: Select policy
+                source: selectPolicy
+              - name: Policies
+                source: policies
+                widget: Table
+                showHeader: true
+                children:
+                  - name: Type
+                    source: type
+                  - name: Value
+                    source: value
+                  - name: Period (seconds)
+                    source: periodSeconds
+          - name: Scale-up behavior
+            source: spec.behavior.scaleUp
+            visibility: $exists(spec.behavior.scaleUp)
+            widget: Panel
+            children:
+              - name: Stabilization window (seconds)
+                source: stabilizationWindowSeconds
+              - name: Select policy
+                source: selectPolicy
+              - name: Policies
+                source: policies
+                widget: Table
+                showHeader: true
+                children:
+                  - name: Type
+                    source: type
+                  - name: Value
+                    source: value
+                  - name: Period (seconds)
+                    source: periodSeconds
       - name: Metrics
         source: spec.metrics
         widget: Table
