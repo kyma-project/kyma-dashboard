@@ -3,6 +3,9 @@
     "source": "extensions/applicationconnector"
   },
   {
+    "source": "extensions/discovery-and-network"
+  },
+  {
     "source": "extensions/serverless"
   },
   {

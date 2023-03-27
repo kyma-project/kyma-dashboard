@@ -189,11 +189,9 @@ context('Test API Rules in the Function details view', () => {
       .type('https://trusted.com');
 
     // > Methods
-    cy.get('[data-testid="spec.rules.1.methods.GET"]:visible')
-      .click();
+    cy.get('[data-testid="spec.rules.1.methods.GET"]:visible').click();
 
-    cy.get('[data-testid="spec.rules.1.methods.POST"]:visible')
-      .click();
+    cy.get('[data-testid="spec.rules.1.methods.POST"]:visible').click();
 
     cy.get('[role=dialog]')
       .contains('button', 'Update')

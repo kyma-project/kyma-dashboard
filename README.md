@@ -16,8 +16,8 @@ To install dependencies, run the `npm install` command.
 
 ## Usage
 
-You can run Kyma Dashboard locally with configuration of one of following enviroments: . First prepare extensions for the environment you wish to access: `dev`, `stage` or `prod`. 
-Then build docker image for the same `env`. 
+You can run Kyma Dashboard locally with configuration of one of following enviroments: . First prepare extensions for the environment you wish to access: `dev`, `stage` or `prod`.
+Then build docker image for the same `env`.
 Finally run coresponding docker image.
 
 ```bash
@@ -29,6 +29,7 @@ docker run --rm -it -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --pid=host --nam
 ```
 
 To run Kyma Dashboard from a PR run this command
+
 ```bash
 docker run --rm -it -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --pid=host --name kyma-dashboard eu.gcr.io/kyma-project/kyma-dashboard-local-dev:PR-$PR_NUMBER
 ```
