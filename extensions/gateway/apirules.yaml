@@ -143,7 +143,7 @@ data:
       name: gateway
       widget: ResourceRef
       defaultExpanded: true
-      visibility: $exists($relatedGateways().items[0].metadata.name)
+      visibility: $canI('networking.istio.io/v1beta1', 'Gateway')
       resource:
         kind: Gateway
         group: networking.istio.io
@@ -159,7 +159,7 @@ data:
       required: true
       path: spec.gateway
       name: gateway
-      visibility: "$not($exists($relatedGateways().items[0].metadata.name))"
+      visibility: $not($canI('networking.istio.io/v1beta1', 'Gateway'))
       inputInfo: inputInfo.gateway
       overwrite: false
       trigger: [host]
@@ -252,7 +252,7 @@ data:
                   name: accessStrategies.required_scope
                   simple: true
                   widget: SimpleList
-                  visibility: '$item.handler="oauth2_introspection"'
+                  visibility: '$item.handler="oauth2_introspection" or $item.handler="oauth2_client_credentials" or $item.handler="jwt"'
                   children:
                     - path: '[]'
                       simple: true
