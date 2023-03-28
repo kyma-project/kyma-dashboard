@@ -74,7 +74,6 @@ data:
       path: spec.selector
       simple: true
       name: Selectors
-      placeholder: spec.selector
     - path: spec.type
       name: Type
       placeholder: Enter Type
@@ -86,10 +85,10 @@ data:
           simple: true
           children:
             - path: name
-              widget: Name
               simple: true
               name: Ports Name
               placeholder: Enter Ports Name
+              widget: Name
             - path: protocol
               simple: true
               name: Protocol

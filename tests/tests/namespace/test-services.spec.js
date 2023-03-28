@@ -2,9 +2,8 @@ const SERVICE_NAME = 'service';
 const SERVICE_KEY = `app`;
 const SERVICE_VALUE = 'proxy';
 const SERVICE_TARGET_PORT = 'http-web-svc';
-const SERVICE_PORT_NAME = 'service-port';
 const SERVICE_DIFF_TYPE = 'NodePort';
-const SERVICE_PORT = '80:http-web-svc/TCP';
+const SERVICE_PORT = '(80) --> (http-web-svc)';
 
 context('Test Services', () => {
   Cypress.skipAfterFail();
@@ -36,8 +35,6 @@ context('Test Services', () => {
     )
       .contains('Add')
       .click({ force: true });
-
-    cy.get('[placeholder="Enter Ports Name"]:visible').type(SERVICE_PORT_NAME);
 
     cy.get('[placeholder="Enter Target Port"]:visible')
       .clear()
