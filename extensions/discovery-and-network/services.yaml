@@ -13,26 +13,30 @@ data:
       - name: Controlled by
         source: metadata.ownerReferences
         widget: ControlledBy
-      - name: Type
+      - name: Service Type
         source: spec.type
       - name: Cluster IP
         source: spec.clusterIP
       - name: Ports
         source: >-
           $count(spec.ports) ? $map(spec.ports, function($value) {$value.port =
-          $value.targetPort ? [$string($value.port), '/', $string($value.protocol)]
-          ~> $join('') : [$string($value.port), ':', $string($value.targetPort),
-          '/', $string($value.protocol)] ~> $join('') }) ~> $join(', ')  : '-'
+          $value.targetPort ? [$string($value.port), '/', $string($value.protocol)] ~>
+          $join('') : [ $string($value.name), ' (', $string($value.port), ') --> (', $string($value.targetPort), ')'] ~> $join('') }) ~> $join(', ')  : '-'
       - name: External IPs
         source: >-
           $count(status.loadBalancer.ingress) ? $map(status.loadBalancer.ingress,
           function($value) {$value.ip ? $value.ip : $value.hostname}) ~> $join(',
           '): ($count($item.spec.externalIPs) ? $item.spec.externalIPs ~> $join(',
           '): '-')
+      - name: Selectors
+        source: spec.selector
+        widget: Labels
+        visibility: spec.selector
     body:
       - widget: ResourceList
         source: $subscriptions()
-        name: Subscription
+        name: Subscriptions
+        disableCreate: true
         children:
           - source: metadata.name
             name: Name
@@ -43,7 +47,7 @@ data:
               namespace: $root.metadata.namespace
               kind: kind
           - source: spec.filter.filters[0].eventType.value
-            name: First event type
+            name: Event Types
             sort:
               default: true
               compareFunction: $compareStrings($first, $second)
@@ -58,7 +62,8 @@ data:
                 - 'false'
       - widget: ResourceList
         source: $apirules()
-        name: API Rule
+        name: API Rules
+        disableCreate: true
         sort:
           - source: spec.service.host
             default: true
@@ -81,6 +86,7 @@ data:
           simple: true
           children:
             - path: name
+              widget: Name
               simple: true
               name: Ports Name
               placeholder: Enter Ports Name
@@ -105,10 +111,15 @@ data:
             - path: nodePort
               simple: true
               name: Node Port
+              visibility: "$root.spec.type != 'ClusterIP'"
               placeholder: Enter Node Port
             - path: appProtocol
               simple: true
               name: Application Protocol
+              enum:
+              - http
+              - tcp
+              - gRPC
               placeholder: Enter Application Protocol
       template:
         protocol: 'TCP'
@@ -117,6 +128,9 @@ data:
     - widget: SimpleList
       path: spec.ipFamilies
       name: IP Family
+      enum:
+      - IPv6
+      - IPv4
       visibility: "$root.spec.type != 'ExternalName'"
       children:
         - path: '[]'
@@ -206,8 +220,7 @@ data:
       source: >-
         $count(spec.ports) ? $map(spec.ports, function($value) {$value.port =
         $value.targetPort ? [$string($value.port), '/', $string($value.protocol)] ~>
-        $join('') : [$string($value.port), ':', $string($value.targetPort), '/',
-        $string($value.protocol)] ~> $join('') }) ~> $join(', ')  : '-'
+        $join('') : [ $string($value.name), ' (', $string($value.port), ') --> (', $string($value.targetPort), ')'] ~> $join('') }) ~> $join(', ')  : '-'
     - name: External IPs
       source: >-
         $count(status.loadBalancer.ingress) ? $map(status.loadBalancer.ingress,
@@ -237,6 +250,9 @@ data:
     scope: namespace
     name: Services
     category: Discovery and Network
+    description: >-
+      {{[Services](https://kubernetes.io/docs/concepts/services-networking/service/)}}
+       enables access to an application running on a set of Pods.
   presets: |-
     - name: template
       default: true
