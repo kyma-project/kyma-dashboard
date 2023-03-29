@@ -43,11 +43,11 @@ data:
           - source: $item.channel
             name: Channel
           - name: Version
-            source: '$parent.status.modules ? $filter($parent.status.modules, function($p){$p.name=$item.name}).version : "-"'
+            source: '$parent.status.modules ? $filter($parent.status.modules, function($p){$p.name=name and $p.channel=channel}).version : "-"'
             widget: Text
           - name: State
             widget: Badge
-            source: '$filter($parent.status.modules, function($p){$p.name=name}).state'
+            source: '$filter($parent.status.modules, function($p){$p.name=name and $p.channel=channel}).state'
   form: |
     - simple: true
       path: spec.channel
@@ -139,8 +139,8 @@ data:
               source: channel
               widget: Text
             - name: Version
-              source: '$parent.status.modules ? $filter($parent.status.modules, function($p){$p.name=name}).version : "-"'
+              source: '$parent.status.modules ? $filter($parent.status.modules, function($p){$p.name=name and $p.channel=channel}).version : "-"'
               widget: Text
             - name: State
               widget: Badge
-              source: '$filter($parent.status.modules, function($p){$p.name=name}).state'
+              source: '$filter($parent.status.modules, function($p){$p.name=name and $p.channel=channel}).state'
