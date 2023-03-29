@@ -48,12 +48,12 @@ context('Test HPA', () => {
       .clear()
       .type(MAX_REPLICAS);
 
+    cy.get('[data-testid="spec.scaleTargetRef.kind"]:visible')
+      .type(SCALE_TARGET_REF_KIND)
+      .click();
+
     cy.get('[data-testid="spec.scaleTargetRef.name"]:visible').type(
       SCALE_TARGET_REF_NAME,
-    );
-
-    cy.get('[data-testid="spec.scaleTargetRef.kind"]:visible').type(
-      SCALE_TARGET_REF_KIND,
     );
 
     cy.get('[role="dialog"]')
