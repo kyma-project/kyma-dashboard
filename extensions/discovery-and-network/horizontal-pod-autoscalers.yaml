@@ -188,7 +188,6 @@ data:
             - Deployment
             - ReplicaSet
             - StatefulSet
-            - ReplicationController
         - simple: true
           required: true
           path: name
@@ -247,12 +246,7 @@ data:
         - simple: true
           required: true
           path: name
-          widget: Resource
-          resource:
-            scope: namespace
-            kind: ReplicationController
-            version: v1
-          visibility: spec.scaleTargetRef.kind = "ReplicationController"
+          visibility: '$not(spec.scaleTargetRef.kind = "Pod") and $not(spec.scaleTargetRef.kind = "Deployment") and $not(spec.scaleTargetRef.kind = "ReplicaSet") and $not(spec.scaleTargetRef.kind = "StatefulSet")'
           overwrite: false
         - name: API version
           simple: true
