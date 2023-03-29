@@ -8,7 +8,21 @@ metadata:
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
-  dataSources: ''
+  dataSources: |-
+    myDeployments:
+      resource:
+        kind: Deployment
+        group: apps
+        version: v1
+    myPods:
+      resource: 
+        kind: Pod
+        version: v1
+    myReplicaSets:
+      resource: 
+        kind: ReplicaSet
+        group: apps
+        version: v1
   details: |-
     header:
       - name: Status
@@ -188,9 +202,73 @@ data:
             - Pod
             - Deployment
             - ReplicaSet
+            - StatefulSet
+            - ReplicationController
         - simple: true
           required: true
           path: name
+          widget: Resource
+          resource:
+            scope: namespace
+            kind: Pod
+            version: v1
+          visibility: spec.scaleTargetRef.kind = "Pod"
+          overwrite: false
+        - simple: true
+          var: separator
+          value: ""
+        - simple: true
+          required: true
+          path: name
+          widget: Resource
+          resource:
+            scope: namespace
+            kind: Deployment
+            group: apps
+            version: v1
+          visibility: spec.scaleTargetRef.kind = "Deployment"
+          overwrite: false
+        - simple: true
+          var: separator
+          value: ""
+        - simple: true
+          required: true
+          path: name
+          widget: Resource
+          resource:
+            scope: namespace
+            kind: ReplicaSet
+            group: apps
+            version: v1
+          visibility: spec.scaleTargetRef.kind = "ReplicaSet"
+          overwrite: false
+        - simple: true
+          var: separator
+          value: ""
+        - simple: true
+          required: true
+          path: name
+          widget: Resource
+          resource:
+            scope: namespace
+            kind: StatefulSet
+            group: apps
+            version: v1
+          visibility: spec.scaleTargetRef.kind = "StatefulSet"
+          overwrite: false
+        - simple: true
+          var: separator
+          value: ""
+        - simple: true
+          required: true
+          path: name
+          widget: Resource
+          resource:
+            scope: namespace
+            kind: ReplicationController
+            version: v1
+          visibility: spec.scaleTargetRef.kind = "ReplicationController"
+          overwrite: false
         - name: API version
           simple: true
           path: apiVersion
