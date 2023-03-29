@@ -8,21 +8,6 @@ metadata:
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
-  dataSources: |-
-    myDeployments:
-      resource:
-        kind: Deployment
-        group: apps
-        version: v1
-    myPods:
-      resource: 
-        kind: Pod
-        version: v1
-    myReplicaSets:
-      resource: 
-        kind: ReplicaSet
-        group: apps
-        version: v1
   details: |-
     header:
       - name: Status
