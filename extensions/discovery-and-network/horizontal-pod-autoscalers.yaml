@@ -92,30 +92,30 @@ data:
           - name: Current Metric
             source: '$item.type = "Resource" ?
                       ($item.resource.target.type = "Utilization" ? 
-                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.resource.name = $item.resource.name}) ? 
-                          ($single(status.currentMetrics, function($v, $i, $a) {$v.resource.name = $item.resource.name}).resource.current.averageUtilization & "%") : "-"),
+                        $join([$string($not($root.status.currentMetrics = null) ? 
+                          ($single($root.status.currentMetrics, function($v, $i, $a) {$v.resource.name = $item.resource.name}).resource.current.averageUtilization & "%") : "-"),
                           " / ",$string($item.resource.target.averageUtilization),"%"]):
-                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.resource.name = $item.resource.name}) ? 
-                          $single(status.currentMetrics, function($v, $i, $a) {$v.resource.name = $item.resource.name}).resource.current.averageValue : "-"),
+                        $join([$string($not($root.status.currentMetrics = null) ? 
+                          $single($root.status.currentMetrics, function($v, $i, $a) {$v.resource.name = $item.resource.name}).resource.current.averageValue : "-"),
                           " / ",$string($item.resource.target.averageValue)])) :
                     $item.type = "Pods" ? 
-                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.pods.metric.name = $item.pods.metric.name}) ? 
-                          $single(status.currentMetrics, function($v, $i, $a) {$v.pods.metric.name = $item.pods.metric.name}).pods.current.averageValue : "-"),
+                        $join([$string($not($root.status.currentMetrics = null) ? 
+                          $single($root.status.currentMetrics, function($v, $i, $a) {$v.pods.metric.name = $item.pods.metric.name}).pods.current.averageValue : "-"),
                           " / ",$string($item.pods.target.averageValue)]) :
                     $item.type = "Object" ? 
                       ($item.object.target.type = "AverageValue" ? 
-                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.object.metric.name = $item.object.metric.name}) ? 
-                          $single(status.currentMetrics, function($v, $i, $a) {$v.object.metric.name = $item.object.metric.name}).object.current.averageValue : "-"),
+                        $join([$string($not($root.status.currentMetrics = null) ? 
+                          $single($root.status.currentMetrics, function($v, $i, $a) {$v.object.metric.name = $item.object.metric.name}).object.current.averageValue : "-"),
                           " / ",$string($item.object.target.averageValue)]):
-                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.object.metric.name = $item.object.metric.name}) ? 
-                          $single(status.currentMetrics, function($v, $i, $a) {$v.object.metric.name = $item.object.metric.name}).object.current.value : "-"),
+                        $join([$string($not($root.status.currentMetrics = null) ? 
+                          $single($root.status.currentMetrics, function($v, $i, $a) {$v.object.metric.name = $item.object.metric.name}).object.current.value : "-"),
                           " / ",$string($item.object.target.value)])) :
                     ($item.external.target.type = "AverageValue" ? 
-                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.external.metric.name = $item.external.metric.name}) ? 
-                          $single(status.currentMetrics, function($v, $i, $a) {$v.external.metric.name = $item.external.metric.name}).external.current.averageValue : "-"),
+                        $join([$string($not($root.status.currentMetrics = null) ? 
+                          $single($root.status.currentMetrics, function($v, $i, $a) {$v.external.metric.name = $item.external.metric.name}).external.current.averageValue : "-"),
                           " / ",$string($item.external.target.averageValue)]):
-                        $join([$string($single(status.currentMetrics, function($v, $i, $a) {$v.external.metric.name = $item.external.metric.name}) ? 
-                          $single(status.currentMetrics, function($v, $i, $a) {$v.external.metric.name = $item.external.metric.name}).external.current.value : "-"),
+                        $join([$string($not($root.status.currentMetrics = null) ? 
+                          $single($root.status.currentMetrics, function($v, $i, $a) {$v.external.metric.name = $item.external.metric.name}).external.current.value : "-"),
                           " / ",$string($item.external.target.value)]))'
       - widget: EventList
         name: Events
