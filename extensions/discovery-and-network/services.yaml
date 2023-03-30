@@ -33,6 +33,23 @@ data:
         widget: Labels
         visibility: spec.selector
     body:
+      - widget: Panel
+        name: Selector
+        disablePadding: true
+        children:
+          - source: $podSelector()
+            widget: ResourceList
+            disableCreate: true
+            visibility: $exists($root.spec.selector) and $boolean($root.spec.selector)
+          - source: spec.selector
+            widget: Panel
+            name: Matches all Pods in the Namespace
+            visibility: $not($exists($value)) or $not($boolean($value))
+        header:
+          - source: spec.selector
+            widget: Labels
+            name: Selector
+            visibility: $exists($value) and $boolean($value)
       - widget: ResourceList
         source: $subscriptions()
         name: Subscriptions
@@ -233,6 +250,11 @@ data:
         group: gateway.kyma-project.io
         version: v1alpha1
       filter: $item.spec.service.name = $root.metadata.name
+    podSelector:
+      resource:
+        kind: Pod
+        version: v1
+      filter: $matchByLabelSelector($item, $root.spec.selector)
     subscriptions:
       resource:
         kind: Subscription
