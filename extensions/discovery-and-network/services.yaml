@@ -28,28 +28,7 @@ data:
           function($value) {$value.ip ? $value.ip : $value.hostname}) ~> $join(',
           '): ($count($item.spec.externalIPs) ? $item.spec.externalIPs ~> $join(',
           '): '-')
-      - name: Selectors
-        source: spec.selector
-        widget: Labels
-        visibility: spec.selector
     body:
-      - widget: Panel
-        name: Selector
-        disablePadding: true
-        children:
-          - source: $podSelector()
-            widget: ResourceList
-            disableCreate: true
-            visibility: $exists($root.spec.selector) and $boolean($root.spec.selector)
-          - source: spec.selector
-            widget: Panel
-            name: Matches all Pods in the Namespace
-            visibility: $not($exists($value)) or $not($boolean($value))
-        header:
-          - source: spec.selector
-            widget: Labels
-            name: Selector
-            visibility: $exists($value) and $boolean($value)
       - widget: ResourceList
         source: $subscriptions()
         name: Subscriptions
@@ -86,6 +65,23 @@ data:
             default: true
           - source: spec.service.port
             compareFunction: $first - $second
+      - widget: Panel
+        name: Selector
+        disablePadding: true
+        children:
+          - source: $podSelector()
+            widget: ResourceList
+            disableCreate: true
+            visibility: $exists($root.spec.selector) and $boolean($root.spec.selector)
+          - source: spec.selector
+            widget: Panel
+            name: Matches all Pods in the Namespace
+            visibility: $not($exists($value)) or $not($boolean($value))
+        header:
+          - source: spec.selector
+            widget: Labels
+            name: Selector
+            visibility: $exists($value) and $boolean($value)
   form: |-
     - widget: KeyValuePair
       path: spec.selector
