@@ -78,6 +78,10 @@ context('Test Namespace Extensions view', () => {
       cy.checkExtension('Issuers');
     });
 
+    it('Test Services', () => {
+      cy.checkExtension('Services');
+    });
+
     it('Test Subscriptions', () => {
       cy.checkExtension('Subscriptions');
     });
