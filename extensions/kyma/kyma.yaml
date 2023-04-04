@@ -12,7 +12,7 @@ data:
     moduleTemplates:
       resource:
         kind: ModuleTemplate
-        namespace: kyma-system
+        namespace: null
         group: operator.kyma-project.io
         version: v1alpha1
   details: |
@@ -73,7 +73,7 @@ data:
     resource:
       kind: Kyma
       group: operator.kyma-project.io
-      version: v1alpha1
+      version: v1beta1
     name: Kyma
     category: Kyma
     urlPath: kymas
