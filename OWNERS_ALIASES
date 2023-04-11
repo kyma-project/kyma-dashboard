@@ -1,11 +1,9 @@
 aliases:
   default-reviewers:
-    - qbalukom
     - akucharska
     - valentinvieriu
     - mrCherry97
   default-approvers:
-    - qbalukom
     - akucharska
     - valentinvieriu
     - mrCherry97
