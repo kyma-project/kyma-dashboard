@@ -89,6 +89,8 @@ config:
       isEnabled: true
     EXTENSIBILITY_INJECTIONS:
       isEnabled: false
+    EXTENSIBILITY_WIZARD:
+      isEnabled: false
     EVENTING:
       isEnabled: true
       selectors:
