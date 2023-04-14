@@ -87,6 +87,8 @@ config:
       isEnabled: true
     EXTENSIBILITY_INJECTIONS:
       isEnabled: false
+    EXTENSIBILITY_WIZARD:
+      isEnabled: false
     TRACKING:
       isEnabled: false
     EVENTING:
