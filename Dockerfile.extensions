@@ -15,3 +15,5 @@ RUN npm ci
 
 RUN ENV=${ENV} npm run prepare-extensions
 RUN ENV=${ENV} npm run pack-extensions
+RUN ENV=${ENV} npm run prepare-statics
+RUN ENV=${ENV} npm run pack-statics

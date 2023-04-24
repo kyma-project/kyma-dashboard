@@ -132,6 +132,7 @@ dist
 
 dist
 extensions-local
+statics-local
 
 .DS_Store
 

@@ -1,3 +1,3 @@
-export WEB_IMAGE=v20230413-bcaef27b
+export WEB_IMAGE=PR-2443
 export BACKEND_IMAGE=5bdfdcc0
-export LOCAL_IMAGE=v20230413-bcaef27b
+export LOCAL_IMAGE=PR-2443
