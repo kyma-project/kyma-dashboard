@@ -1,7 +1,7 @@
 FROM eu.gcr.io/kyma-project/busola-web:${WEB_IMAGE}
 
 COPY  --from=extensions-local /build/environments/${ENV}/dist/extensions.yaml /app/core-ui/extensions/extensions.yaml
-COPY  --from=extensions-local /build/environments/${ENV}/dist/statics.yaml /app/core-ui/extensions/statics.yaml
+# COPY  --from=extensions-local /build/environments/${ENV}/dist/statics.yaml /app/core-ui/extensions/statics.yaml
 COPY  ./environments/${ENV}/config.yaml /app/core-ui/config/config.yaml
 
 EXPOSE 8080
