@@ -8,6 +8,8 @@
     "prepare-extensions": "gulp clean-extensions && gulp get-extensions",
     "pack-statics": "gulp pack-statics",
     "prepare-statics": "gulp clean-statics && gulp get-statics",
+    "pack-wizards": "gulp pack-wizards",
+    "prepare-wizards": "gulp clean-wizards && gulp get-wizards",
     "lint-fix": "prettier --config ./.prettierrc --write '**/*.{ts,tsx,js,jsx,json,html,css,yaml,md}' --ignore-path ./.prettierignore"
   },
   "devDependencies": {
