@@ -106,3 +106,8 @@ config:
       kubeconfig: null
     ISTIO:
       isEnabled: true
+    RESOURCE_VALIDATION:
+      isEnabled: true
+      config:
+        policies:
+          - Default
