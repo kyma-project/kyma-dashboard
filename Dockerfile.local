@@ -1,4 +1,4 @@
-FROM eu.gcr.io/kyma-project/busola:${LOCAL_IMAGE}
+FROM europe-docker.pkg.dev/kyma-project/prod/busola:${LOCAL_IMAGE}
 
 COPY  --from=extensions-local /build/environments/${ENV}/dist/extensions.yaml /app/core-ui/extensions/extensions.yaml
 COPY  ./environments/${ENV}/config.yaml /app/core-ui/config/config.yaml
