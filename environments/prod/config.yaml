@@ -104,7 +104,7 @@ config:
     ISTIO:
       isEnabled: true
     RESOURCE_VALIDATION:
-      isEnabled: true
+      isEnabled: false
       config:
         policies:
           - Default
