@@ -156,3 +156,33 @@ gulp.task('pack-statics', () => {
     )
     .pipe(gulp.dest(`environments/${env}/dist`));
 });
+
+gulp.task('clean-wizards', () => {
+  const env = process.env.ENV;
+  return gulp
+    .src(`environments/${env}/extensions/wizards-local`, {
+      read: false,
+      allowEmpty: true,
+    })
+    .pipe(clean());
+});
+
+gulp.task('get-wizards', () => {
+  return gulp
+    .src(`environments/${process.env.ENV}/wizards.json`)
+    .pipe(loadExtensions)
+    .pipe(gulp.dest(`environments/${process.env.ENV}/wizards-local/-/-`)); // gulp strips the 2 last path components?
+});
+
+gulp.task('pack-wizards', () => {
+  const env = process.env.ENV;
+  return gulp
+    .src(`environments/${env}/wizards-local/**/*.yaml`)
+    .pipe(loadPreparedExtensions)
+    .pipe(
+      concat('wizards.yaml', {
+        newLine: '---\n',
+      }),
+    )
+    .pipe(gulp.dest(`environments/${env}/dist`));
+});
