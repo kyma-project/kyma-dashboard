@@ -117,6 +117,7 @@ data:
     - name: Kyma
       widget: Panel
       source: $
+      visibility: $exists($item.spec.modules.channel)
       targets:
         - slot: top
           location: ClusterOverview
