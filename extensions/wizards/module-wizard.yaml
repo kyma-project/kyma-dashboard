@@ -18,7 +18,7 @@ data:
   general: |
     id: module-wizard
     name: Module Wizard
-    description: Now you need to add the module.
+    description: Add your module.
     resources:
       kyma:
         kind: Kyma
@@ -26,7 +26,7 @@ data:
         version: v1beta1
   steps: |
     - name: Kyma Modules
-      description: Choose modules which you want to install on the cluster.
+      description: Choose modules you want to install on the cluster.
       resource: kyma
       form:
         - path: spec.channel
@@ -46,5 +46,5 @@ data:
                 }).spec.channel
         - widget: Alert
           severity: warning
-          alert: '"alert.beta"'
+          alert: '"CAUTION: The Service Level Agreements (SLA) and Support obligations do not apply to Beta modules and functionalities. If Beta modules or functionalities directly or indirectly affect other modules, the Service Level Agreements (SLA) and Support for these modules are limited to priority levels P3 (Medium) or P4 (Low). Thus, Beta releases are not intended for use in customer production environments."'
           visibility: '"beta" in $item.spec.modules.channel'
