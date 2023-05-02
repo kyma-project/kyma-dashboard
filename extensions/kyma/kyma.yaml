@@ -100,7 +100,7 @@ data:
       source: $
       visibility: $not($exists($item.spec.modules.channel))
       targets:
-        - slot: top
+        - slot: details-top
           location: ClusterOverview
       order: 1 
       children: 
@@ -119,7 +119,7 @@ data:
       source: $
       visibility: $exists($item.spec.modules.channel)
       targets:
-        - slot: top
+        - slot: details-top
           location: ClusterOverview
       order: 2 
       children: 
