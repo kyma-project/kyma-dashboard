@@ -32,7 +32,14 @@ data:
       - widget: Alert
         severity: warning
         source: '"alert.beta"'
-        visibility: '"beta" in $item.spec.modules.channel'
+        visibility: '(
+          $moduleTemplateName := $filter($item.status.modules, function($p){$p.name=$item.spec.modules.name and $p.channel=$item.spec.modules.channel}).template.metadata.name;
+          $fullModuleTemplate :=$filter($moduleTemplates().items, function($v) {
+            $moduleTemplateName in $v.metadata.name
+          });
+          $isBeta := $fullModuleTemplate.metadata.labels."operator.kyma-project.io/beta" = "true";
+          $isBeta 
+        )'
       - widget: Table
         source: 'spec.modules[]'
         name: Modules
@@ -68,7 +75,14 @@ data:
     - widget: Alert
       severity: warning
       alert: '"alert.beta"'
-      visibility: '"beta" in $item.spec.modules.channel'
+      visibility: '(
+        $moduleTemplateName := $filter($item.status.modules, function($p){$p.name=$item.spec.modules.name and $p.channel=$item.spec.modules.channel}).template.metadata.name;
+        $fullModuleTemplate :=$filter($moduleTemplates().items, function($v) {
+          $moduleTemplateName in $v.metadata.name
+        });
+        $isBeta := $fullModuleTemplate.metadata.labels."operator.kyma-project.io/beta" = "true";
+        $isBeta 
+      )'
   general: |-
     resource:
       kind: Kyma
@@ -137,7 +151,14 @@ data:
         - widget: Alert
           severity: warning
           source: '"alert.beta"'
-          visibility: '"beta" in $item.spec.modules.channel'
+          visibility: '(
+            $moduleTemplateName := $filter($item.status.modules, function($p){$p.name=$item.spec.modules.name and $p.channel=$item.spec.modules.channel}).template.metadata.name;
+            $fullModuleTemplate :=$filter($moduleTemplates().items, function($v) {
+              $moduleTemplateName in $v.metadata.name
+            });
+            $isBeta := $fullModuleTemplate.metadata.labels."operator.kyma-project.io/beta" = "true";
+            $isBeta 
+          )'
         - name: Installed Modules
           source: $item.spec.modules
           widget: Table
