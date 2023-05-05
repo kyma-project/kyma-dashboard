@@ -1,5 +1,6 @@
 BASE_IMG_NAME=kyma-dashboard
-REPO_IMG_DEV = $(DOCKER_PUSH_REPOSITORY)$(DOCKER_PUSH_DIRECTORY)/$(BASE_IMG_NAME)
+REPO_IMG_DEV = europe-docker.pkg.dev/kyma-project/dev/$(BASE_IMG_NAME)
+REPO_IMG_PROD = europe-docker.pkg.dev/kyma-project/prod/$(BASE_IMG_NAME)
 TAG = $(DOCKER_TAG)
 
 release-dev:
@@ -28,7 +29,6 @@ release-prod:
 	TARGET=backend ENV=prod make push
 	TARGET=local ENV=prod make build
 	TARGET=local ENV=prod make push
-	TARGET=local ENV=prod make push-latest
 
 prepare-extensions-image:
 	docker build -t extensions-local --build-arg ENV=$(ENV) -f Dockerfile.extensions .
@@ -43,19 +43,20 @@ build:
 	rm environments/$(ENV)/Dockerfile.$(TARGET)
 
 push:
+ifeq ($(JOB_TYPE), postsubmit)
+	$(eval LOCAL_TAG := $(BASE_IMG_NAME)-$(TARGET)-$(ENV))
+	$(eval EXTERNAL_TAG := $(REPO_IMG_PROD)-$(TARGET)-$(ENV):$(TAG))
+	$(eval LATEST_TAG := $(REPO_IMG_PROD)-$(TARGET)-$(ENV):latest)
+
+	docker tag $(LOCAL_TAG) $(EXTERNAL_TAG) 
+	docker tag $(LOCAL_TAG) $(LATEST_TAG)
+	
+	docker push $(EXTERNAL_TAG) 
+	docker push $(LATEST_TAG)
+else
 	$(eval LOCAL_TAG := $(BASE_IMG_NAME)-$(TARGET)-$(ENV))
 	$(eval EXTERNAL_TAG := $(REPO_IMG_DEV)-$(TARGET)-$(ENV):$(TAG))
 
-	docker tag $(LOCAL_TAG) $(EXTERNAL_TAG)
-	docker push $(EXTERNAL_TAG)
-
-push-latest:
-ifeq ($(JOB_TYPE), postsubmit)
-		$(eval EXTERNAL_TAG := $(REPO_IMG_DEV)-$(TARGET)-$(ENV):$(TAG))
-		$(eval LATEST_TAG := $(REPO_IMG_DEV)-$(TARGET)-$(ENV):latest)
-		@echo "Tag image with latest"
-		docker tag $(EXTERNAL_TAG) $(LATEST_TAG)
-		docker push $(LATEST_TAG)
-else
-		@echo "Image tagging with latest skipped"
+	docker tag $(LOCAL_TAG) $(EXTERNAL_TAG) 
+	docker push $(EXTERNAL_TAG) 
 endif
