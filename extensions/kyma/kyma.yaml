@@ -33,12 +33,11 @@ data:
         severity: warning
         source: '"alert.beta"'
         visibility: '(
-          $moduleTemplateName := $filter($item.status.modules, function($p){$p.name=$item.spec.modules.name and $p.channel=$item.spec.modules.channel}).template.metadata.name;
-          $fullModuleTemplate :=$filter($moduleTemplates().items, function($v) {
-            $moduleTemplateName in $v.metadata.name
+          $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
+            $v.metadata.labels."operator.kyma-project.io/module-name" in $item.spec.modules.name
           });
           $isBeta := $fullModuleTemplate.metadata.labels."operator.kyma-project.io/beta" = "true";
-          $isBeta 
+          $isBeta;
         )'
       - widget: Table
         source: 'spec.modules[]'
@@ -76,12 +75,11 @@ data:
       severity: warning
       alert: '"alert.beta"'
       visibility: '(
-        $moduleTemplateName := $filter($item.status.modules, function($p){$p.name=$item.spec.modules.name and $p.channel=$item.spec.modules.channel}).template.metadata.name;
-        $fullModuleTemplate :=$filter($moduleTemplates().items, function($v) {
-          $moduleTemplateName in $v.metadata.name
+        $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
+          $v.metadata.labels."operator.kyma-project.io/module-name" in $item.spec.modules.name
         });
         $isBeta := $fullModuleTemplate.metadata.labels."operator.kyma-project.io/beta" = "true";
-        $isBeta 
+        $isBeta;
       )'
   general: |-
     resource:
@@ -152,12 +150,11 @@ data:
           severity: warning
           source: '"alert.beta"'
           visibility: '(
-            $moduleTemplateName := $filter($item.status.modules, function($p){$p.name=$item.spec.modules.name and $p.channel=$item.spec.modules.channel}).template.metadata.name;
-            $fullModuleTemplate :=$filter($moduleTemplates().items, function($v) {
-              $moduleTemplateName in $v.metadata.name
+            $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
+              $v.metadata.labels."operator.kyma-project.io/module-name" in $item.spec.modules.name
             });
             $isBeta := $fullModuleTemplate.metadata.labels."operator.kyma-project.io/beta" = "true";
-            $isBeta 
+            $isBeta;
           )'
         - name: Installed Modules
           source: $item.spec.modules
