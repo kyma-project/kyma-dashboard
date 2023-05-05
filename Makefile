@@ -48,7 +48,9 @@ ifeq ($(JOB_TYPE), postsubmit)
 	$(eval EXTERNAL_TAG := $(REPO_IMG_PROD)-$(TARGET)-$(ENV):$(TAG))
 	$(eval LATEST_TAG := $(REPO_IMG_PROD)-$(TARGET)-$(ENV):latest)
 
-	docker tag $(LOCAL_TAG) $(EXTERNAL_TAG) $(LATEST_TAG)
+	docker tag $(LOCAL_TAG) $(EXTERNAL_TAG) 
+	docker tag $(LOCAL_TAG) $(LATEST_TAG)
+	
 	docker push $(EXTERNAL_TAG) 
 	docker push $(LATEST_TAG)
 else
