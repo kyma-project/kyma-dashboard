@@ -46,5 +46,11 @@ data:
                 }).spec.channel
         - widget: Alert
           severity: warning
-          alert: '"CAUTION: The Service Level Agreements (SLA) and Support obligations do not apply to Beta modules and functionalities. If Beta modules or functionalities directly or indirectly affect other modules, the Service Level Agreements (SLA) and Support for these modules are limited to priority levels P3 (Medium) or P4 (Low). Thus, Beta releases are not intended for use in customer production environments."'
-          visibility: '"beta" in $item.spec.modules.channel'
+          alert: '"CAUTION: The Service Level Agreements (SLAs) and Support obligations do not apply to Beta modules and functionalities. If Beta modules or functionalities directly or indirectly affect other modules, the Service Level Agreements and Support for these modules are limited to priority levels P3 (Medium) or P4 (Low). Thus, Beta releases are not intended for use in customer production environments."'
+          visibility: '(
+            $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
+              $v.metadata.labels."operator.kyma-project.io/module-name" in $item.spec.modules.name
+            });
+            $isBeta := $fullModuleTemplate.metadata.labels."operator.kyma-project.io/beta" = "true";
+            $isBeta;
+          )'
