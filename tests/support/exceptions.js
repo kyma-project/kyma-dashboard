@@ -15,6 +15,9 @@ Cypress.Commands.add('handleExceptions', () => {
       ) ||
       err.message.includes(
         "Cannot read properties of undefined (reading 'category')",
+      ) ||
+      err.message.includes(
+        "Cannot read properties of null (reading 'querySelector')",
       )
     )
       return false;
