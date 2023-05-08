@@ -6,7 +6,6 @@
     "source": "extensions/discovery-and-network"
   },
   {
-    // serverless functions
     "source": "https://github.com/kyma-project/kyma/blob/main/resources/serverless/templates/busola-serverless-extension.yaml"
   },
   {
@@ -25,7 +24,6 @@
     "source": "extensions/configuration"
   },
   {
-    // subscriptions
     "source": "https://github.com/kyma-project/kyma/blob/main/resources/eventing/charts/controller/templates/busola-extension.yaml"
   },
   {
