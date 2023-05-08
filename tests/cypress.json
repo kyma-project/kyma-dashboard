@@ -19,6 +19,7 @@
     "cluster/test-applications.spec.js",
     "cluster/run-after.spec.js",
     "namespace/run-before.spec.js",
+    "namespace/run-prepare-functions.spec.js",
     "namespace/test-certificates.spec.js",
     "namespace/test-destination-rules.spec.js",
     "namespace/test-issuers.spec.js",
