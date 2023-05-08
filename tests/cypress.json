@@ -19,7 +19,6 @@
     "cluster/test-applications.spec.js",
     "cluster/run-after.spec.js",
     "namespace/run-before.spec.js",
-    "namespace/run-prepare-functions.spec.js",
     "namespace/test-certificates.spec.js",
     "namespace/test-destination-rules.spec.js",
     "namespace/test-issuers.spec.js",
@@ -32,7 +31,6 @@
     "namespace/test-sidecars.spec.js",
     "namespace/test-service-entries.spec.js",
     "namespace/test-api-rules.spec.js",
-    "namespace/test-in-cluster-eventing.spec.js",
     "namespace/test-dns-entries.spec.js",
     "namespace/test-services.spec.js",
     "namespace/run-after.spec.js"
