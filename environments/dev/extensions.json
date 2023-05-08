@@ -6,7 +6,8 @@
     "source": "extensions/discovery-and-network"
   },
   {
-    "source": "extensions/serverless"
+    // serverless functions
+    "source": "https://github.com/kyma-project/kyma/blob/main/resources/serverless/templates/busola-serverless-extension.yaml"
   },
   {
     "source": "extensions/istio"
@@ -22,6 +23,10 @@
   },
   {
     "source": "extensions/configuration"
+  },
+  {
+    // subscriptions
+    "source": "https://github.com/kyma-project/kyma/blob/main/resources/eventing/charts/controller/templates/busola-extension.yaml"
   },
   {
     "source": "https://raw.githubusercontent.com/kyma-project/kyma/main/resources/telemetry/charts/operator/templates/logparser_busola_extension_cm.yaml"
