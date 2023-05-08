@@ -14,7 +14,7 @@ data:
         kind: ModuleTemplate
         namespace: null
         group: operator.kyma-project.io
-        version: v1alpha1
+        version: v1beta1
   details: |
     header: []
     body:
