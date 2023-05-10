@@ -35,32 +35,48 @@ data:
         visibility: '(
           $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
             $v.metadata.labels."operator.kyma-project.io/module-name" in $item.spec.modules.name
-          });
-          $isBeta := $fullModuleTemplate.metadata.labels."operator.kyma-project.io/beta" = "true";
-          $isBeta;
+            and $v.metadata.labels."operator.kyma-project.io/beta" = "true"
+            });
+            $isBeta := $count($fullModuleTemplate) > 0;
         )'
       - widget: Table
-        source: 'spec.modules[]'
+        source: '$sort(status.modules[], function($l, $r) {$l.name < $r.name})'
         name: Modules
         visibility: $exists(*)
         children:
-          - source: $item.name
-            name: Module Name
-          - source: $item.channel
-            name: Channel
+          - name: Name
+            source: $
+            widget: Plain
+            source: $
+            children:                
+              - widget: ResourceLink
+                visibility: $exists(resource.metadata.name)
+                source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                    
+                resource:
+                  name: resource.metadata.name
+                  namespace: resource.metadata.namespace
+                  kind: resource.kind    
+              - widget: Text
+                visibility: $not($exists(resource.metadata.name))   
+                source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                                
+          - name: Namespace
+            source: $parent.metadata.namespace
+          - name: Channel
+            source: channel
+            widget: Text                       
           - name: Version
-            source: '$parent.status.modules ? $filter($parent.status.modules, function($p){$p.name=name and $p.channel=channel}).version : "-"'
+            source: version
             widget: Text
           - name: State
             widget: Badge
-            source: '$filter($parent.status.modules, function($p){$p.name=name and $p.channel=channel}).state'
+            source: state
+            description: 'message ? message : ""'        
+
   form: |
     - simple: true
       path: spec.channel
+      enum: '$distinct($moduleTemplates().items.spec.channel)'
       required: true
-      enum:
-        - regular
-        - fast
     - widget: GenericList
       path: spec.modules
       children:
@@ -68,7 +84,6 @@ data:
           required: true
           enum: '$distinct($moduleTemplates().items.metadata.labels."operator.kyma-project.io/module-name")'
         - path: "[].channel"
-          required: true
           visibility: "$boolean($item.name)"
           enum: |
             $filter($moduleTemplates().items, function($v) {
@@ -80,9 +95,9 @@ data:
       visibility: '(
         $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
           $v.metadata.labels."operator.kyma-project.io/module-name" in $item.spec.modules.name
-        });
-        $isBeta := $fullModuleTemplate.metadata.labels."operator.kyma-project.io/beta" = "true";
-        $isBeta;
+          and $v.metadata.labels."operator.kyma-project.io/beta" = "true"
+          });
+          $isBeta := $count($fullModuleTemplate) > 0;
       )'
   general: |-
     resource:
@@ -113,7 +128,7 @@ data:
     - name: Kyma Modules
       widget: Panel
       source: $
-      visibility: $not($exists($item.spec.modules.channel))
+      visibility: $not($exists($item.status.modules))
       targets:
         - slot: details-top
           location: ClusterOverview
@@ -128,11 +143,12 @@ data:
             - widget: Wizard
               name: Add Module
               wizard: module-wizard
-              visibility: $not($exists($item.spec.modules.channel))
+              visibility: $not($exists($item.status.modules))
     - name: Kyma
       widget: Panel
+      description: To check the Kyma Modularisation documentation go to the {{[Kyma Modularisation](https://help.sap.com/docs/btp/sap-business-technology-platform-internal/kyma-environment)}}.
       source: $
-      visibility: $exists($item.spec.modules.channel)
+      visibility: $exists($item.status.modules)
       targets:
         - slot: details-top
           location: ClusterOverview
@@ -154,13 +170,14 @@ data:
           source: '"alert.beta"'
           visibility: '(
             $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
-              $v.metadata.labels."operator.kyma-project.io/module-name" in $item.spec.modules.name
+              $v.metadata.labels."operator.kyma-project.io/module-name" in $item.status.modules.name 
+              and $v.metadata.labels."operator.kyma-project.io/beta" = "true"
             });
-            $isBeta := $fullModuleTemplate.metadata.labels."operator.kyma-project.io/beta" = "true";
+            $isBeta := $count($fullModuleTemplate) > 0;
             $isBeta;
           )'
         - name: Installed Modules
-          source: $item.spec.modules
+          source: '$sort($parent.status.modules[], function($l, $r) {$l.name < $r.name})'
           widget: Table
           disablePadding: true
           extraHeaderContent: 
@@ -173,15 +190,29 @@ data:
                 kind: '"Kyma"'
           children: 
             - name: Name
-              source: name
+              source: $
+              widget: Plain
+              source: $
+              children:                
+                - widget: ResourceLink
+                  visibility: $exists(resource.metadata.name)
+                  source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                    
+                  resource:
+                    name: resource.metadata.name
+                    namespace: resource.metadata.namespace
+                    kind: resource.kind    
+                - widget: Text
+                  visibility: $not($exists(resource.metadata.name))   
+                  source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                                
             - name: Namespace
               source: $parent.metadata.namespace
             - name: Channel
               source: channel
-              widget: Text
+              widget: Text                       
             - name: Version
-              source: '$parent.status.modules ? $filter($parent.status.modules, function($p){$p.name=name and $p.channel=channel}).version : "-"'
+              source: version
               widget: Text
             - name: State
               widget: Badge
-              source: '$filter($parent.status.modules, function($p){$p.name=name and $p.channel=channel}).state'
+              source: state
+              description: 'message ? message : ""'

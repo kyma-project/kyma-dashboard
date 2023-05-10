@@ -31,9 +31,7 @@ data:
       form:
         - path: spec.channel
           required: true
-          enum:
-            - regular
-            - fast
+          enum: '$distinct($moduleTemplates().items.spec.channel)'
         - widget: GenericList
           path: spec.modules
           children:
@@ -41,7 +39,6 @@ data:
               required: true
               enum: '$distinct($moduleTemplates().items.metadata.labels."operator.kyma-project.io/module-name")'
             - path: "[].channel"
-              required: true
               visibility: "$boolean($item.name)"
               enum: |
                 $filter($moduleTemplates().items, function($v) {
@@ -53,7 +50,7 @@ data:
           visibility: '(
             $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
               $v.metadata.labels."operator.kyma-project.io/module-name" in $item.spec.modules.name
-            });
-            $isBeta := $fullModuleTemplate.metadata.labels."operator.kyma-project.io/beta" = "true";
-            $isBeta;
+              and $v.metadata.labels."operator.kyma-project.io/beta" = "true"
+              });
+              $isBeta := $count($fullModuleTemplate) > 0;
           )'
