@@ -58,6 +58,9 @@ data:
     - simple: true
       path: spec.channel
       required: true
+      enum:
+        - regular
+        - fast
     - widget: GenericList
       path: spec.modules
       children:

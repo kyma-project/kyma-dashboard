@@ -31,6 +31,9 @@ data:
       form:
         - path: spec.channel
           required: true
+          enum:
+            - regular
+            - fast
         - widget: GenericList
           path: spec.modules
           children:
