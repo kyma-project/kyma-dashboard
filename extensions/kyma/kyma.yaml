@@ -54,7 +54,7 @@ data:
                 resource:
                   name: template.metadata.name
                   namespace: template.metadata.namespace
-                  kind: '"ModuleTemplate"'
+                  kind: template.kind
               - widget: Text
                 visibility: $not($exists(template.metadata.name))   
                 source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                                
@@ -206,7 +206,7 @@ data:
                   resource:
                     name: template.metadata.name
                     namespace: template.metadata.namespace
-                    kind: '"ModuleTemplate"'
+                    kind: template.kind
                 - widget: Text
                   visibility: $not($exists(template.metadata.name))   
                   source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                                
