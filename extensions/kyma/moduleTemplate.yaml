@@ -21,6 +21,15 @@ data:
         source: spec.target
       - name: Age
         source: metadata.creationTimestamp
+      - name: 'Documentation'
+        widget: ExternalLink
+        copyable: false
+        source: '"Documentation"'
+        link: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.annotations."operator.kyma-project.io/doc-url"'
+        visibility: '(
+          $docsLink := $filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.annotations."operator.kyma-project.io/doc-url";
+          $hasDocs := $count($docsLink) > 0;
+        )'
     - source: spec
       widget: CodeViewer
   form: |-
