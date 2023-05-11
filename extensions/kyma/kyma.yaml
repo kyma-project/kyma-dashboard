@@ -70,7 +70,15 @@ data:
             widget: Badge
             source: state
             description: 'message ? message : ""'
-
+          - name: 'Documentation'
+            widget: ExternalLink
+            copyable: false
+            source: '"Documentation"'
+            link: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.annotations."operator.kyma-project.io/doc-url"'
+            visibility: '(
+              $docsLink := $filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.annotations."operator.kyma-project.io/doc-url";
+              $hasDocs := $count($docsLink) > 0;
+            )'
   form: |
     - simple: true
       path: spec.channel
@@ -214,3 +222,12 @@ data:
               widget: Badge
               source: state
               description: 'message ? message : ""'
+            - name: 'Documentation'
+              widget: ExternalLink
+              copyable: false
+              source: '"Documentation"'
+              link: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.annotations."operator.kyma-project.io/doc-url"'
+              visibility: '(
+                $docsLink := $filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.annotations."operator.kyma-project.io/doc-url";
+                $hasDocs := $count($docsLink) > 0;
+              )'
