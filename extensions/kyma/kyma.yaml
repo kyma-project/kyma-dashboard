@@ -49,15 +49,17 @@ data:
             widget: Plain
             children:
               - widget: ResourceLink
-                visibility: $exists(template.metadata.name)
-                source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                    
+                visibility: $exists(resource.metadata.name)
+                source: name
                 resource:
-                  name: template.metadata.name
-                  namespace: template.metadata.namespace
-                  kind: template.kind
+                  name: resource.metadata.name
+                  namespace: resource.metadata.namespace
+                  kind: resource.kind
               - widget: Text
-                visibility: $not($exists(template.metadata.name))   
-                source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                                
+                visibility: $not($exists(resource.metadata.name))   
+                source: name
+          - name: ''
+            source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? "beta" : "-"'
           - name: Namespace
             source: $parent.metadata.namespace
           - name: Channel
@@ -201,15 +203,17 @@ data:
               widget: Plain
               children:
                 - widget: ResourceLink
-                  visibility: $exists(template.metadata.name)
-                  source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                    
+                  visibility: $exists(resource.metadata.name)
+                  source: name
                   resource:
-                    name: template.metadata.name
-                    namespace: template.metadata.namespace
-                    kind: template.kind
+                    name: resource.metadata.name
+                    namespace: resource.metadata.namespace
+                    kind: resource.kind
                 - widget: Text
-                  visibility: $not($exists(template.metadata.name))   
-                  source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                                
+                  visibility: $not($exists(resource.metadata.name))
+                  source: name
+            - name: ''
+              source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? "beta" : "-"'
             - name: Namespace
               source: $parent.metadata.namespace
             - name: Channel
