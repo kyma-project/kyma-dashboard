@@ -7,7 +7,6 @@ metadata:
     app.kubernetes.io/name: moduletemplates.operator.kyma-project.io
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
-
 data:
   details: |-
     header: []
@@ -21,6 +20,12 @@ data:
         source: spec.target
       - name: Age
         source: metadata.creationTimestamp
+      - name: 'Documentation'
+        widget: ExternalLink
+        copyable: false
+        source: '"Documentation"'
+        link: metadata.annotations."operator.kyma-project.io/doc-url"
+        visibility: $exists(metadata.annotations."operator.kyma-project.io/doc-url")
     - source: spec
       widget: CodeViewer
   form: |-
