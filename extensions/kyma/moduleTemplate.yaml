@@ -7,7 +7,6 @@ metadata:
     app.kubernetes.io/name: moduletemplates.operator.kyma-project.io
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
-
 data:
   details: |-
     header: []
@@ -25,11 +24,8 @@ data:
         widget: ExternalLink
         copyable: false
         source: '"Documentation"'
-        link: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.annotations."operator.kyma-project.io/doc-url"'
-        visibility: '(
-          $docsLink := $filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.annotations."operator.kyma-project.io/doc-url";
-          $hasDocs := $count($docsLink) > 0;
-        )'
+        link: metadata.annotations."operator.kyma-project.io/doc-url"
+        visibility: $exists(metadata.annotations."operator.kyma-project.io/doc-url")
     - source: spec
       widget: CodeViewer
   form: |-
