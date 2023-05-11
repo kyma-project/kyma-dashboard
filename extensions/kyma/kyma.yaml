@@ -49,14 +49,14 @@ data:
             widget: Plain
             children:
               - widget: ResourceLink
-                visibility: $exists(resource.metadata.name)
+                visibility: $exists(template.metadata.name)
                 source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                    
                 resource:
-                  name: name
-                  namespace: resource.metadata.namespace
+                  name: template.metadata.name
+                  namespace: template.metadata.namespace
                   kind: '"ModuleTemplate"'
               - widget: Text
-                visibility: $not($exists(resource.metadata.name))   
+                visibility: $not($exists(template.metadata.name))   
                 source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                                
           - name: Namespace
             source: $parent.metadata.namespace
@@ -201,14 +201,14 @@ data:
               widget: Plain
               children:
                 - widget: ResourceLink
-                  visibility: $exists(resource.metadata.name)
+                  visibility: $exists(template.metadata.name)
                   source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                    
                   resource:
-                    name: name
-                    namespace: resource.metadata.namespace
+                    name: template.metadata.name
+                    namespace: template.metadata.namespace
                     kind: '"ModuleTemplate"'
                 - widget: Text
-                  visibility: $not($exists(resource.metadata.name))   
+                  visibility: $not($exists(template.metadata.name))   
                   source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? name & " (beta)" : name'                                
             - name: Namespace
               source: $parent.metadata.namespace
