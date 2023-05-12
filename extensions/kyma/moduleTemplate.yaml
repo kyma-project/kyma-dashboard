@@ -11,48 +11,41 @@ data:
   details: |-
     header: []
     body:
-    - name: Summary
-      widget: Panel
-      children:
-      - name: channel
-        source: spec.channel
-      - name: target
-        source: spec.target
-      - name: Age
-        source: metadata.creationTimestamp
-      - name: 'Documentation'
-        widget: ExternalLink
-        copyable: false
-        source: '"Documentation"'
-        link: metadata.annotations."operator.kyma-project.io/doc-url"
+      - name: Summary
+        widget: Panel
         visibility: $exists(metadata.annotations."operator.kyma-project.io/doc-url")
-    - source: spec
-      widget: CodeViewer
-  form: |-
-    - simple: true
-      path: spec.channel
-      required: false
-    - simple: true
-      path: spec.target
-      required: true
+        children:
+          - name: Channel
+            source: spec.channel
+            widget: Badge
+          - name: 'Documentation'
+            widget: ExternalLink
+            copyable: false
+            source: '"Documentation"'
+            link: metadata.annotations."operator.kyma-project.io/doc-url"
+      - name: Data
+        source: spec.data
+        widget: CodeViewer
+      - name: Descriptor
+        source: spec.descriptor
+        widget: CodeViewer
   general: |
     resource:
       kind: ModuleTemplate
       group: operator.kyma-project.io
-      version: v1beta1
+      version: v1beta2
     name: Module Templates
     category: Kyma
     urlPath: moduletemplates
     scope: namespace
+    features:
+      actions:
+        disableCreate: true
+        disableEdit: true
+    description: >-
+      {{[ModuleTemplate Custom Resource](https://github.com/kyma-project/lifecycle-manager/blob/main/docs/technical-reference/api/moduleTemplate-cr.md)}}
+      contains modules' metadata with links to their images and manifests.
   list: |
-    - name: channel
+    - name: Channel
       source: spec.channel
-    - name: target
-      source: spec.target
-    - name: Age
-      source: metadata.creationTimestamp
-  translations: |
-    en:
-      metadata.annotations: Annotations
-      metadata.labels: Labels
-      metadata.creationTimestamp: Created at
+      widget: Badge
