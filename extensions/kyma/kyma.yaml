@@ -14,7 +14,7 @@ data:
         kind: ModuleTemplate
         namespace: null
         group: operator.kyma-project.io
-        version: v1beta1
+        version: v1beta2
   details: |
     header: []
     body:
@@ -117,16 +117,17 @@ data:
     category: Kyma
     urlPath: kymas
     scope: namespace
+    description: >-
+      {{[Kyma Custom Resource](https://github.com/kyma-project/lifecycle-manager/blob/main/docs/technical-reference/api/kyma-cr.md)}}
+      represents Kyma installation in a cluster.
   list: |-
-    - name: channel
-      widget: Labels
+    - name: Channel
+      widget: Badge
       source: spec.channel
     - name: State
       widget: Badge
       source: status.state
       tooltip: status.state
-    - name: Age
-      source: metadata.creationTimestamp
   translations: |
     en:
       metadata.annotations: Annotations
