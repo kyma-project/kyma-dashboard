@@ -29,20 +29,6 @@ data:
       - name: Descriptor
         source: spec.descriptor
         widget: CodeViewer
-  form: |
-    - name: Channel
-      path: spec.channel
-      simple: true
-    - name: Descriptor
-      path: spec.descriptor
-      widget: CodeEditor
-      simple: true
-      defaultExpanded: true
-      language: '"yaml"'
-    - name: Data
-      path: spec.data
-      widget: CodeEditor
-      language: '"yaml"'
   general: |
     resource:
       kind: ModuleTemplate
@@ -52,6 +38,10 @@ data:
     category: Kyma
     urlPath: moduletemplates
     scope: namespace
+    features:
+      actions:
+        disableCreate: true
+        disableEdit: true
     description: >-
       {{[ModuleTemplate Custom Resource](https://github.com/kyma-project/lifecycle-manager/blob/main/docs/technical-reference/api/moduleTemplate-cr.md)}}
       contains modules' metadata with links to their images and manifests.
