@@ -91,7 +91,11 @@ data:
       children:
         - path: "[].name"
           required: true
-          enum: '$distinct($moduleTemplates().items.metadata.labels."operator.kyma-project.io/module-name")'
+          enum: |
+            $map($moduleTemplates().items, function($v){
+              {'key':$v.metadata.labels."operator.kyma-project.io/module-name",
+              'name': $v.metadata.labels."operator.kyma-project.io/module-name" & ($v.spec.descriptor.component.version ? "( version: " & $v.spec.descriptor.component.version & ")" : "")}
+            })
         - path: "[].channel"
           visibility: "$boolean($item.name)"
           enum: |

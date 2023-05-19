@@ -9,7 +9,9 @@ metadata:
     busola.io/extension-version: '0.5'
 data:
   details: |-
-    header: []
+    header: 
+      - name: Version
+        source: spec.descriptor.component.version
     body:
       - name: Summary
         widget: Panel
@@ -49,3 +51,5 @@ data:
     - name: Channel
       source: spec.channel
       widget: Badge
+    - name: Version
+      source: spec.descriptor.component.version
