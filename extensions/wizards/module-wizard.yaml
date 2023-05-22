@@ -42,7 +42,10 @@ data:
           children:
             - path: "[].name"
               required: true
-              enum: '$distinct($moduleTemplates().items.metadata.labels."operator.kyma-project.io/module-name")'
+              enum: |
+                $filter($distinct($moduleTemplates().items.metadata.labels."operator.kyma-project.io/module-name"), function ($v){ 
+                  $not($v in $root.spec.modules.name)
+                })
             - path: "[].channel"
               visibility: "$boolean($item.name)"
               enum: |
