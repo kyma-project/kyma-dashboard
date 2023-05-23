@@ -91,10 +91,18 @@ data:
       children:
         - path: "[].name"
           required: true
-          enum: |
-            $filter($distinct($moduleTemplates().items.metadata.labels."operator.kyma-project.io/module-name"), function ($v){ 
-              $not($v in $root.spec.modules.name)
-            })
+          enum: '(
+            $notSelectedModules := $filter($moduleTemplates().items, function ($v){ 
+              $not($v.metadata.labels."operator.kyma-project.io/module-name" in $root.spec.modules.name)
+            });
+            $modulesAsOptions := $map($notSelectedModules, function ($v) {
+              {
+                "key":$v.metadata.labels."operator.kyma-project.io/module-name",
+                "name":$v.metadata.labels."operator.kyma-project.io/module-name" & ($v.spec.descriptor.component.version ? " (version: " & $v.spec.descriptor.component.version & ")" : "")
+              }
+            });
+            $distinct($modulesAsOptions);
+          )'
         - path: "[].channel"
           visibility: "$boolean($item.name)"
           enum: |
