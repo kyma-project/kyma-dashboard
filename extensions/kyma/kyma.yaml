@@ -91,24 +91,24 @@ data:
       children:
         - path: "[].name"
           required: true
-          enum: '(
-            $notSelectedModules := $filter($moduleTemplates().items, function ($v){ 
-              $not($v.metadata.labels."operator.kyma-project.io/module-name" in $root.spec.modules.name)
-            });
-            $modulesAsOptions := $map($notSelectedModules, function ($v) {
-              {
-                "key":$v.metadata.labels."operator.kyma-project.io/module-name",
-                "name":$v.metadata.labels."operator.kyma-project.io/module-name" & ($v.spec.descriptor.component.version ? " (version: " & $v.spec.descriptor.component.version & ")" : "")
-              }
-            });
-            $distinct($modulesAsOptions);
-          )'
+          enum: |
+            $filter($distinct($moduleTemplates().items.metadata.labels."operator.kyma-project.io/module-name"), function ($v){ 
+              $not($v in $root.spec.modules.name)
+            })
         - path: "[].channel"
           visibility: "$boolean($item.name)"
-          enum: |
-            $filter($moduleTemplates().items, function($v) {
+          enum: '(
+            $channels := $filter($moduleTemplates().items, function($v) {
               $v.metadata.labels."operator.kyma-project.io/module-name" = $item.name
-            }).spec.channel
+            });
+            $channelsAsOptions := $map($channels, function ($v) {
+              {
+                "key": $v.spec.channel,
+                "name": $v.spec.channel & ($v.spec.descriptor.component.version ? " (version: " & $v.spec.descriptor.component.version & ")" : "")
+              }
+            });
+            $channelsAsOptions;
+          )'
         - widget: Alert
           severity: information
           alert: '(
