@@ -24,6 +24,9 @@
     "source": "extensions/configuration"
   },
   {
+    "source": "https://raw.githubusercontent.com/mrCherry97/kyma/main/resources/eventing/charts/controller/templates/busola-extension.yaml"
+  },
+  {
     "source": "https://raw.githubusercontent.com/kyma-project/kyma/main/resources/telemetry/charts/operator/templates/logparser_busola_extension_cm.yaml"
   },
   {
