@@ -17,6 +17,7 @@
   "testFiles": [
     "cluster/run-before.spec.js",
     "cluster/test-applications.spec.js",
+    "cluster/test-kyma-version.spec.js",
     "cluster/run-after.spec.js",
     "namespace/run-before.spec.js",
     "namespace/run-prepare-functions.spec.js",
