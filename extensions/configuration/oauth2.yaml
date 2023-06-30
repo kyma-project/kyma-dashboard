@@ -178,7 +178,6 @@ data:
       default: true
       value:
         spec:
-          grantTypes: []
           scope: ''
           secretName: ''
           tokenEndpointAuthMethod: client_secret_basic  
@@ -205,6 +204,5 @@ data:
         configuration: Configuration
         data: Data
         spec.clientName: Client Name
-        status: Status
         secret.client_id: client_id
         secret.client_secret: client_secret
