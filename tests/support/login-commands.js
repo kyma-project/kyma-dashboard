@@ -109,6 +109,8 @@ Cypress.Commands.add('loginAndSelectCluster', function(params) {
       cy.contains(storage).click();
     }
 
+    cy.contains('Next').click();
+
     cy.contains('[role="dialog"] button', 'Connect cluster').click();
 
     cy.url().should('match', expectedLocation);
