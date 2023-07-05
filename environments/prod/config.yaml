@@ -67,11 +67,6 @@ config:
           - istio-system
           - kube-system
           - kyma-system
-    JWT_CHECK_CONFIG:
-      isEnabled: false
-      config:
-        issuer: https://kyma.accounts.ondemand.com
-        jwksUri: https://kyma.accounts.ondemand.com/oauth2/certs
     GZIP:
       isEnabled: true
     TRACKING:

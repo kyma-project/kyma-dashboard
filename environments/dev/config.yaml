@@ -51,14 +51,6 @@ config:
       isEnabled: true
     SHOW_GARDENER_METADATA:
       isEnabled: true
-    SERVICE_CATALOG_READ_ONLY:
-      isReadOnly: false
-    SERVICE_CATALOG:
-      isEnabled: false
-    SERVICE_CATALOG_ADDONS:
-      isEnabled: false
-    ADDONS:
-      isEnabled: false
     OBSERVABILITY:
       isEnabled: true
       config:
