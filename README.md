@@ -31,7 +31,7 @@ docker run --rm -it -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --pid=host --nam
 To run Kyma Dashboard from a PR run this command
 
 ```bash
-docker run --rm -it -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --pid=host --name kyma-dashboard eu.gcr.io/kyma-project/kyma-dashboard-local-dev:PR-$PR_NUMBER
+docker run --rm -it -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --pid=host --name kyma-dashboard europe-docker.pkg.dev/kyma-project/dev/kyma-dashboard-local-dev:PR-$PR_NUMBER
 ```
 
 ## Development
