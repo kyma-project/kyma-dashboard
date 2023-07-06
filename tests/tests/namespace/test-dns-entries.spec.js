@@ -15,8 +15,6 @@ context('Test DNS Entries', () => {
   });
 
   it('Create DNS Entry', () => {
-    cy.wait(500);
-
     cy.navigateTo('Configuration', 'DNS Entries');
 
     cy.contains('Create DNS Entry').click();
