@@ -26,7 +26,7 @@ cp kubeconfig--kyma--nkyma.yaml tests/kubeconfig.yaml
 
 make release-dev
 
-docker run --rm -it -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --pid=host --name kyma-dashboard "$REPO_IMG_DEV/kyma-dashboard-local-dev:$TAG"
+docker run --rm -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --name kyma-dashboard "$REPO_IMG_DEV-local-dev:$TAG"
 
 echo "waiting for server to be up..."
 while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' "$CYPRESS_DOMAIN")" != "200" ]]; do sleep 5; done
