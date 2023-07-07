@@ -1,6 +1,6 @@
-BASE_IMG_NAME=kyma-dashboard
+BASE_IMG_NAME = kyma-dashboard
 REPO_IMG_DEV ?= europe-docker.pkg.dev/kyma-project/dev/$(BASE_IMG_NAME)
-REPO_IMG_PROD = europe-docker.pkg.dev/kyma-project/prod/$(BASE_IMG_NAME)
+REPO_IMG_PROD ?= europe-docker.pkg.dev/kyma-project/prod/$(BASE_IMG_NAME)
 TAG ?= $(DOCKER_TAG)
 
 release-dev:

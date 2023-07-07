@@ -10,6 +10,8 @@ export TAG="test-dev"
 apt-get update -y 
 apt-get install -y gettext-base
 
+k3d registry create registry.localhost --port=5000
+
 cat << EOF | kubectl create -f - --raw "/apis/core.gardener.cloud/v1beta1/namespaces/garden-kyma-prow/shoots/nkyma/adminkubeconfig" | jq -r ".status.kubeconfig" | base64 -d > "kubeconfig--kyma--nkyma.yaml"
 {
     "apiVersion": "authentication.gardener.cloud/v1alpha1",
