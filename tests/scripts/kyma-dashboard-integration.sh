@@ -4,8 +4,8 @@ set -e
 export CYPRESS_DOMAIN=http://localhost:3001
 export NO_COLOR=1
 export KUBECONFIG="$GARDENER_KYMA_PROW_KUBECONFIG"
-export REPO_IMG_DEV="k3d-registry.localhost:5000"
-export DOCKER_TAG="test-dev"
+export REPO_IMG_DEV="k3d-registry.localhost:5000/kyma-dashboard"
+export TAG="test-dev"
 
 apt-get update -y 
 apt-get install -y gettext-base
@@ -24,7 +24,7 @@ cp kubeconfig--kyma--nkyma.yaml tests/kubeconfig.yaml
 
 make release-dev
 
-docker run --rm -it -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --pid=host --name kyma-dashboard "$REPO_IMG_DEV/kyma-dashboard-local-dev:$DOCKER_TAG"
+docker run --rm -it -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --pid=host --name kyma-dashboard "$REPO_IMG_DEV/kyma-dashboard-local-dev:$TAG"
 
 echo "waiting for server to be up..."
 while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' "$CYPRESS_DOMAIN")" != "200" ]]; do sleep 5; done
