@@ -7,6 +7,9 @@ export KUBECONFIG="$GARDENER_KYMA_PROW_KUBECONFIG"
 export REPO_IMG_DEV="k3d-registry.localhost:5000"
 export DOCKER_TAG="test-dev"
 
+apt-get update -y 
+apt-get install -y gettext-base
+
 cat << EOF | kubectl create -f - --raw "/apis/core.gardener.cloud/v1beta1/namespaces/garden-kyma-prow/shoots/nkyma/adminkubeconfig" | jq -r ".status.kubeconfig" | base64 -d > "kubeconfig--kyma--nkyma.yaml"
 {
     "apiVersion": "authentication.gardener.cloud/v1alpha1",
