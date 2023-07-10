@@ -28,10 +28,10 @@ module.exports = defineConfig({
     },
     specPattern: [
       'tests/cluster/test-check-extensions.spec.js',
-      'tests/namespace/run-before.spec.js',
+      'tests/namespace/a-run-before.spec.js',
       'tests/namespace/test-smoke-service-management.spec.js',
       'tests/namespace/test-check-extensions.spec.js',
-      'tests/namespace/run-after.spec.js',
+      'tests/namespace/z-run-after.spec.js',
     ],
     supportFile: 'support/index.js',
   },
