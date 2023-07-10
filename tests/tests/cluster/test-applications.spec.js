@@ -14,9 +14,26 @@ context('Test Applications', () => {
     cy.loginAndSelectCluster();
   });
 
+  it('Create Application', () => {
+    cy.navigateTo('Integration', 'Applications');
+
+    cy.contains('Create Application').click();
+
+    cy.get('[arialabel="Application name"]input:visible').type(
+      Cypress.env('APP_NAME'),
+    );
+
+    cy.contains('[role="dialog"] button', 'Create').click();
+
+    cy.contains(Cypress.env('APP_NAME')).should('be.visible');
+  });
+
   it('Inspect list', () => {
     cy.intercept(serviceRequestData, { statusCode: 200, body: '{}' });
-    cy.navigateTo('Integration', 'Applications');
+
+    cy.getLeftNav()
+      .contains('Applications')
+      .click();
 
     cy.contains('a', APPLICATION_NAME)
       .should('be.visible')
@@ -57,5 +74,13 @@ context('Test Applications', () => {
   it('Inspect an updated application', () => {
     cy.contains('labelkey=labelvalue');
     cy.contains(APPLICATION_DESCRIPTION);
+  });
+
+  it('Delete the Application', () => {
+    cy.getLeftNav()
+      .contains('Applications')
+      .click();
+
+    cy.deleteFromGenericList(Cypress.env('APP_NAME'));
   });
 });
