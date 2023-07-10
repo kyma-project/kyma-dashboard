@@ -10,7 +10,7 @@
     "test:namespace:local": "CYPRESS_LOCAL_DEV=true cypress run --spec \"tests/namespace/*.spec.js\" --browser chrome",
     "test:e2e": "$(npm bin)/cypress run --browser chrome",
     "test:local": "CYPRESS_LOCAL_DEV=true $(npm bin)/cypress run --browser chrome",
-    "test:smoke-extensions": "CYPRESS_DOMAIN=http://localhost:3001 $(npm bin)/cypress run --browser chrome -C cypress-smoke.json",
+    "test:smoke-extensions": "$(npm bin)/cypress run --browser chrome -C cypress-smoke.js",
     "run-docker": "docker run --rm -it -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --pid=host --name kyma-dashboard europe-docker.pkg.dev/kyma-project/dev/kyma-dashboard-local-dev:PR-$PR_NUMBER"
   },
   "devDependencies": {

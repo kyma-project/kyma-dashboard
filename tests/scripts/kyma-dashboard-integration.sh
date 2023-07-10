@@ -33,4 +33,4 @@ while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' "$CYPRESS_DOMAIN")" != "200
 sleep 10
 
 cd tests
-npm ci && npm run test:e2e
+npm ci && npm run "test:$SCOPE"
