@@ -1,4 +1,7 @@
 Cypress.Commands.add('navigateTo', (leftNav, resource) => {
+  // To check and probably remove after cypress bump
+  cy.wait(500);
+
   cy.getLeftNav()
     .contains(leftNav)
     .should('be.visible');

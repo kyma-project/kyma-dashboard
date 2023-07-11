@@ -15,8 +15,6 @@ context('Test Certificates', () => {
   });
 
   it('Adds and displays a certificate', () => {
-    cy.wait(500);
-
     cy.navigateTo('Configuration', 'Certificates');
 
     cy.contains('Create Certificate')

@@ -48,14 +48,6 @@ config:
       isEnabled: true
     SHOW_GARDENER_METADATA:
       isEnabled: true
-    SERVICE_CATALOG_READ_ONLY:
-      isReadOnly: false
-    SERVICE_CATALOG:
-      isEnabled: false
-    SERVICE_CATALOG_ADDONS:
-      isEnabled: false
-    ADDONS:
-      isEnabled: false
     OBSERVABILITY:
       isEnabled: true
       config:
@@ -72,11 +64,6 @@ config:
           - istio-system
           - kube-system
           - kyma-system
-    JWT_CHECK_CONFIG:
-      isEnabled: false
-      config:
-        issuer: https://kymatest.accounts400.ondemand.com
-        jwksUri: https://kymatest.accounts400.ondemand.com/oauth2/certs
     GZIP:
       isEnabled: true
     TRACKING:
