@@ -114,10 +114,10 @@ data:
               placeholder: Enter Port
               required: true
             - path: targetPort
+              type: number
               simple: true
               name:  Target Port
               placeholder: Enter Target Port
-              widget: Text
               required: true
               inputInfo: Number or name of the port to access on the pods targeted by the service. Number must be in the range 1 to 65535.
             - path: nodePort
