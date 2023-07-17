@@ -119,16 +119,16 @@ data:
             $linkToDocumentation := $filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" = $item.name and $v.spec.channel=$item.channel}).metadata.annotations."operator.kyma-project.io/doc-url";
             $count($linkToDocumentation) > 0;
           )'
-    - widget: Alert
-      severity: warning
-      alert: '"alert.beta"'
-      visibility: '(  
-        $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
-        $v.metadata.labels."operator.kyma-project.io/module-name" in $item.spec.modules.name
-        and $v.metadata.labels."operator.kyma-project.io/beta" = "true"
-        });
-        $isBeta := $count($fullModuleTemplate) > 0;
-      )'
+        - widget: Alert
+          severity: warning
+          alert: '"alert.beta"'
+          visibility: '(  
+            $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
+            $v.metadata.labels."operator.kyma-project.io/module-name" in $item.name
+            and $v.metadata.labels."operator.kyma-project.io/beta" = "true"
+            });
+            $isBeta := $count($fullModuleTemplate) > 0;
+          )'
   general: |-
     resource:
       kind: Kyma
