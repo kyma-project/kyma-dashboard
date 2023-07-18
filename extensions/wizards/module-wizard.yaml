@@ -39,6 +39,7 @@ data:
           enum: '$distinct($moduleTemplates().items.spec.channel)'
         - widget: GenericList
           path: spec.modules
+          defaultExpanded: true
           children:
             - path: "[].name"
               required: true
