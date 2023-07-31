@@ -86,49 +86,18 @@ data:
       path: spec.channel
       enum: '$distinct($moduleTemplates().items.spec.channel)'
       required: true
-    - widget: GenericList
+    - simple: true
       path: spec.modules
-      children:
-        - path: "[].name"
-          required: true
-          enum: |
-            $filter($distinct($moduleTemplates().items.metadata.labels."operator.kyma-project.io/module-name"), function ($v){ 
-              $not($v in $root.spec.modules.name)
-            })
-        - path: "[].channel"
-          visibility: "$boolean($item.name)"
-          enum: '(
-            $channels := $filter($moduleTemplates().items, function($v) {
-              $v.metadata.labels."operator.kyma-project.io/module-name" = $item.name
-            });
-            $channelsAsOptions := $map($channels, function ($v) {
-              {
-                "key": $v.spec.channel,
-                "name": $v.spec.channel & ($v.spec.descriptor.component.version ? " (version: " & $v.spec.descriptor.component.version & ")" : "")
-              }
-            });
-            $channelsAsOptions;
-          )'
-        - widget: Alert
-          severity: information
-          alert: '(
-            $linkToDocumentation := $filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" = $item.name and ($v.spec.channel = $item.channel or $v.spec.channel = $parent.spec.channel)}).metadata.annotations."operator.kyma-project.io/doc-url";
-            $count($linkToDocumentation) > 0 ? "Link to {{[documentation](" & $linkToDocumentation & ")}}" : "";
-          )'
-          visibility: '(
-            $linkToDocumentation := $filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" = $item.name and ($v.spec.channel = $item.channel or $v.spec.channel = $root.spec.channel)}).metadata.annotations."operator.kyma-project.io/doc-url";
-            $count($linkToDocumentation) > 0;
-          )'
-        - widget: Alert
-          severity: warning
-          alert: '"alert.beta"'
-          visibility: '(  
-            $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
-            $v.metadata.labels."operator.kyma-project.io/module-name" in $item.name
-            and $v.metadata.labels."operator.kyma-project.io/beta" = "true"
-            });
-            $isBeta := $count($fullModuleTemplate) > 0;
-          )'
+      widget: Modules
+      name: Modules
+      defaultExpanded: true
+      options: 
+        name: |
+          $distinct($moduleTemplates().items.metadata.labels."operator.kyma-project.io/module-name")
+        moduleTemplates: >-
+          $moduleTemplates().items
+        betaAlert: '"CAUTION: The Service Level Agreements (SLAs) and Support obligations do not apply to Beta modules and functionalities. If Beta modules or functionalities directly or indirectly affect other modules, the Service Level Agreements and Support for these modules are limited to priority levels P3 (Medium) or P4 (Low). Thus, Beta releases are not intended for use in customer production environments."'
+
   general: |-
     resource:
       kind: Kyma
@@ -149,12 +118,6 @@ data:
       widget: Badge
       source: status.state
       tooltip: status.state
-  translations: |
-    en:
-      metadata.annotations: Annotations
-      metadata.labels: Labels
-      metadata.creationTimestamp: Created at
-      alert.beta: "CAUTION: The Service Level Agreements (SLAs) and Support obligations do not apply to Beta modules and functionalities. If Beta modules or functionalities directly or indirectly affect other modules, the Service Level Agreements and Support for these modules are limited to priority levels P3 (Medium) or P4 (Low). Thus, Beta releases are not intended for use in customer production environments."
   injections: |-
     - name: Kyma Modules
       widget: Panel
