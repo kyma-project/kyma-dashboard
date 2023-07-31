@@ -96,8 +96,7 @@ data:
           $distinct($moduleTemplates().items.metadata.labels."operator.kyma-project.io/module-name")
         moduleTemplates: >-
           $moduleTemplates().items
-        betaAlert: '"CAUTION: The Service Level Agreements (SLAs) and Support obligations do not apply to Beta modules and functionalities. If Beta modules or functionalities directly or indirectly affect other modules, the Service Level Agreements and Support for these modules are limited to priority levels P3 (Medium) or P4 (Low). Thus, Beta releases are not intended for use in customer production environments."'
-
+          betaAlert: '"alert.beta"'
   general: |-
     resource:
       kind: Kyma
@@ -118,6 +117,9 @@ data:
       widget: Badge
       source: status.state
       tooltip: status.state
+  translations: |
+    en:
+      alert.beta: "CAUTION: The Service Level Agreements (SLAs) and Support obligations do not apply to Beta modules and functionalities. If Beta modules or functionalities directly or indirectly affect other modules, the Service Level Agreements and Support for these modules are limited to priority levels P3 (Medium) or P4 (Low). Thus, Beta releases are not intended for use in customer production environments."
   injections: |-
     - name: Kyma Modules
       widget: Panel

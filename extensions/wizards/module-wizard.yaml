@@ -24,11 +24,6 @@ data:
         kind: Kyma
         group: operator.kyma-project.io
         version: v1beta1
-  defaults: |
-    kyma:
-      spec:
-        modules:
-          - {}
   steps: |
     - name: Kyma Modules
       description: Choose modules you want to install on the cluster.
