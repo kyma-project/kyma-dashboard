@@ -96,7 +96,7 @@ data:
           $distinct($moduleTemplates().items.metadata.labels."operator.kyma-project.io/module-name")
         moduleTemplates: >-
           $moduleTemplates().items
-          betaAlert: '"alert.beta"'
+        betaAlert: '"alert.beta"'
   general: |-
     resource:
       kind: Kyma
