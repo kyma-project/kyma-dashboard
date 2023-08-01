@@ -229,6 +229,11 @@ data:
                   type: array
                   items:
                     type: string
+                introspection_url:
+                  type: string
+                  pattern: ^(https://|http://).*$
+                introspection_request_headers:
+                  type: map
               children:
                 - path: jwks_urls
                   name: accessStrategies.jwks_urls
@@ -248,8 +253,21 @@ data:
                   children:
                     - path: '[]'
                       simple: true
+                - path: introspection_url
+                  name: accessStrategies.introspection_url
+                  inputInfo: inputInfo.introspection_url
+                  simple: true
+                  visibility: '$item.handler="oauth2_introspection"'
+                - path: introspection_request_headers
+                  name: accessStrategies.introspection_request_headers
+                  defaultExpanded: false
+                  simple: true
+                  inputInfo: inputInfo.introspection_request_headers
+                  widget: KeyValuePair
+                  visibility: '$item.handler="oauth2_introspection"'
                 - path: required_scope
                   name: accessStrategies.required_scope
+                  defaultExpanded: false
                   simple: true
                   widget: SimpleList
                   visibility: '$item.handler="oauth2_introspection" or $item.handler="oauth2_client_credentials" or $item.handler="jwt"'
@@ -352,12 +370,16 @@ data:
       accessStrategies.jwks_urls: JWKS URLs
       accessStrategies.trusted_issuers: Trusted Issuers
       accessStrategies.required_scope: Required Scope
+      accessStrategies.introspection_url: Introspection URL
+      accessStrategies.introspection_request_headers: Introspection Request Headers
       gateway: Gateway
       host: Host
       inputInfo.gateway: Gateway structure, '{GATEWAY}.{NAMESPACE}.svc.cluster.local'
       inputInfo.path: "Path can contain alphanumeric characters and '/', '.', '*', '?', '!', '-', '(', and ')'."
       inputInfo.jwks_urls: "JWKS URLs must start with 'https://' or 'file://'"
       inputInfo.trusted_issuers: "Trusted Issuers must start with 'https://' or 'file://'"
+      inputInfo.introspection_url: "Optional: URL endpoint used for validating the Bearer token"
+      inputInfo.introspection_request_headers: "Optional: Headers sent alongside the introspection request"
       mutators: Mutators
       mutators.config: Config
       mutators.handlers: Handlers
