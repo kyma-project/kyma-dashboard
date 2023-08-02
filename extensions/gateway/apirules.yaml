@@ -84,6 +84,12 @@ data:
               - source: $item.config.trusted_issuers
                 name: accessStrategies.trusted_issuers
                 widget: JoinedArray
+              - source: $item.config.introspection_url
+                name: accessStrategies.introspection_url
+                widget: Text
+              - source: $item.config.introspection_request_headers
+                name: accessStrategies.introspection_request_headers
+                widget: Labels
           - source: $item.mutators
             widget: Table
             disablePadding: true
@@ -229,6 +235,11 @@ data:
                   type: array
                   items:
                     type: string
+                introspection_url:
+                  type: string
+                  pattern: ^(https://|http://).*$
+                introspection_request_headers:
+                  type: map
               children:
                 - path: jwks_urls
                   name: accessStrategies.jwks_urls
@@ -248,6 +259,18 @@ data:
                   children:
                     - path: '[]'
                       simple: true
+                - path: introspection_url
+                  name: accessStrategies.introspection_url
+                  inputInfo: inputInfo.introspection_url
+                  simple: true
+                  visibility: '$item.handler="oauth2_introspection"'
+                - path: introspection_request_headers
+                  name: accessStrategies.introspection_request_headers
+                  simple: true
+                  inputInfo: inputInfo.introspection_request_headers
+                  widget: KeyValuePair
+                  visibility: '$item.handler="oauth2_introspection"'
+                  defaultExpanded: false
                 - path: required_scope
                   name: accessStrategies.required_scope
                   simple: true
@@ -352,12 +375,16 @@ data:
       accessStrategies.jwks_urls: JWKS URLs
       accessStrategies.trusted_issuers: Trusted Issuers
       accessStrategies.required_scope: Required Scope
+      accessStrategies.introspection_url: Introspection URL
+      accessStrategies.introspection_request_headers: Introspection Request Headers
       gateway: Gateway
       host: Host
       inputInfo.gateway: Gateway structure, '{GATEWAY}.{NAMESPACE}.svc.cluster.local'
       inputInfo.path: "Path can contain alphanumeric characters and '/', '.', '*', '?', '!', '-', '(', and ')'."
       inputInfo.jwks_urls: "JWKS URLs must start with 'https://' or 'file://'"
       inputInfo.trusted_issuers: "Trusted Issuers must start with 'https://' or 'file://'"
+      inputInfo.introspection_url: "URL endpoint used for validating the Bearer token. Should start with 'http://' or 'https://'"
+      inputInfo.introspection_request_headers: "Headers sent alongside the introspection request"
       mutators: Mutators
       mutators.config: Config
       mutators.handlers: Handlers
