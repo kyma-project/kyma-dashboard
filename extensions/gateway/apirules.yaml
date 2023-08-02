@@ -266,14 +266,12 @@ data:
                   visibility: '$item.handler="oauth2_introspection"'
                 - path: introspection_request_headers
                   name: accessStrategies.introspection_request_headers
-                  defaultExpanded: false
                   simple: true
                   inputInfo: inputInfo.introspection_request_headers
                   widget: KeyValuePair
                   visibility: '$item.handler="oauth2_introspection"'
                 - path: required_scope
                   name: accessStrategies.required_scope
-                  defaultExpanded: false
                   simple: true
                   widget: SimpleList
                   visibility: '$item.handler="oauth2_introspection" or $item.handler="oauth2_client_credentials" or $item.handler="jwt"'
