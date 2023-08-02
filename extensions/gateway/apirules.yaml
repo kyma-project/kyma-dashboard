@@ -84,6 +84,12 @@ data:
               - source: $item.config.trusted_issuers
                 name: accessStrategies.trusted_issuers
                 widget: JoinedArray
+              - source: $item.config.introspection_url
+                name: accessStrategies.introspection_url
+                widget: Badge
+              - source: $item.config.introspection_request_headers
+                name: accessStrategies.introspection_request_headers
+                widget: Labels
           - source: $item.mutators
             widget: Table
             disablePadding: true

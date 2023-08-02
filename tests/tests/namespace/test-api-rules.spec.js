@@ -228,4 +228,86 @@ context('Test API Rules in the Function details view', () => {
 
     cy.contains(API_RULE_NAME).should('be.visible');
   });
+
+  it('Create OAuth2 Introspection rule', () => {
+    cy.get('[class="fd-link"]')
+      .contains(API_RULE_NAME)
+      .click();
+
+    cy.contains('Edit').click();
+
+    cy.contains(API_RULE_NAME);
+
+    // Rules
+    cy.get('[aria-label="expand Rules"]:visible', { log: false })
+      .contains('Add')
+      .click();
+
+    cy.get('[aria-label="expand Rule"]:visible', { log: false })
+      .first()
+      .click();
+
+    cy.get('[data-testid="spec.rules.2.path"]:visible')
+      .clear()
+      .type(API_RULE_PATH);
+
+    // > Access Strategies
+    cy.get('[aria-label="expand Access Strategies"]:visible', { log: false })
+      .first()
+      .scrollIntoView();
+
+    cy.get('[data-testid="spec.rules.2.accessStrategies.0.handler"]:visible')
+      .find('input')
+      .clear()
+      .type('oauth2_introspection');
+
+    cy.get('[data-testid="spec.rules.2.accessStrategies.0.handler"]:visible', {
+      log: false,
+    })
+      .find('span')
+      .find('[aria-label="Combobox input arrow"]:visible', { log: false })
+      .click();
+
+    cy.get('[aria-label="expand Introspection Request Headers"]:visible', {
+      log: false,
+    }).click();
+
+    cy.get('[placeholder="Enter key"]:visible', { log: false })
+      .first()
+      .clear()
+      .type('Authorization');
+
+    cy.get('[placeholder="Enter value"]:visible', { log: false })
+      .first()
+      .clear()
+      .type('Basic 12345');
+
+    cy.get(
+      '[data-testid="spec.rules.2.accessStrategies.0.config.introspection_url"]:visible',
+    )
+      .clear()
+      .type('https://example.com');
+
+    // > Methods
+    cy.get('[data-testid="spec.rules.2.methods.GET"]:visible').click();
+
+    cy.get('[data-testid="spec.rules.2.methods.POST"]:visible').click();
+
+    cy.get('[role=dialog]')
+      .contains('button', 'Update')
+      .click();
+  });
+
+  it('Check OAuth2 Introspection strategy', () => {
+    cy.contains(API_RULE_NAME).click();
+
+    cy.contains(API_RULE_DEFAULT_PATH).should('exist');
+
+    cy.contains('Rules #3', { timeout: 10000 }).click();
+
+    cy.contains(API_RULE_PATH).should('exist');
+
+    cy.contains('https://example.com').should('exist');
+    cy.contains('Authorization=Basic 12345').should('exist');
+  });
 });
