@@ -86,7 +86,7 @@ data:
                 widget: JoinedArray
               - source: $item.config.introspection_url
                 name: accessStrategies.introspection_url
-                widget: Badge
+                widget: Text
               - source: $item.config.introspection_request_headers
                 name: accessStrategies.introspection_request_headers
                 widget: Labels
