@@ -1,0 +1,254 @@
+kind: CustomResourceDefinition
+apiVersion: apiextensions.k8s.io/v1
+metadata:
+  name: dnsentries.dns.gardener.cloud
+  labels:
+    app.kubernetes.io/instance: dns-controller-manager
+    app.kubernetes.io/name: gardener-extension-shoot-dns-service
+    gardener.cloud/deletion-protected: 'true'
+    resources.gardener.cloud/managed-by: gardener
+spec:
+  group: dns.gardener.cloud
+  names:
+    plural: dnsentries
+    singular: dnsentry
+    shortNames:
+      - dnse
+    kind: DNSEntry
+    listKind: DNSEntryList
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          required:
+            - spec
+          properties:
+            apiVersion:
+              description: >-
+                APIVersion defines the versioned schema of this representation
+                of an object. Servers should convert recognized schemas to the
+                latest internal value, and may reject unrecognized values. More
+                info:
+                https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+              type: string
+            kind:
+              description: >-
+                Kind is a string value representing the REST resource this
+                object represents. Servers may infer this from the endpoint the
+                client submits requests to. Cannot be updated. In CamelCase.
+                More info:
+                https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              required:
+                - dnsName
+              properties:
+                cnameLookupInterval:
+                  description: >-
+                    lookup interval for CNAMEs that must be resolved to IP
+                    addresses
+                  type: integer
+                  format: int64
+                dnsName:
+                  description: full qualified domain name
+                  type: string
+                ownerId:
+                  description: owner id used to tag entries in external DNS system
+                  type: string
+                reference:
+                  description: reference to base entry used to inherit attributes from
+                  type: object
+                  required:
+                    - name
+                  properties:
+                    name:
+                      description: name of the referenced DNSEntry object
+                      type: string
+                    namespace:
+                      description: namespace of the referenced DNSEntry object
+                      type: string
+                routingPolicy:
+                  description: optional routing policy
+                  type: object
+                  required:
+                    - parameters
+                    - setIdentifier
+                    - type
+                  properties:
+                    parameters:
+                      description: Policy specific parameters
+                      type: object
+                      additionalProperties:
+                        type: string
+                    setIdentifier:
+                      description: SetIdentifier is the identifier of the record set
+                      type: string
+                    type:
+                      description: >-
+                        Policy is the policy type. Allowed values are provider
+                        dependent, e.g. `weighted`
+                      type: string
+                targets:
+                  description: >-
+                    target records (CNAME or A records), either text or targets
+                    must be specified
+                  type: array
+                  items:
+                    type: string
+                text:
+                  description: text records, either text or targets must be specified
+                  type: array
+                  items:
+                    type: string
+                ttl:
+                  description: time to live for records in external DNS system
+                  type: integer
+                  format: int64
+            status:
+              type: object
+              properties:
+                lastUpdateTime:
+                  description: >-
+                    lastUpdateTime contains the timestamp of the last status
+                    update
+                  type: string
+                  format: date-time
+                message:
+                  description: message describing the reason for the state
+                  type: string
+                observedGeneration:
+                  type: integer
+                  format: int64
+                provider:
+                  description: assigned provider
+                  type: string
+                providerType:
+                  description: provider type used for the entry
+                  type: string
+                routingPolicy:
+                  description: effective routing policy
+                  type: object
+                  required:
+                    - parameters
+                    - setIdentifier
+                    - type
+                  properties:
+                    parameters:
+                      description: Policy specific parameters
+                      type: object
+                      additionalProperties:
+                        type: string
+                    setIdentifier:
+                      description: SetIdentifier is the identifier of the record set
+                      type: string
+                    type:
+                      description: >-
+                        Policy is the policy type. Allowed values are provider
+                        dependent, e.g. `weighted`
+                      type: string
+                state:
+                  description: entry state
+                  type: string
+                targets:
+                  description: effective targets generated for the entry
+                  type: array
+                  items:
+                    type: string
+                ttl:
+                  description: time to live used for the entry
+                  type: integer
+                  format: int64
+                zone:
+                  description: zone used for the entry
+                  type: string
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - name: DNS
+          type: string
+          description: FQDN of DNS Entry
+          jsonPath: .spec.dnsName
+        - name: TYPE
+          type: string
+          description: provider type
+          jsonPath: .status.providerType
+        - name: PROVIDER
+          type: string
+          description: assigned provider (namespace/name)
+          jsonPath: .status.provider
+        - name: STATUS
+          type: string
+          description: entry status
+          jsonPath: .status.state
+        - name: AGE
+          type: date
+          description: entry creation timestamp
+          jsonPath: .metadata.creationTimestamp
+        - name: TARGETS
+          type: string
+          description: effective targets
+          jsonPath: .status.targets
+        - name: OWNERID
+          type: string
+          description: owner id used to tag entries in external DNS system
+          jsonPath: .spec.ownerId
+        - name: TTL
+          type: integer
+          description: time to live
+          priority: 2000
+          jsonPath: .status.ttl
+        - name: ZONE
+          type: string
+          description: zone id
+          priority: 2000
+          jsonPath: .status.zone
+        - name: POLICY_TYPE
+          type: string
+          description: routing policy type
+          priority: 2000
+          jsonPath: .status.routingPolicy.type
+        - name: POLICY_SETID
+          type: string
+          description: routing policy set identifier
+          priority: 2000
+          jsonPath: .status.routingPolicy.setIdentifier
+        - name: POLICY_PARAMS
+          type: string
+          description: routing policy parameters
+          priority: 2000
+          jsonPath: .status.routingPolicy.parameters
+        - name: MESSAGE
+          type: string
+          description: message describing the reason for the state
+          priority: 2000
+          jsonPath: .status.message
+  conversion:
+    strategy: None
+status:
+  conditions:
+    - type: NamesAccepted
+      status: 'True'
+      lastTransitionTime: '2023-05-31T07:56:28Z'
+      reason: NoConflicts
+      message: no conflicts found
+    - type: Established
+      status: 'True'
+      lastTransitionTime: '2023-05-31T07:56:28Z'
+      reason: InitialNamesAccepted
+      message: the initial names have been accepted
+  acceptedNames:
+    plural: dnsentries
+    singular: dnsentry
+    shortNames:
+      - dnse
+    kind: DNSEntry
+    listKind: DNSEntryList
+  storedVersions:
+    - v1alpha1

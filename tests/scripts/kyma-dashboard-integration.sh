@@ -27,7 +27,12 @@ echo "Apply and enable keda module"
 kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/download/moduletemplate.yaml
 ./kyma alpha enable module keda -c fast
 
+echo "Apply gardener resources"
+kubectl apply -f /tests/fixtures/examples
+
 k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
+
+exit 1
 }
 
 function busild_and_run_busola() {
@@ -43,6 +48,8 @@ docker run -d --rm --net=host --pid=host --name kyma-dashboard "$REPO_IMG_DEV-lo
 echo "waiting for server to be up..."
 while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' "$CYPRESS_DOMAIN")" != "200" ]]; do sleep 5; done
 sleep 10
+
+exit 1
 }
 
 deploy_k3d_kyma  &> $ARTIFACTS/kyma-alpha-deploy.log &
