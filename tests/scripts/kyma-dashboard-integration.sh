@@ -8,6 +8,9 @@ export TAG="test-dev"
 OS="$(uname -s)"
 ARCH="$(uname -m)"
 
+apt-get update -y 
+apt-get install -y gettext-base
+
 curl -sSLo kyma.tar.gz "https://github.com/kyma-project/cli/releases/latest/download/kyma_${OS}_${ARCH}.tar.gz"
 tar -zxvf kyma.tar.gz
 chmod +x ./kyma
