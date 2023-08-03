@@ -31,7 +31,6 @@ echo "Apply gardener and service menegment resources"
 kubectl apply -f tests/fixtures/examples
 
 k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
-
 }
 
 function busild_and_run_busola() {
