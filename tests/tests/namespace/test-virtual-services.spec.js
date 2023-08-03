@@ -48,6 +48,8 @@ context('Test Virtual Services', () => {
     cy.get('[data-testid="spec.http.0.match.0.name"]:visible').type(MATCH_NAME);
 
     // URIs
+    cy.get('[aria-label="expand URI"]:visible', { log: false }).click();
+
     cy.get('[data-testid="select-dropdown"]:visible', { log: false })
       .first()
       .click();

@@ -169,6 +169,7 @@ data:
     - path: spec.workloadSelector.labels
       name: spec.workloadSelector
       widget: KeyValuePair
+      defaultExpanded: true
     - path: spec.exportTo
       name: spec.exportTo
       widget: SimpleList

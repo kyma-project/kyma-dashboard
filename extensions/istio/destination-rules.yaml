@@ -1767,6 +1767,7 @@ data:
       children:
         - path: '[]'
     - path: spec.workloadSelector.matchLabels
+      defaultExpanded: true
       name: Workload Selector Match Labels
       widget: KeyValuePair
   list: |
