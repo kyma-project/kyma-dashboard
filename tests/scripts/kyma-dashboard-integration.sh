@@ -27,7 +27,7 @@ echo "Apply and enable keda module"
 kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/download/moduletemplate.yaml
 ./kyma alpha enable module keda -c fast
 
-echo "Apply gardener resources"
+echo "Apply gardener and service menegment resources"
 kubectl apply -f /tests/fixtures/examples
 
 k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
