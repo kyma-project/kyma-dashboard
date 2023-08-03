@@ -11,6 +11,7 @@ ARCH="$(uname -m)"
 apt-get update -y 
 apt-get install -y gettext-base
 
+function deploy_k3d_kyma (){
 curl -sSLo kyma.tar.gz "https://github.com/kyma-project/cli/releases/latest/download/kyma_${OS}_${ARCH}.tar.gz"
 tar -zxvf kyma.tar.gz
 chmod +x ./kyma
@@ -30,7 +31,9 @@ k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
 
 echo "Create k3d registry..."
 k3d registry create registry.localhost --port=5000
+}
 
+function busild_and_run_busola() {
 echo "Make release-dev..."
 make release-dev
 
@@ -40,6 +43,12 @@ docker run -d --rm --net=host --pid=host --name kyma-dashboard "$REPO_IMG_DEV-lo
 echo "waiting for server to be up..."
 while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' "$CYPRESS_DOMAIN")" != "200" ]]; do sleep 5; done
 sleep 10
+}
+
+deploy_k3d_kyma  &> $ARTIFACTS/kyma-alpha-deploy.log &
+busild_and_run_busola  &> $ARTIFACTS/busola-build.log &
+
+wait 
 
 cd tests
 npm ci && npm run "test:$SCOPE"
