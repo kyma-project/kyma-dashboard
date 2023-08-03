@@ -28,9 +28,10 @@ kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/do
 ./kyma alpha enable module keda -c fast
 
 echo "Apply gardener and service menegment resources"
-kubectl apply -f /tests/fixtures/examples
+kubectl apply -f tests/fixtures/examples
 
 k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
+
 }
 
 function busild_and_run_busola() {
