@@ -19,7 +19,6 @@ echo "Provisioning k3d cluster for Kyma"
 ./kyma provision k3d --ci
 
 ./kyma deploy
-# ./kyma deploy -s main --components-file tests/scripts/components.yaml
 
 ./kyma alpha deploy
 
