@@ -3,7 +3,6 @@
 set -e
 export CYPRESS_DOMAIN=http://localhost:3001
 export NO_COLOR=1
-export KUBECONFIG="$GARDENER_KYMA_PROW_KUBECONFIG"
 export REPO_IMG_DEV="k3d-registry.localhost:5000/kyma-dashboard"
 export TAG="test-dev"
 OS="$(uname -s)"
@@ -16,15 +15,16 @@ chmod +x ./kyma
 echo "Provisioning k3d cluster for Kyma"
 ./kyma provision k3d --ci
 
+./kyma deploy
+# ./kyma deploy -s main --components-file tests/scripts/components.yaml
+
 ./kyma alpha deploy
 
-echo "Apply and enable serverless module"
-kubectl apply -f https://github.com/kyma-project/serverless-manager/releases/latest/download/moduletemplate.yaml
-./kyma alpha enable module serverless -c fast
+echo "Apply and enable keda module"
+kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/download/moduletemplate.yaml
+./kyma alpha enable module keda
 
-echo "Apply istio module"
-kubectl apply -f https://github.com/kyma-project/istio/releases/latest/download/istio-manager.yaml
-kubectl apply -f https://github.com/kyma-project/istio/releases/latest/download/istio-default-cr.yaml
+k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
 
 echo "Create k3d registry..."
 k3d registry create registry.localhost --port=5000
