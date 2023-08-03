@@ -52,7 +52,10 @@ deploy_k3d_kyma  &> $ARTIFACTS/kyma-alpha-deploy.log &
 busild_and_run_busola  &> $ARTIFACTS/busola-build.log &
 
 echo 'Waiting for deploy_k3d_kyma and busild_and_run_busola'
-wait 
+wait -n
+echo "First process finished"
+wait -n
+echo "Second process finished"
 
 cd tests
 npm ci && npm run "test:$SCOPE"
