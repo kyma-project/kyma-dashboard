@@ -87,6 +87,7 @@ data:
       path: spec.selector
       simple: true
       name: Selectors
+      defaultExpanded: true
     - path: spec.type
       name: Type
       placeholder: Enter Type

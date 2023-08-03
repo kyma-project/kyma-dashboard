@@ -168,6 +168,7 @@ data:
   form: |-
     - path: spec.selector.matchLabels
       widget: KeyValuePair
+      defaultExpanded: true
     - path: spec.action
       placeholder: placeholders.dropdown
       simple: true
