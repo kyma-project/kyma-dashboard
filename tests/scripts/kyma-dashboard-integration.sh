@@ -22,7 +22,7 @@ echo "Provisioning k3d cluster for Kyma"
 
 echo "Apply and enable keda module"
 kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/download/moduletemplate.yaml
-./kyma alpha enable module keda
+./kyma alpha enable module keda -c fast
 
 k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
 
