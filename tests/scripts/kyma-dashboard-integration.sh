@@ -28,12 +28,12 @@ kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/do
 ./kyma alpha enable module keda -c fast
 
 k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
-
-echo "Create k3d registry..."
-k3d registry create registry.localhost --port=5000
 }
 
 function busild_and_run_busola() {
+echo "Create k3d registry..."
+k3d registry create registry.localhost --port=5000
+
 echo "Make release-dev..."
 make release-dev
 
@@ -48,6 +48,7 @@ sleep 10
 deploy_k3d_kyma  &> $ARTIFACTS/kyma-alpha-deploy.log &
 busild_and_run_busola  &> $ARTIFACTS/busola-build.log &
 
+echo 'Waiting for deploy_k3d_kyma and busild_and_run_busola'
 wait 
 
 cd tests
