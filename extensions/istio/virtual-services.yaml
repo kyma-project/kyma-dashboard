@@ -546,6 +546,7 @@ data:
             - path: '[].headers'
               simple: true
               name: headers
+              defaultExpanded: true
               widget: KeyValuePair
               value:
                 type: object
