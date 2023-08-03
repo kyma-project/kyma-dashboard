@@ -297,7 +297,6 @@ data:
           visibility: "$item.type = 'Pods'"
         - path: '[].pods.metric.selector.matchLabels'
           simple: true
-          defaultExpanded: false
           visibility: "$item.type = 'Pods'"
           widget: KeyValuePair
         - path: '[].pods.target'
@@ -321,7 +320,6 @@ data:
           visibility: "$item.type = 'Object'"
         - path: '[].object.metric.selector.matchLabels'
           simple: true
-          defaultExpanded: false
           visibility: "$item.type = 'Object'"
           widget: KeyValuePair
         - path: '[].object.describedObject'
@@ -361,7 +359,6 @@ data:
           visibility: "$item.type = 'External'"
         - path: '[].external.metric.selector.matchLabels'
           simple: true
-          defaultExpanded: false
           visibility: "$item.type = 'External'"
           widget: KeyValuePair
         - path: '[].external.target'
