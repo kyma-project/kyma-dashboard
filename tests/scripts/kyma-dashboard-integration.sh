@@ -27,13 +27,20 @@ echo "Apply and enable keda module"
 kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/download/moduletemplate.yaml
 ./kyma alpha enable module keda -c fast
 
-echo "Apply gardener and service menegment resources"
-kubectl apply -f tests/fixtures/examples
+echo "Apply gardener resources"
+echo "Certificates"
+kubectl apply -f https://raw.githubusercontent.com/gardener/cert-management/master/pkg/apis/cert/crds/cert.gardener.cloud_certificates.yaml
+echo "DNS Providers"
+kubectl apply -f https://raw.githubusercontent.com/gardener/external-dns-management/master/pkg/apis/dns/crds/dns.gardener.cloud_dnsproviders.yaml
+echo "DNS Entries"
+kubectl apply -f https://raw.githubusercontent.com/gardener/external-dns-management/master/pkg/apis/dns/crds/dns.gardener.cloud_dnsentries.yaml
+echo "Issuers"
+kubectl apply -f https://raw.githubusercontent.com/gardener/cert-management/master/pkg/apis/cert/crds/cert.gardener.cloud_issuers.yaml
 
 k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
 }
 
-function busild_and_run_busola() {
+function build_and_run_busola() {
 echo "Create k3d registry..."
 k3d registry create registry.localhost --port=5000
 
@@ -49,9 +56,9 @@ sleep 10
 }
 
 deploy_k3d_kyma  &> $ARTIFACTS/kyma-alpha-deploy.log &
-busild_and_run_busola  &> $ARTIFACTS/busola-build.log &
+build_and_run_busola  &> $ARTIFACTS/busola-build.log &
 
-echo 'Waiting for deploy_k3d_kyma and busild_and_run_busola'
+echo 'Waiting for deploy_k3d_kyma and build_and_run_busola'
 wait -n
 echo "First process finished"
 wait -n
