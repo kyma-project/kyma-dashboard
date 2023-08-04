@@ -14,7 +14,7 @@ context('Test Modules Wizard', () => {
 
     cy.contains('Kyma Modules').should('be.visible');
 
-    cy.contains('Keda').click();
+    cy.contains('keda').click();
 
     cy.get('[aria-label="Module channel overwrite"]:visible').click();
 
@@ -32,7 +32,7 @@ context('Test Modules Wizard', () => {
   });
 
   it('Inspect updates', () => {
-    cy.contains('Keda').should('be.visible');
+    cy.contains('keda').should('be.visible');
 
     cy.contains('fast').should('be.visible');
 
