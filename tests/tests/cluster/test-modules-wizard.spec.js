@@ -8,9 +8,7 @@ context('Test Modules Wizard', () => {
   });
 
   it('Check wizard view and add module', () => {
-    cy.contains("Seems that you don't have any Kyma Modules configured").should(
-      'be.visible',
-    );
+    cy.contains('Add your module under').should('be.visible');
 
     cy.contains('Add Module').click();
 
