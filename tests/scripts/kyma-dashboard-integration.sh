@@ -25,7 +25,6 @@ echo "Provisioning k3d cluster for Kyma"
 
 echo "Apply and enable keda module"
 kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/download/moduletemplate.yaml
-./kyma alpha enable module keda -c fast
 
 echo "Apply gardener resources"
 echo "Certificates"
