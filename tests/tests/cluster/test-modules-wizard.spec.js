@@ -20,7 +20,7 @@ context('Test Modules Wizard', () => {
 
     cy.contains('fast').click();
 
-    cy.contains('Next step').click();
+    cy.contains('Next Step').click();
 
     cy.contains('Summary').should('be.visible');
 
