@@ -20,15 +20,11 @@ context('Test Modules Wizard', () => {
 
     cy.contains('fast').click();
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Next step')
-      .click();
+    cy.contains('button', 'Next step').click();
 
     cy.contains('Summary').should('be.visible');
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Upload')
-      .click();
+    cy.contains('button', 'Upload').click();
   });
 
   it('Inspect updates', () => {
