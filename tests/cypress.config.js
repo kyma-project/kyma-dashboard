@@ -28,6 +28,7 @@ module.exports = defineConfig({
     },
     specPattern: [
       'tests/cluster/test-applications.spec.js',
+      'tests/cluster/test-modules-wizard.spec.js',
       'tests/namespace/a-run-before.spec.js',
       'tests/namespace/run-prepare-functions.spec.js',
       'tests/namespace/test-certificates.spec.js',
