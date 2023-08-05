@@ -24,7 +24,9 @@ context('Test Modules Wizard', () => {
 
     cy.contains('Summary').should('be.visible');
 
-    cy.contains('Upload').click();
+    cy.get('[type=button]:visible')
+      .contains('Upload')
+      .click();
   });
 
   it('Inspect updates', () => {
