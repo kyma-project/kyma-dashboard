@@ -24,7 +24,7 @@ context('Test Modules Wizard', () => {
 
     cy.contains('Summary').should('be.visible');
 
-    cy.get('[type=button]:visible')
+    cy.get('footer')
       .contains('Upload')
       .click();
   });
