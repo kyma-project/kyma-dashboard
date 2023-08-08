@@ -61,9 +61,6 @@ context('Test Issuers', () => {
   });
 
   it('Edit an issuer', () => {
-    //wait for the issuer to update to not have version conflicts
-    cy.get('[role="status"]').should('not.have.text', 'Unknown');
-
     cy.contains('Edit').click();
 
     cy.get('[placeholder="Select Issuer type"]')

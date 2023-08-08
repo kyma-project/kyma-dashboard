@@ -27,6 +27,8 @@ context('Test Service Management category', () => {
     cy.get('.fd-dialog__body')
       .find('.sap-icon--message-success')
       .should('have.length', 2);
+
+    cy.reload();
   });
 
   describe('Check Service Management Extensions', () => {

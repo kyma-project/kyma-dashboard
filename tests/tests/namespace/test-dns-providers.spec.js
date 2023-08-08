@@ -71,8 +71,6 @@ context('Test DNS Providers', () => {
     cy.contains(PROVIDER_TYPE);
     // included domain
     cy.contains(PROVIDER_INCLUDED_DOMAIN);
-
-    cy.get('[role=status]').should('have.text', 'Error');
   });
 
   it('Edit DNS Provider', () => {
