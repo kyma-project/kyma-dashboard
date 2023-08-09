@@ -6,19 +6,17 @@ context('Test Kyma', () => {
   before(() => {
     cy.loginAndSelectCluster();
     cy.goToNamespaceDetails();
-
-    cy.getLeftNav()
-      .contains('Kyma')
-      .eq(0)
-      .click();
-
-    cy.getLeftNav()
-      .contains('Kyma')
-      .eq(1)
-      .click();
   });
 
   it('Create an Kyma', () => {
+    cy.getLeftNav()
+      .contains('Kyma')
+      .click();
+    cy.getLeftNav()
+      .get('[title="Kyma"] ul')
+      .contains('Kyma')
+      .click();
+
     cy.contains('Create Kyma').click();
 
     cy.get('[arialabel="Kyma name"]:visible').type(KYMA_NAME);
