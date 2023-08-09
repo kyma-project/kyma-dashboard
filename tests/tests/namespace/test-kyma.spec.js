@@ -9,6 +9,8 @@ context('Test Kyma', () => {
   });
 
   it('Create an Kyma', () => {
+    cy.wait(500);
+
     cy.getLeftNav()
       .contains('Kyma')
       .click();
