@@ -8,7 +8,7 @@ context('Test Module-templates', () => {
       .click();
 
     cy.get('[role=row]')
-      .contains('kyma-system')
+      .contains('kcp-system')
       .click();
 
     cy.navigateTo('Kyma', 'Module Templates');
