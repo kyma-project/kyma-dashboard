@@ -14,6 +14,7 @@ context('Test Kyma', () => {
     cy.getLeftNav()
       .contains('Kyma')
       .click();
+
     cy.getLeftNav()
       .get('[title="Kyma"] ul')
       .contains('Kyma')
@@ -39,7 +40,7 @@ context('Test Kyma', () => {
   it('Edit a Kyma', () => {
     cy.contains('Edit').click();
 
-    cy.get('[class="fd-form-label fd-checkbox__label"]')
+    cy.contains('keda')
       .filter(':visible')
       .click();
 

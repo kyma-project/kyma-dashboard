@@ -3,6 +3,9 @@ context('Test Module-templates', () => {
 
   before(() => {
     cy.loginAndSelectCluster();
+  });
+
+  it('Go to Keda Module Template', () => {
     cy.getLeftNav()
       .contains('Namespaces')
       .click();
