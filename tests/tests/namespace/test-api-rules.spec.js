@@ -33,13 +33,7 @@ context('Test API Rules in the Function details view', () => {
   });
 
   it('Create an API Rule for the Function', () => {
-    cy.getLeftNav()
-      .get('[title="Discovery and Network"', { includeShadowDom: true })
-      .click();
-
-    cy.getLeftNav()
-      .contains('API Rules', { includeShadowDom: true })
-      .click();
+    cy.navigateTo('Discovery and Network', 'API Rules');
 
     cy.contains('Create API Rule').click();
 

@@ -16,7 +16,7 @@ context('Test Kyma', () => {
       .click();
 
     cy.getLeftNav()
-      .get('[title="Kyma"] ul', { includeShadowDom: true })
+      .get('[title="Kyma"] li', { includeShadowDom: true })
       .contains('Kyma')
       .click();
 
