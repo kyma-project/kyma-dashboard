@@ -1,6 +1,6 @@
 Cypress.Commands.add('checkExtension', (resource, create = true) => {
   cy.getLeftNav()
-    .contains(resource)
+    .contains(resource, { includeShadowDom: true })
     .click();
 
   cy.get('[aria-label="title"]')

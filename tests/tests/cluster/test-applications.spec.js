@@ -32,7 +32,7 @@ context('Test Applications', () => {
     cy.intercept(serviceRequestData, { statusCode: 200, body: '{}' });
 
     cy.getLeftNav()
-      .contains('Applications')
+      .contains('Applications', { includeShadowDom: true })
       .click();
 
     cy.contains('a', APPLICATION_NAME)
@@ -78,7 +78,7 @@ context('Test Applications', () => {
 
   it('Delete the Application', () => {
     cy.getLeftNav()
-      .contains('Applications')
+      .contains('Applications', { includeShadowDom: true })
       .click();
 
     cy.deleteFromGenericList(Cypress.env('APP_NAME'));

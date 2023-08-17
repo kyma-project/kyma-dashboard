@@ -34,11 +34,11 @@ context('Test API Rules in the Function details view', () => {
 
   it('Create an API Rule for the Function', () => {
     cy.getLeftNav()
-      .get('[title="Discovery and Network"')
+      .get('[title="Discovery and Network"', { includeShadowDom: true })
       .click();
 
     cy.getLeftNav()
-      .contains('API Rules')
+      .contains('API Rules', { includeShadowDom: true })
       .click();
 
     cy.contains('Create API Rule').click();
@@ -216,7 +216,7 @@ context('Test API Rules in the Function details view', () => {
 
   it('Inspect list using slash shortcut', () => {
     cy.getLeftNav()
-      .contains('API Rules')
+      .contains('API Rules', { includeShadowDom: true })
       .click();
 
     cy.contains('h3', 'API Rules').should('be.visible');

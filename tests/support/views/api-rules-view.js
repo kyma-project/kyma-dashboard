@@ -2,11 +2,11 @@ Cypress.Commands.add(
   'createApiRule',
   (ApiRuleName, ApiPort, ApiRuleHostSubdomain) => {
     cy.getLeftNav()
-      .get('[title="Discovery and Network"')
+      .get('[title="Discovery and Network"', { includeShadowDom: true })
       .click();
 
     cy.getLeftNav()
-      .contains('API Rules')
+      .contains('API Rules', { includeShadowDom: true })
       .click();
 
     cy.contains('Create API Rule')
@@ -69,11 +69,11 @@ Cypress.Commands.add(
 
 Cypress.Commands.add('checkApiRuleStatus', ApiRuleName => {
   cy.getLeftNav()
-    .contains('Discovery and Network')
+    .contains('Discovery and Network', { includeShadowDom: true })
     .click();
 
   cy.getLeftNav()
-    .contains('API Rules')
+    .contains('API Rules', { includeShadowDom: true })
     .click({ force: true });
 
   cy.get('[aria-label="open-search"]').click();
