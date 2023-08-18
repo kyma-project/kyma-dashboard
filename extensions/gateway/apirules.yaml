@@ -16,22 +16,22 @@ data:
         version: v1beta1
         namespace: null
     relatedServices:
-      resource: 
+      resource:
         kind: Service
         version: v1
         namespace: null
     virtualServices:
-      resource: 
+      resource:
         kind: VirtualService
         group: networking.istio.io
         version: v1beta1
         namespace: null
       filter: '$contains($item.metadata.ownerReferences[0].name, $root.metadata.name) and $contains($item.metadata.ownerReferences[0].kind, $root.kind)'
   details: |
-    header: 
+    header:
       - name: status
         widget: Badge
-        highlights: 
+        highlights:
           positive:
             - 'OK'
           negative:
@@ -43,11 +43,17 @@ data:
       - name: host
         source: spec
         widget: APIRuleHost
-    body: 
+    body:
+      - name: general
+        source: spec
+        widget: Panel
+        children:
+        - path: timeout
+          name: timeout
       - name: service
         source: spec.service
         widget: Panel
-        children: 
+        children:
           - name: service.name
             source: name
             widget: ResourceLink
@@ -60,13 +66,13 @@ data:
       - source: spec.rules
         widget: Table
         name: rules
-        children: 
+        children:
           - source: $item.path
             name: rules.path
           - source: $item.methods
             name: rules.methods
             widget: Badge
-        collapsible: 
+        collapsible:
           - source: $item.accessStrategies
             widget: Table
             disablePadding: true
@@ -101,15 +107,17 @@ data:
                 widget: Badge
               - source: $item.config
                 name: mutators.config
+          - name: timeout
+            source: $item.timeout
           - name: service
             source: $item.service
             widget: Panel
             visibility: $exists($item.service)
-            children: 
+            children:
               - name: service.name
                 source: $item.service.name
                 widget: ResourceLink
-                resource: 
+                resource:
                   name: $item.service.name
                   namespace: $root.metadata.namespace
                   kind: '"Service"'
@@ -139,7 +147,7 @@ data:
           trigger: [port]
         - simple: true
           required: false
-          path: port 
+          path: port
           name: service.port
           subscribe:
             port: "$filter($relatedServices().items, function ($v) { $v.metadata.name = $root.spec.service.name and $v.metadata.namespace = $root.metadata.namespace }).spec.ports[0].port"
@@ -153,7 +161,7 @@ data:
       resource:
         kind: Gateway
         group: networking.istio.io
-        version: v1beta1        
+        version: v1beta1
       overwrite: false
       toInternal:  '($values := $split($, "."); { "namespace": $values[1], "name": $values[0] })'
       toExternal: 'name & "." & namespace & ".svc.cluster.local"'
@@ -182,10 +190,15 @@ data:
       alert: '"alert.spec.host"'
       visibility: '$substring(spec.host, 0, 1)="*"'
     - simple: true
+      required: false
+      path: spec.timeout
+      name: timeout
+      inputInfo: inputInfo.timeout
+    - simple: true
       required: true
-      path: spec.rules 
-      name: rules 
-      widget: GenericList 
+      path: spec.rules
+      name: rules
+      widget: GenericList
       defaultExpanded: true
       template:
         path: '/.*'
@@ -201,7 +214,7 @@ data:
         - required: true
           simple: true
           path: '[].accessStrategies'
-          name: accessStrategies 
+          name: accessStrategies
           widget: GenericList
           defaultExpanded: true
           template:
@@ -281,7 +294,7 @@ data:
         - required: true
           simple: true
           path: '[].methods'
-          name: rules.methods 
+          name: rules.methods
           widget: MultiCheckbox
           options:
             - key: GET
@@ -290,8 +303,8 @@ data:
             - key: DELETE
             - key: PATCH
             - key: HEAD
-        - path: '[].mutators' 
-          name: mutators 
+        - path: '[].mutators'
+          name: mutators
           widget: GenericList
           children:
             - path: '[].config'
@@ -300,9 +313,14 @@ data:
             - required: true
               path: '[].handler'
               name: accessStrategies.handler
-        - path: '[].service' 
+        - simple: true
+          required: false
+          path: [].timeout
+          name: timeout
+          inputInfo: inputInfo.timeout
+        - path: '[].service'
           simple: true
-          name: service 
+          name: service
           widget: FormGroup
           children:
             - simple: true
@@ -317,7 +335,7 @@ data:
               trigger: [accessStrategyPort]
             - simple: true
               required: false
-              path: port 
+              path: port
               name: service.port
               subscribe:
                 accessStrategyPort: "$filter($relatedServices().items, function ($v) { $v.metadata.name = $item.service.name and $v.metadata.namespace = $root.metadata.namespace }).spec.ports[0].port"
@@ -344,7 +362,7 @@ data:
         kind: '"Service"'
     - name: status
       widget: Badge
-      highlights: 
+      highlights:
         positive:
           - 'OK'
         negative:
@@ -384,6 +402,7 @@ data:
       inputInfo.trusted_issuers: "Trusted Issuers must start with 'https://' or 'file://'"
       inputInfo.introspection_url: "URL endpoint used for validating the Bearer token. Should start with 'http://' or 'https://'"
       inputInfo.introspection_request_headers: "Headers sent alongside the introspection request"
+      inputInfo.timeout: "Timeout for HTTP requests in seconds. The timeout can be configured up to 3900 seconds (65 minutes)."
       mutators: Mutators
       mutators.config: Config
       mutators.handlers: Handlers
@@ -395,5 +414,7 @@ data:
       service.port: Port
       service-name: Service Name
       status: Status
+      general: General
+      timeout: Timeout
       virtualService: Virtual Service
       alert.spec.host: Host can not be a wildcard, replace * with subdomain name
