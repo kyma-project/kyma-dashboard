@@ -37,7 +37,7 @@ context('Prepare funtions for testing', () => {
   // you must wait for the function to remain unchanged
   it('Edit a simple test Function and check updated runtime', () => {
     cy.getLeftNav()
-      .contains('Functions')
+      .contains('Functions', { includeShadowDom: true })
       .click();
 
     cy.contains(FUNCTION_NAME).click();

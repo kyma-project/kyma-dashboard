@@ -2,7 +2,7 @@
 import 'cypress-file-upload';
 
 function openSearchWithSlashShortcut() {
-  cy.get('body').type('/');
+  cy.get('body').type('/', { force: true });
 }
 
 const random = Math.floor(Math.random() * 9999) + 1000;
@@ -33,13 +33,7 @@ context('Test API Rules in the Function details view', () => {
   });
 
   it('Create an API Rule for the Function', () => {
-    cy.getLeftNav()
-      .get('[title="Discovery and Network"')
-      .click();
-
-    cy.getLeftNav()
-      .contains('API Rules')
-      .click();
+    cy.navigateTo('Discovery and Network', 'API Rules');
 
     cy.contains('Create API Rule').click();
 
@@ -216,7 +210,7 @@ context('Test API Rules in the Function details view', () => {
 
   it('Inspect list using slash shortcut', () => {
     cy.getLeftNav()
-      .contains('API Rules')
+      .contains('API Rules', { includeShadowDom: true })
       .click();
 
     cy.contains('h3', 'API Rules').should('be.visible');
