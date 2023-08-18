@@ -9,7 +9,7 @@ context('Test Kyma', () => {
   });
 
   it('Create an Kyma', () => {
-    cy.wait(500);
+    cy.wait(600);
 
     cy.getLeftNav()
       .contains('Kyma', { includeShadowDom: true })

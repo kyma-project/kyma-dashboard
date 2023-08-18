@@ -2,7 +2,7 @@
 import 'cypress-file-upload';
 
 function openSearchWithSlashShortcut() {
-  cy.get('body').type('/');
+  cy.get('body').type('/', { force: true });
 }
 
 const random = Math.floor(Math.random() * 9999) + 1000;
