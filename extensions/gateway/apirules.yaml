@@ -47,8 +47,9 @@ data:
       - name: general
         source: spec
         widget: Panel
+        visibility: $exists(spec.timeout)
         children:
-        - path: timeout
+        - source: timeout
           name: timeout
       - name: service
         source: spec.service
@@ -73,6 +74,13 @@ data:
             name: rules.methods
             widget: Badge
         collapsible:
+          - name: general
+            source: $item
+            widget: Panel
+            visibility: $exists($item.timeout)
+            children:
+            - source: $item.timeout
+              name: timeout
           - source: $item.accessStrategies
             widget: Table
             disablePadding: true
@@ -107,8 +115,6 @@ data:
                 widget: Badge
               - source: $item.config
                 name: mutators.config
-          - name: timeout
-            source: $item.timeout
           - name: service
             source: $item.service
             widget: Panel
@@ -128,6 +134,13 @@ data:
         name: virtualService
         disableCreate: true
   form: |-
+    - simple: true
+      required: false
+      path: spec.timeout
+      name: timeout
+      inputInfo: inputInfo.timeout
+      value:
+        type: number
     - simple: true
       required: false
       path: spec.service
@@ -190,11 +203,6 @@ data:
       alert: '"alert.spec.host"'
       visibility: '$substring(spec.host, 0, 1)="*"'
     - simple: true
-      required: false
-      path: spec.timeout
-      name: timeout
-      inputInfo: inputInfo.timeout
-    - simple: true
       required: true
       path: spec.rules
       name: rules
@@ -206,6 +214,13 @@ data:
         accessStrategies:
           - handler: 'allow'
       children:
+        - simple: true
+          required: false
+          path: '[].timeout'
+          name: timeout
+          inputInfo: inputInfo.timeout
+          value:
+            type: number
         - simple: true
           required: true
           path: '[].path'
@@ -313,11 +328,6 @@ data:
             - required: true
               path: '[].handler'
               name: accessStrategies.handler
-        - simple: true
-          required: false
-          path: [].timeout
-          name: timeout
-          inputInfo: inputInfo.timeout
         - path: '[].service'
           simple: true
           name: service
@@ -406,6 +416,7 @@ data:
       mutators: Mutators
       mutators.config: Config
       mutators.handlers: Handlers
+      path: Path
       rules: Rules
       rules.methods: Methods
       rules.path: Path
@@ -415,6 +426,6 @@ data:
       service-name: Service Name
       status: Status
       general: General
-      timeout: Timeout
+      timeout: HTTP Request Timeout
       virtualService: Virtual Service
       alert.spec.host: Host can not be a wildcard, replace * with subdomain name
