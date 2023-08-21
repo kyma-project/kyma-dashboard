@@ -261,7 +261,8 @@ context('Test API Rules in the Function details view', () => {
 
     cy.get('[data-testid="spec.rules.2.path"]:visible')
       .clear()
-      .type(API_RULE_PATH);
+      .type(API_RULE_PATH)
+      .scrollTo('bottom');
 
     // > Access Strategies
     cy.get('[aria-label="expand Access Strategies"]:visible', { log: false })
