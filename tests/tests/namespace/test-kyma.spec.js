@@ -9,14 +9,14 @@ context('Test Kyma', () => {
   });
 
   it('Create an Kyma', () => {
-    cy.wait(500);
+    cy.wait(600);
 
     cy.getLeftNav()
-      .contains('Kyma')
+      .contains('Kyma', { includeShadowDom: true })
       .click();
 
     cy.getLeftNav()
-      .get('[title="Kyma"] ul')
+      .get('[aria-level="2"]', { includeShadowDom: true })
       .contains('Kyma')
       .click();
 
