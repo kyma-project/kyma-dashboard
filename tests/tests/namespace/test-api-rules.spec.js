@@ -155,17 +155,9 @@ context('Test API Rules in the Function details view', () => {
 
     cy.contains(API_RULE_NAME);
 
-    // cy.get('[data-testid="spec.timeout"]:visible', { log: false })
-    //   .clear()
-    //   .type(3434);
-
     // Rules
 
     // > General
-
-    // cy.get('[data-testid="spec.rules.0.timeout"]:visible')
-    //   .clear()
-    //   .type(4545);
 
     cy.get('[aria-label="expand Rules"]:visible', { log: false })
       .contains('Add')
@@ -174,10 +166,6 @@ context('Test API Rules in the Function details view', () => {
     cy.get('[aria-label="expand Rule"]:visible', { log: false })
       .first()
       .click();
-
-    // cy.get('[data-testid="spec.rules.1.timeout"]:visible')
-    //   .clear()
-    //   .type(5656);
 
     cy.get('[data-testid="spec.rules.1.path"]:visible')
       .clear()
@@ -233,15 +221,9 @@ context('Test API Rules in the Function details view', () => {
 
     cy.contains(API_RULE_DEFAULT_PATH).should('exist');
 
-    // cy.contains('3434').should('exist');
-
     cy.contains('Rules #1', { timeout: 10000 }).click();
 
-    // cy.contains('4545').should('exist');
-
     cy.contains('Rules #2', { timeout: 10000 }).click();
-
-    // cy.contains('5656').should('exist');
 
     cy.contains(API_RULE_PATH).should('exist');
 
