@@ -12,14 +12,14 @@ apt-get update -y
 apt-get install -y gettext-base
 
 function deploy_k3d_kyma (){
-    echo ${OS}
+echo "Using OS:" ${OS}
 curl -Lo kyma https://storage.googleapis.com/kyma-cli-unstable/kyma-${OS}
 chmod +x ./kyma
 
 echo "Provisioning k3d cluster for Kyma"
 ./kyma provision k3d --ci
 
-./kyma deploy --ci -s main
+./kyma deploy
 
 ./kyma alpha deploy
 
