@@ -13,14 +13,14 @@ apt-get install -y gettext-base
 
 function deploy_k3d_kyma (){
 curl -sSLo kyma https://storage.googleapis.com/kyma-cli-unstable/kyma-${OS}
-chmod +x kyma
+chmod +x ./kyma
 
 echo "Provisioning k3d cluster for Kyma"
-kyma provision k3d --ci
+./kyma provision k3d --ci
 
-kyma deploy --ci -s main
+./kyma deploy --ci -s main
 
-kyma alpha deploy
+./kyma alpha deploy
 
 echo "Apply and enable keda module"
 kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/download/moduletemplate.yaml
