@@ -50,7 +50,7 @@ data:
         visibility: $exists(spec.timeout)
         children:
         - source: timeout
-          name: timeout
+          name: details.timeout
       - name: service
         source: spec.service
         widget: Panel
@@ -80,7 +80,7 @@ data:
             visibility: $exists($item.timeout)
             children:
             - source: $item.timeout
-              name: timeout
+              name: details.timeout
           - source: $item.accessStrategies
             widget: Table
             disablePadding: true
@@ -427,5 +427,6 @@ data:
       status: Status
       general: General
       timeout: HTTP Request Timeout
+      details.timeout: HTTP Request Timeout (seconds)
       virtualService: Virtual Service
       alert.spec.host: Host can not be a wildcard, replace * with subdomain name
