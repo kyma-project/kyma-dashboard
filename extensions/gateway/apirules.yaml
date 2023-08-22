@@ -412,7 +412,7 @@ data:
       inputInfo.trusted_issuers: "Trusted Issuers must start with 'https://' or 'file://'"
       inputInfo.introspection_url: "URL endpoint used for validating the Bearer token. Should start with 'http://' or 'https://'"
       inputInfo.introspection_request_headers: "Headers sent alongside the introspection request"
-      inputInfo.timeout: "Timeout for HTTP requests in seconds. The timeout can be configured up to 3900 seconds (65 minutes)."
+      inputInfo.timeout: "Timeout for HTTP requests in seconds. The timeout can be configured for a maximum of 3900 seconds (65 minutes)."
       mutators: Mutators
       mutators.config: Config
       mutators.handlers: Handlers
