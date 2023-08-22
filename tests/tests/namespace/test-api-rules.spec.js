@@ -158,7 +158,7 @@ context('Test API Rules in the Function details view', () => {
       .click();
 
     cy.get('[aria-label="expand Rule"]:visible', { log: false })
-      .last()
+      .first()
       .click();
 
     cy.get('[data-testid="spec.rules.1.path"]:visible')
@@ -256,7 +256,7 @@ context('Test API Rules in the Function details view', () => {
       .click();
 
     cy.get('[aria-label="expand Rule"]:visible', { log: false })
-      .last()
+      .first()
       .click();
 
     cy.get('[data-testid="spec.rules.2.path"]:visible')
