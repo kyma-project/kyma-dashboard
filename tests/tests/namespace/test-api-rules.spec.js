@@ -256,10 +256,10 @@ context('Test API Rules in the Function details view', () => {
       .click();
 
     cy.get('[aria-label="expand Rule"]:visible', { log: false })
-      .first()
+      .last()
       .click();
 
-    cy.get('[data-testid="spec.rules.2.path"]')
+    cy.get('[data-testid="spec.rules.2.path"]:visible')
       .clear()
       .type(API_RULE_PATH);
 
