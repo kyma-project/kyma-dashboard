@@ -255,8 +255,12 @@ context('Test API Rules in the Function details view', () => {
       .contains('Add')
       .click();
 
-    cy.get('[aria-label="expand Rule"]:visible', { log: false })
+    cy.get('[aria-label="expand Rule"]', { log: false })
       .first()
+      .click();
+
+    cy.get('[aria-label="expand Rule"]', { log: false })
+      .eq(1)
       .click();
 
     cy.get('[data-testid="spec.rules.2.path"]:visible')
