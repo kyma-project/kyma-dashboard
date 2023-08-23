@@ -42,6 +42,10 @@ context('Test API Rules in the Function details view', () => {
       API_RULE_NAME,
     );
 
+    cy.get('[data-testid="spec.timeout"]:visible', { log: false })
+      .clear()
+      .type(1212);
+
     // Service
     cy.get('[aria-label="Choose Service"]:visible', { log: false })
       .first()
@@ -82,6 +86,13 @@ context('Test API Rules in the Function details view', () => {
       .click();
 
     // Rules
+
+    // > General
+
+    cy.get('[data-testid="spec.rules.0.timeout"]:visible')
+      .clear()
+      .type(2323);
+
     // > Access Strategies
 
     cy.get('[data-testid="spec.rules.0.accessStrategies.0.handler"]:visible')
@@ -119,7 +130,11 @@ context('Test API Rules in the Function details view', () => {
 
     cy.contains(API_RULE_DEFAULT_PATH).should('exist');
 
+    cy.contains('1212').should('exist');
+
     cy.contains('Rules #1', { timeout: 10000 }).click();
+
+    cy.contains('2323').should('exist');
 
     cy.contains('oauth2_introspection').should('exist');
 
@@ -135,6 +150,9 @@ context('Test API Rules in the Function details view', () => {
     cy.contains(API_RULE_NAME);
 
     // Rules
+
+    // > General
+
     cy.get('[aria-label="expand Rules"]:visible', { log: false })
       .contains('Add')
       .click();
@@ -237,8 +255,12 @@ context('Test API Rules in the Function details view', () => {
       .contains('Add')
       .click();
 
-    cy.get('[aria-label="expand Rule"]:visible', { log: false })
+    cy.get('[aria-label="expand Rule"]', { log: false })
       .first()
+      .click();
+
+    cy.get('[aria-label="expand Rule"]', { log: false })
+      .eq(1)
       .click();
 
     cy.get('[data-testid="spec.rules.2.path"]:visible')
