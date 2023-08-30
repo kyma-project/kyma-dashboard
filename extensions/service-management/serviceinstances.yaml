@@ -59,7 +59,7 @@ data:
       placeholder: spec.externalNamePlaceholder
     - path: spec.parameters
       widget: CodeEditor
-      language: "'JSON'"
+      language: "'json'"
   general: |
     resource:
       kind: ServiceInstance

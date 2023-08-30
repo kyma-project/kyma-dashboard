@@ -71,7 +71,7 @@ data:
     - path: spec.secretName
     - path: spec.parameters
       widget: CodeEditor
-      language: "'JSON'"
+      language: "'json'"
     - path: spec.parametersFrom
       widget: SimpleList
       defaultExpanded: true
