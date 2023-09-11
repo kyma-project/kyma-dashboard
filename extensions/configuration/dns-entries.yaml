@@ -53,9 +53,6 @@ data:
       children:
         - widget: Text
           simple: true
-          enum: 
-            - 35.204.159.60 
-            - 34.147.91.1
           placeholder: target.placeholder 
     - path: spec.text
       name: spec.text
