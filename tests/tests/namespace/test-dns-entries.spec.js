@@ -35,9 +35,7 @@ context('Test DNS Entries', () => {
     // target
     cy.get(
       '[placeholder^="Enter the A record target or CNAME record"]:visible',
-    ).type('35');
-
-    cy.contains(/35.204.159.60/).click();
+    ).type('35.204.159.60');
 
     cy.get('[role="dialog"]')
       .contains('button', 'Create')
