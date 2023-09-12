@@ -40,7 +40,16 @@ data:
             $isBeta := $count($fullModuleTemplate) > 0;
         )'
       - widget: Table
-        source: '$sort(status.modules[], function($l, $r) {$l.name < $r.name})'
+        source: '$sort((
+          $statusModules := $filter($root.status.modules, function($v) {
+            $exists($v.name)
+          });
+          $specModulesWithoutStatus := $filter(spec.modules[], function($v) {
+            $not($v.name in $statusModules.name)
+          });
+          $allModules := $append($specModulesWithoutStatus, $statusModules);
+          $allModules;
+        ), function($l, $r) {$l.name > $r.name})'
         name: Modules
         visibility: $exists(*)
         children:
@@ -70,7 +79,7 @@ data:
             widget: Text
           - name: State
             widget: Badge
-            source: state
+            source: 'state ? state : "UNNKOWN"'
             description: 'message ? message : ""'
           - name: 'Documentation'
             widget: ExternalLink
