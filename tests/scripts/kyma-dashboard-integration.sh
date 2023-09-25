@@ -26,6 +26,10 @@ echo "Provisioning k3d cluster for Kyma"
 echo "Apply and enable keda module"
 kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/download/moduletemplate.yaml
 
+echo "Apply and enable telemetry module"
+kubectl apply -f https://github.com/kyma-project/telemetry-manager/releases/latest/download/moduletemplate.yaml
+kyma alpha enable module telemetry --channel fast
+
 echo "Apply gardener resources"
 echo "Certificates"
 kubectl apply -f https://raw.githubusercontent.com/gardener/cert-management/master/pkg/apis/cert/crds/cert.gardener.cloud_certificates.yaml
