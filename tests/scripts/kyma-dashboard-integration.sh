@@ -40,6 +40,9 @@ kubectl apply -f https://raw.githubusercontent.com/gardener/external-dns-managem
 echo "Issuers"
 kubectl apply -f https://raw.githubusercontent.com/gardener/cert-management/master/pkg/apis/cert/crds/cert.gardener.cloud_issuers.yaml
 
+echo "Apply OAuth2 Hydra CRD"
+kubectl apply -f https://raw.githubusercontent.com/ory/hydra-maester/master/config/crd/bases/hydra.ory.sh_oauth2clients.yaml
+
 k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
 }
 
