@@ -19,8 +19,8 @@ context('Test Cluster Extensions views', () => {
   describe('Test Observability Extensions', () => {
     useCategory('Observability');
 
-    it('Test Log Parsers', () => {
-      cy.checkExtension('Log Parsers');
+    it('Test Trace Pipelines', () => {
+      cy.checkExtension('Trace Pipelines');
     });
 
     it('Test Log Pipelines', () => {
