@@ -9,6 +9,13 @@ metadata:
     busola.io/extension-version: '0.5'
 data:
   dataSources: |
+    oauth2clients:
+      resource:
+        kind: OAuth2Client
+        version: v1alpha1
+        group: hydra.ory.sh
+        namespace: null
+      filter: '$item.metadata.namespace != "kyma-system"'
     secret:
       resource:
         kind: Secret
@@ -25,6 +32,10 @@ data:
         name: status
         widget: Badge
     body: 
+      - source: '"deprecation.short"'
+        widget: Alert
+        name: warning
+        severity: warning
       - name: configuration
         widget: Panel
         children:
@@ -154,9 +165,11 @@ data:
     urlPath: oauth2clients
     scope: namespace
     description: >-
-      {{[OAuth2 Clients](https://kyma-project.io/docs/kyma/latest/03-tutorials/00-api-exposure/apix-05-expose-and-secure-workload-oauth2#register-an-o-auth2-client-and-get-tokens)}}
-      allows an application to acquire an OAuth2 token to access protected resources.
+      Disclaimer: OAuth2Clients support is discontinued in Kyma! Please make sure to migrate to another solution as a soon as possible.
   list: |-
+    - source: '"deprecation.short"'
+      widget: Alert
+      severity: warning
     - name: spec.secretName
       widget: ResourceLink
       source: spec.secretName
@@ -173,6 +186,40 @@ data:
       name: status
       widget: Badge
       description: status.message
+  injections: |-
+    - name: deprecation.title
+      widget: Panel
+      source: $
+      filter: $item.metadata.uid = ($oauth2clients().items.metadata.uid)[0]
+      targets:
+        - slot: details-top
+          location: ClusterOverview
+      order: 1
+      children:
+        - widget: Alert
+          source: "'deprecation.long'"
+          severity: warning
+        - widget: ExternalLink
+          name: "Migration blogpost"
+          link: '"https://blogs.sap.com/2023/06/06/sap-btp-kyma-runtime-ory-hydra-oauth2-client-migration"'
+          source: '"SAP BTP, Kyma runtime ORY Hydra OAuth2 Client migration"'
+        - widget: ResourceList
+          source: $oauth2clients()
+          name: OAuth2Clients
+          disableCreate: true
+          children:
+            - source: metadata.name
+              name: Name
+              sort: 'true'
+              search:
+                source: metadata.name
+              widget: ResourceLink
+              resource:
+                name: metadata.name
+                namespace: $root.metadata.namespace
+                kind: kind
+            - source: metadata.namespace
+              name: Namespace
   presets: |-
     - name: template
       default: true
@@ -206,3 +253,10 @@ data:
         spec.clientName: Client Name
         secret.client_id: client_id
         secret.client_secret: client_secret
+        deprecation.title: Ory Hydra Deprecation on May 19, 2022
+        deprecation.long: |
+          You are using Ory Hydra OAuth2, which has been deprecated since May 19, 2022 and is scheduled to be removed on October 14, 2023.
+          During the Kyma upgrade on October 14, 2023, workloads that still rely on deprecated Ory Hydra OAuth2 may experience minor outages. To prevent this, follow the procedure outlined in the blog post below before the specified date.
+          If you are unable to follow the procedure, Ory Hydra OAuth2 will be migrated to the hydra-deprecated Namespace to prevent outages caused by API call failures. However, you will then be fully responsible for managing Ory Hydra OAuth2. This includes troubleshooting, maintenance, security updates, vulnerability fixes, and adherence to product standards.
+          If you want to continue using the OAuth2 functionality provided as part of the SAP BTP, Kyma runtime offering, delete the hydra-deprecated Namespace or follow the migration steps outlined in the blog post below.
+        deprecation.short: Support for OAuth2Clients has been discontinued in Kyma. Migrate to a different solution.

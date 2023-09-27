@@ -66,6 +66,8 @@ context('Test OAuth2 Clients', () => {
     cy.contains('client_id').should('be.visible');
 
     cy.contains('client_secret').should('be.visible');
+
+    cy.contains('discontinued').should('be.visible');
   });
 
   it('Edit client', () => {
@@ -98,5 +100,30 @@ context('Test OAuth2 Clients', () => {
 
   it('Inpect list', () => {
     cy.inspectList('OAuth2 Clients', AUTH2_NAME);
+  });
+
+  it('Check deprecation note in Cluster Overview', () => {
+    cy.getLeftNav()
+      .contains('Back To Cluster Details', { includeShadowDom: true })
+      .click();
+
+    cy.contains('Ory Hydra Deprecation').should('be.visible');
+
+    cy.contains('OAuth2Clients')
+      .parents('.generic-list')
+      .within(_$genericList => {
+        cy.get('[aria-label="open-search"]').click();
+
+        cy.get('[placeholder="Search"]').type(AUTH2_NAME);
+
+        cy.contains(AUTH2_NAME).should('be.visible');
+
+        cy.get('[aria-label="Delete"]').click();
+      });
+
+    cy.contains('button', 'Delete').click();
+    cy.contains(AUTH2_NAME).should('not.exist');
+
+    cy.contains('Ory Hydra Deprecation').should('not.exist');
   });
 });
