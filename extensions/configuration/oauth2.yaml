@@ -199,13 +199,12 @@ data:
           severity: warning
           order: 1
         - widget: ExternalLink
-          name: "Hydra deprecation blogpost"
-          source: '"https://example.com"'
-          severity: warning
-          order: 1
+          name: "Migration blogpost"
+          link: '"https://blogs.sap.com/2023/06/06/sap-btp-kyma-runtime-ory-hydra-oauth2-client-migration"'
+          source: '"SAP BTP, Kyma runtime ORY Hydra OAuth2 Client migration"'
+          order: 2
         - widget: ResourceList
           source: $oauth2clients()
-          visibility: $item.metadata.uid = ($oauth2clients().items.metadata.uid)[0]
           name: OAuth2Clients
           disableCreate: true
           order: 2
@@ -255,6 +254,11 @@ data:
         spec.clientName: Client Name
         secret.client_id: client_id
         secret.client_secret: client_secret
-        deprecation.title: Ory Hydra Deprecation on 01.01.2023
-        deprecation.long: Dear customer, we have detected that you are using Ory Hydra which was officially deprecated on 01.01.2023 and is scheduled for removal on 12.12.2222. Please be advised, that on 12.12.2222 any workloads that use Ory Hydra will probably face outage. If you would like to prevent outage for your workloads, please follow the procedure outline linked below before 12.12.2222. If you cannot follow the outlined procedure before 12.12.2222, we will detect the presence of the deprecated configuration and migrate the Ory Hydra to hydra-deprecated namespace in order to prevent outage to your workloads. At that time, we consider Ory Hydra to be managed by you and any required troubleshooting and maintenance will be your responsibility (including, but not limited to security updates, vulnerability fixes and product standards). You can always delete hydra-deprecated and/or follow the migration steps linked below if you would like us to provide managed Ory Hydra for you as part of the SAP BTP, Kyma runtime offering.
+        deprecation.title: Ory Hydra Deprecation on May 19, 2022
+        deprecation.long: |
+          Dear customer,
+          you are using Ory Hydra OAuth2, which has been deprecated since May 19, 2022 and is scheduled to be removed on October 14, 2023.
+          During the Kyma upgrade on October 14, 2023, workloads that still rely on deprecated Ory Hydra OAuth2 may experience minor outages. To prevent this, follow the procedure outlined in the blog post below before the specified date.
+          If you are unable to follow the procedure, Ory Hydra OAuth2 will be migrated to the hydra-deprecated Namespace to prevent outages caused by API call failures. However, you will then be fully responsible for managing Ory Hydra OAuth2. This includes troubleshooting, maintenance, security updates, vulnerability fixes, and adherence to product standards.
+          If you want to continue using the OAuth2 functionality provided as part of the SAP BTP, Kyma runtime offering, delete the hydra-deprecated Namespace or follow the migration steps outlined in the blog post below.
         deprecation.short: OAuth2Clients support is discontinued in Kyma! Please make sure that you migrate onto a different solution.
