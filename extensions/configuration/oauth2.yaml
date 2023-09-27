@@ -31,10 +31,11 @@ data:
             - error
         name: status
         widget: Badge
-      - source: '"deprecation.short"'
-        widget: Text
-        name: 'Warning'
     body: 
+      - source: '"deprecation.short"'
+        widget: Alert
+        name: warning
+        severity: warning
       - name: configuration
         widget: Panel
         children:
@@ -198,17 +199,14 @@ data:
         - widget: Alert
           source: "'deprecation.long'"
           severity: warning
-          order: 1
         - widget: ExternalLink
           name: "Migration blogpost"
           link: '"https://blogs.sap.com/2023/06/06/sap-btp-kyma-runtime-ory-hydra-oauth2-client-migration"'
           source: '"SAP BTP, Kyma runtime ORY Hydra OAuth2 Client migration"'
-          order: 2
         - widget: ResourceList
           source: $oauth2clients()
           name: OAuth2Clients
           disableCreate: true
-          order: 2
           children:
             - source: metadata.name
               name: Name
