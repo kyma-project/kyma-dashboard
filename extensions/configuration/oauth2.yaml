@@ -15,6 +15,7 @@ data:
         version: v1alpha1
         group: hydra.ory.sh
         namespace: null
+      filter: '$item.metadata.namespace != "kyma-system"'
     secret:
       resource:
         kind: Secret
