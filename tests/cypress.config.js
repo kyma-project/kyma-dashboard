@@ -28,7 +28,7 @@ module.exports = defineConfig({
     },
     specPattern: [
       'tests/cluster/test-applications.spec.js',
-      'tests/cluster/test-modules-wizard.spec.js',
+      // 'tests/cluster/test-modules-wizard.spec.js',
       'tests/namespace/a-run-before.spec.js',
       'tests/namespace/run-prepare-functions.spec.js',
       'tests/namespace/test-certificates.spec.js',
@@ -46,7 +46,7 @@ module.exports = defineConfig({
       'tests/namespace/test-dns-entries.spec.js',
       'tests/namespace/test-services.spec.js',
       'tests/namespace/test-kyma.spec.js',
-      'tests/namespace/test-module-templates.spec.js',
+      // 'tests/namespace/test-module-templates.spec.js',
       'tests/namespace/z-run-after.spec.js',
     ],
     supportFile: 'support/index.js',

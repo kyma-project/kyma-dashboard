@@ -6,7 +6,7 @@
     "source": "extensions/discovery-and-network"
   },
   {
-    "source": "https://raw.githubusercontent.com/kyma-project/kyma/main/resources/serverless/templates/busola-serverless-extension.yaml"
+    "source": "https://raw.githubusercontent.com/kyma-project/serverless-manager/main/config/serverless/templates/busola-serverless-extension.yaml"
   },
   {
     "source": "extensions/istio"

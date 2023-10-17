@@ -245,7 +245,7 @@ data:
       resource:
         kind: APIRule
         group: gateway.kyma-project.io
-        version: v1alpha1
+        version: v1beta1
       filter: $item.spec.service.name = $root.metadata.name
     podSelector:
       resource:
