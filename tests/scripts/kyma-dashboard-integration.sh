@@ -26,14 +26,14 @@ echo "Provisioning k3d cluster for Kyma"
 echo "Apply and enable keda module"
 kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/download/moduletemplate.yaml
 
+echo "Apply and enable serverless module"
+kubectl apply -f https://github.com/kyma-project/serverless-manager/releases/latest/download/moduletemplate.yaml
+./kyma alpha enable module serverless --channel fast
+
 if [[ ${JOB_NAME} =~ .*smoke.* ]]; then
     echo "Apply and enable telemetry module"
     kubectl apply -f https://github.com/kyma-project/telemetry-manager/releases/latest/download/moduletemplate.yaml
     ./kyma alpha enable module telemetry --channel fast
-
-    echo "Apply and enable serverless module"
-    kubectl apply -f https://github.com/kyma-project/serverless-manager/releases/latest/download/moduletemplate.yaml
-    ./kyma alpha enable module serverless --channel fast
 fi
 
 echo "Apply gardener resources"
