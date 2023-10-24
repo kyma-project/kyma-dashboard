@@ -33,7 +33,7 @@ data:
     filter: 'data.metadata.name="monitoring-prometheus"'
     urlPath: prometheuses
     description: >-
-      Disclaimer: Access to Kyma's Grafana/Prometheus is {{[discontinued](https://blogs.sap.com/2022/12/09/deprecation-of-prometheus-grafana-based-monitoring-in-sap-btp-kyma-runtime)}}!
+      Default access to Kyma's Grafana/Prometheus is {{[discontinued](https://blogs.sap.com/2022/12/09/deprecation-of-prometheus-grafana-based-monitoring-in-sap-btp-kyma-runtime)}} - set up your desired monitoring solution now!
     features:
       actions:
         disableCreate: true
@@ -51,7 +51,7 @@ data:
           source: "'deprecation.long'"
           severity: warning
         - widget: ExternalLink
-          name: "Deprecation Blog Post"
+          name: "Read the deprecation blog post"
           link: '"https://blogs.sap.com/2022/12/09/deprecation-of-prometheus-grafana-based-monitoring-in-sap-btp-kyma-runtime/"'
           source: '"Deprecation of Prometheus/Grafana based monitoring in SAP BTP Kyma Runtime"'
         - widget: ResourceList
@@ -78,9 +78,10 @@ data:
       severity: warning
   translations: |-
     en: 
-        deprecation.title: Grafana/Prometheus Removal on November 18, 2023
+        deprecation.title: Prepare for the Grafana/Prometheus Removal on November 18, 2023
         deprecation.long: |
-          You are actively exposing Kyma's Grafana instance using below Secret.
+          You will be affected by the removal of Kyma's Grafana/Prometheus instance!
+          Set up your desired monitoring solution now and delete the Secret you are currently using to expose Kyma's Grafana instance.
           The access to Kyma's Grafana/Prometheus has been deprecated since January 20, 2023 and is scheduled to be removed on November 18, 2023.
-          Further details can be found in the blog post linked below.
-        deprecation.short: Access to Kyma's Grafana/Prometheus is discontinued, this instance will be removed on November 18, 2023!
+          To learn more about the impact and what you can do, read the blog post.
+        deprecation.short: Access to Kyma's Grafana/Prometheus is discontinued. This instance will be removed on November 18, 2023!
