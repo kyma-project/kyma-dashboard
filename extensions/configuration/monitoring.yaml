@@ -1,0 +1,87 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: monitoring
+  namespace: kube-public
+  labels:
+    app.kubernetes.io/name: monitoring
+    busola.io/extension: resource
+    busola.io/extension-version: '0.5'
+data:
+  dataSources: |
+    secrets:
+      resource:
+        kind: Secret
+        version: v1
+        namespace: kyma-system
+      filter: '$item.metadata.name="monitoring-auth-proxy-grafana-user"'
+    prometheuses:
+      resource:
+        kind: Prometheus
+        group: monitoring.coreos.com
+        version: v1
+        namespace: kyma-system
+  general: |-
+    resource: 
+      kind: Prometheus
+      group: monitoring.coreos.com
+      version: v1
+      namespace: kyma-system
+    category: Observability
+    scope: cluster
+    name: Deprecated Monitoring
+    filter: 'data.metadata.name="monitoring-prometheus"'
+    urlPath: prometheuses
+    description: >-
+      Default access to Kyma's Grafana/Prometheus is {{[discontinued](https://blogs.sap.com/2022/12/09/deprecation-of-prometheus-grafana-based-monitoring-in-sap-btp-kyma-runtime)}} - set up your desired monitoring solution now!
+    features:
+      actions:
+        disableCreate: true
+  injections: |-
+    - name: deprecation.title
+      widget: Panel
+      source: $secrets()
+      visibility: '($count($secrets().items)>0) and ($count($prometheuses().items)>0)'
+      targets:
+        - slot: details-top
+          location: ClusterOverview
+      order: 1
+      children:
+        - widget: Alert
+          source: "'deprecation.long'"
+          severity: warning
+        - widget: ExternalLink
+          name: "Read the deprecation blog post"
+          link: '"https://blogs.sap.com/2022/12/09/deprecation-of-prometheus-grafana-based-monitoring-in-sap-btp-kyma-runtime/"'
+          source: '"Deprecation of Prometheus/Grafana based monitoring in SAP BTP Kyma Runtime"'
+        - widget: ResourceList
+          source: $secrets()
+          name: Grafana Access
+          disableCreate: true
+          children:
+            - source: metadata.name
+              name: Name
+              widget: ResourceLink
+              resource:
+                name: metadata.name
+                namespace: metadata.namespace
+                kind: kind
+            - source: metadata.namespace
+              name: Namespace
+  list: |-
+    - name: Namespace
+      source: metadata.namespace
+    - name: Kind
+      source: kind
+    - source: '"deprecation.short"'
+      widget: Alert
+      severity: warning
+  translations: |-
+    en: 
+        deprecation.title: Prepare for the Grafana/Prometheus Removal on November 18, 2023
+        deprecation.long: |
+          You will be affected by the removal of Kyma's Grafana/Prometheus instance!
+          Set up your desired monitoring solution now and delete the Secret you are currently using to expose Kyma's Grafana instance.
+          The access to Kyma's Grafana/Prometheus has been deprecated since January 20, 2023 and is scheduled to be removed on November 18, 2023.
+          To learn more about the impact and what you can do, read the blog post.
+        deprecation.short: Access to Kyma's Grafana/Prometheus is discontinued. This instance will be removed on November 18, 2023!
