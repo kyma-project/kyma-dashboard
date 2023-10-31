@@ -288,21 +288,56 @@ context('Test API Rules in the Function details view', () => {
       log: false,
     }).click();
 
-    cy.get('[placeholder="Enter key"]:visible', { log: false })
-      .first()
-      .clear()
-      .type('Authorization');
+    cy.get('[aria-label="expand Introspection Request Headers"]:visible', {
+      log: false,
+    })
+      .parent()
+      .within(_$div => {
+        cy.get('[placeholder="Enter key"]:visible', { log: false })
+          .first()
+          .clear()
+          .type('Authorization');
 
-    cy.get('[placeholder="Enter value"]:visible', { log: false })
-      .first()
-      .clear()
-      .type('Basic 12345');
+        cy.get('[placeholder="Enter value"]:visible', { log: false })
+          .first()
+          .clear()
+          .type('Basic 12345');
+      });
 
     cy.get(
       '[data-testid="spec.rules.2.accessStrategies.0.config.introspection_url"]:visible',
     )
       .clear()
       .type('https://example.com');
+
+    cy.get('[aria-label="expand Token From"]:visible', {
+      log: false,
+    }).click();
+
+    cy.get('[aria-label="expand Token From"]:visible', {
+      log: false,
+    })
+      .parent()
+      .within(_$div => {
+        cy.contains('Enter key', { log: false })
+          .first()
+          .click();
+      });
+
+    cy.get('.fd-list__title')
+      .contains('header')
+      .click();
+
+    cy.get('[aria-label="expand Token From"]:visible', {
+      log: false,
+    })
+      .parent()
+      .within(_$div => {
+        cy.get('[placeholder="Enter value"]:visible', { log: false })
+          .first()
+          .clear()
+          .type('FromHeader');
+      });
 
     // > Methods
     cy.get('[data-testid="spec.rules.2.methods.GET"]:visible').click();
@@ -325,5 +360,6 @@ context('Test API Rules in the Function details view', () => {
 
     cy.contains('https://example.com').should('exist');
     cy.contains('Authorization=Basic 12345').should('exist');
+    cy.contains('header=FromHeader').should('exist');
   });
 });

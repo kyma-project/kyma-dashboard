@@ -104,6 +104,9 @@ data:
               - source: $item.config.introspection_request_headers
                 name: accessStrategies.introspection_request_headers
                 widget: Labels
+              - source: $item.config.token_from
+                name: accessStrategies.token_from
+                widget: Labels
           - source: $item.mutators
             widget: Table
             disablePadding: true
@@ -268,6 +271,8 @@ data:
                   pattern: ^(https://|http://).*$
                 introspection_request_headers:
                   type: map
+                token_from:
+                  type: map
               children:
                 - path: jwks_urls
                   name: accessStrategies.jwks_urls
@@ -306,6 +311,16 @@ data:
                   children:
                     - path: '[]'
                       simple: true
+                - path: token_from
+                  name: accessStrategies.token_from
+                  simple: true
+                  inputInfo: inputInfo.token_from
+                  widget: KeyValuePair
+                  visibility: '$item.handler!="allow" and $item.handler!="noop"'
+                  keyEnum:
+                  - header
+                  - query_parameter
+                  - cookie
         - required: true
           simple: true
           path: '[].methods'
@@ -404,6 +419,7 @@ data:
       accessStrategies.required_scope: Required Scope
       accessStrategies.introspection_url: Introspection URL
       accessStrategies.introspection_request_headers: Introspection Request Headers
+      accessStrategies.token_from: Token From
       gateway: Gateway
       host: Host
       inputInfo.gateway: Gateway structure, '{GATEWAY}.{NAMESPACE}.svc.cluster.local'
@@ -413,6 +429,7 @@ data:
       inputInfo.introspection_url: "URL endpoint used for validating the Bearer token. Should start with 'http://' or 'https://'"
       inputInfo.introspection_request_headers: "Headers sent alongside the introspection request"
       inputInfo.timeout: "Timeout for HTTP requests in seconds. The timeout can be configured for a maximum of 3900 seconds (65 minutes)."
+      inputInfo.token_from: "Defines where Ory Oathkeeper should look for access token"
       mutators: Mutators
       mutators.config: Config
       mutators.handlers: Handlers
