@@ -467,3 +467,5 @@ data:
       details.timeout: HTTP Request Timeout (seconds)
       virtualService: Virtual Service
       alert.spec.host: Host can not be a wildcard, replace * with subdomain name
+      alert.spec.jwks_url_http: "JWKS URL: HTTP protocol is not secure, consider using HTTPS"
+      alert.spec.trusted_issuers_http: "Trusted Issuers: HTTP protocol is not secure, consider using HTTPS"
