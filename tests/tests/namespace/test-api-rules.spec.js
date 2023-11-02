@@ -28,7 +28,7 @@ context('Test API Rules in the Function details view', () => {
       .click({ force: true });
 
     cy.get('[role="status"]').contains('span', /running/i, {
-      timeout: 60 * 3000,
+      timeout: 60 * 300,
     });
   });
 
