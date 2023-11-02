@@ -44,6 +44,16 @@ data:
         source: spec
         widget: APIRuleHost
     body:
+      - simple: true
+        widget: Alert
+        severity: warning
+        source: '"alert.spec.jwks_url_http"'
+        visibility: '$count(spec.rules.accessStrategies.config.jwks_urls)>0 and $reduce(spec.rules.accessStrategies.config.jwks_urls,function($i, $j){$i or $substringBefore($j,"://")="http"},false)'
+      - simple: true
+        widget: Alert
+        severity: warning
+        source: '"alert.spec.trusted_issuers_http"'
+        visibility: '$count(spec.rules.accessStrategies.config.trusted_issuers)>0 and $reduce(spec.rules.accessStrategies.config.trusted_issuers,function($i, $j){$i or $substringBefore($j,"://")="http"},false)'
       - name: general
         source: spec
         widget: Panel
@@ -274,6 +284,11 @@ data:
                 token_from:
                   type: map
               children:
+                - simple: true
+                  widget: Alert
+                  severity: warning
+                  alert: '"alert.spec.jwks_url_http"'
+                  visibility: '$reduce($item.config.jwks_urls,function($i, $j){$i or $substringBefore($j,"://")="http"},false)'
                 - path: jwks_urls
                   name: accessStrategies.jwks_urls
                   inputInfo: inputInfo.jwks_urls
@@ -283,6 +298,11 @@ data:
                   children:
                     - path: '[]'
                       simple: true
+                - simple: true
+                  widget: Alert
+                  severity: warning
+                  alert: '"alert.spec.trusted_issuers_http"'
+                  visibility: '$reduce($item.config.trusted_issuers,function($i, $j){$i or $substringBefore($j,"://")="http"},false)'
                 - path: trusted_issuers
                   name: accessStrategies.trusted_issuers
                   inputInfo: inputInfo.trusted_issuers

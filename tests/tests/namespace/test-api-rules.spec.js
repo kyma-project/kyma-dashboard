@@ -28,7 +28,7 @@ context('Test API Rules in the Function details view', () => {
       .click({ force: true });
 
     cy.get('[role="status"]').contains('span', /running/i, {
-      timeout: 60 * 300,
+      timeout: 60 * 3000,
     });
   });
 
@@ -190,6 +190,10 @@ context('Test API Rules in the Function details view', () => {
       .clear()
       .type('https://urls.com');
 
+    cy.contains(
+      'JWKS URL: HTTP protocol is not secure, consider using HTTPS',
+    ).should('not.exist');
+
     cy.get('[aria-label="expand Trusted Issuers"]:visible', {
       log: false,
     }).click();
@@ -199,6 +203,10 @@ context('Test API Rules in the Function details view', () => {
     )
       .clear()
       .type('https://trusted.com');
+
+    cy.contains(
+      'Trusted Issuers: HTTP protocol is not secure, consider using HTTPS',
+    ).should('not.exist');
 
     // > Methods
     cy.get('[data-testid="spec.rules.1.methods.GET"]:visible').click();
@@ -224,6 +232,13 @@ context('Test API Rules in the Function details view', () => {
     cy.contains('jwt').should('exist');
     cy.contains('https://urls.com').should('exist');
     cy.contains('https://trusted.com').should('exist');
+
+    cy.contains(
+      'JWKS URL: HTTP protocol is not secure, consider using HTTPS',
+    ).should('not.exist');
+    cy.contains(
+      'Trusted Issuers: HTTP protocol is not secure, consider using HTTPS',
+    ).should('not.exist');
   });
 
   it('Inspect list using slash shortcut', () => {
@@ -241,7 +256,7 @@ context('Test API Rules in the Function details view', () => {
     cy.contains(API_RULE_NAME).should('be.visible');
   });
 
-  it('Create OAuth2 Introspection rule', () => {
+  it('Create OAuth2 Introspection rule and edit JWT rule', () => {
     cy.get('[class="fd-link"]')
       .contains(API_RULE_NAME)
       .click();
@@ -344,6 +359,35 @@ context('Test API Rules in the Function details view', () => {
 
     cy.get('[data-testid="spec.rules.2.methods.POST"]:visible').click();
 
+    // Change urls to HTTP in JWT
+    cy.get('[aria-label="expand Rule"]', { log: false })
+      .eq(1)
+      .click();
+
+    cy.get('[aria-label="expand JWKS URLs"]', { log: false }).click();
+
+    cy.get(
+      '[data-testid="spec.rules.1.accessStrategies.0.config.jwks_urls.0"]:visible',
+    )
+      .clear()
+      .type('http://urls.com');
+
+    cy.contains(
+      'JWKS URL: HTTP protocol is not secure, consider using HTTPS',
+    ).should('exist');
+
+    cy.get('[aria-label="expand Trusted Issuers"]', { log: false }).click();
+
+    cy.get(
+      '[data-testid="spec.rules.1.accessStrategies.0.config.trusted_issuers.0"]:visible',
+    )
+      .clear()
+      .type('http://trusted.com');
+
+    cy.contains(
+      'Trusted Issuers: HTTP protocol is not secure, consider using HTTPS',
+    ).should('exist');
+
     cy.get('[role=dialog]')
       .contains('button', 'Update')
       .click();
@@ -361,5 +405,12 @@ context('Test API Rules in the Function details view', () => {
     cy.contains('https://example.com').should('exist');
     cy.contains('Authorization=Basic 12345').should('exist');
     cy.contains('header=FromHeader').should('exist');
+
+    cy.contains(
+      'JWKS URL: HTTP protocol is not secure, consider using HTTPS',
+    ).should('exist');
+    cy.contains(
+      'Trusted Issuers: HTTP protocol is not secure, consider using HTTPS',
+    ).should('exist');
   });
 });
