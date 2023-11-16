@@ -46,6 +46,7 @@ data:
               - name: Policies
                 source: policies
                 widget: Table
+                disablePadding: true
                 showHeader: true
                 children:
                   - name: Type
@@ -67,6 +68,7 @@ data:
                 source: policies
                 widget: Table
                 showHeader: true
+                disablePadding: true
                 children:
                   - name: Type
                     source: type

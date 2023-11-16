@@ -26,6 +26,7 @@ data:
         children:
           - name: Included domains
             widget: Table
+            disablePadding: true
             showHeader: false
             source: spec.acme.domains.include
             children:
@@ -33,6 +34,7 @@ data:
                 search: true
           - name: Excluded domains
             widget: Table
+            disablePadding: true
             showHeader: false
             source: spec.acme.domains.exclude
             children:
