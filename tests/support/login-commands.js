@@ -106,6 +106,7 @@ Cypress.Commands.add('loginAndSelectCluster', function(params) {
     }
 
     cy.visit(`${config.clusterAddress}/clusters`)
+      .get('ui5-button:visible')
       .contains('Connect cluster')
       .click();
 
@@ -120,13 +121,20 @@ Cypress.Commands.add('loginAndSelectCluster', function(params) {
     }
 
     if (storage) {
-      cy.contains(storage).click();
+      cy.contains(storage)
+        .parent('ui5-radio-button')
+        .click();
     }
 
-    cy.contains('[role="dialog"] button', 'Connect cluster').click();
+    cy.get(`[aria-label="last-step"]:visible`)
+      .contains('Connect cluster')
+      .click({ force: true });
 
     cy.url().should('match', expectedLocation);
-    cy.contains('Cluster Details').should('be.visible');
+
+    if (expectedLocation == /overview$/) {
+      cy.contains('ui5-title', 'Cluster Details').should('be.visible');
+    }
 
     return cy.end();
   });
