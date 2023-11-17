@@ -38,7 +38,7 @@ Cypress.Commands.add('filterWithNoValue', { prevSubject: true }, $elements =>
 Cypress.Commands.add('goToNamespaceDetails', () => {
   // Go to the details of namespace
   cy.getLeftNav()
-    .contains('Namespaces', { includeShadowDom: true })
+    .contains('Namespaces')
     .click();
 
   cy.get('[role=row]')
@@ -100,31 +100,51 @@ Cypress.Commands.add('getLeftNav', () => {
 });
 
 Cypress.Commands.add('deleteInDetails', () => {
-  cy.contains('button', 'Delete').click();
+  cy.get('ui5-button')
+    .contains('Delete')
+    .should('be.visible')
+    .click();
 
-  cy.get('[data-testid="delete-confirmation"]').click();
+  cy.contains(`delete ${resourceType} ${resourceName}`);
+  cy.get(`[header-text="Delete ${resourceType}"]`)
+    .find('[data-testid="delete-confirmation"]')
+    .click();
 
   cy.contains(/deleted/).should('be.visible');
 });
 
 Cypress.Commands.add(
   'deleteFromGenericList',
-  (searchTerm, confirmationEnabled = true, deletedVisible = true) => {
-    cy.get('[aria-label="open-search"]').click();
+  (
+    resourceType,
+    resourceName,
+    confirmationEnabled = true,
+    deletedVisible = true,
+  ) => {
+    cy.get('[aria-label="open-search"]:visible').click();
 
-    cy.get('[placeholder="Search"]').type(searchTerm);
+    cy.get('ui5-combobox[placeholder="Search"]')
+      .find('input')
+      .click()
+      .type(resourceName);
 
-    cy.contains(searchTerm).should('be.visible');
+    cy.contains('a', resourceName).should('be.visible');
 
-    cy.get('[aria-label="Delete"]').click();
+    cy.get('ui5-button[data-testid="delete"]').click();
 
     if (confirmationEnabled) {
-      cy.contains('button', 'Delete').click();
+      cy.contains(`delete ${resourceType} ${resourceName}`);
+      cy.get(`[header-text="Delete ${resourceType}"]`)
+        .find('[data-testid="delete-confirmation"]')
+        .click();
+
       if (deletedVisible) {
-        cy.contains(/deleted/).should('be.visible');
+        cy.contains('ui5-message-strip', /deleted/).should('be.visible');
       }
 
-      cy.contains(searchTerm).should('not.exist');
+      cy.get('ui5-table')
+        .contains(resourceName)
+        .should('not.exist');
     }
   },
 );
