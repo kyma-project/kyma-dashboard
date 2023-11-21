@@ -30,7 +30,7 @@ context('Test Issuers', () => {
 
   it('Create an issuer', () => {
     cy.getLeftNav()
-      .contains('Issuers', { includeShadowDom: true })
+      .contains('Issuers')
       .click();
 
     cy.contains('ui5-button', 'Create Issuer').click();

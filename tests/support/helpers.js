@@ -16,7 +16,7 @@ export function chooseComboboxOption(selector, optionText) {
 export function useCategory(category) {
   before(() => {
     cy.getLeftNav()
-      .contains(category, { includeShadowDom: true })
+      .contains(category)
       .click();
   });
 }

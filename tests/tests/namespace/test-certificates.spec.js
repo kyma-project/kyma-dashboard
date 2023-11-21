@@ -44,7 +44,7 @@ context('Test Certificates', () => {
 
   it('Edits a certificate', () => {
     cy.getLeftNav()
-      .contains('Certificates', { includeShadowDom: true })
+      .contains('Certificates')
       .click();
 
     cy.contains('a', CERT_NAME).click();

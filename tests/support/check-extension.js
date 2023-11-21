@@ -1,15 +1,11 @@
 Cypress.Commands.add('checkExtension', (resource, create = true) => {
   cy.getLeftNav()
-    .contains(resource, { includeShadowDom: true })
+    .contains(resource)
     .click();
 
-  cy.get('[aria-label="title"]')
-    .contains(resource)
-    .should('be.visible');
+  cy.contains('ui5-title', resource).should('be.visible');
 
   if (create) {
-    cy.get('[type=button]')
-      .contains('Create')
-      .should('be.visible');
+    cy.contains('ui5-button', 'Create').should('be.visible');
   }
 });

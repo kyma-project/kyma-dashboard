@@ -112,7 +112,7 @@ context('Test OAuth2 Clients', () => {
 
   it('Check deprecation note in Cluster Overview', () => {
     cy.getLeftNav()
-      .contains('Back To Cluster Details', { includeShadowDom: true })
+      .contains('Back To Cluster Details')
       .click();
 
     cy.contains('Ory Hydra Deprecation').should('be.visible');
