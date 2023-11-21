@@ -52,24 +52,9 @@ context('Test API Rules in the Function details view', () => {
       .type(1212);
 
     // Service
-    cy.get('[aria-label="expand Service"]:visible', {
-      log: false,
-    })
-      .eq(0)
-      .click();
+    chooseComboboxOption('[data-testid="spec.service.name"]', FUNCTION_NAME);
 
-    cy.get('[aria-label="expand Service"]:visible', {
-      log: false,
-    })
-      .eq(1)
-      .click();
-
-    chooseComboboxOption(
-      '[data-testid="spec.rules.0.service.name"]',
-      FUNCTION_NAME,
-    );
-
-    cy.get('[data-testid="spec.rules.0.service.port"]:visible', { log: false })
+    cy.get('[data-testid="spec.service.port"]:visible', { log: false })
       .find('input')
       .click()
       .clear()
@@ -81,7 +66,7 @@ context('Test API Rules in the Function details view', () => {
     cy.get('[data-testid="spec.host"]:visible', { log: false })
       .find('input')
       .click()
-      .type(`{home}{rightArrow}{backspace}${API_RULE_NAME}`);
+      .type(`{moveToStart}{rightArrow}{backspace}${API_RULE_NAME}`);
 
     // Rules
 
@@ -121,11 +106,9 @@ context('Test API Rules in the Function details view', () => {
 
     // > Methods
 
-    cy.get(
-      '[data-testid="spec.rules.0.methods.POST"]:visible',
-    ).scrollIntoView();
+    cy.get('[data-testid="spec.rules.0.methods.POST"]').scrollIntoView();
 
-    cy.get(`ui5-checkbox[text="POST"]`).click();
+    cy.get(`ui5-checkbox[text="POST"]:visible`).click();
 
     cy.get('ui5-dialog')
       .contains('ui5-button', 'Create')
