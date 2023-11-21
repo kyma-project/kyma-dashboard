@@ -66,7 +66,7 @@ context('Test API Rules in the Function details view', () => {
 
     chooseComboboxOption(
       '[data-testid="spec.rules.0.service.name"]',
-      'service',
+      FUNCTION_NAME,
     );
 
     cy.get('[data-testid="spec.rules.0.service.port"]:visible', { log: false })
