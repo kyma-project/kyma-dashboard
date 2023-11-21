@@ -17,23 +17,29 @@ context('Test Certificates', () => {
   it('Adds and displays a certificate', () => {
     cy.navigateTo('Configuration', 'Certificates');
 
-    cy.contains('Create Certificate')
+    cy.contains('ui5-button', 'Create Certificate')
       .click()
       .should('be.visible');
 
     cy.contains('Simple').should('be.visible');
 
-    cy.get('input[ariaLabel="Certificate name"]:visible').type(CERT_NAME);
+    cy.get('ui5-dialog')
+      .find('[aria-label="Certificate name"]:visible')
+      .find('input')
+      .click()
+      .type(CERT_NAME, { force: true });
 
-    cy.get('input[placeholder^="Certificate CN"]:visible').type(
-      CERT_COMMON_NAME,
-    );
+    cy.get('ui5-input[placeholder^="Certificate CN"]:visible')
+      .find('input')
+      .click()
+      .type(CERT_COMMON_NAME, { force: true });
 
-    cy.get('[role=dialog]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
 
-    cy.contains('h3', CERT_NAME).should('be.visible');
+    cy.contains('ui5-title', CERT_NAME).should('be.visible');
   });
 
   it('Edits a certificate', () => {
@@ -43,18 +49,22 @@ context('Test Certificates', () => {
 
     cy.contains('a', CERT_NAME).click();
 
-    cy.contains('button', 'Edit').click();
+    cy.contains('ui5-button', 'Edit').click();
 
     cy.get('[aria-label="expand Annotations"]').click();
 
-    cy.get('input[placeholder^="Enter key"]:visible').type(ANNOTATION_KEY);
+    cy.get('[placeholder="Enter key"]:visible', { log: false })
+      .find('input')
+      .type(ANNOTATION_KEY, { force: true });
 
-    cy.get('input[placeholder^="Enter value"]:visible')
+    cy.get('[placeholder="Enter value"]:visible', { log: false })
+      .find('input')
       .first()
-      .type(ANNOTATION_VALUE);
+      .type(ANNOTATION_VALUE, { force: true });
 
-    cy.get('[role=dialog]')
-      .contains('button', 'Update')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Update')
+      .should('be.visible')
       .click();
 
     cy.contains(`${ANNOTATION_KEY}=${ANNOTATION_VALUE}`).should('be.visible');

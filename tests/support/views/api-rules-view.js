@@ -9,7 +9,7 @@ Cypress.Commands.add(
       .contains('API Rules', { includeShadowDom: true })
       .click();
 
-    cy.contains('Create API Rule')
+    cy.contains('ui5-button', 'Create API Rule')
       .should('be.visible')
       .click();
 

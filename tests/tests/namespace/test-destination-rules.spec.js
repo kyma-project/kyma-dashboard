@@ -22,19 +22,24 @@ context('Test Destination Rules', () => {
   it('Create a Destination Rule', () => {
     cy.navigateTo('Istio', 'Destination Rules');
 
-    cy.contains('Create Destination Rule').click();
+    cy.contains('ui5-button', 'Create Destination Rule').click();
 
-    cy.get('[ariaLabel="DestinationRule name"]:visible', { log: false }).type(
-      DR_NAME,
-    );
+    cy.get('ui5-dialog')
+      .find('[aria-label="DestinationRule name"]:visible')
+      .find('input')
+      .type(DR_NAME);
 
-    cy.get('[data-testid="spec.host"]:visible').type(HOST);
+    cy.get('[data-testid="spec.host"]:visible')
+      .find('input')
+      .click()
+      .type(HOST);
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
 
-    cy.contains('h3', DR_NAME).should('be.visible');
+    cy.contains('ui5-title', DR_NAME).should('be.visible');
   });
 
   it('Check Destination Rule details', () => {
@@ -46,22 +51,24 @@ context('Test Destination Rules', () => {
   });
 
   it('Edit Destination Rule', () => {
-    cy.contains('Edit').click();
+    cy.contains('ui5-button', 'Edit').click();
 
-    cy.get('[ariaLabel="DestinationRule name"]:visible', { log: false }).should(
-      'have.attr',
-      'readonly',
-    );
+    cy.get('ui5-dialog')
+      .find('[aria-label="DestinationRule name"]:visible')
+      .find('input')
+      .should('have.attr', 'readonly');
 
     // selector
     cy.get('[placeholder="Enter key"]:visible', { log: false })
+      .find('input')
       .filterWithNoValue()
-      .type('selector');
+      .type('selector', { force: true });
 
     cy.get('[placeholder="Enter value"]:visible', { log: false })
+      .find('input')
       .filterWithNoValue()
       .first()
-      .type('selector-value');
+      .type('selector-value', { force: true });
 
     // traffic policy
     // could be uncomment after resolving: https://github.com/kyma-project/busola/issues/2088
@@ -84,8 +91,9 @@ context('Test Destination Rules', () => {
     //   .eq(1)
     //   .type(SIMPLE);
 
-    cy.get('[role=dialog]')
-      .contains('button', 'Update')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Update')
+      .should('be.visible')
       .click();
 
     // changed details

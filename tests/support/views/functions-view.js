@@ -1,37 +1,37 @@
 Cypress.Commands.add('navigateToFunctionCreate', functionName => {
   cy.getLeftNav()
-    .contains('Functions', { includeShadowDom: true })
+    .contains('Functions')
     .click();
 
-  cy.contains('Create Function').click();
+  cy.contains('ui5-button', 'Create Function').click();
 
-  cy.get('[role="document"]').as('form');
-
-  cy.get('@form')
-    .find('.fd-select__text-content:visible')
-    .contains('Choose preset')
+  cy.get('ui5-dialog')
+    .get('ui5-combobox[placeholder="Choose preset"]')
+    .find('ui5-icon[accessible-name="Select Options"]')
     .click();
 
-  cy.get('[role="list"]')
+  cy.get('ui5-li:visible')
     .contains('Node.js Function')
     .click();
 
   cy.contains('Advanced').click();
 
-  cy.get('.advanced-form')
-    .find('[ariaLabel="Function name"]')
+  cy.get('ui5-dialog')
+    .find('[aria-label="Function name"]:visible')
+    .find('input')
     .type(functionName);
 });
 
 Cypress.Commands.add('createSimpleFunction', functionName => {
   cy.getLeftNav()
-    .contains('Workloads', { includeShadowDom: true })
+    .contains('Workloads')
     .click();
 
   cy.navigateToFunctionCreate(functionName);
 
-  cy.get('[role="dialog"]')
-    .contains('button', 'Create')
+  cy.get('ui5-dialog')
+    .contains('ui5-button', 'Create')
+    .should('be.visible')
     .click();
 });
 
@@ -41,14 +41,16 @@ Cypress.Commands.add(
     cy.navigateToFunctionCreate(functionName);
 
     //paste code to the Source Tab code editor
-    cy.get('[aria-label="expand Source"]')
+    cy.get('ui5-dialog')
+      .get('[aria-label="expand Source"]')
       .readFile(functionPath)
       .then(body => {
         cy.pasteToMonaco(body);
       });
 
     //open Dependencies Tab and paste the dependencies to the code editor
-    cy.get('[aria-label="expand Dependencies"]')
+    cy.get('ui5-dialog')
+      .get('[aria-label="expand Dependencies"]')
       .click()
       .readFile(dependenciesPath)
       .then(body => {
@@ -56,11 +58,12 @@ Cypress.Commands.add(
       });
 
     // click Create button
-    cy.get('[role=dialog]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
 
     //check whether Function has been created
-    cy.contains('button', 'Edit');
+    cy.contains('ui5-button', 'Edit');
   },
 );

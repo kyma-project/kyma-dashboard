@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import 'cypress-file-upload';
+import { chooseComboboxOption } from '../../support/helpers';
 
 const GATEWAY_NAME =
   'test-gateway-' +
@@ -26,60 +27,71 @@ context('Test Gateways', () => {
   it('Create Gateway', () => {
     cy.navigateTo('Istio', 'Gateways');
 
-    cy.contains('Create Gateway').click();
+    cy.contains('ui5-button', 'Create Gateway').click();
 
     // name
-    cy.get('[ariaLabel="Gateway name"]:visible', { log: false }).type(
-      GATEWAY_NAME,
-    );
+    cy.get('ui5-dialog')
+      .find('[aria-label="Gateway name"]:visible')
+      .find('input')
+      .click()
+      .type(GATEWAY_NAME);
 
     // selector
     cy.get('[placeholder="Enter key"]:visible', { log: false })
+      .find('input')
       .filterWithNoValue()
-      .type('selector');
+      .type('selector', { force: true });
 
     cy.get('[placeholder="Enter value"]:visible', { log: false })
+      .find('input')
       .filterWithNoValue()
       .first()
-      .type('selector-value');
+      .type('selector-value', { force: true });
 
     // server
     cy.get('[aria-label="expand Servers"]:visible', { log: false })
       .contains('Add')
       .click();
 
-    cy.get('[data-testid="spec.servers.0.port.number"]:visible').type(
-      PORT_NUMBER,
-    );
+    cy.get('[data-testid="spec.servers.0.port.number"]:visible')
+      .find('input')
+      .type(PORT_NUMBER);
 
-    cy.get('[aria-label="Combobox input"]:visible', { log: false }).type(
+    chooseComboboxOption(
+      '[data-testid="spec.servers.0.port.protocol"]',
       PORT_PROTOCOL,
     );
 
-    cy.get('[ariaLabel^="Gateway name"]:visible', { log: false })
+    cy.get('[aria-label^="Gateway name"]:visible', { log: false })
+      .find('input')
       .eq(1)
       .type(SERVER_NAME);
 
-    cy.get('[data-testid="spec.servers.0.port.targetPort"]:visible').type(
-      TARGET_PORT,
-    );
+    cy.get('[data-testid="spec.servers.0.port.targetPort"]:visible')
+      .find('input')
+      .click()
+      .type(TARGET_PORT);
 
     // hosts
     cy.get('[aria-label="expand Hosts"]:visible', { log: false }).click();
 
     cy.get('[placeholder="For example, *.api.mydomain.com"]:visible', {
       log: false,
-    }).type('example.com');
+    })
+      .find('input')
+      .type('example.com');
 
     cy.get('[placeholder="For example, *.api.mydomain.com"]:visible', {
       log: false,
     })
+      .find('input')
       .filterWithNoValue()
-      .type('*.example.com');
+      .type('*.example.com', { force: true });
 
     // create
-    cy.get('[role=dialog]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
   });
 
@@ -97,23 +109,32 @@ context('Test Gateways', () => {
   });
 
   it('Edit Gateway', () => {
-    cy.contains('Edit').click();
+    cy.contains('ui5-button', 'Edit').click();
 
-    cy.get('[ariaLabel="Gateway name"]:visible', { log: false }).should(
-      'have.attr',
-      'readonly',
-    );
+    cy.get('ui5-dialog')
+      .find('[aria-label="Gateway name"]:visible')
+      .find('input')
+      .should('have.attr', 'readonly');
 
     cy.get('[aria-label="expand Servers"]:visible', {
       log: false,
     }).click();
 
     // change server to HTTPS
-    cy.get('[aria-label="Combobox input"]:visible', { log: false })
+    cy.get(`ui5-combobox[data-testid="spec.servers.0.port.protocol"]`)
+      .find('input')
+      .click()
       .clear()
       .type('HTTPS');
 
+    cy.get('ui5-li:visible')
+      .contains('HTTPS')
+      .find('li')
+      .click({ force: true });
+
     cy.get('[data-testid="spec.servers.0.port.number"]:visible')
+      .find('input')
+      .click()
       .clear()
       .type('443');
 
@@ -128,14 +149,15 @@ context('Test Gateways', () => {
     // secret
     cy.get('[aria-label="Choose Secret"]:visible', {
       log: false,
-    }).type(KYMA_GATEWAY_CERTS);
+    })
+      .find('input')
+      .type(KYMA_GATEWAY_CERTS);
 
-    cy.get('[aria-label="Combobox input"]:visible', { log: false }).type(
-      'SIMPLE',
-    );
+    chooseComboboxOption('[data-testid="spec.servers.0.tls.mode"]', 'SIMPLE');
 
-    cy.get('[role=dialog]')
-      .contains('button', 'Update')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Update')
+      .should('be.visible')
       .click();
 
     // changed details

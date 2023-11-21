@@ -9,3 +9,4 @@ import './views/functions-view';
 import './loadFile';
 import './mockConfig';
 import './check-extension';
+import './navigate-back-to';
