@@ -367,6 +367,7 @@ data:
           simple: true
           name: service
           widget: FormGroup
+          required: false
           children:
             - simple: true
               required: false

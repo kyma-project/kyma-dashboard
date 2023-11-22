@@ -29,7 +29,6 @@ data:
       - widget: Table
         name: spec.rules
         source: spec.rules
-        disablePadding: true
         showHeader: false
         visibility: $exists($value)
         collapsibleTitle: '"Rule #" & $string($index + 1) & (" " & $join($keys($item), " "))'
