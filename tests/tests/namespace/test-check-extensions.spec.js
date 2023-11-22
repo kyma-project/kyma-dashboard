@@ -14,8 +14,6 @@ context('Test Namespace Extensions view', () => {
     it('Test Functions', () => {
       cy.checkExtension('Functions');
     });
-
-    useCategory('Workloads');
   });
 
   // Discovery and Network
@@ -25,14 +23,10 @@ context('Test Namespace Extensions view', () => {
     it('Test API Rules', () => {
       cy.checkExtension('API Rules');
     });
-
-    useCategory('Discovery and Network');
   });
 
   // Istio
   describe('Check Istio Extensions', () => {
-    useCategory('Istio');
-
     it('Test Authorization Policies', () => {
       cy.checkExtension('Authorization Policies');
     });
@@ -56,8 +50,6 @@ context('Test Namespace Extensions view', () => {
     it('Test Virtual Services', () => {
       cy.checkExtension('Virtual Services');
     });
-
-    useCategory('Istio');
   });
 
   // Configuration
@@ -95,7 +87,5 @@ context('Test Namespace Extensions view', () => {
     it('Test OAuth2 Clients', () => {
       cy.checkExtension('OAuth2 Clients');
     });
-
-    useCategory('Configuration');
   });
 });
