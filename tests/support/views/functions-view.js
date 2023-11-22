@@ -6,7 +6,7 @@ Cypress.Commands.add('navigateToFunctionCreate', functionName => {
   cy.contains('ui5-button', 'Create Function').click();
 
   cy.get('ui5-dialog')
-    .get('ui5-combobox[placeholder="Choose preset"]')
+    .find('ui5-combobox[placeholder="Choose preset"]:visible')
     .find('ui5-icon[accessible-name="Select Options"]')
     .click();
 
