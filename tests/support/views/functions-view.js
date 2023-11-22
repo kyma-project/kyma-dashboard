@@ -7,8 +7,10 @@ Cypress.Commands.add('navigateToFunctionCreate', functionName => {
 
   cy.get('ui5-dialog')
     .find('ui5-combobox[placeholder="Choose preset"]:visible')
-    .find('ui5-icon[accessible-name="Select Options"]')
-    .click();
+    .find('ui5-icon')
+    .click({ force: true });
+
+  cy.wait(100);
 
   cy.get('ui5-li:visible')
     .contains('Node.js Function')
