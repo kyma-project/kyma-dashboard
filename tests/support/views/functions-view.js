@@ -10,7 +10,7 @@ Cypress.Commands.add('navigateToFunctionCreate', functionName => {
     .find('ui5-icon')
     .click({ force: true });
 
-  cy.get('ui5-li:visible')
+  cy.get('ui5-li:visible', { timeout: 10000 })
     .contains('Node.js Function')
     .click();
 

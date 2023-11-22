@@ -32,7 +32,7 @@ context('Test Destination Rules', () => {
     cy.get('[data-testid="spec.host"]:visible')
       .find('input')
       .click()
-      .type(HOST);
+      .type(HOST, { force: true });
 
     cy.get('ui5-dialog')
       .contains('ui5-button', 'Create')
