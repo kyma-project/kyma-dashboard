@@ -19,4 +19,10 @@ export function useCategory(category) {
       .contains(category)
       .click();
   });
+
+  after(() => {
+    cy.getLeftNav()
+      .contains(category)
+      .click();
+  });
 }
