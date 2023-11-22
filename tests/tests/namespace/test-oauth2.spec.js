@@ -133,6 +133,9 @@ context('Test OAuth2 Clients', () => {
     cy.get(`[header-text="Delete O Auth Client"]`)
       .find('[data-testid="delete-confirmation"]')
       .click();
+
+    cy.wait(500);
+
     cy.contains(AUTH2_NAME).should('not.exist');
 
     cy.contains('Ory Hydra Deprecation').should('not.exist');
