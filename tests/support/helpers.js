@@ -7,8 +7,6 @@ export function chooseComboboxOption(selector, optionText) {
     .click()
     .type(optionText, { force: true });
 
-  cy.wait(1000);
-
   cy.get('ui5-li:visible')
     .contains(optionText)
     .find('li')
