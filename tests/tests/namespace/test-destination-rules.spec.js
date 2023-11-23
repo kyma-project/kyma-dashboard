@@ -27,7 +27,7 @@ context('Test Destination Rules', () => {
     cy.get('ui5-dialog')
       .find('[aria-label="DestinationRule name"]:visible')
       .find('input')
-      .type(DR_NAME);
+      .type(DR_NAME, { force: true });
 
     cy.get('[data-testid="spec.host"]:visible')
       .find('input')
