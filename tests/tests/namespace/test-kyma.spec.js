@@ -1,3 +1,5 @@
+const { chooseComboboxOption } = require('../../support/helpers');
+
 const KYMA_NAME = `test-kyma-${Math.floor(Math.random() * 9999) + 1000}`;
 const KYMA_DEFAULT_CHANNEL = 'fast';
 context('Test Kyma', () => {
@@ -12,24 +14,29 @@ context('Test Kyma', () => {
     cy.wait(600);
 
     cy.getLeftNav()
-      .contains('Kyma', { includeShadowDom: true })
-      .click();
-
-    cy.getLeftNav()
-      .get('[aria-level="2"]', { includeShadowDom: true })
       .contains('Kyma')
       .click();
 
-    cy.contains('Create Kyma').click();
+    cy.getLeftNav()
+      .get('[aria-level="2"]')
+      .contains('Kyma')
+      .click();
 
-    cy.get('[arialabel="Kyma name"]:visible').type(KYMA_NAME);
+    cy.contains('ui5-button', 'Create Kyma').click();
 
-    cy.get('[aria-label="Combobox input"]:visible').type(KYMA_DEFAULT_CHANNEL);
+    cy.get('ui5-dialog')
+      .find('[aria-label="Kyma name"]:visible')
+      .find('input')
+      .click()
+      .type(KYMA_NAME, { force: true });
+
+    chooseComboboxOption('[data-testid="spec.channel"]', KYMA_DEFAULT_CHANNEL);
 
     cy.contains('keda');
 
-    cy.get('[role=dialog]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
   });
 
@@ -38,13 +45,14 @@ context('Test Kyma', () => {
   });
 
   it('Edit a Kyma', () => {
-    cy.contains('Edit').click();
+    cy.contains('ui5-button', 'Edit').click();
 
-    cy.contains('keda')
-      .filter(':visible')
+    cy.get(`ui5-checkbox[text="keda"]`).click();
+
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Update')
+      .should('be.visible')
       .click();
-
-    cy.contains('Update').click();
   });
 
   it('Inspect updated Kyma', () => {

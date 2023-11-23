@@ -7,7 +7,7 @@ context('Test Module-templates', () => {
 
   it('Go to Keda Module Template', () => {
     cy.getLeftNav()
-      .contains('Namespaces', { includeShadowDom: true })
+      .contains('Namespaces')
       .click();
 
     cy.get('[role=row]')

@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import 'cypress-file-upload';
+import { chooseComboboxOption } from '../../support/helpers';
 
 const SE_NAME =
   'test-' +
@@ -24,48 +25,53 @@ context('Test Service Entries', () => {
   it('Create a Service Entry', () => {
     cy.navigateTo('Istio', 'Service Entries');
 
-    cy.contains('Create Service Entry').click();
+    cy.contains('ui5-button', 'Create Service Entry').click();
 
     cy.contains('Advanced').click();
 
     // Name
-    cy.get('[arialabel="ServiceEntry name"]:visible', { log: false }).type(
-      SE_NAME,
-    );
+    cy.get('ui5-dialog')
+      .find('[aria-label="ServiceEntry name"]:visible')
+      .find('input')
+      .click()
+      .type(SE_NAME, { force: true });
 
     // Hosts
     cy.get('[aria-label="expand Hosts"]:visible', { log: false }).click();
 
-    cy.get('[data-testid="spec.hosts.0"]:visible').type(HOST);
+    cy.get('[data-testid="spec.hosts.0"]:visible')
+      .find('input')
+      .type(HOST, { force: true });
 
-    cy.get('[aria-label="Combobox input"]:visible', { log: false })
-      .eq(1)
-      .type(RESOLUTION);
+    chooseComboboxOption('[data-testid="spec.resolution"]', RESOLUTION);
 
-    cy.get('[aria-label="Combobox input"]:visible', { log: false })
-      .first()
-      .type(LOCATION);
+    chooseComboboxOption('[data-testid="spec.location"]', LOCATION);
 
     cy.get('[aria-label="expand Addresses"]:visible', { log: false }).click();
 
     cy.get('[placeholder="For example, 127.0.0.1"]:visible', {
       log: false,
-    }).type(ADDRESS);
+    })
+      .find('input')
+      .type(ADDRESS, { force: true });
 
     cy.get('[placeholder="Enter key"]:visible', { log: false })
+      .find('input')
       .filterWithNoValue()
-      .type('test');
+      .type('test', { force: true });
 
     cy.get('[placeholder="Enter value"]:visible', { log: false })
+      .find('input')
       .filterWithNoValue()
       .first()
-      .type('selector-value');
+      .type('selector-value', { force: true });
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
 
-    cy.contains('h3', SE_NAME).should('be.visible');
+    cy.contains('ui5-title', SE_NAME).should('be.visible');
   });
 
   it('Check the Service Entry details', () => {

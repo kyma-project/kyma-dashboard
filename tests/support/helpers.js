@@ -1,9 +1,14 @@
 export function chooseComboboxOption(selector, optionText) {
-  cy.get(selector)
+  cy.get(`ui5-combobox${selector}:visible`)
+    .find('input')
     .filterWithNoValue()
-    .type(optionText);
+    .click()
+    .type(optionText, { force: true });
 
-  cy.contains(optionText).click();
+  cy.get('ui5-li:visible', { timeout: 10000 })
+    .contains(optionText)
+    .find('li')
+    .click({ force: true });
 
   return cy.end();
 }
@@ -11,7 +16,13 @@ export function chooseComboboxOption(selector, optionText) {
 export function useCategory(category) {
   before(() => {
     cy.getLeftNav()
-      .contains(category, { includeShadowDom: true })
+      .contains(category)
+      .click();
+  });
+
+  after(() => {
+    cy.getLeftNav()
+      .contains(category)
       .click();
   });
 }

@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import 'cypress-file-upload';
+import { chooseComboboxOption } from '../../support/helpers';
 
 const PROVIDER_NAME = 'test-provider';
 const PROVIDER_TYPE = 'cloudflare-dns';
@@ -19,11 +20,12 @@ context('Test DNS Providers', () => {
   it('Create DNS Provider', () => {
     cy.navigateTo('Configuration', 'DNS Providers');
 
-    cy.contains('Create DNS Provider').click();
+    cy.contains('ui5-button', 'Create DNS Provider').click();
 
     // type
     cy.get('[placeholder="Choose Provider type"]')
       .filter(':visible')
+      .find('input')
       .click()
       .type(PROVIDER_TYPE_PRETTY);
 
@@ -32,35 +34,33 @@ context('Test DNS Providers', () => {
       .click();
 
     // secret
-    cy.get('[placeholder="Select Namespace"]')
-      .filter(':visible')
-      .click()
-      .type(Cypress.env('NAMESPACE_NAME'));
-
-    cy.get('.fd-list__item')
-      .contains(Cypress.env('NAMESPACE_NAME'))
-      .scrollIntoView()
-      .click();
-
-    cy.get('[placeholder^="Select name"]:visible', { log: false }).type(
-      'default',
+    chooseComboboxOption(
+      '[placeholder="Select Namespace"]',
+      Cypress.env('NAMESPACE_NAME'),
     );
 
-    cy.contains('serverless-registry-config-default').click();
+    chooseComboboxOption(
+      '[placeholder^="Select name"]',
+      'serverless-registry-config-default',
+    );
 
     // include domains
     cy.get('[placeholder="Domain that is allowed"]:visible', { log: false })
+      .find('input')
       .clear()
       .type(PROVIDER_INCLUDED_DOMAIN);
 
     // name
-    cy.get('[ariaLabel="DNSProvider name"]:visible', { log: false })
-      .clear()
+    cy.get('ui5-dialog')
+      .find('[aria-label="DNSProvider name"]:visible')
+      .find('input')
+      .click()
       .type(PROVIDER_NAME);
 
     // create
-    cy.get('[role=dialog]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
   });
 
@@ -74,48 +74,53 @@ context('Test DNS Providers', () => {
   });
 
   it('Edit DNS Provider', () => {
-    cy.contains('Edit').click();
+    cy.contains('ui5-button', 'Edit').click();
 
     // name should be readonly
-    cy.get('[ariaLabel="DNSProvider name"]:visible', { log: false }).should(
-      'have.attr',
-      'readonly',
-      'readonly',
-    );
+    cy.get('ui5-dialog')
+      .find('[aria-label="DNSProvider name"]:visible')
+      .find('input')
+      .should('have.attr', 'readonly', 'readonly');
 
     // edit labels
-    cy.get('[role=dialog]')
+    cy.get('ui5-dialog')
       .contains('Labels')
       .filter(':visible', { log: false })
       .click();
 
-    cy.get('[placeholder="Enter key"]:visible')
+    cy.get('[placeholder="Enter key"]:visible', { log: false })
+      .find('input')
       .filterWithNoValue()
-      .type('is-edited');
+      .type('is-edited', { force: true });
 
-    cy.get('[role=dialog]')
-      .find('[placeholder="Enter value"]:visible')
+    cy.get('[placeholder="Enter value"]:visible', { log: false })
+      .find('input')
       .filterWithNoValue()
       .first()
-      .type('yes');
+      .type('yes', { force: true });
 
     cy.get('[placeholder="Domain that is allowed"]')
+      .find('input')
       .filterWithNoValue()
       .type(PROVIDER_INCLUDED_DOMAIN_2);
 
     // edit excluded domains
-    cy.get('[role=dialog]')
+    cy.get('ui5-dialog')
       .contains('Exclude Domains')
       .scrollIntoView()
       .filter(':visible', { log: false })
       .click();
 
     cy.get('[placeholder="Domain that is forbidden"]')
+      .find('input')
       .filterWithNoValue()
       .type(PROVIDER_EXCLUDED_DOMAIN);
 
     // hit update
-    cy.contains('button', 'Update').click();
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Update')
+      .should('be.visible')
+      .click();
 
     cy.contains('Included Domains');
 

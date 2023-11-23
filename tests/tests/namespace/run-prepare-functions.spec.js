@@ -37,23 +37,29 @@ context('Prepare funtions for testing', () => {
   // you must wait for the function to remain unchanged
   it('Edit a simple test Function and check updated runtime', () => {
     cy.getLeftNav()
-      .contains('Functions', { includeShadowDom: true })
+      .contains('Functions')
       .click();
 
-    cy.contains(FUNCTION_NAME).click();
+    cy.contains('a', FUNCTION_NAME).click();
 
-    cy.contains('button', 'Edit').click();
+    cy.contains('ui5-button', 'Edit').click();
 
-    cy.get('[aria-label="Combobox input arrow"]:visible')
-      .eq(2)
+    cy.get('ui5-dialog')
+      .find('ui5-combobox[placeholder="Choose Function runtime"]')
+      .find('ui5-icon[accessible-name="Select Options"]:visible', {
+        log: false,
+      })
       .click();
 
-    cy.contains('Node.js 16').click();
-
-    cy.get('[role=dialog]')
-      .contains('button', 'Update')
+    cy.get('ui5-li:visible')
+      .contains('Node.js 16')
       .click();
 
-    cy.contains('Node.js 16').should('be.visible');
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Update')
+      .should('be.visible')
+      .click();
+
+    cy.contains('Node.js 16');
   });
 });

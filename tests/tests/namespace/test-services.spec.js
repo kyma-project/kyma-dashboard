@@ -16,32 +16,47 @@ context('Test Services', () => {
   it('Create a Service', () => {
     cy.navigateTo('Discovery and Network', 'Services');
 
-    cy.contains('Create Service').click();
+    cy.contains('ui5-button', 'Create Service').click();
 
-    cy.get('[arialabel="Service name"]:visible').type(SERVICE_NAME);
-
-    cy.get('[arialabel="Delete"]:visible').click();
-
-    cy.get('[placeholder="Enter key"]:visible')
+    cy.get('ui5-dialog')
+      .find('[aria-label="Service name"]:visible')
+      .find('input')
       .click()
-      .type(SERVICE_KEY);
+      .type(SERVICE_NAME, { force: true });
 
-    cy.get('[index="-1"]:visible')
+    cy.get('[placeholder="Enter key"]:visible', { log: false })
+      .find('input')
+      .eq(0)
       .click()
-      .type(SERVICE_VALUE);
+      .clear()
+      .type(SERVICE_KEY, { force: true });
 
-    cy.get(
-      '[class="fd-button fd-button--transparent fd-button--compact"]:visible',
-    )
+    cy.get('[placeholder="Enter value"]:visible', { log: false })
+      .find('input')
+      .filterWithNoValue()
+      .first()
+      .type(SERVICE_VALUE, { force: true });
+
+    cy.get('[aria-label="expand Ports"]:visible', { log: false })
       .contains('Add')
-      .click({ force: true });
+      .click();
+
+    cy.get('ui5-dialog')
+      .find('[aria-label="Service name"]:visible')
+      .eq(1)
+      .find('input')
+      .click()
+      .type(SERVICE_NAME, { force: true });
 
     cy.get('[placeholder="Enter Target Port"]:visible')
+      .find('input')
+      .click()
       .clear()
       .type(SERVICE_TARGET_PORT);
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
   });
 
@@ -50,13 +65,18 @@ context('Test Services', () => {
   });
 
   it('Edit a Service', () => {
-    cy.contains('Edit').click();
+    cy.contains('ui5-button', 'Edit').click();
 
     cy.get('[placeholder="Enter Type"]:visible')
+      .find('input')
+      .click()
       .clear()
       .type(SERVICE_DIFF_TYPE);
 
-    cy.contains('Update').click();
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Update')
+      .should('be.visible')
+      .click();
   });
 
   it('Inspect updated Service', () => {

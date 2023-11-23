@@ -25,17 +25,21 @@ data:
         children:
         - name: included.domains 
           widget: Table
-          showHeader: false
+          disablePadding: true
+          showHeader: true
           source: spec.domains.include
           children:
             - source: $item
+              name: included.domains
               search: true
         - name: excluded.domains
           widget: Table
-          showHeader: false
+          disablePadding: true
+          showHeader: true
           source: spec.domains.exclude
           children:
             - source: $item
+              name: excluded.domains
               search: true
   form: |-
     - simple: true

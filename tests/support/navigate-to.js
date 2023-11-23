@@ -3,14 +3,14 @@ Cypress.Commands.add('navigateTo', (leftNav, resource) => {
   cy.wait(500);
 
   cy.getLeftNav()
-    .contains(leftNav, { includeShadowDom: true })
+    .contains(leftNav)
     .should('be.visible');
 
   cy.getLeftNav()
-    .contains(leftNav, { includeShadowDom: true })
+    .contains(leftNav)
     .click();
 
   cy.getLeftNav()
-    .contains(resource, { includeShadowDom: true })
+    .contains(resource)
     .click();
 });

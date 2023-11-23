@@ -1,3 +1,5 @@
+const { chooseComboboxOption } = require('../../support/helpers');
+
 const SERVICE_NAME = `test-virtual-service-${Math.floor(Math.random() * 9999) +
   1000}`;
 const MATCH_NAME = 'test-match';
@@ -28,12 +30,14 @@ context('Test Virtual Services', () => {
   it('Create a Virtual Service', () => {
     cy.navigateTo('Istio', 'Virtual Services');
 
-    cy.contains('Create Virtual Service').click();
+    cy.contains('ui5-button', 'Create Virtual Service').click();
 
     // name
-    cy.get('[arialabel="VirtualService name"]:visible', { log: false }).type(
-      SERVICE_NAME,
-    );
+    cy.get('ui5-dialog')
+      .find('[aria-label="VirtualService name"]:visible')
+      .find('input')
+      .click()
+      .type(SERVICE_NAME, { force: true });
 
     // HTTP
     cy.get('[aria-label="expand HTTP"]:visible', { log: false })
@@ -45,67 +49,86 @@ context('Test Virtual Services', () => {
       .contains('Add')
       .click();
 
-    cy.get('[data-testid="spec.http.0.match.0.name"]:visible').type(MATCH_NAME);
+    cy.get('[data-testid="spec.http.0.match.0.name"]:visible')
+      .find('input')
+      .type(MATCH_NAME, { force: true });
 
     // URIs
+    cy.get('[aria-label="expand Headers"]:visible', { log: false }).click();
+
     cy.get('[aria-label="expand URI"]:visible', { log: false }).click();
 
-    cy.get('[data-testid="select-dropdown"]:visible', { log: false })
-      .first()
+    cy.get('ui5-dialog')
+      .find('ui5-combobox[data-testid="select-dropdown"]')
+      .find('ui5-icon[accessible-name="Select Options"]:visible', {
+        log: false,
+      })
       .click();
 
-    cy.contains(URI_KEY).click();
+    cy.get('ui5-li:visible')
+      .contains(URI_KEY)
+      .click();
 
     cy.get('[placeholder="Enter value"]:visible', { log: false })
+      .find('input')
       .filterWithNoValue()
       .first()
-      .type(URI_PREFIX);
+      .type(URI_PREFIX, { force: true });
+
+    cy.get('[aria-label="expand URI"]:visible', { log: false }).click();
 
     // Headers
-    cy.get('[aria-label="expand Scheme"]:visible', { log: false }).click();
-
-    cy.get('[aria-label="expand Method"]:visible', { log: false }).click();
-
-    cy.get('[aria-label="expand Authority"]:visible', { log: false }).click();
+    cy.get('[aria-label="expand Headers"]:visible', { log: false }).click();
 
     cy.get('[placeholder="Enter key"]:visible', { log: false })
+      .find('input')
       .first()
       .filterWithNoValue()
-      .type(HEADER_KEY);
+      .type(HEADER_KEY, { force: true });
 
-    cy.get('[data-testid="select-dropdown"]:visible', { log: false })
-      .first()
+    cy.get('ui5-dialog')
+      .find('ui5-combobox[data-testid="select-dropdown"]')
+      .find('ui5-icon[accessible-name="Select Options"]:visible', {
+        log: false,
+      })
+      .eq(0)
       .click();
 
-    cy.contains(HEADER_KEY1).click();
+    cy.get('ui5-li:visible')
+      .contains(HEADER_KEY1)
+      .click();
 
     cy.get('[placeholder="Enter value"]:visible', { log: false })
+      .find('input')
       .filterWithNoValue()
       .first()
-      .type(HEADER_VALUE);
+      .type(HEADER_VALUE, { force: true });
+
+    cy.get('[aria-label="expand Headers"]:visible', { log: false }).click();
 
     // REDIRECT
     cy.get('[aria-label="expand Redirect"]', { log: false })
       .first()
       .click();
 
-    cy.get('[data-testid="spec.http.0.redirect.uri"]:visible').type(
-      REDIRECT_URI,
-    );
+    cy.get('[data-testid="spec.http.0.redirect.uri"]:visible')
+      .find('input')
+      .type(REDIRECT_URI, { force: true });
 
-    cy.get('[data-testid="spec.http.0.redirect.authority"]:visible').type(
-      REDIRECT_AUTHORITY,
-    );
+    cy.get('[data-testid="spec.http.0.redirect.authority"]:visible')
+      .find('input')
+      .type(REDIRECT_AUTHORITY, { force: true });
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
 
     cy.url().should('match', new RegExp(`/virtualservices/${SERVICE_NAME}$`));
   });
 
   it('Inspect Virtual Service', () => {
-    cy.contains('h3', SERVICE_NAME);
+    cy.contains('ui5-title', SERVICE_NAME);
 
     cy.get('[data-testid="collapse-button-close"]', { timeout: 10000 }).click();
 
@@ -119,7 +142,7 @@ context('Test Virtual Services', () => {
   });
 
   it('Edit VS and check updates', () => {
-    cy.contains('Edit').click();
+    cy.contains('ui5-button', 'Edit').click();
 
     // Hosts
     cy.get('[aria-label="expand Hosts"]:visible', {
@@ -127,10 +150,14 @@ context('Test Virtual Services', () => {
     }).click();
 
     cy.get('[data-testid="spec.hosts.0"]:visible')
+      .find('input')
+      .click()
       .clear()
       .type(HOST1);
 
     cy.get('[data-testid="spec.hosts.1"]:visible')
+      .find('input')
+      .click()
       .clear()
       .type(HOST2);
 
@@ -140,11 +167,14 @@ context('Test Virtual Services', () => {
     }).click();
 
     cy.get('[data-testid="spec.gateways.0"]:visible')
+      .find('input')
+      .click()
       .clear()
       .type(GATEWAY);
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Update')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Update')
+      .should('be.visible')
       .click();
 
     // Changed details

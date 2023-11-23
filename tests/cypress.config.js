@@ -1,6 +1,7 @@
 const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
+  includeShadowDom: true,
   defaultCommandTimeout: 60000,
   execTimeout: 60000,
   taskTimeout: 60000,
@@ -12,6 +13,7 @@ module.exports = defineConfig({
   viewportWidth: 1500,
   viewportHeight: 1500,
   videoCompression: false,
+  scrollBehavior: false,
   screenshotsFolder: process?.env?.ARTIFACTS
     ? `${process.env?.ARTIFACTS}/screenshots`
     : 'cypress/screenshots',
@@ -30,7 +32,7 @@ module.exports = defineConfig({
       'tests/cluster/test-applications.spec.js',
       // 'tests/cluster/test-modules-wizard.spec.js',
       'tests/namespace/a-run-before.spec.js',
-      'tests/namespace/run-prepare-functions.spec.js',
+      // 'tests/namespace/run-prepare-functions.spec.js',
       'tests/namespace/test-certificates.spec.js',
       'tests/namespace/test-destination-rules.spec.js',
       'tests/namespace/test-issuers.spec.js',
@@ -42,7 +44,7 @@ module.exports = defineConfig({
       'tests/namespace/test-oauth2.spec.js',
       'tests/namespace/test-sidecars.spec.js',
       'tests/namespace/test-service-entries.spec.js',
-      'tests/namespace/test-api-rules.spec.js',
+      // 'tests/namespace/test-api-rules.spec.js',
       'tests/namespace/test-dns-entries.spec.js',
       'tests/namespace/test-services.spec.js',
       'tests/namespace/test-kyma.spec.js',

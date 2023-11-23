@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import 'cypress-file-upload';
+import { chooseComboboxOption } from '../../support/helpers';
 
 const SIDECAR_NAME =
   'test-' +
@@ -25,12 +26,14 @@ context('Test Sidecars', () => {
   it('Create a Sidecar', () => {
     cy.navigateTo('Istio', 'Sidecars');
 
-    cy.contains('Create Sidecar').click();
+    cy.contains('ui5-button', 'Create Sidecar').click();
 
     // Name
-    cy.get('[arialabel="Sidecar name"]:visible', { log: false }).type(
-      SIDECAR_NAME,
-    );
+    cy.get('ui5-dialog')
+      .find('[aria-label="Sidecar name"]:visible')
+      .find('input')
+      .click()
+      .type(SIDECAR_NAME, { force: true });
 
     // Egress
     cy.get('[aria-label="expand Egress"]:visible', { log: false })
@@ -41,21 +44,29 @@ context('Test Sidecars', () => {
 
     cy.get('[placeholder="Enter the port number"]:visible', {
       log: false,
-    }).type(PORT_NUMBER);
+    })
+      .find('input')
+      .type(PORT_NUMBER, { force: true });
 
-    cy.get('[arialabel="Sidecar name"]:visible', { log: false })
+    cy.get('ui5-dialog')
+      .find('[aria-label="Sidecar name"]:visible')
+      .find('input')
       .filterWithNoValue()
-      .type(EGRESS_NAME);
+      .click()
+      .type(EGRESS_NAME, { force: true });
 
-    cy.get('[aria-label="Combobox input"]:visible', { log: false })
-      .first()
-      .type(PORT_PROTOCOL);
+    chooseComboboxOption(
+      '[data-testid="spec.egress.0.port.protocol"]',
+      PORT_PROTOCOL,
+    );
 
     cy.get('[aria-label="expand Hosts"]:visible', { log: false }).click();
 
     cy.get('[placeholder="For example, *.api.mydomain.com"]:visible', {
       log: false,
-    }).type(EGRESS_HOST);
+    })
+      .find('input')
+      .type(EGRESS_HOST, { force: true });
 
     cy.get('[aria-label="expand Egress"]:visible', { log: false })
       .first()
@@ -70,25 +81,34 @@ context('Test Sidecars', () => {
 
     cy.get('[placeholder="Enter the port number"]:visible', {
       log: false,
-    }).type(PORT_NUMBER);
+    })
+      .find('input')
+      .type(PORT_NUMBER, { force: true });
 
-    cy.get('[aria-label="Combobox input"]:visible', { log: false })
-      .first()
-      .type(PORT_PROTOCOL);
+    chooseComboboxOption(
+      '[data-testid="spec.ingress.0.port.protocol"]',
+      PORT_PROTOCOL,
+    );
 
-    cy.get('[ariaLabel="Sidecar name"]:visible', { log: false })
+    cy.get('ui5-dialog')
+      .find('[aria-label="Sidecar name"]:visible')
+      .find('input')
       .filterWithNoValue()
-      .type(IGRES_NAME);
+      .click()
+      .type(IGRES_NAME, { force: true });
 
     cy.get('[placeholder="For example, 127.0.0.1:PORT"]:visible', {
       log: false,
-    }).type(DEFAULT_ENDPOINT);
+    })
+      .find('input')
+      .type(DEFAULT_ENDPOINT, { force: true });
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
 
-    cy.contains('h3', SIDECAR_NAME).should('be.visible');
+    cy.contains('ui5-title', SIDECAR_NAME).should('be.visible');
   });
 
   it('Check the Sidecar details', () => {

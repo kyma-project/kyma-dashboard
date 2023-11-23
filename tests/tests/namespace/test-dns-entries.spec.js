@@ -17,28 +17,37 @@ context('Test DNS Entries', () => {
   it('Create DNS Entry', () => {
     cy.navigateTo('Configuration', 'DNS Entries');
 
-    cy.contains('Create DNS Entry').click();
+    cy.contains('ui5-button', 'Create DNS Entry').click();
 
     // ttl
     cy.get('[placeholder^="Enter the time to live"]:visible')
+      .find('input')
+      .click()
       .clear()
       .type(TTL);
 
     // dns name
     cy.get('[placeholder^="Select the DNSName"]:visible')
+      .find('input')
+      .click()
       .type(DNS_NAME)
       .click();
 
     // name
-    cy.get('[ariaLabel="DNSEntry name"]:visible').type(DNS_ENTRY_NAME);
+    cy.get('ui5-dialog')
+      .find('[aria-label="DNSEntry name"]:visible')
+      .find('input')
+      .type(DNS_ENTRY_NAME);
 
     // target
-    cy.get(
-      '[placeholder^="Enter the A record target or CNAME record"]:visible',
-    ).type('35.204.159.60');
+    cy.get('[placeholder^="Enter the A record target or CNAME record"]:visible')
+      .find('input')
+      .click()
+      .type('35.204.159.60');
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
   });
 
@@ -49,21 +58,23 @@ context('Test DNS Entries', () => {
   });
 
   it('Edit DNS Entry', () => {
-    cy.contains('Edit').click();
+    cy.contains('ui5-button', 'Edit').click();
 
     // name should be disabled for edit
-    cy.get('[ariaLabel="DNSEntry name"]:visible').should(
-      'have.attr',
-      'readonly',
-    );
+    cy.get('ui5-dialog')
+      .find('[aria-label="DNSEntry name"]:visible')
+      .find('input')
+      .should('have.attr', 'readonly');
 
     // change from A to CNAME
     cy.get('[placeholder^="Enter the A record target"]:visible')
+      .find('input')
       .last()
       .type('example.com');
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Update')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Update')
+      .should('be.visible')
       .click();
 
     cy.contains(/Targets.*, example\.com/);

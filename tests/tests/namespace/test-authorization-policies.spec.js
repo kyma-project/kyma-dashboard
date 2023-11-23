@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import 'cypress-file-upload';
+import { chooseComboboxOption } from '../../support/helpers';
 
 const AP_NAME =
   'test-ap-' +
@@ -23,17 +24,16 @@ context('Test Authorization Policies', () => {
   it('Create Authorization Policy', () => {
     cy.navigateTo('Istio', 'Authorization Policies');
 
-    cy.contains('Create Authorization Policy').click();
+    cy.contains('ui5-button', 'Create Authorization Policy').click();
 
     // Action
-    cy.get('[aria-label="Combobox input"]:visible', { log: false }).type(
-      ACTION,
-    );
+    chooseComboboxOption('[placeholder="Type or choose an option."]', ACTION);
 
     // Name
-    cy.get('[arialabel="AuthorizationPolicy name"]:visible', {
-      log: false,
-    }).type(AP_NAME);
+    cy.get('ui5-dialog')
+      .find('[aria-label="AuthorizationPolicy name"]:visible')
+      .find('input')
+      .type(AP_NAME);
 
     // Rules
     cy.get('[aria-label="expand Rules"]:visible', { log: false })
@@ -45,11 +45,15 @@ context('Test Authorization Policies', () => {
       .contains('Add')
       .click();
 
-    cy.get('[data-testid="spec.rules.0.when.0.key"]:visible').type(KEY);
+    cy.get('[data-testid="spec.rules.0.when.0.key"]:visible')
+      .find('input')
+      .type(KEY);
 
     cy.get('[aria-label="expand Values"]:visible', { log: false }).click();
 
-    cy.get('[data-testid="spec.rules.0.when.0.values.0"]:visible').type(VALUES);
+    cy.get('[data-testid="spec.rules.0.when.0.values.0"]:visible')
+      .find('input')
+      .type(VALUES);
 
     // To
     cy.get('[aria-label="expand To"]:visible', { log: false })
@@ -58,18 +62,19 @@ context('Test Authorization Policies', () => {
 
     cy.get('[aria-label="expand Methods"]:visible', { log: false }).click();
 
-    cy.get(
-      '[data-testid="spec.rules.0.to.0.operation.methods.0"]:visible',
-    ).type(METHODS);
+    cy.get('[data-testid="spec.rules.0.to.0.operation.methods.0"]:visible')
+      .find('input')
+      .type(METHODS);
 
     cy.get('[aria-label="expand Paths"]:visible', { log: false }).click();
 
-    cy.get('[data-testid="spec.rules.0.to.0.operation.paths.0"]:visible').type(
-      PATHS,
-    );
+    cy.get('[data-testid="spec.rules.0.to.0.operation.paths.0"]:visible')
+      .find('input')
+      .type(PATHS);
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
   });
 
@@ -96,19 +101,22 @@ context('Test Authorization Policies', () => {
   });
 
   it('Edit and check changes', () => {
-    cy.contains('Edit').click();
+    cy.contains('ui5-button', 'Edit').click();
 
     cy.get('[placeholder="Enter key"]:visible', { log: false })
+      .find('input')
       .filterWithNoValue()
-      .type('sel');
+      .type('sel', { force: true });
 
     cy.get('[placeholder="Enter value"]:visible', { log: false })
+      .find('input')
       .filterWithNoValue()
       .first()
-      .type('selector-value');
+      .type('selector-value', { force: true });
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Update')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Update')
+      .should('be.visible')
       .click();
 
     cy.contains('sel=selector-value').should('be.visible');

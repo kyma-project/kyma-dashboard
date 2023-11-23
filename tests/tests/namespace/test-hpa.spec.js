@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import 'cypress-file-upload';
+import { chooseComboboxOption } from '../../support/helpers';
 
 const HPA_NAME = 'test-hpa';
 const DOCKER_IMAGE = 'nginx';
@@ -20,52 +21,62 @@ context('Test HPA', () => {
   it('Creates auxiliary Deployment', () => {
     cy.navigateTo('Workloads', 'Deployments');
 
-    cy.contains('button', 'Create Deployment').click();
+    cy.contains('ui5-button', 'Create Deployment').click();
 
-    cy.get('.fd-dialog__content')
-      .find('[ariaLabel^="Deployment name"]:visible')
+    cy.get('ui5-dialog')
+      .find('[aria-label="Deployment name"]:visible')
+      .find('input')
       .type(DEPLOYEMENT_NAME);
 
-    cy.get('.fd-dialog__content')
-      .find('[placeholder^="Enter the Docker image"]:visible')
-      .type(DOCKER_IMAGE);
+    cy.get('[placeholder^="Enter the Docker image"]:visible')
+      .find('input')
+      .type(DOCKER_IMAGE, { force: true });
 
-    cy.get('.fd-dialog__content')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
 
-    cy.contains('h3', DEPLOYEMENT_NAME).should('be.visible');
+    cy.contains('ui5-title', DEPLOYEMENT_NAME).should('be.visible');
   });
 
   it('Create HPA', () => {
     cy.navigateTo('Discovery and Network', 'Horizontal Pod');
 
-    cy.contains('Create Horizontal Pod Autoscaler').click();
+    cy.contains('ui5-button', 'Create Horizontal Pod Autoscaler').click();
 
-    cy.get('[arialabel="HorizontalPodAutoscaler name"]:visible').type(HPA_NAME);
+    cy.get('ui5-dialog')
+      .find('[aria-label="HorizontalPodAutoscaler name"]:visible')
+      .find('input')
+      .click()
+      .type(HPA_NAME, { force: true });
 
     cy.get('[data-testid="spec.maxReplicas"]:visible')
+      .find('input')
+      .click()
       .clear()
       .type(MAX_REPLICAS);
 
-    cy.get('[data-testid="spec.scaleTargetRef.kind"]:visible')
-      .type(SCALE_TARGET_REF_KIND)
-      .click();
-
-    cy.get('[data-testid="spec.scaleTargetRef.name"]:visible').type(
-      SCALE_TARGET_REF_NAME,
+    chooseComboboxOption(
+      '[data-testid="spec.scaleTargetRef.kind"]',
+      SCALE_TARGET_REF_KIND,
     );
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Create')
+    cy.get('[data-testid="spec.scaleTargetRef.name"]:visible')
+      .find('input')
+      .type(SCALE_TARGET_REF_NAME, { force: true });
+
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
 
-    cy.contains('[aria-label="title"]', HPA_NAME).should('be.visible');
+    cy.contains('ui5-title', HPA_NAME).should('be.visible');
   });
 
   it('Check HPA details', () => {
     cy.contains('Deployment').should('be.visible');
-    cy.contains(`${DEPLOYEMENT_NAME}`).should('be.visible');
+    cy.contains('a', `${DEPLOYEMENT_NAME}`).should('be.visible');
 
     cy.contains('#content-wrap', 'Events').should('be.visible');
   });
@@ -76,10 +87,10 @@ context('Test HPA', () => {
 
   it('Check HPA subcomponent', () => {
     cy.get('[role=row]')
-      .contains(HPA_NAME)
+      .contains('a', HPA_NAME)
       .click();
 
-    cy.contains(DEPLOYEMENT_NAME).click();
+    cy.contains('a', DEPLOYEMENT_NAME).click();
 
     cy.url().should('match', /deployments/);
 
@@ -88,17 +99,20 @@ context('Test HPA', () => {
 
   it('Check Edit HPA', () => {
     cy.get('[role=row]')
-      .contains(HPA_NAME)
+      .contains('a', HPA_NAME)
       .click();
 
-    cy.contains('Edit').click();
+    cy.contains('ui5-button', 'Edit').click();
 
     cy.get('[data-testid="spec.minReplicas"]:visible')
+      .find('input')
+      .click()
       .clear()
       .type(MIN_REPLICAS);
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Update')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Update')
+      .should('be.visible')
       .click();
 
     cy.contains('Min Replicas')

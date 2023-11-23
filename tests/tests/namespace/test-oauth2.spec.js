@@ -15,27 +15,33 @@ context('Test OAuth2 Clients', () => {
   it('Create a Client', () => {
     cy.navigateTo('Configuration', 'OAuth2 Clients');
 
-    cy.contains('Create OAuth2 Client').click();
+    cy.contains('ui5-button', 'Create OAuth2 Client').click();
 
     cy.contains('Advanced').click();
 
-    cy.get('[arialabel="OAuth2Client name"]')
-      .clear()
-      .type(AUTH2_NAME);
+    cy.get('ui5-dialog')
+      .find('[aria-label="OAuth2Client name"]:visible')
+      .find('input')
+      .click()
+      .type(AUTH2_NAME, { force: true });
 
     cy.get('[data-testid="spec.clientName"]')
+      .find('input')
+      .click()
       .clear()
       .type(CLIENT_NAME);
 
-    cy.contains('label', 'ID Token').click();
+    cy.get(`ui5-checkbox[text="ID Token"]`).click();
 
-    cy.contains('label', 'Authorization Code').click();
+    cy.get(`ui5-checkbox[text="Authorization Code"]`).click();
 
-    cy.contains('label', 'Implicit').click();
+    cy.get(`ui5-checkbox[text="Implicit"]`).click();
 
-    cy.contains('label', 'Code').click();
+    cy.get(`ui5-checkbox[text="Code"]`).click();
 
     cy.get('[data-testid="spec.scope"]')
+      .find('input')
+      .click()
       .clear()
       .type('openid', {
         //for unknown reason Cypress can lose 'e' when typing openid, therefore slowing down the typing
@@ -43,10 +49,9 @@ context('Test OAuth2 Clients', () => {
         waitForAnimations: true,
       });
 
-    cy.contains('label', 'Scope').click();
-
-    cy.get('[role="dialog"]')
-      .contains('button', 'Create')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Create')
+      .should('be.visible')
       .click();
   });
 
@@ -71,18 +76,21 @@ context('Test OAuth2 Clients', () => {
   });
 
   it('Edit client', () => {
-    cy.contains('Edit').click();
+    cy.contains('ui5-button', 'Edit').click();
 
-    cy.contains('label', 'ID Token').click();
+    cy.get(`ui5-checkbox[text="ID Token"]`).click();
 
-    cy.contains('label', 'Authorization Code').click();
+    cy.get(`ui5-checkbox[text="Authorization Code"]`).click();
 
     cy.get('[value="openid"]')
+      .find('input')
+      .click()
       .clear()
       .type('read');
 
-    cy.get('[role="dialog"]')
-      .contains('button', 'Update')
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Update')
+      .should('be.visible')
       .click();
   });
 
@@ -104,24 +112,30 @@ context('Test OAuth2 Clients', () => {
 
   it('Check deprecation note in Cluster Overview', () => {
     cy.getLeftNav()
-      .contains('Back To Cluster Details', { includeShadowDom: true })
+      .contains('Back To Cluster Details')
       .click();
 
     cy.contains('Ory Hydra Deprecation').should('be.visible');
 
-    cy.contains('OAuth2Clients')
-      .parents('.generic-list')
-      .within(_$genericList => {
-        cy.get('[aria-label="open-search"]').click();
+    cy.contains('ui5-panel', 'OAuth2Clients').within(_$genericList => {
+      cy.get('[aria-label="open-search"]:visible').click();
 
-        cy.get('[placeholder="Search"]').type(AUTH2_NAME);
+      cy.get('ui5-combobox[placeholder="Search"]')
+        .find('input')
+        .click()
+        .type(AUTH2_NAME);
 
-        cy.contains(AUTH2_NAME).should('be.visible');
+      cy.contains('a', AUTH2_NAME).should('be.visible');
 
-        cy.get('[aria-label="Delete"]').click();
-      });
+      cy.get('ui5-button[data-testid="delete"]').click();
+    });
 
-    cy.contains('button', 'Delete').click();
+    cy.get(`[header-text="Delete O Auth Client"]`)
+      .find('[data-testid="delete-confirmation"]')
+      .click();
+
+    cy.wait(500);
+
     cy.contains(AUTH2_NAME).should('not.exist');
 
     cy.contains('Ory Hydra Deprecation').should('not.exist');

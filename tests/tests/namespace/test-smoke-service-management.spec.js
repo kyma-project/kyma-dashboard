@@ -12,7 +12,7 @@ context('Test Service Management category', () => {
   });
 
   it('Uploads Service Instance and Service Bindings YAMLs', () => {
-    cy.contains('Upload YAML').click();
+    cy.contains('ui5-button', 'Upload YAML').click();
 
     cy.loadFiles(
       'examples/service-binding-mock-crd.yaml',
@@ -22,10 +22,13 @@ context('Test Service Management category', () => {
       cy.pasteToMonaco(input);
     });
 
-    cy.contains('Submit').click();
+    cy.get('ui5-dialog')
+      .contains('ui5-button', 'Upload')
+      .should('be.visible')
+      .click();
 
-    cy.get('.fd-dialog__body')
-      .find('.sap-icon--message-success')
+    cy.get('ui5-dialog')
+      .find('.status-message-success')
       .should('have.length', 2);
 
     cy.reload();

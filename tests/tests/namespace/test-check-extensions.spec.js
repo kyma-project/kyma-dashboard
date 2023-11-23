@@ -23,6 +23,14 @@ context('Test Namespace Extensions view', () => {
     it('Test API Rules', () => {
       cy.checkExtension('API Rules');
     });
+
+    it('Test Horizontal Pod Autoscalers', () => {
+      cy.checkExtension('Horizontal Pod Autoscalers');
+    });
+
+    it('Test Services', () => {
+      cy.checkExtension('Services');
+    });
   });
 
   // Istio
@@ -70,16 +78,8 @@ context('Test Namespace Extensions view', () => {
       cy.checkExtension('DNS Providers');
     });
 
-    it('Test Horizontal Pod Autoscalers', () => {
-      cy.checkExtension('Horizontal Pod Autoscalers');
-    });
-
     it('Test Issuers', () => {
       cy.checkExtension('Issuers');
-    });
-
-    it('Test Services', () => {
-      cy.checkExtension('Services');
     });
 
     it('Test Subscriptions', () => {
