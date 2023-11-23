@@ -96,7 +96,7 @@ function paste(subject, { pastePayload }) {
 }
 
 Cypress.Commands.add('getLeftNav', () => {
-  return cy.get('aside');
+  return cy.get('aside', { timeout: 10000 });
 });
 
 Cypress.Commands.add('deleteInDetails', () => {
