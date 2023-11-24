@@ -29,15 +29,14 @@ context('Test DNS Entries', () => {
     // dns name
     cy.get('[placeholder^="Select the DNSName"]:visible')
       .find('input')
-      .click()
-      .type(DNS_NAME)
+      .type(DNS_NAME, { force: true })
       .click();
 
     // name
     cy.get('ui5-dialog')
       .find('[aria-label="DNSEntry name"]:visible')
       .find('input')
-      .type(DNS_ENTRY_NAME);
+      .type(DNS_ENTRY_NAME, { force: true });
 
     // target
     cy.get('[placeholder^="Enter the A record target or CNAME record"]:visible')

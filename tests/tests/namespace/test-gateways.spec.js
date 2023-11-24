@@ -33,8 +33,7 @@ context('Test Gateways', () => {
     cy.get('ui5-dialog')
       .find('[aria-label="Gateway name"]:visible')
       .find('input')
-      .click()
-      .type(GATEWAY_NAME);
+      .type(GATEWAY_NAME, { force: true });
 
     // selector
     cy.get('[placeholder="Enter key"]:visible', { log: false })
@@ -65,7 +64,7 @@ context('Test Gateways', () => {
     cy.get('[aria-label^="Gateway name"]:visible', { log: false })
       .find('input')
       .eq(1)
-      .type(SERVER_NAME);
+      .type(SERVER_NAME, { force: true });
 
     cy.get('[data-testid="spec.servers.0.port.targetPort"]:visible')
       .find('input')

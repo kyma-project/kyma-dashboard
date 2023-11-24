@@ -54,8 +54,7 @@ context('Test DNS Providers', () => {
     cy.get('ui5-dialog')
       .find('[aria-label="DNSProvider name"]:visible')
       .find('input')
-      .click()
-      .type(PROVIDER_NAME);
+      .type(PROVIDER_NAME, { force: true });
 
     // create
     cy.get('ui5-dialog')

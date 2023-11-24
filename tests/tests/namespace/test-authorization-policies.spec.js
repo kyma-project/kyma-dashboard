@@ -33,7 +33,7 @@ context('Test Authorization Policies', () => {
     cy.get('ui5-dialog')
       .find('[aria-label="AuthorizationPolicy name"]:visible')
       .find('input')
-      .type(AP_NAME);
+      .type(AP_NAME, { force: true });
 
     // Rules
     cy.get('[aria-label="expand Rules"]:visible', { log: false })

@@ -26,7 +26,7 @@ context('Test HPA', () => {
     cy.get('ui5-dialog')
       .find('[aria-label="Deployment name"]:visible')
       .find('input')
-      .type(DEPLOYEMENT_NAME);
+      .type(DEPLOYEMENT_NAME, { force: true });
 
     cy.get('[placeholder^="Enter the Docker image"]:visible')
       .find('input')
