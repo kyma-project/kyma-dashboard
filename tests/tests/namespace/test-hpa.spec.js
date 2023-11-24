@@ -48,14 +48,13 @@ context('Test HPA', () => {
     cy.get('ui5-dialog')
       .find('[aria-label="HorizontalPodAutoscaler name"]:visible')
       .find('input')
-      .click()
       .type(HPA_NAME, { force: true });
 
     cy.get('[data-testid="spec.maxReplicas"]:visible')
       .find('input')
       .click()
       .clear()
-      .type(MAX_REPLICAS);
+      .type(MAX_REPLICAS, { force: true });
 
     chooseComboboxOption(
       '[data-testid="spec.scaleTargetRef.kind"]',
@@ -108,7 +107,7 @@ context('Test HPA', () => {
       .find('input')
       .click()
       .clear()
-      .type(MIN_REPLICAS);
+      .type(MIN_REPLICAS, { force: true });
 
     cy.get('ui5-dialog')
       .contains('ui5-button', 'Update')
