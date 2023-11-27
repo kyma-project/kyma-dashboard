@@ -44,7 +44,6 @@ module.exports = defineConfig({
       'tests/namespace/test-oauth2.spec.js',
       'tests/namespace/test-sidecars.spec.js',
       'tests/namespace/test-service-entries.spec.js',
-      // 'tests/namespace/test-api-rules.spec.js',
       'tests/namespace/test-dns-entries.spec.js',
       'tests/namespace/test-services.spec.js',
       'tests/namespace/test-kyma.spec.js',
