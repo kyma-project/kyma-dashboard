@@ -43,7 +43,7 @@ context('Test DNS Providers', () => {
     cy.get('[placeholder="Domain that is allowed"]:visible', { log: false })
       .find('input')
       .clear()
-      .type(PROVIDER_INCLUDED_DOMAIN);
+      .type(PROVIDER_INCLUDED_DOMAIN, { force: true });
 
     // name
     cy.get('ui5-dialog')
