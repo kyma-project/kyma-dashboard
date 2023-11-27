@@ -23,15 +23,10 @@ context('Test DNS Providers', () => {
     cy.contains('ui5-button', 'Create DNS Provider').click();
 
     // type
-    cy.get('[placeholder="Choose Provider type"]')
-      .filter(':visible')
-      .find('input')
-      .click()
-      .type(PROVIDER_TYPE_PRETTY);
-
-    cy.contains(PROVIDER_TYPE_PRETTY)
-      .scrollIntoView()
-      .click();
+    chooseComboboxOption(
+      '[placeholder="Choose Provider type"]',
+      PROVIDER_TYPE_PRETTY,
+    );
 
     // secret
     chooseComboboxOption(

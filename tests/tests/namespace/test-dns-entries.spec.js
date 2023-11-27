@@ -24,7 +24,7 @@ context('Test DNS Entries', () => {
       .find('input')
       .click()
       .clear()
-      .type(TTL);
+      .type(TTL, { force: true });
 
     // dns name
     cy.get('[placeholder^="Select the DNSName"]:visible')
@@ -69,7 +69,7 @@ context('Test DNS Entries', () => {
     cy.get('[placeholder^="Enter the A record target"]:visible')
       .find('input')
       .last()
-      .type('example.com');
+      .type('example.com', { force: true });
 
     cy.get('ui5-dialog')
       .contains('ui5-button', 'Update')
