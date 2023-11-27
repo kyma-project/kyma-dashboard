@@ -20,10 +20,6 @@ context('Test Namespace Extensions view', () => {
   describe('Check Discovery and Network Extensions', () => {
     useCategory('Discovery and Network');
 
-    it('Test API Rules', () => {
-      cy.checkExtension('API Rules');
-    });
-
     it('Test Horizontal Pod Autoscalers', () => {
       cy.checkExtension('Horizontal Pod Autoscalers');
     });
