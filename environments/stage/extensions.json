@@ -12,9 +12,6 @@
     "source": "extensions/istio"
   },
   {
-    "source": "extensions/gateway"
-  },
-  {
     "source": "extensions/configuration"
   },
   {
