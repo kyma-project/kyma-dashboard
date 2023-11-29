@@ -61,6 +61,8 @@ context('Test HPA', () => {
       SCALE_TARGET_REF_KIND,
     );
 
+    cy.wait(500);
+
     cy.get('[data-testid="spec.scaleTargetRef.name"]:visible')
       .find('input')
       .type(SCALE_TARGET_REF_NAME, { force: true });

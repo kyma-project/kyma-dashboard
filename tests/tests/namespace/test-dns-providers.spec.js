@@ -34,8 +34,10 @@ context('Test DNS Providers', () => {
       Cypress.env('NAMESPACE_NAME'),
     );
 
+    cy.wait(500);
+
     chooseComboboxOption(
-      '[placeholder^="Select name"]',
+      '[placeholder="Select name"]',
       'serverless-registry-config-default',
     );
 
