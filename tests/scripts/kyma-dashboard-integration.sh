@@ -24,7 +24,8 @@ echo "Provisioning k3d cluster for Kyma"
 ./kyma alpha deploy
 
 echo "Apply and enable keda module"
-kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/download/moduletemplate.yaml
+kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/download/keda-manager.yaml
+kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/download/keda-default-cr.yaml
 
 echo "Apply and enable serverless module"
 kubectl apply -f https://github.com/kyma-project/serverless-manager/releases/latest/download/serverless-operator.yaml
