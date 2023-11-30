@@ -1,6 +1,6 @@
 export function chooseComboboxOption(selector, optionText) {
   cy.get(`ui5-combobox${selector}:visible`)
-    .find('input')
+    .find('input:visible')
     .filterWithNoValue()
     .click({ force: true })
     .type(optionText, { force: true });
