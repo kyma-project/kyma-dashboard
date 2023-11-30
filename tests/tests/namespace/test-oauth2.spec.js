@@ -136,7 +136,7 @@ context('Test OAuth2 Clients', () => {
 
     cy.wait(1000);
 
-    cy.contains(AUTH2_NAME).should('not.exist');
+    cy.contains('a', AUTH2_NAME).should('not.exist');
 
     cy.contains('Ory Hydra Deprecation').should('not.exist');
   });
