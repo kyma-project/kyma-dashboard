@@ -52,7 +52,7 @@ config:
     SHOW_GARDENER_METADATA:
       isEnabled: true
     OBSERVABILITY:
-      isEnabled: true
+      isEnabled: false
       config:
         links:
           - label: Grafana
