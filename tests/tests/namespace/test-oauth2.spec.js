@@ -134,7 +134,7 @@ context('Test OAuth2 Clients', () => {
       .find('[data-testid="delete-confirmation"]')
       .click();
 
-    cy.wait(500);
+    cy.wait(1000);
 
     cy.contains(AUTH2_NAME).should('not.exist');
 

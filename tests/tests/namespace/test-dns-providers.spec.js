@@ -22,6 +22,8 @@ context('Test DNS Providers', () => {
 
     cy.contains('ui5-button', 'Create DNS Provider').click();
 
+    cy.wait(500);
+
     // type
     chooseComboboxOption(
       '[placeholder="Choose Provider type"]',

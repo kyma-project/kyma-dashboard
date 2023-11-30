@@ -26,6 +26,8 @@ context('Test Authorization Policies', () => {
 
     cy.contains('ui5-button', 'Create Authorization Policy').click();
 
+    cy.wait(500);
+
     // Action
     chooseComboboxOption('[placeholder="Type or choose an option."]', ACTION);
 
