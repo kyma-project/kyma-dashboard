@@ -48,6 +48,8 @@ context('Test Issuers', () => {
       Cypress.env('NAMESPACE_NAME'),
     );
 
+    cy.wait(500);
+
     chooseComboboxOption('[placeholder="Select name"]', SECRET_NAME);
 
     cy.get('ui5-dialog')

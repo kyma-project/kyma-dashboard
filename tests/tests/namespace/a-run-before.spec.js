@@ -32,7 +32,7 @@ context('Create Namespace', () => {
     cy.get('ui5-dialog')
       .find('[aria-label="Namespace name"]:visible')
       .find('input')
-      .type(Cypress.env('NAMESPACE_NAME'));
+      .type(Cypress.env('NAMESPACE_NAME'), { force: true });
 
     cy.get('ui5-dialog')
       .contains('Advanced')

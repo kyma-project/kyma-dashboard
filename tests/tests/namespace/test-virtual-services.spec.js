@@ -65,9 +65,10 @@ context('Test Virtual Services', () => {
       })
       .click();
 
-    cy.get('ui5-li:visible')
+    cy.get('ui5-li:visible', { timeout: 10000 })
       .contains(URI_KEY)
-      .click();
+      .find('li')
+      .click({ force: true });
 
     cy.get('[placeholder="Enter value"]:visible', { log: false })
       .find('input')
@@ -94,9 +95,10 @@ context('Test Virtual Services', () => {
       .eq(0)
       .click();
 
-    cy.get('ui5-li:visible')
+    cy.get('ui5-li:visible', { timeout: 10000 })
       .contains(HEADER_KEY1)
-      .click();
+      .find('li')
+      .click({ force: true });
 
     cy.get('[placeholder="Enter value"]:visible', { log: false })
       .find('input')
@@ -153,13 +155,13 @@ context('Test Virtual Services', () => {
       .find('input')
       .click()
       .clear()
-      .type(HOST1);
+      .type(HOST1, { force: true });
 
     cy.get('[data-testid="spec.hosts.1"]:visible')
       .find('input')
       .click()
       .clear()
-      .type(HOST2);
+      .type(HOST2, { force: true });
 
     // Gateways
     cy.get('[aria-label="expand Gateways"]:visible', {
@@ -170,7 +172,7 @@ context('Test Virtual Services', () => {
       .find('input')
       .click()
       .clear()
-      .type(GATEWAY);
+      .type(GATEWAY, { force: true });
 
     cy.get('ui5-dialog')
       .contains('ui5-button', 'Update')

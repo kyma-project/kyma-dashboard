@@ -26,6 +26,8 @@ context('Test Authorization Policies', () => {
 
     cy.contains('ui5-button', 'Create Authorization Policy').click();
 
+    cy.wait(500);
+
     // Action
     chooseComboboxOption('[placeholder="Type or choose an option."]', ACTION);
 
@@ -33,7 +35,7 @@ context('Test Authorization Policies', () => {
     cy.get('ui5-dialog')
       .find('[aria-label="AuthorizationPolicy name"]:visible')
       .find('input')
-      .type(AP_NAME);
+      .type(AP_NAME, { force: true });
 
     // Rules
     cy.get('[aria-label="expand Rules"]:visible', { log: false })

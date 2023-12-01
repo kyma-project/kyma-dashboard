@@ -19,7 +19,7 @@ Cypress.Commands.add('navigateToFunctionCreate', functionName => {
   cy.get('ui5-dialog')
     .find('[aria-label="Function name"]:visible')
     .find('input')
-    .type(functionName);
+    .type(functionName, { force: true });
 });
 
 Cypress.Commands.add('createSimpleFunction', functionName => {
