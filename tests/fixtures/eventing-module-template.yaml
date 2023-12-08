@@ -1,0 +1,132 @@
+apiVersion: operator.kyma-project.io/v1beta2
+kind: ModuleTemplate
+metadata:
+  name: eventing-fast
+  namespace: kcp-system
+  labels:
+    'operator.kyma-project.io/module-name': 'eventing'
+  annotations:
+    'operator.kyma-project.io/doc-url': 'https://kyma-project.io/#/eventing-manager/user/README'
+    'operator.kyma-project.io/is-cluster-scoped': 'false'
+    'operator.kyma-project.io/module-version': '1.0.1'
+spec:
+  channel: fast
+  data:
+    apiVersion: operator.kyma-project.io/v1alpha1
+    kind: Eventing
+    metadata:
+      labels:
+        app.kubernetes.io/name: eventing
+        app.kubernetes.io/instance: eventing
+        app.kubernetes.io/part-of: eventing-manager
+        app.kubernetes.io/created-by: eventing-manager
+      name: eventing
+      namespace: kyma-system
+    spec:
+      backend:
+        type: NATS
+        config:
+          eventTypePrefix: 'sap.kyma.custom'
+          natsStreamStorageType: File
+          natsStreamReplicas: 3
+          natsStreamMaxSize: 700M
+          natsMaxMsgsPerTopic: 1000000
+      publisher:
+        replicas:
+          min: 2
+          max: 2
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 40m
+            memory: 64Mi
+  descriptor:
+    component:
+      componentReferences: []
+      labels:
+        - name: security.kyma-project.io/scan
+          value: enabled
+          version: v1
+      name: kyma-project.io/module/eventing
+      provider: '{"name":"kyma-project.io","labels":[{"name":"kyma-project.io/built-by","value":"cli","version":"v1"}]}'
+      repositoryContexts:
+        - baseUrl: europe-docker.pkg.dev/kyma-project/prod/unsigned
+          componentNameMapping: urlPath
+          type: OCIRegistry
+      resources:
+        - access:
+            imageReference: europe-docker.pkg.dev/kyma-project/prod/eventing-manager:v20231114-4bbffe1a
+            type: ociRegistry
+          labels:
+            - name: scan.security.kyma-project.io/type
+              value: third-party-image
+              version: v1
+          name: eventing-manager
+          relation: external
+          type: ociImage
+          version: v20231114-4bbffe1a
+        - access:
+            imageReference: europe-docker.pkg.dev/kyma-project/prod/event-publisher-proxy:v20231025-3f5d1600
+            type: ociRegistry
+          labels:
+            - name: scan.security.kyma-project.io/type
+              value: third-party-image
+              version: v1
+          name: event-publisher-proxy
+          relation: external
+          type: ociImage
+          version: v20231025-3f5d1600
+        - access:
+            imageReference: europe-docker.pkg.dev/kyma-project/prod/eventing-webhook-certificates:1.7.0
+            type: ociRegistry
+          labels:
+            - name: scan.security.kyma-project.io/type
+              value: third-party-image
+              version: v1
+          name: eventing-webhook-certificates
+          relation: external
+          type: ociImage
+          version: 1.7.0
+        - access:
+            globalAccess:
+              digest: sha256:c20e9e04b95e89b431ff184e3dce2117b16782d5d09cad2824396d435c27519f
+              mediaType: application/octet-stream
+              ref: europe-docker.pkg.dev/kyma-project/prod/unsigned/component-descriptors/kyma-project.io/module/eventing
+              size: 60731
+              type: ociBlob
+            localReference: sha256:c20e9e04b95e89b431ff184e3dce2117b16782d5d09cad2824396d435c27519f
+            mediaType: application/octet-stream
+            type: localBlob
+          name: raw-manifest
+          relation: local
+          type: yaml
+          version: 1.0.1
+      sources:
+        - access:
+            commit: 49b1192071ec05bfdd18c1f667544ac34aa927a1
+            repoUrl: https://github.com/kyma-project/eventing-manager
+            type: gitHub
+          labels:
+            - name: git.kyma-project.io/ref
+              value: refs/heads/1.0.1
+              version: v1
+            - name: scan.security.kyma-project.io/dev-branch
+              value: ''
+              version: v1
+            - name: scan.security.kyma-project.io/rc-tag
+              value: 1.0.0
+              version: v1
+            - name: scan.security.kyma-project.io/language
+              value: golang-mod
+              version: v1
+            - name: scan.security.kyma-project.io/exclude
+              value: '**/test/**,**/*_test.go,/hack/**'
+              version: v1
+          name: module-sources
+          type: Github
+          version: 1.0.1
+      version: 1.0.1
+    meta:
+      schemaVersion: v2
