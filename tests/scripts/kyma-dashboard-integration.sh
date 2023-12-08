@@ -44,6 +44,9 @@ echo "Apply application connector"
 kubectl apply -f https://github.com/kyma-project/application-connector-manager/releases/latest/download/application-connector-manager.yaml
 kubectl apply -f https://github.com/kyma-project/application-connector-manager/releases/latest/download/default_application_connector_cr.yaml
 
+echo "Apply eventing"
+kubectl apply -f https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing-manager.yaml
+
 if [[ ${JOB_NAME} =~ .*smoke.* ]]; then
     echo "Apply and enable telemetry module"
     kubectl apply -f https://github.com/kyma-project/telemetry-manager/releases/latest/download/moduletemplate.yaml
