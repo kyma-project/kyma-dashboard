@@ -19,7 +19,8 @@ chmod +x ./kyma
 echo "Provisioning k3d cluster for Kyma"
 ./kyma provision k3d --ci
 
-./kyma deploy
+# uncomment after command fix
+# ./kyma deploy
 
 ./kyma alpha deploy
 
@@ -34,6 +35,17 @@ kubectl apply -f https://github.com/kyma-project/serverless-manager/releases/lat
 echo "Apply api-gateway"
 kubectl apply -f https://github.com/kyma-project/api-gateway/releases/latest/download/api-gateway-manager.yaml
 kubectl apply -f https://github.com/kyma-project/api-gateway/releases/latest/download/apigateway-default-cr.yaml
+
+echo "Apply istio"
+kubectl apply -f https://github.com/kyma-project/istio/releases/latest/download/istio-manager.yaml
+kubectl apply -f https://github.com/kyma-project/istio/releases/latest/download/istio-default-cr.yaml
+
+echo "Apply application connector"
+kubectl apply -f https://github.com/kyma-project/application-connector-manager/releases/latest/download/application-connector-manager.yaml
+kubectl apply -f https://github.com/kyma-project/application-connector-manager/releases/latest/download/default_application_connector_cr.yaml
+
+echo "Apply eventing"
+kubectl apply -f https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing-manager.yaml
 
 if [[ ${JOB_NAME} =~ .*smoke.* ]]; then
     echo "Apply and enable telemetry module"

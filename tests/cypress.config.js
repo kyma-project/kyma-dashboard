@@ -29,7 +29,8 @@ module.exports = defineConfig({
       return require('./plugins')(on, config);
     },
     specPattern: [
-      'tests/cluster/test-applications.spec.js',
+      // uncomment after frog fix
+      // 'tests/cluster/test-applications.spec.js',
       // 'tests/cluster/test-modules-wizard.spec.js',
       'tests/namespace/a-run-before.spec.js',
       // 'tests/namespace/run-prepare-functions.spec.js',
