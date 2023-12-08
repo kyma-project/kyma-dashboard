@@ -40,6 +40,10 @@ echo "Apply istio"
 kubectl apply -f https://github.com/kyma-project/istio/releases/latest/download/istio-manager.yaml
 kubectl apply -f https://github.com/kyma-project/istio/releases/latest/download/istio-default-cr.yaml
 
+echo "Apply application connector"
+kubectl apply -f https://github.com/kyma-project/application-connector-manager/releases/latest/download/application-connector-manager.yaml
+kubectl apply -f https://github.com/kyma-project/application-connector-manager/releases/latest/download/default_application_connector_cr.yaml
+
 if [[ ${JOB_NAME} =~ .*smoke.* ]]; then
     echo "Apply and enable telemetry module"
     kubectl apply -f https://github.com/kyma-project/telemetry-manager/releases/latest/download/moduletemplate.yaml

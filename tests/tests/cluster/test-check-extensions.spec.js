@@ -10,10 +10,9 @@ context('Test Cluster Extensions views', () => {
   describe('Test Integration Extensions', () => {
     useCategory('Integration');
 
-    // uncomment after kyma deploy command fix
-    // it('Test Applications', () => {
-    //   cy.checkExtension('Applications');
-    // });
+    it('Test Applications', () => {
+      cy.checkExtension('Applications');
+    });
   });
 
   // Observability
