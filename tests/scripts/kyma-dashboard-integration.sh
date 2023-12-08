@@ -19,8 +19,8 @@ chmod +x ./kyma
 echo "Provisioning k3d cluster for Kyma"
 ./kyma provision k3d --ci
 
-# workaround - bug in `kyma deploy` functionallity
-# ./kyma deploy --component compass-runtime-agent
+# uncomment after command fix
+# ./kyma deploy
 
 ./kyma alpha deploy
 
@@ -31,10 +31,6 @@ kubectl apply -f https://github.com/kyma-project/keda-manager/releases/latest/do
 echo "Apply and enable serverless module"
 kubectl apply -f https://github.com/kyma-project/serverless-manager/releases/latest/download/serverless-operator.yaml
 kubectl apply -f https://github.com/kyma-project/serverless-manager/releases/latest/download/default-serverless-cr.yaml
-
-echo "Apply and enable eventing module"
-kubectl apply -f ../fixtures/eventing-module-template.yaml
-kyma alpha enable module eventing -c fast -n kyma-system
 
 echo "Apply api-gateway"
 kubectl apply -f https://github.com/kyma-project/api-gateway/releases/latest/download/api-gateway-manager.yaml
