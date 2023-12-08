@@ -20,7 +20,7 @@ echo "Provisioning k3d cluster for Kyma"
 ./kyma provision k3d --ci
 
 # workaround - bug in `kyma deploy` functionallity
-./kyma deploy --component compass-runtime-agent
+# ./kyma deploy --component compass-runtime-agent
 
 ./kyma alpha deploy
 
