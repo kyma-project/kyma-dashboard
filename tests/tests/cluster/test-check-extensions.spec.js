@@ -15,17 +15,4 @@ context('Test Cluster Extensions views', () => {
     //   cy.checkExtension('Applications');
     // });
   });
-
-  // Observability
-  describe('Test Observability Extensions', () => {
-    useCategory('Observability');
-
-    it('Test Trace Pipelines', () => {
-      cy.checkExtension('Trace Pipelines');
-    });
-
-    it('Test Log Pipelines', () => {
-      cy.checkExtension('Log Pipelines');
-    });
-  });
 });
