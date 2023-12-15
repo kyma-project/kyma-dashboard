@@ -49,8 +49,8 @@ kubectl apply -f https://github.com/kyma-project/eventing-manager/releases/lates
 
 if [[ ${JOB_NAME} =~ .*smoke.* ]]; then
     echo "Apply and enable telemetry module"
-    kubectl apply -f https://github.com/kyma-project/telemetry-manager/releases/latest/download/moduletemplate.yaml
-    ./kyma alpha enable module telemetry --channel fast
+    kubectl apply -f https://github.com/kyma-project/telemetry-manager/releases/latest/download/telemetry-manager.yaml
+    kubectl apply -f https://github.com/kyma-project/telemetry-manager/releases/latest/download/telemetry-default-cr.yaml -n kyma-system
 fi
 
 echo "Apply gardener resources"
