@@ -152,7 +152,7 @@ data:
               visibility: $not($exists($item.status.modules))
     - name: Kyma
       widget: Panel
-      description: To check the Kyma Modularization documentation go to the {{[Kyma's Modular Approach](https://help.sap.com/docs/btp/sap-business-technology-platform-internal/kyma-environment)}}.
+      description: To check the Kyma modularization documentation go to {{[Kyma's Modular Approach](https://help.sap.com/docs/btp/sap-business-technology-platform-internal/kyma-environment)}}.
       source: $
       visibility: $exists($item.status.modules)
       targets:
