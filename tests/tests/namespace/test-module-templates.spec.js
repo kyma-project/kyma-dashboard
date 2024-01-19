@@ -10,7 +10,7 @@ context('Test Module-templates', () => {
       .contains('Namespaces')
       .click();
 
-    cy.get('[role=row]')
+    cy.get('ui5-table-row')
       .contains('kcp-system')
       .click();
 

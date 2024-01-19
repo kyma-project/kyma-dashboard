@@ -87,7 +87,7 @@ context('Test HPA', () => {
   });
 
   it('Check HPA subcomponent', () => {
-    cy.get('[role=row]')
+    cy.get('ui5-table-row')
       .contains('a', HPA_NAME)
       .click();
 
@@ -99,7 +99,7 @@ context('Test HPA', () => {
   });
 
   it('Check Edit HPA', () => {
-    cy.get('[role=row]')
+    cy.get('ui5-table-row')
       .contains('a', HPA_NAME)
       .click();
 
