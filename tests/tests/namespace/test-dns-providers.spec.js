@@ -64,15 +64,19 @@ context('Test DNS Providers', () => {
 
   it('Inspect details', () => {
     // name
-    cy.contains(PROVIDER_NAME);
+    cy.getMidColumn().contains(PROVIDER_NAME);
     // type
-    cy.contains(PROVIDER_TYPE);
+    cy.getMidColumn().contains(PROVIDER_TYPE);
     // included domain
-    cy.contains(PROVIDER_INCLUDED_DOMAIN);
+    cy.getMidColumn().contains(PROVIDER_INCLUDED_DOMAIN);
   });
 
   it('Edit DNS Provider', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.wait(1000);
+
+    cy.getMidColumn()
+      .contains('ui5-button', 'Edit')
+      .click();
 
     // name should be readonly
     cy.get('ui5-dialog')
@@ -120,12 +124,12 @@ context('Test DNS Providers', () => {
       .should('be.visible')
       .click();
 
-    cy.contains('Included Domains');
+    cy.getMidColumn().contains('Included Domains');
 
     // indluded domain
-    cy.contains(PROVIDER_INCLUDED_DOMAIN_2);
+    cy.getMidColumn().contains(PROVIDER_INCLUDED_DOMAIN_2);
     // excluded domain
-    cy.contains(PROVIDER_EXCLUDED_DOMAIN);
+    cy.getMidColumn().contains(PROVIDER_EXCLUDED_DOMAIN);
   });
 
   it('Inspect list', () => {

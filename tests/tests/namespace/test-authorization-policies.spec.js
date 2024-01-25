@@ -81,29 +81,51 @@ context('Test Authorization Policies', () => {
   });
 
   it('Checking details', () => {
-    cy.contains(AP_NAME).should('be.visible');
+    cy.getMidColumn()
+      .contains(AP_NAME)
+      .should('be.visible');
 
-    cy.contains(ACTION).should('be.visible');
+    cy.getMidColumn()
+      .contains(ACTION)
+      .should('be.visible');
 
-    cy.contains('Matches all Pods in the Namespace').should('be.visible');
+    cy.getMidColumn()
+      .contains('Matches all Pods in the Namespace')
+      .should('be.visible');
 
-    cy.contains('Rule #1 to when', { timeout: 10000 }).click();
+    cy.getMidColumn()
+      .contains('Rule #1 to when', { timeout: 10000 })
+      .click();
 
-    cy.contains('To #1 methods paths', { timeout: 10000 }).click();
+    cy.getMidColumn()
+      .contains('To #1 methods paths', { timeout: 10000 })
+      .click();
 
-    cy.contains(PATHS).should('be.visible');
+    cy.getMidColumn()
+      .contains(PATHS)
+      .should('be.visible');
 
-    cy.contains(KEY).should('be.visible');
+    cy.getMidColumn()
+      .contains(KEY)
+      .should('be.visible');
 
-    cy.contains(VALUES).should('be.visible');
+    cy.getMidColumn()
+      .contains(VALUES)
+      .should('be.visible');
 
-    cy.contains('Operation').should('be.visible');
+    cy.getMidColumn()
+      .contains('Operation')
+      .should('be.visible');
 
-    cy.contains(METHODS).should('be.visible');
+    cy.getMidColumn()
+      .contains(METHODS)
+      .should('be.visible');
   });
 
   it('Edit and check changes', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.getMidColumn()
+      .contains('ui5-button', 'Edit')
+      .click();
 
     cy.get('[placeholder="Enter key"]:visible', { log: false })
       .find('input')
@@ -121,9 +143,13 @@ context('Test Authorization Policies', () => {
       .should('be.visible')
       .click();
 
-    cy.contains('sel=selector-value').should('be.visible');
+    cy.getMidColumn()
+      .contains('sel=selector-value')
+      .should('be.visible');
 
-    cy.contains('Matches all Pods in the Namespace').should('not.exist');
+    cy.getMidColumn()
+      .contains('Matches all Pods in the Namespace')
+      .should('not.exist');
   });
 
   it('Inspect list', () => {

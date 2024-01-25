@@ -108,16 +108,18 @@ context('Test Sidecars', () => {
       .should('be.visible')
       .click();
 
-    cy.contains('ui5-title', SIDECAR_NAME).should('be.visible');
+    cy.getMidColumn()
+      .contains('ui5-title', SIDECAR_NAME)
+      .should('be.visible');
   });
 
   it('Check the Sidecar details', () => {
-    cy.contains(PORT_NUMBER);
-    cy.contains(EGRESS_NAME);
-    cy.contains(IGRES_NAME);
-    cy.contains(PORT_PROTOCOL);
-    cy.contains(EGRESS_HOST);
-    cy.contains(DEFAULT_ENDPOINT);
+    cy.getMidColumn().contains(PORT_NUMBER);
+    cy.getMidColumn().contains(EGRESS_NAME);
+    cy.getMidColumn().contains(IGRES_NAME);
+    cy.getMidColumn().contains(PORT_PROTOCOL);
+    cy.getMidColumn().contains(EGRESS_HOST);
+    cy.getMidColumn().contains(DEFAULT_ENDPOINT);
   });
 
   it('Check the Sidecars list', () => {

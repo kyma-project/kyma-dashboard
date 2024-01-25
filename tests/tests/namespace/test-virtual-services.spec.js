@@ -126,25 +126,31 @@ context('Test Virtual Services', () => {
       .should('be.visible')
       .click();
 
-    cy.url().should('match', new RegExp(`/virtualservices/${SERVICE_NAME}$`));
+    cy.url().should('match', new RegExp(`/virtualservices/${SERVICE_NAME}`));
   });
 
   it('Inspect Virtual Service', () => {
-    cy.contains('ui5-title', SERVICE_NAME);
+    cy.getMidColumn().contains('ui5-title', SERVICE_NAME);
 
-    cy.get('[data-testid="collapse-button-close"]', { timeout: 10000 }).click();
+    cy.getMidColumn()
+      .get('[data-testid="collapse-button-close"]', { timeout: 10000 })
+      .click();
 
-    cy.contains(MATCH_NAME);
-    cy.contains(`${URI_KEY}=${URI_PREFIX}`);
-    cy.contains(HEADER_KEY);
-    cy.contains(HEADER_KEY1);
-    cy.contains(HEADER_VALUE);
-    cy.contains(REDIRECT_URI);
-    cy.contains(REDIRECT_AUTHORITY);
+    cy.getMidColumn().contains(MATCH_NAME);
+    cy.getMidColumn().contains(`${URI_KEY}=${URI_PREFIX}`);
+    cy.getMidColumn().contains(HEADER_KEY);
+    cy.getMidColumn().contains(HEADER_KEY1);
+    cy.getMidColumn().contains(HEADER_VALUE);
+    cy.getMidColumn().contains(REDIRECT_URI);
+    cy.getMidColumn().contains(REDIRECT_AUTHORITY);
   });
 
   it('Edit VS and check updates', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.wait(500);
+
+    cy.getMidColumn()
+      .contains('ui5-button', 'Edit')
+      .click();
 
     // Hosts
     cy.get('[aria-label="expand Hosts"]:visible', {
@@ -180,9 +186,9 @@ context('Test Virtual Services', () => {
       .click();
 
     // Changed details
-    cy.contains(HOST1);
-    cy.contains(HOST2);
-    cy.contains(GATEWAY);
+    cy.getMidColumn().contains(HOST1);
+    cy.getMidColumn().contains(HOST2);
+    cy.getMidColumn().contains(GATEWAY);
   });
 
   it('Inspect service list', () => {

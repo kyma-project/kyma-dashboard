@@ -89,19 +89,23 @@ context('Test Gateways', () => {
   });
 
   it('Inspect details', () => {
-    cy.contains(GATEWAY_NAME);
-    cy.contains(SELECTOR);
+    cy.getMidColumn().contains(GATEWAY_NAME);
+    cy.getMidColumn().contains(SELECTOR);
     // default selector
-    cy.contains('istio=ingressgateway');
-    cy.contains(SERVER_NAME);
-    cy.contains(PORT_NUMBER);
+    cy.getMidColumn().contains('istio=ingressgateway');
+    cy.getMidColumn().contains(SERVER_NAME);
+    cy.getMidColumn().contains(PORT_NUMBER);
     // hosts
-    cy.contains('example.com');
-    cy.contains('*.example.com');
+    cy.getMidColumn().contains('example.com');
+    cy.getMidColumn().contains('*.example.com');
   });
 
   it('Edit Gateway', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.wait(500);
+
+    cy.getMidColumn()
+      .contains('ui5-button', 'Edit')
+      .click();
 
     cy.get('ui5-dialog')
       .find('[aria-label="Gateway name"]:visible')
@@ -153,10 +157,10 @@ context('Test Gateways', () => {
       .click();
 
     // changed details
-    cy.contains('443');
-    cy.contains('HTTPS');
-    cy.contains(/simple/i);
-    cy.contains(KYMA_GATEWAY_CERTS);
+    cy.getMidColumn().contains('443');
+    cy.getMidColumn().contains('HTTPS');
+    cy.getMidColumn().contains(/simple/i);
+    cy.getMidColumn().contains(KYMA_GATEWAY_CERTS);
   });
 
   it('Inspect list', () => {

@@ -61,11 +61,15 @@ context('Test Services', () => {
   });
 
   it('Inspect Services', () => {
-    cy.contains(SERVICE_PORT);
+    cy.getMidColumn().contains(SERVICE_PORT);
   });
 
   it('Edit a Service', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.wait(1000);
+
+    cy.getMidColumn()
+      .contains('ui5-button', 'Edit')
+      .click();
 
     cy.get('[placeholder="Enter Type"]:visible')
       .find('input')
@@ -80,8 +84,8 @@ context('Test Services', () => {
   });
 
   it('Inspect updated Service', () => {
-    cy.contains(SERVICE_DIFF_TYPE);
-    cy.contains(SERVICE_PORT);
+    cy.getMidColumn().contains(SERVICE_DIFF_TYPE);
+    cy.getMidColumn().contains(SERVICE_PORT);
   });
 
   it('Inspect Service list', () => {

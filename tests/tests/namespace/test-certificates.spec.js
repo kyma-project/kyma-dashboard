@@ -39,17 +39,17 @@ context('Test Certificates', () => {
       .should('be.visible')
       .click();
 
-    cy.contains('ui5-title', CERT_NAME).should('be.visible');
+    cy.getMidColumn()
+      .contains('ui5-title', CERT_NAME)
+      .should('be.visible');
   });
 
   it('Edits a certificate', () => {
-    cy.getLeftNav()
-      .contains('Certificates')
+    cy.wait(500);
+
+    cy.getMidColumn()
+      .contains('ui5-button', 'Edit')
       .click();
-
-    cy.contains('a', CERT_NAME).click();
-
-    cy.contains('ui5-button', 'Edit').click();
 
     cy.get('[aria-label="expand Annotations"]').click();
 
@@ -67,7 +67,9 @@ context('Test Certificates', () => {
       .should('be.visible')
       .click();
 
-    cy.contains(`${ANNOTATION_KEY}=${ANNOTATION_VALUE}`).should('be.visible');
+    cy.getMidColumn()
+      .contains(`${ANNOTATION_KEY}=${ANNOTATION_VALUE}`)
+      .should('be.visible');
   });
 
   it('Inspect a certificate list', () => {

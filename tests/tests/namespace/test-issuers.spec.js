@@ -25,7 +25,7 @@ context('Test Issuers', () => {
       .should('be.visible')
       .click();
 
-    cy.url().should('match', new RegExp(`/secrets/${SECRET_NAME}$`));
+    cy.url().should('match', new RegExp(`/secrets/${SECRET_NAME}`));
   });
 
   it('Create an issuer', () => {
@@ -57,15 +57,19 @@ context('Test Issuers', () => {
       .should('be.visible')
       .click();
 
-    cy.url().should('match', new RegExp(`/issuers/${ISSUER_NAME}$`));
+    cy.url().should('match', new RegExp(`/issuers/${ISSUER_NAME}`));
   });
 
   it('Inspect issuer', () => {
-    cy.contains(ISSUER_NAME);
+    cy.getMidColumn().contains(ISSUER_NAME);
   });
 
   it('Edit an issuer', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.wait(1000);
+
+    cy.getMidColumn()
+      .contains('ui5-button', 'Edit')
+      .click();
 
     cy.get('[placeholder="Select Issuer type"]')
       .filter(':visible')
@@ -100,11 +104,11 @@ context('Test Issuers', () => {
   });
 
   it('Inspect updated issuer', () => {
-    cy.contains(ISSUER_NAME);
-    cy.contains('server.com');
-    cy.contains('mail@server.com');
-    cy.contains('other.server.com');
-    cy.contains('another.server.com');
+    cy.getMidColumn().contains(ISSUER_NAME);
+    cy.getMidColumn().contains('server.com');
+    cy.getMidColumn().contains('mail@server.com');
+    cy.getMidColumn().contains('other.server.com');
+    cy.getMidColumn().contains('another.server.com');
   });
 
   it('Inspect issuer list', () => {

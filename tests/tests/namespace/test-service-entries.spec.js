@@ -71,17 +71,19 @@ context('Test Service Entries', () => {
       .should('be.visible')
       .click();
 
-    cy.contains('ui5-title', SE_NAME).should('be.visible');
+    cy.getMidColumn()
+      .contains('ui5-title', SE_NAME)
+      .should('be.visible');
   });
 
   it('Check the Service Entry details', () => {
-    cy.get('#content-wrap')
+    cy.getMidColumn()
       .should('include.text', RESOLUTION)
       .and('include.text', LOCATION)
       .and('include.text', HOST)
       .and('include.text', ADDRESS);
 
-    cy.contains(WORKLOAD_SELECTOR_LABEL);
+    cy.getMidColumn().contains(WORKLOAD_SELECTOR_LABEL);
   });
 
   it('Check the Service Entries list', () => {

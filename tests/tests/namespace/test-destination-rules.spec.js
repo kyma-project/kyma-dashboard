@@ -39,19 +39,31 @@ context('Test Destination Rules', () => {
       .should('be.visible')
       .click();
 
-    cy.contains('ui5-title', DR_NAME).should('be.visible');
+    cy.getMidColumn()
+      .contains('ui5-title', DR_NAME)
+      .should('be.visible');
   });
 
   it('Check Destination Rule details', () => {
-    cy.contains(HOST).should('be.visible');
+    cy.getMidColumn()
+      .contains(HOST)
+      .should('be.visible');
 
-    cy.contains('Subsets').should('not.exist');
+    cy.getMidColumn()
+      .contains('Subsets')
+      .should('not.exist');
 
-    cy.contains('Workload Selector').should('not.exist');
+    cy.getMidColumn()
+      .contains('Workload Selector')
+      .should('not.exist');
   });
 
   it('Edit Destination Rule', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.wait(500);
+
+    cy.getMidColumn()
+      .contains('ui5-button', 'Edit')
+      .click();
 
     cy.get('ui5-dialog')
       .find('[aria-label="DestinationRule name"]:visible')
@@ -97,7 +109,7 @@ context('Test Destination Rules', () => {
       .click();
 
     // changed details
-    cy.contains(SELECTOR);
+    cy.getMidColumn().contains(SELECTOR);
     // After resolving: https://github.com/kyma-project/busola/issues/2088 we need to add checking loadBalancer value
   });
 

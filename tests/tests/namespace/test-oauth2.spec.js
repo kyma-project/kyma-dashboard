@@ -56,27 +56,49 @@ context('Test OAuth2 Clients', () => {
   });
 
   it('Checking details', () => {
-    cy.contains(CLIENT_NAME).should('be.visible');
+    cy.getMidColumn()
+      .contains(CLIENT_NAME)
+      .should('be.visible');
 
-    cy.contains('id_token').should('be.visible');
+    cy.getMidColumn()
+      .contains('id_token')
+      .should('be.visible');
 
-    cy.contains('authorization_code').should('be.visible');
+    cy.getMidColumn()
+      .contains('authorization_code')
+      .should('be.visible');
 
-    cy.contains('implicit').should('be.visible');
+    cy.getMidColumn()
+      .contains('implicit')
+      .should('be.visible');
 
-    cy.contains('code').should('be.visible');
+    cy.getMidColumn()
+      .contains('code')
+      .should('be.visible');
 
-    cy.contains('openid').should('be.visible');
+    cy.getMidColumn()
+      .contains('openid')
+      .should('be.visible');
 
-    cy.contains('client_id').should('be.visible');
+    cy.getMidColumn()
+      .contains('client_id')
+      .should('be.visible');
 
-    cy.contains('client_secret').should('be.visible');
+    cy.getMidColumn()
+      .contains('client_secret')
+      .should('be.visible');
 
-    cy.contains('discontinued').should('be.visible');
+    cy.getMidColumn()
+      .contains('discontinued')
+      .should('be.visible');
   });
 
   it('Edit client', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.wait(500);
+
+    cy.getMidColumn()
+      .contains('ui5-button', 'Edit')
+      .click();
 
     cy.get(`ui5-checkbox[text="ID Token"]`).click();
 
@@ -95,15 +117,25 @@ context('Test OAuth2 Clients', () => {
   });
 
   it('Checking updates details', () => {
-    cy.contains('code').should('be.visible');
+    cy.getMidColumn()
+      .contains('code')
+      .should('be.visible');
 
-    cy.contains('implicit').should('be.visible');
+    cy.getMidColumn()
+      .contains('implicit')
+      .should('be.visible');
 
-    cy.contains('read').should('be.visible');
+    cy.getMidColumn()
+      .contains('read')
+      .should('be.visible');
 
-    cy.contains('client_id').should('be.visible');
+    cy.getMidColumn()
+      .contains('client_id')
+      .should('be.visible');
 
-    cy.contains('client_secret').should('be.visible');
+    cy.getMidColumn()
+      .contains('client_secret')
+      .should('be.visible');
   });
 
   it('Inpect list', () => {
@@ -125,7 +157,7 @@ context('Test OAuth2 Clients', () => {
         .click()
         .type(AUTH2_NAME);
 
-      cy.contains('a', AUTH2_NAME).should('be.visible');
+      cy.contains('ui5-link', AUTH2_NAME).should('be.visible');
 
       cy.get('ui5-button[data-testid="delete"]').click();
     });
@@ -136,7 +168,7 @@ context('Test OAuth2 Clients', () => {
 
     cy.wait(1000);
 
-    cy.contains('a', AUTH2_NAME).should('not.exist');
+    cy.contains('ui5-link', AUTH2_NAME).should('not.exist');
 
     cy.contains('Ory Hydra Deprecation').should('not.exist');
   });
