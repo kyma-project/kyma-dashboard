@@ -134,92 +134,15 @@ data:
     - title: Introducing Modules
       description: Modules add functionalities to your cluster. Consume SAP BTP services, monitor your cluster, build serverless applications and more.
       widget: FeaturedCard
+      source: $
       id: ModulesBanner
       helpfulLink:
         url: https://help.sap.com/docs/btp/sap-business-technology-platform/kyma-s-modular-approach
       order: 1
+      children:
+        - widget: Wizard
+          name: Add Modules
+          wizard: module-wizard
       targets:
         - slot: details-top
           location: ClusterOverview
-    - name: Kyma
-      widget: Panel
-      description: To check the Kyma modularization documentation go to {{[Kyma's Modular Approach](https://help.sap.com/docs/btp/sap-business-technology-platform-internal/kyma-environment)}}.
-      source: $
-      visibility: $exists($item.status.modules)
-      targets:
-        - slot: details-top
-          location: ClusterOverview
-      order: 2 
-      children: 
-        - name: Name
-          source: metadata.name
-          widget: ResourceLink
-          resource:
-            name: metadata.name
-            namespace: metadata.namespace
-            kind: '"Kyma"'
-        - name: State
-          widget: Badge
-          source: status.state
-          description: 'status.state!="Ready" ? status.lastOperation.operation : ""'
-        - widget: Alert
-          severity: warning
-          source: '"alert.beta"'
-          visibility: '(
-            $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
-              $v.metadata.labels."operator.kyma-project.io/module-name" in $item.status.modules.name 
-              and $v.metadata.labels."operator.kyma-project.io/beta" = "true"
-            });
-            $isBeta := $count($fullModuleTemplate) > 0;
-            $isBeta;
-          )'
-        - name: Installed Modules
-          source: '$sort($parent.status.modules[], function($l, $r) {$l.name < $r.name})'
-          widget: Table
-          disablePadding: true
-          extraHeaderContent: 
-            - name: ''
-              source: '"Modify"'
-              widget: ResourceButton
-              resource:
-                name: $parent.metadata.name
-                namespace: $parent.metadata.namespace
-                kind: '"Kyma"'
-          children: 
-            - name: Name
-              source: $
-              widget: Plain
-              children:
-                - widget: ResourceLink
-                  visibility: $exists(resource.metadata.name)
-                  source: name
-                  resource:
-                    name: resource.metadata.name
-                    namespace: resource.metadata.namespace
-                    kind: resource.kind
-                - widget: Text
-                  visibility: $not($exists(resource.metadata.name))
-                  source: name
-            - name: ''
-              source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? "beta" : "-"'
-            - name: Namespace
-              source: $parent.metadata.namespace
-            - name: Channel
-              source: channel
-              widget: Text
-            - name: Version
-              source: version
-              widget: Text
-            - name: State
-              widget: Badge
-              source: state
-              description: 'message ? message : ""'
-            - name: 'Documentation'
-              widget: ExternalLink
-              copyable: false
-              source: '"Documentation"'
-              link: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.annotations."operator.kyma-project.io/doc-url"'
-              visibility: '(
-                $docsLink := $filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.annotations."operator.kyma-project.io/doc-url";
-                $hasDocs := $count($docsLink) > 0;
-              )'
