@@ -136,13 +136,13 @@ data:
       widget: FeaturedCard
       source: $
       id: ModulesBanner
-      helpfulLink:
-        url: https://help.sap.com/docs/btp/sap-business-technology-platform/kyma-s-modular-approach
-      order: 1
+      order: 0
       children:
         - widget: Wizard
           name: Add Modules
           wizard: module-wizard
+        - widget: ExternalLinkButton
+          link: https://help.sap.com/docs/btp/sap-business-technology-platform/kyma-s-modular-approach
       targets:
         - slot: details-top
           location: ClusterOverview
