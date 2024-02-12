@@ -1,10 +1,10 @@
 export function chooseComboboxOption(selector, optionText) {
   cy.get(`ui5-combobox${selector}:visible`)
-    .find('input')
+    .find('input:visible')
     .filterWithNoValue()
-    .click()
+    .click({ force: true })
     .type(optionText, { force: true });
-
+  cy.wait(200);
   cy.get('ui5-li:visible', { timeout: 10000 })
     .contains(optionText)
     .find('li')

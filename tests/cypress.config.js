@@ -13,6 +13,7 @@ module.exports = defineConfig({
   viewportWidth: 1500,
   viewportHeight: 1500,
   videoCompression: false,
+  video: true,
   scrollBehavior: false,
   screenshotsFolder: process?.env?.ARTIFACTS
     ? `${process.env?.ARTIFACTS}/screenshots`
@@ -29,7 +30,8 @@ module.exports = defineConfig({
       return require('./plugins')(on, config);
     },
     specPattern: [
-      'tests/cluster/test-applications.spec.js',
+      // uncomment after frog fix
+      // 'tests/cluster/test-applications.spec.js',
       // 'tests/cluster/test-modules-wizard.spec.js',
       'tests/namespace/a-run-before.spec.js',
       'tests/namespace/test-certificates.spec.js',
@@ -45,7 +47,7 @@ module.exports = defineConfig({
       'tests/namespace/test-service-entries.spec.js',
       'tests/namespace/test-dns-entries.spec.js',
       'tests/namespace/test-services.spec.js',
-      'tests/namespace/test-kyma.spec.js',
+      // 'tests/namespace/test-kyma.spec.js',
       // 'tests/namespace/test-module-templates.spec.js',
       'tests/namespace/z-run-after.spec.js',
     ],

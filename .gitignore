@@ -136,6 +136,7 @@ statics-local
 wizards-local
 
 .DS_Store
+.idea
 
 environments/**/Dockerfile*
 kubeconfig.yaml

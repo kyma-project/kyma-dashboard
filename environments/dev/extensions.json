@@ -21,7 +21,7 @@
     "source": "extensions/configuration"
   },
   {
-    "source": "https://raw.githubusercontent.com/kyma-project/kyma/main/resources/eventing/charts/controller/templates/busola-extension.yaml"
+    "source": "https://raw.githubusercontent.com/kyma-project/eventing-manager/main/config/ui-extensions/subscriptions/subscriptions.yaml"
   },
   {
     "source": "https://raw.githubusercontent.com/kyma-project/telemetry-manager/main/config/busola/logpipeline_busola_extension_cm.yaml"

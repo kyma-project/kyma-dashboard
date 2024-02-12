@@ -50,13 +50,6 @@ config:
       isEnabled: true
     SHOW_GARDENER_METADATA:
       isEnabled: true
-    OBSERVABILITY:
-      isEnabled: false
-      config:
-        links:
-          - label: Grafana
-            path: >-
-              apis/networking.istio.io/v1beta1/namespaces/kyma-system/virtualservices/monitoring-grafana
     EXTERNAL_NODES:
       isEnabled: true
       stage: SECONDARY

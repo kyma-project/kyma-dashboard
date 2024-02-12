@@ -22,16 +22,13 @@ context('Test DNS Providers', () => {
 
     cy.contains('ui5-button', 'Create DNS Provider').click();
 
-    // type
-    cy.get('[placeholder="Choose Provider type"]')
-      .filter(':visible')
-      .find('input')
-      .click()
-      .type(PROVIDER_TYPE_PRETTY);
+    cy.wait(500);
 
-    cy.contains(PROVIDER_TYPE_PRETTY)
-      .scrollIntoView()
-      .click();
+    // type
+    chooseComboboxOption(
+      '[placeholder="Choose Provider type"]',
+      PROVIDER_TYPE_PRETTY,
+    );
 
     // secret
     chooseComboboxOption(
@@ -39,8 +36,10 @@ context('Test DNS Providers', () => {
       Cypress.env('NAMESPACE_NAME'),
     );
 
+    cy.wait(500);
+
     chooseComboboxOption(
-      '[placeholder^="Select name"]',
+      '[placeholder="Select name"]',
       'serverless-registry-config-default',
     );
 
@@ -48,14 +47,13 @@ context('Test DNS Providers', () => {
     cy.get('[placeholder="Domain that is allowed"]:visible', { log: false })
       .find('input')
       .clear()
-      .type(PROVIDER_INCLUDED_DOMAIN);
+      .type(PROVIDER_INCLUDED_DOMAIN, { force: true });
 
     // name
     cy.get('ui5-dialog')
       .find('[aria-label="DNSProvider name"]:visible')
       .find('input')
-      .click()
-      .type(PROVIDER_NAME);
+      .type(PROVIDER_NAME, { force: true });
 
     // create
     cy.get('ui5-dialog')

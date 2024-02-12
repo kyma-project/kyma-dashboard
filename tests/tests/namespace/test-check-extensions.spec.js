@@ -82,6 +82,7 @@ context('Test Namespace Extensions view', () => {
       cy.checkExtension('Issuers');
     });
 
+    // uncomment after kyma deploy command fix
     it('Test Subscriptions', () => {
       cy.checkExtension('Subscriptions');
     });

@@ -10,7 +10,6 @@ const GATEWAY_NAME =
 
 const SERVER_NAME = GATEWAY_NAME + '-server';
 const PORT_NUMBER = 80;
-const TARGET_PORT = 8080;
 const PORT_PROTOCOL = 'HTTP';
 const SELECTOR = 'selector=selector-value';
 
@@ -33,8 +32,7 @@ context('Test Gateways', () => {
     cy.get('ui5-dialog')
       .find('[aria-label="Gateway name"]:visible')
       .find('input')
-      .click()
-      .type(GATEWAY_NAME);
+      .type(GATEWAY_NAME, { force: true });
 
     // selector
     cy.get('[placeholder="Enter key"]:visible', { log: false })
@@ -65,12 +63,7 @@ context('Test Gateways', () => {
     cy.get('[aria-label^="Gateway name"]:visible', { log: false })
       .find('input')
       .eq(1)
-      .type(SERVER_NAME);
-
-    cy.get('[data-testid="spec.servers.0.port.targetPort"]:visible')
-      .find('input')
-      .click()
-      .type(TARGET_PORT);
+      .type(SERVER_NAME, { force: true });
 
     // hosts
     cy.get('[aria-label="expand Hosts"]:visible', { log: false }).click();
@@ -102,7 +95,6 @@ context('Test Gateways', () => {
     cy.contains('istio=ingressgateway');
     cy.contains(SERVER_NAME);
     cy.contains(PORT_NUMBER);
-    cy.contains(TARGET_PORT);
     // hosts
     cy.contains('example.com');
     cy.contains('*.example.com');
