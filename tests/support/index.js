@@ -4,7 +4,6 @@ import './login-commands';
 import './navigate-to';
 import './paste-to-monaco';
 import './inspect-list';
-import './views/functions-view';
 import './loadFile';
 import './mockConfig';
 import './check-extension';
