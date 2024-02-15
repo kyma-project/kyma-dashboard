@@ -47,7 +47,7 @@ context('Test Certificates', () => {
       .contains('Certificates')
       .click();
 
-    cy.contains('a', CERT_NAME).click();
+    cy.contains('ui5-link', CERT_NAME).click();
 
     cy.contains('ui5-button', 'Edit').click();
 
