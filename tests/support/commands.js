@@ -35,15 +35,22 @@ Cypress.Commands.add('filterWithNoValue', { prevSubject: true }, $elements =>
   $elements.filter((_, e) => !e.value),
 );
 
+Cypress.Commands.add('clickGenericListLink', resourceName => {
+  cy.get('ui5-table-row')
+    .find('ui5-table-cell')
+    .find('ui5-link')
+    .contains(resourceName)
+    .find('a.ui5-link-root')
+    .click({ force: true });
+});
+
 Cypress.Commands.add('goToNamespaceDetails', () => {
   // Go to the details of namespace
   cy.getLeftNav()
     .contains('Namespaces')
     .click();
 
-  cy.get('ui5-table-row')
-    .contains('a', Cypress.env('NAMESPACE_NAME'))
-    .click();
+  cy.clickGenericListLink(Cypress.env('NAMESPACE_NAME'));
 
   return cy.end();
 });

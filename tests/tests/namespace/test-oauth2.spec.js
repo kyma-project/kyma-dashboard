@@ -125,7 +125,7 @@ context('Test OAuth2 Clients', () => {
         .click()
         .type(AUTH2_NAME);
 
-      cy.contains('a', AUTH2_NAME).should('be.visible');
+      cy.contains('ui5-link', AUTH2_NAME).should('be.visible');
 
       cy.get('ui5-button[data-testid="delete"]').click();
     });
@@ -136,7 +136,7 @@ context('Test OAuth2 Clients', () => {
 
     cy.wait(1000);
 
-    cy.contains('a', AUTH2_NAME).should('not.exist');
+    cy.contains('ui5-link', AUTH2_NAME).should('not.exist');
 
     cy.contains('Ory Hydra Deprecation').should('not.exist');
   });

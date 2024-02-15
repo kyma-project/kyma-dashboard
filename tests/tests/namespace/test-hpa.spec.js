@@ -77,7 +77,7 @@ context('Test HPA', () => {
 
   it('Check HPA details', () => {
     cy.contains('Deployment').should('be.visible');
-    cy.contains('a', `${DEPLOYEMENT_NAME}`).should('be.visible');
+    cy.contains('ui5-link', `${DEPLOYEMENT_NAME}`).should('be.visible');
 
     cy.contains('#content-wrap', 'Events').should('be.visible');
   });
@@ -88,10 +88,10 @@ context('Test HPA', () => {
 
   it('Check HPA subcomponent', () => {
     cy.get('ui5-table-row')
-      .contains('a', HPA_NAME)
+      .contains('ui5-link', HPA_NAME)
       .click();
 
-    cy.contains('a', DEPLOYEMENT_NAME).click();
+    cy.contains('ui5-link', DEPLOYEMENT_NAME).click();
 
     cy.url().should('match', /deployments/);
 
@@ -100,7 +100,7 @@ context('Test HPA', () => {
 
   it('Check Edit HPA', () => {
     cy.get('ui5-table-row')
-      .contains('a', HPA_NAME)
+      .contains('ui5-link', HPA_NAME)
       .click();
 
     cy.contains('ui5-button', 'Edit').click();
