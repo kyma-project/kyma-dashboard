@@ -35,6 +35,13 @@ Cypress.Commands.add('filterWithNoValue', { prevSubject: true }, $elements =>
   $elements.filter((_, e) => !e.value),
 );
 
+Cypress.Commands.add('checkItemOnGenericListLink', resourceName => {
+  cy.get('ui5-table-row')
+    .find('ui5-table-cell')
+    .contains('span', resourceName)
+    .should('be.visible');
+});
+
 Cypress.Commands.add('clickGenericListLink', resourceName => {
   cy.get('ui5-table-row')
     .find('ui5-table-cell')
@@ -126,14 +133,12 @@ Cypress.Commands.add(
     confirmationEnabled = true,
     deletedVisible = true,
   ) => {
-    cy.get('[aria-label="open-search"]:visible').click();
-
     cy.get('ui5-combobox[placeholder="Search"]')
       .find('input')
       .click()
       .type(resourceName);
 
-    cy.contains('a', resourceName).should('be.visible');
+    cy.checkItemOnGenericListLink(resourceName);
 
     cy.get('ui5-button[data-testid="delete"]').click();
 

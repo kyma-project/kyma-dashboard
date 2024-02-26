@@ -118,14 +118,12 @@ context('Test OAuth2 Clients', () => {
     cy.contains('Ory Hydra Deprecation').should('be.visible');
 
     cy.contains('ui5-panel', 'OAuth2Clients').within(_$genericList => {
-      cy.get('[aria-label="open-search"]:visible').click();
-
       cy.get('ui5-combobox[placeholder="Search"]')
         .find('input')
         .click()
         .type(AUTH2_NAME);
 
-      cy.contains('ui5-link', AUTH2_NAME).should('be.visible');
+      cy.checkItemOnGenericListLink(AUTH2_NAME);
 
       cy.get('ui5-button[data-testid="delete"]').click();
     });
