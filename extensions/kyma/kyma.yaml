@@ -138,12 +138,12 @@ data:
       id: ModulesBanner
       order: 0
       children:
-      - widget: ResourceButton
-        source: "'Modify Modules'"
-        resource: 
-          name: metadata.name
-          namespace: metadata.namespace
-          kind: "'Kyma'"
+        - widget: ResourceButton
+          source: "'Modify Modules'"
+          resource: 
+            name: metadata.name
+            namespace: metadata.namespace
+            kind: "'Kyma'"
         - widget: ExternalLinkButton
           link: https://help.sap.com/docs/btp/sap-business-technology-platform/kyma-s-modular-approach
       targets:
