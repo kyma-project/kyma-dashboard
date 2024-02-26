@@ -160,6 +160,6 @@ context('Test Gateways', () => {
   });
 
   it('Inspect list', () => {
-    cy.inspectList('Gateways');
+    cy.inspectList('Gateways', GATEWAY_NAME);
   });
 });

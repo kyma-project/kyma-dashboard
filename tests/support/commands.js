@@ -132,6 +132,7 @@ Cypress.Commands.add(
     resourceName,
     confirmationEnabled = true,
     deletedVisible = true,
+    checkIfResourceIsRemoved = true,
   ) => {
     cy.get('ui5-combobox[placeholder="Search"]')
       .find('input')
@@ -152,9 +153,11 @@ Cypress.Commands.add(
         cy.contains('ui5-message-strip', /deleted/).should('be.visible');
       }
 
-      cy.get('ui5-table')
-        .contains(resourceName)
-        .should('not.exist');
+      if (checkIfResourceIsRemoved) {
+        cy.get('ui5-table')
+          .contains(resourceName)
+          .should('not.exist');
+      }
     }
   },
 );

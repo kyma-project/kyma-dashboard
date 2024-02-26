@@ -47,7 +47,7 @@ context('Test Certificates', () => {
       .contains('Certificates')
       .click();
 
-    cy.contains('ui5-link', CERT_NAME).click();
+    cy.clickGenericListLink(CERT_NAME);
 
     cy.contains('ui5-button', 'Edit').click();
 
@@ -71,6 +71,6 @@ context('Test Certificates', () => {
   });
 
   it('Inspect a certificate list', () => {
-    cy.inspectList('Certificates');
+    cy.inspectList('Certificates', CERT_NAME);
   });
 });

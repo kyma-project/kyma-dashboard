@@ -102,6 +102,6 @@ context('Test Destination Rules', () => {
   });
 
   it('Check the Destination Rule list', () => {
-    cy.inspectList('Destination Rules');
+    cy.inspectList('Destination Rules', DR_NAME);
   });
 });

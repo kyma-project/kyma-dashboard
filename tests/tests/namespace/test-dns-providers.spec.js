@@ -129,7 +129,7 @@ context('Test DNS Providers', () => {
   });
 
   it('Inspect list', () => {
-    cy.inspectList('DNS Providers');
+    cy.inspectList('DNS Providers', PROVIDER_NAME);
 
     // label
     cy.contains('edited=yes');

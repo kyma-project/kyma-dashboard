@@ -108,6 +108,6 @@ context('Test Issuers', () => {
   });
 
   it('Inspect issuer list', () => {
-    cy.inspectList('Issuers');
+    cy.inspectList('Issuers', ISSUER_NAME);
   });
 });

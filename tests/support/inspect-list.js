@@ -1,7 +1,8 @@
-Cypress.Commands.add('inspectList', resourceName => {
-  cy.closeMidColumn();
-
-  cy.get('ui5-combobox[placeholder="Search"]:visible')
+Cypress.Commands.add('inspectList', (resource, resourceName) => {
+  const resourceUrl = resource.replace(/\s/g, '').toLowerCase();
+  cy.navigateBackTo(resourceUrl, resource);
+  cy.wait(500);
+  cy.get('ui5-combobox[placeholder="Search"]')
     .find('input')
     .click()
     .type(resourceName);

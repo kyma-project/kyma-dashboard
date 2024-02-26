@@ -107,7 +107,7 @@ context('Test OAuth2 Clients', () => {
   });
 
   it('Inpect list', () => {
-    cy.inspectList('OAuth2 Clients');
+    cy.inspectList('OAuth2 Clients', AUTH2_NAME);
   });
 
   it('Check deprecation note in Cluster Overview', () => {
@@ -123,7 +123,7 @@ context('Test OAuth2 Clients', () => {
         .click()
         .type(AUTH2_NAME);
 
-      cy.checkItemOnGenericListLink(AUTH2_NAME);
+      cy.contains('ui5-link', AUTH2_NAME).should('be.visible');
 
       cy.get('ui5-button[data-testid="delete"]').click();
     });

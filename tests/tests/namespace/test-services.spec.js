@@ -85,6 +85,6 @@ context('Test Services', () => {
   });
 
   it('Inspect Service list', () => {
-    cy.inspectList('Services');
+    cy.inspectList('Services', SERVICE_NAME);
   });
 });

@@ -83,13 +83,12 @@ context('Test HPA', () => {
   });
 
   it('Check HPA list', () => {
-    cy.inspectList('Horizontal Pod');
+    cy.wait(500);
+    cy.inspectList('Horizontal Pod', HPA_NAME);
   });
 
   it('Check HPA subcomponent', () => {
-    cy.get('ui5-table-row')
-      .contains('ui5-link', HPA_NAME)
-      .click();
+    cy.clickGenericListLink(HPA_NAME);
 
     cy.contains('ui5-link', DEPLOYEMENT_NAME).click();
 
@@ -99,9 +98,7 @@ context('Test HPA', () => {
   });
 
   it('Check Edit HPA', () => {
-    cy.get('ui5-table-row')
-      .contains('ui5-link', HPA_NAME)
-      .click();
+    cy.clickGenericListLink(HPA_NAME);
 
     cy.contains('ui5-button', 'Edit').click();
 

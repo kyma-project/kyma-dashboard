@@ -80,6 +80,6 @@ context('Test DNS Entries', () => {
   });
 
   it('Inspect list', () => {
-    cy.inspectList('Entries');
+    cy.inspectList('Entries', DNS_ENTRY_NAME);
   });
 });
