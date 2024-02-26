@@ -107,7 +107,7 @@ context('Test OAuth2 Clients', () => {
   });
 
   it('Inpect list', () => {
-    cy.inspectList('OAuth2 Clients', AUTH2_NAME);
+    cy.inspectList('OAuth2 Clients');
   });
 
   it('Check deprecation note in Cluster Overview', () => {

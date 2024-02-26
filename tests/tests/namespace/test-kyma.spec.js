@@ -61,6 +61,6 @@ context('Test Kyma', () => {
   });
 
   it('Inspect Kyma list', () => {
-    cy.inspectList('Kyma', KYMA_NAME);
+    cy.inspectList('Kyma');
   });
 });

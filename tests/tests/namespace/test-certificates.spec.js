@@ -71,6 +71,6 @@ context('Test Certificates', () => {
   });
 
   it('Inspect a certificate list', () => {
-    cy.inspectList('Certificates', CERT_NAME);
+    cy.inspectList('Certificates');
   });
 });

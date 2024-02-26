@@ -186,6 +186,6 @@ context('Test Virtual Services', () => {
   });
 
   it('Inspect service list', () => {
-    cy.inspectList('Virtual Services', SERVICE_NAME);
+    cy.inspectList('Virtual Services');
   });
 });

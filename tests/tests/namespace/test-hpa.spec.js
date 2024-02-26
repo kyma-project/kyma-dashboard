@@ -83,7 +83,7 @@ context('Test HPA', () => {
   });
 
   it('Check HPA list', () => {
-    cy.inspectList('Horizontal Pod', HPA_NAME);
+    cy.inspectList('Horizontal Pod');
   });
 
   it('Check HPA subcomponent', () => {

@@ -121,6 +121,6 @@ context('Test Sidecars', () => {
   });
 
   it('Check the Sidecars list', () => {
-    cy.inspectList('Sidecars', SIDECAR_NAME);
+    cy.inspectList('Sidecars');
   });
 });

@@ -38,10 +38,8 @@ Cypress.Commands.add('filterWithNoValue', { prevSubject: true }, $elements =>
 Cypress.Commands.add('clickGenericListLink', resourceName => {
   cy.get('ui5-table-row')
     .find('ui5-table-cell')
-    .find('ui5-link')
-    .contains(resourceName)
-    .find('a.ui5-link-root')
-    .click({ force: true });
+    .contains('span', resourceName)
+    .click();
 });
 
 Cypress.Commands.add('goToNamespaceDetails', () => {

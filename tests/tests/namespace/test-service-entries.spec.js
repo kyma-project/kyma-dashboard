@@ -85,7 +85,7 @@ context('Test Service Entries', () => {
   });
 
   it('Check the Service Entries list', () => {
-    cy.inspectList('Service Entries', SE_NAME);
+    cy.inspectList('Service Entries');
     cy.contains(RESOLUTION);
   });
 });
