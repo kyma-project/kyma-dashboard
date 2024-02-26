@@ -22,7 +22,7 @@ context('Test Destination Rules', () => {
   it('Create a Destination Rule', () => {
     cy.navigateTo('Istio', 'Destination Rules');
 
-    cy.contains('ui5-button', 'Create Destination Rule').click();
+    cy.contains('ui5-button', 'Create').click();
 
     cy.get('ui5-dialog')
       .find('[aria-label="DestinationRule name"]:visible')

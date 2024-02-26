@@ -17,7 +17,7 @@ context('Test Applications', () => {
   it('Create Application', () => {
     cy.navigateTo('Integration', 'Applications');
 
-    cy.contains('ui5-button', 'Create Application').click();
+    cy.contains('ui5-button', 'Create').click();
 
     cy.get('[aria-label="Application name"]')
       .find('input')

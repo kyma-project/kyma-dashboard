@@ -16,7 +16,7 @@ context('Test Services', () => {
   it('Create a Service', () => {
     cy.navigateTo('Discovery and Network', 'Services');
 
-    cy.contains('ui5-button', 'Create Service').click();
+    cy.contains('ui5-button', 'Create').click();
 
     cy.get('ui5-dialog')
       .find('[aria-label="Service name"]:visible')

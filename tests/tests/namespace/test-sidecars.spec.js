@@ -26,7 +26,7 @@ context('Test Sidecars', () => {
   it('Create a Sidecar', () => {
     cy.navigateTo('Istio', 'Sidecars');
 
-    cy.contains('ui5-button', 'Create Sidecar').click();
+    cy.contains('ui5-button', 'Create').click();
 
     // Name
     cy.get('ui5-dialog')

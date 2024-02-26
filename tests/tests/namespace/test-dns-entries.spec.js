@@ -17,7 +17,7 @@ context('Test DNS Entries', () => {
   it('Create DNS Entry', () => {
     cy.navigateTo('Configuration', 'DNS Entries');
 
-    cy.contains('ui5-button', 'Create DNS Entry').click();
+    cy.contains('ui5-button', 'Create').click();
 
     // ttl
     cy.get('[placeholder^="Enter the time to live"]:visible')

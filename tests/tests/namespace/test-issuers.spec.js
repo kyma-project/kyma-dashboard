@@ -12,7 +12,7 @@ context('Test Issuers', () => {
 
     cy.navigateTo('Configuration', 'Secrets');
 
-    cy.contains('ui5-button', 'Create Secret').click();
+    cy.contains('ui5-button', 'Create').click();
 
     cy.get('ui5-dialog')
       .find('[aria-label="Secret name"]:visible')
@@ -33,7 +33,7 @@ context('Test Issuers', () => {
       .contains('Issuers')
       .click();
 
-    cy.contains('ui5-button', 'Create Issuer').click();
+    cy.contains('ui5-button', 'Create').click();
 
     cy.get('ui5-dialog')
       .find('[aria-label="Issuer name"]:visible')
