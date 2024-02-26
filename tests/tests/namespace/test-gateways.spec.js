@@ -26,7 +26,7 @@ context('Test Gateways', () => {
   it('Create Gateway', () => {
     cy.navigateTo('Istio', 'Gateways');
 
-    cy.contains('ui5-button', 'Create Gateway').click();
+    cy.contains('ui5-button', 'Create').click();
 
     // name
     cy.get('ui5-dialog')

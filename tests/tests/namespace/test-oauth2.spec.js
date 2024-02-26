@@ -15,7 +15,7 @@ context('Test OAuth2 Clients', () => {
   it('Create a Client', () => {
     cy.navigateTo('Configuration', 'OAuth2 Clients');
 
-    cy.contains('ui5-button', 'Create OAuth2 Client').click();
+    cy.contains('ui5-button', 'Create').click();
 
     cy.contains('Advanced').click();
 
@@ -118,8 +118,6 @@ context('Test OAuth2 Clients', () => {
     cy.contains('Ory Hydra Deprecation').should('be.visible');
 
     cy.contains('ui5-panel', 'OAuth2Clients').within(_$genericList => {
-      cy.get('[aria-label="open-search"]:visible').click();
-
       cy.get('ui5-combobox[placeholder="Search"]')
         .find('input')
         .click()

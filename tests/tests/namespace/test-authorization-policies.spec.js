@@ -24,7 +24,7 @@ context('Test Authorization Policies', () => {
   it('Create Authorization Policy', () => {
     cy.navigateTo('Istio', 'Authorization Policies');
 
-    cy.contains('ui5-button', 'Create Authorization Policy').click();
+    cy.contains('ui5-button', 'Create').click();
 
     cy.wait(500);
 

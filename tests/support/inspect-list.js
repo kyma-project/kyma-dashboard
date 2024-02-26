@@ -1,10 +1,8 @@
 Cypress.Commands.add('inspectList', (resource, resourceName) => {
   const resourceUrl = resource.replace(/\s/g, '').toLowerCase();
   cy.navigateBackTo(resourceUrl, resource);
-
-  cy.get('ui5-button[aria-label="open-search"]:visible')
-    .click()
-    .get('ui5-combobox[placeholder="Search"]')
+  cy.wait(1000);
+  cy.get('ui5-combobox[placeholder="Search"]:visible')
     .find('input')
     .click()
     .type(resourceName);

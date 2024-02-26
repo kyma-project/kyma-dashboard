@@ -35,13 +35,18 @@ Cypress.Commands.add('filterWithNoValue', { prevSubject: true }, $elements =>
   $elements.filter((_, e) => !e.value),
 );
 
+Cypress.Commands.add('checkItemOnGenericListLink', resourceName => {
+  cy.get('ui5-table-row')
+    .find('ui5-table-cell')
+    .contains('span', resourceName)
+    .should('be.visible');
+});
+
 Cypress.Commands.add('clickGenericListLink', resourceName => {
   cy.get('ui5-table-row')
     .find('ui5-table-cell')
-    .find('ui5-link')
-    .contains(resourceName)
-    .find('a.ui5-link-root')
-    .click({ force: true });
+    .contains('span', resourceName)
+    .click();
 });
 
 Cypress.Commands.add('goToNamespaceDetails', () => {
@@ -127,15 +132,14 @@ Cypress.Commands.add(
     resourceName,
     confirmationEnabled = true,
     deletedVisible = true,
+    checkIfResourceIsRemoved = true,
   ) => {
-    cy.get('[aria-label="open-search"]:visible').click();
-
     cy.get('ui5-combobox[placeholder="Search"]')
       .find('input')
       .click()
       .type(resourceName);
 
-    cy.contains('a', resourceName).should('be.visible');
+    cy.checkItemOnGenericListLink(resourceName);
 
     cy.get('ui5-button[data-testid="delete"]').click();
 
@@ -149,9 +153,11 @@ Cypress.Commands.add(
         cy.contains('ui5-message-strip', /deleted/).should('be.visible');
       }
 
-      cy.get('ui5-table')
-        .contains(resourceName)
-        .should('not.exist');
+      if (checkIfResourceIsRemoved) {
+        cy.get('ui5-table')
+          .contains(resourceName)
+          .should('not.exist');
+      }
     }
   },
 );

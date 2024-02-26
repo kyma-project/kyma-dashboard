@@ -20,7 +20,7 @@ context('Test DNS Providers', () => {
   it('Create DNS Provider', () => {
     cy.navigateTo('Configuration', 'DNS Providers');
 
-    cy.contains('ui5-button', 'Create DNS Provider').click();
+    cy.contains('ui5-button', 'Create').click();
 
     cy.wait(500);
 
