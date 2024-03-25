@@ -27,8 +27,6 @@ context('Test Service Entries', () => {
 
     cy.contains('ui5-button', 'Create').click();
 
-    cy.contains('Advanced').click();
-
     // Name
     cy.get('ui5-dialog')
       .find('[aria-label="ServiceEntry name"]:visible')

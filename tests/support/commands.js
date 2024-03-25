@@ -40,19 +40,6 @@ Cypress.Commands.add(
   },
 );
 
-Cypress.Commands.add('clickGenericListLink', resourceName => {
-  cy.get('ui5-table-row')
-    .find('ui5-table-cell')
-    .find('ui5-link')
-    .contains(resourceName)
-    .find('a.ui5-link-root')
-    .click({ force: true });
-});
-
-Cypress.Commands.add('filterWithNoValue', { prevSubject: true }, $elements =>
-  $elements.filter((_, e) => !e.value),
-);
-
 Cypress.Commands.add('checkItemOnGenericListLink', resourceName => {
   cy.get('ui5-table-row')
     .find('ui5-table-cell')
@@ -67,13 +54,16 @@ Cypress.Commands.add('clickGenericListLink', resourceName => {
     .click();
 });
 
+Cypress.Commands.add('filterWithNoValue', { prevSubject: true }, $elements =>
+  $elements.filter((_, e) => !e.value),
+);
+
 Cypress.Commands.add('goToNamespaceDetails', () => {
   // Go to the details of namespace
   cy.getLeftNav()
     .contains('Namespaces')
     .click();
 
-  cy.clickGenericListLink(Cypress.env('NAMESPACE_NAME'));
   cy.clickGenericListLink(Cypress.env('NAMESPACE_NAME'));
 
   return cy.end();
@@ -82,7 +72,7 @@ Cypress.Commands.add('goToNamespaceDetails', () => {
 Cypress.Commands.add('clearInput', { prevSubject: true }, element => {
   return cy
     .wrap(element)
-    .click()
+
     .type(
       `${Cypress.platform === 'darwin' ? '{cmd}a' : '{ctrl}a'} {backspace}`,
     );
@@ -115,7 +105,7 @@ Cypress.Commands.add(
 function paste(subject, { pastePayload }) {
   // https://developer.mozilla.org/en-US/docs/Web/API/Element/paste_event
   const pasteEvent = Object.assign(
-    new Event('paste', { bubbles: true, cancelable: true }),
+    new Event('paste', { bubbles: true, cancelable: false }),
     {
       clipboardData: {
         getData: (type = 'text') => pastePayload,
@@ -143,6 +133,8 @@ Cypress.Commands.add(
   'deleteInDetails',
   (resourceType, resourceName, columnLayout = false) => {
     if (columnLayout) {
+      cy.wait(1000); //wait for button
+
       cy.getMidColumn()
         .contains('ui5-button', 'Delete')
         .should('be.visible')
@@ -168,19 +160,28 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   'deleteFromGenericList',
-  (
-    resourceType,
-    resourceName,
-    confirmationEnabled = true,
-    deletedVisible = true,
-    clearSearch = true,
-    isUI5Link = true,
-    checkIfResourceIsRemoved = true,
-  ) => {
-    cy.get('ui5-combobox[placeholder="Search"]:visible')
+  (resourceType, resourceName, options = {}) => {
+    const {
+      confirmationEnabled = true,
+      deletedVisible = true,
+      clearSearch = true,
+      isUI5Link = true,
+      checkIfResourceIsRemoved = true,
+      selectSearchResult = false,
+    } = options;
+
+    cy.get('ui5-input[placeholder="Search"]:visible')
       .find('input')
-      .click()
+      .wait(1000)
       .type(resourceName);
+
+    cy.wait(1000);
+
+    if (selectSearchResult) {
+      cy.get('ui5-li-suggestion-item:visible')
+        .contains(resourceName)
+        .click();
+    }
 
     if (isUI5Link) {
       cy.checkItemOnGenericListLink(resourceName);
@@ -204,9 +205,9 @@ Cypress.Commands.add(
       }
 
       if (clearSearch) {
-        cy.get('ui5-combobox[placeholder="Search"]:visible')
+        cy.get('ui5-input[placeholder="Search"]:visible')
           .find('input')
-          .click()
+          .wait(1000)
           .clear();
       }
 
@@ -230,62 +231,34 @@ Cypress.Commands.add('changeCluster', clusterName => {
     .click({ force: true });
 });
 
-Cypress.Commands.add('testMidColumnLayout', resourceName => {
-  cy.getMidColumn()
-    .find('ui5-button[aria-label="full-screen"]')
-    .click();
+Cypress.Commands.add(
+  'closeMidColumn',
+  (checkIfNotExist = false, hiddenButtons = false) => {
+    if (hiddenButtons) {
+      cy.getMidColumn()
+        .find('header')
+        .find('ui5-toggle-button:visible')
+        .click();
 
-  cy.contains('ui5-link', resourceName).should('not.be.visible');
+      cy.get('[data-component-name="ToolbarOverflowPopoverContent"]')
+        .find('ui5-button[aria-label="close-column"]')
+        .click();
+    } else
+      cy.getMidColumn()
+        .find('ui5-button[aria-label="close-column"]')
+        .click();
 
-  cy.getMidColumn()
-    .find('ui5-button[aria-label="close-full-screen"]')
-    .click();
+    cy.wait(1000);
+    if (checkIfNotExist) cy.getMidColumn().should('not.exist');
+    else cy.getMidColumn().should('not.be.visible');
+  },
+);
 
-  cy.contains('ui5-link', resourceName).should('be.visible');
-
-  cy.closeMidColumn();
-
-  cy.getMidColumn()
-    .contains('ui5-title', resourceName)
-    .should('not.be.visible');
-});
-
-Cypress.Commands.add('testEndColumnLayout', resourceName => {
-  cy.getEndColumn()
-    .find('ui5-button[aria-label="full-screen"]')
-    .click();
-
-  cy.contains('ui5-link', resourceName).should('not.be.visible');
-
-  cy.getEndColumn()
-    .find('ui5-button[aria-label="close-full-screen"]')
-    .click();
-
-  cy.contains('ui5-link', resourceName).should('be.visible');
-
+Cypress.Commands.add('closeEndColumn', (checkIfNotExist = false) => {
   cy.getEndColumn()
     .find('ui5-button[aria-label="close-column"]')
     .click();
 
-  cy.getEndColumn().should('not.be.visible');
-
-  cy.getEndColumn()
-    .contains('ui5-title', resourceName)
-    .should('not.be.visible');
-});
-
-Cypress.Commands.add('closeMidColumn', () => {
-  cy.getMidColumn()
-    .find('ui5-button[aria-label="close-column"]')
-    .click();
-
-  cy.getMidColumn().should('not.be.visible');
-});
-
-Cypress.Commands.add('closeEndColumn', () => {
-  cy.getEndColumn()
-    .find('ui5-button[aria-label="close-column"]')
-    .click();
-
-  cy.getEndColumn().should('not.be.visible');
+  if (checkIfNotExist) cy.getEndColumn().should('not.exist');
+  else cy.getEndColumn().should('not.be.visible');
 });

@@ -17,8 +17,6 @@ context('Test OAuth2 Clients', () => {
 
     cy.contains('ui5-button', 'Create').click();
 
-    cy.contains('Advanced').click();
-
     cy.get('ui5-dialog')
       .find('[aria-label="OAuth2Client name"]:visible')
       .find('input')
