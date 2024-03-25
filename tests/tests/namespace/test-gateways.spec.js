@@ -26,11 +26,10 @@ context('Test Gateways', () => {
   it('Create Gateway', () => {
     cy.navigateTo('Istio', 'Gateways');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
     // name
-    cy.get('ui5-dialog')
-      .find('[aria-label="Gateway name"]:visible')
+    cy.get('[aria-label="Gateway name"]:visible')
       .find('input')
       .type(GATEWAY_NAME, { force: true });
 
@@ -82,10 +81,7 @@ context('Test Gateways', () => {
       .type('*.example.com', { force: true });
 
     // create
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
   });
 
   it('Inspect details', () => {
@@ -101,14 +97,9 @@ context('Test Gateways', () => {
   });
 
   it('Edit Gateway', () => {
-    cy.wait(500);
+    cy.inspectTab('Edit');
 
-    cy.getMidColumn()
-      .contains('ui5-button', 'Edit')
-      .click();
-
-    cy.get('ui5-dialog')
-      .find('[aria-label="Gateway name"]:visible')
+    cy.get('[aria-label="Gateway name"]:visible')
       .find('input')
       .should('have.attr', 'readonly');
 
@@ -151,10 +142,8 @@ context('Test Gateways', () => {
 
     chooseComboboxOption('[data-testid="spec.servers.0.tls.mode"]', 'SIMPLE');
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
 
     // changed details
     cy.getMidColumn().contains('443');
@@ -164,6 +153,6 @@ context('Test Gateways', () => {
   });
 
   it('Inspect list', () => {
-    cy.inspectList('Gateways', GATEWAY_NAME);
+    cy.inspectList(GATEWAY_NAME);
   });
 });

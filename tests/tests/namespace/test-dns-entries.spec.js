@@ -17,7 +17,7 @@ context('Test DNS Entries', () => {
   it('Create DNS Entry', () => {
     cy.navigateTo('Configuration', 'DNS Entries');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
     // ttl
     cy.get('[placeholder^="Enter the time to live"]:visible')
@@ -33,8 +33,7 @@ context('Test DNS Entries', () => {
       .click();
 
     // name
-    cy.get('ui5-dialog')
-      .find('[aria-label="DNSEntry name"]:visible')
+    cy.get('[aria-label="DNSEntry name"]:visible')
       .find('input')
       .type(DNS_ENTRY_NAME, { force: true });
 
@@ -44,10 +43,7 @@ context('Test DNS Entries', () => {
       .click()
       .type('35.204.159.60');
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
   });
 
   it('Inspect details', () => {
@@ -57,15 +53,10 @@ context('Test DNS Entries', () => {
   });
 
   it('Edit DNS Entry', () => {
-    cy.wait(1000);
-
-    cy.getMidColumn()
-      .contains('ui5-button', 'Edit')
-      .click();
+    cy.inspectTab('Edit');
 
     // name should be disabled for edit
-    cy.get('ui5-dialog')
-      .find('[aria-label="DNSEntry name"]:visible')
+    cy.get('[aria-label="DNSEntry name"]:visible')
       .find('input')
       .should('have.attr', 'readonly');
 
@@ -75,15 +66,13 @@ context('Test DNS Entries', () => {
       .last()
       .type('example.com', { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
 
     cy.getMidColumn().contains(/Targets.*, example\.com/);
   });
 
   it('Inspect list', () => {
-    cy.inspectList('Entries', DNS_ENTRY_NAME);
+    cy.inspectList(DNS_ENTRY_NAME);
   });
 });
