@@ -15,10 +15,9 @@ context('Test OAuth2 Clients', () => {
   it('Create a Client', () => {
     cy.navigateTo('Configuration', 'OAuth2 Clients');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="OAuth2Client name"]:visible')
+    cy.get('[aria-label="OAuth2Client name"]:visible')
       .find('input')
       .click()
       .type(AUTH2_NAME, { force: true });
@@ -47,10 +46,7 @@ context('Test OAuth2 Clients', () => {
         waitForAnimations: true,
       });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
   });
 
   it('Checking details', () => {
@@ -92,11 +88,7 @@ context('Test OAuth2 Clients', () => {
   });
 
   it('Edit client', () => {
-    cy.wait(500);
-
-    cy.getMidColumn()
-      .contains('ui5-button', 'Edit')
-      .click();
+    cy.inspectTab('Edit');
 
     cy.get(`ui5-checkbox[text="ID Token"]`).click();
 
@@ -108,10 +100,8 @@ context('Test OAuth2 Clients', () => {
       .clear()
       .type('read');
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
   });
 
   it('Checking updates details', () => {
@@ -137,7 +127,7 @@ context('Test OAuth2 Clients', () => {
   });
 
   it('Inpect list', () => {
-    cy.inspectList('OAuth2 Clients', AUTH2_NAME);
+    cy.inspectList(AUTH2_NAME);
   });
 
   it('Check deprecation note in Cluster Overview', () => {
@@ -148,9 +138,9 @@ context('Test OAuth2 Clients', () => {
     cy.contains('Ory Hydra Deprecation').should('be.visible');
 
     cy.contains('ui5-panel', 'OAuth2Clients').within(_$genericList => {
-      cy.get('ui5-combobox[placeholder="Search"]')
+      cy.get('ui5-input[placeholder="Search"]:visible')
         .find('input')
-        .click()
+        .wait(1000)
         .type(AUTH2_NAME);
 
       cy.contains('ui5-link', AUTH2_NAME).should('be.visible');

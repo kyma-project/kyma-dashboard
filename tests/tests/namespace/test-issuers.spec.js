@@ -12,18 +12,14 @@ context('Test Issuers', () => {
 
     cy.navigateTo('Configuration', 'Secrets');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="Secret name"]:visible')
+    cy.get('[aria-label="Secret name"]:visible')
       .find('input')
       .click()
       .type(SECRET_NAME, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
 
     cy.url().should('match', new RegExp(`/secrets/${SECRET_NAME}`));
   });
@@ -33,10 +29,9 @@ context('Test Issuers', () => {
       .contains('Issuers')
       .click();
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="Issuer name"]:visible')
+    cy.get('[aria-label="Issuer name"]:visible')
       .find('input')
       .click()
       .type(ISSUER_NAME, { force: true });
@@ -52,10 +47,7 @@ context('Test Issuers', () => {
 
     chooseComboboxOption('[placeholder="Select name"]', SECRET_NAME);
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
 
     cy.url().should('match', new RegExp(`/issuers/${ISSUER_NAME}`));
   });
@@ -65,11 +57,7 @@ context('Test Issuers', () => {
   });
 
   it('Edit an issuer', () => {
-    cy.wait(1000);
-
-    cy.getMidColumn()
-      .contains('ui5-button', 'Edit')
-      .click();
+    cy.inspectTab('Edit');
 
     cy.get('[placeholder="Select Issuer type"]')
       .filter(':visible')
@@ -97,10 +85,8 @@ context('Test Issuers', () => {
       .find('input')
       .type('other.server.com{enter}another.server.com', { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
   });
 
   it('Inspect updated issuer', () => {
@@ -112,6 +98,6 @@ context('Test Issuers', () => {
   });
 
   it('Inspect issuer list', () => {
-    cy.inspectList('Issuers', ISSUER_NAME);
+    cy.inspectList(ISSUER_NAME);
   });
 });

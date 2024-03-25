@@ -26,11 +26,10 @@ context('Test Sidecars', () => {
   it('Create a Sidecar', () => {
     cy.navigateTo('Istio', 'Sidecars');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
     // Name
-    cy.get('ui5-dialog')
-      .find('[aria-label="Sidecar name"]:visible')
+    cy.get('[aria-label="Sidecar name"]:visible')
       .find('input')
       .click()
       .type(SIDECAR_NAME, { force: true });
@@ -48,8 +47,7 @@ context('Test Sidecars', () => {
       .find('input')
       .type(PORT_NUMBER, { force: true });
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="Sidecar name"]:visible')
+    cy.get('[aria-label="Sidecar name"]:visible')
       .find('input')
       .filterWithNoValue()
       .click()
@@ -90,8 +88,7 @@ context('Test Sidecars', () => {
       PORT_PROTOCOL,
     );
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="Sidecar name"]:visible')
+    cy.get('[aria-label="Sidecar name"]:visible')
       .find('input')
       .filterWithNoValue()
       .click()
@@ -103,10 +100,7 @@ context('Test Sidecars', () => {
       .find('input')
       .type(DEFAULT_ENDPOINT, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
 
     cy.getMidColumn()
       .contains('ui5-title', SIDECAR_NAME)
@@ -123,6 +117,6 @@ context('Test Sidecars', () => {
   });
 
   it('Check the Sidecars list', () => {
-    cy.inspectList('Sidecars', SIDECAR_NAME);
+    cy.inspectList(SIDECAR_NAME);
   });
 });

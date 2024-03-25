@@ -1,5 +1,3 @@
-const { chooseComboboxOption } = require('../../support/helpers');
-
 const SERVICE_NAME = `test-virtual-service-${Math.floor(Math.random() * 9999) +
   1000}`;
 const MATCH_NAME = 'test-match';
@@ -30,13 +28,11 @@ context('Test Virtual Services', () => {
   it('Create a Virtual Service', () => {
     cy.navigateTo('Istio', 'Virtual Services');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
     // name
-    cy.get('ui5-dialog')
-      .find('[aria-label="VirtualService name"]:visible')
+    cy.get('[aria-label="VirtualService name"]:visible')
       .find('input')
-      .click()
       .type(SERVICE_NAME, { force: true });
 
     // HTTP
@@ -58,8 +54,7 @@ context('Test Virtual Services', () => {
 
     cy.get('[aria-label="expand URI"]:visible', { log: false }).click();
 
-    cy.get('ui5-dialog')
-      .find('ui5-combobox[data-testid="select-dropdown"]')
+    cy.get('ui5-combobox[data-testid="select-dropdown"]')
       .find('ui5-icon[accessible-name="Select Options"]:visible', {
         log: false,
       })
@@ -87,8 +82,7 @@ context('Test Virtual Services', () => {
       .filterWithNoValue()
       .type(HEADER_KEY, { force: true });
 
-    cy.get('ui5-dialog')
-      .find('ui5-combobox[data-testid="select-dropdown"]')
+    cy.get('ui5-combobox[data-testid="select-dropdown"]')
       .find('ui5-icon[accessible-name="Select Options"]:visible', {
         log: false,
       })
@@ -121,10 +115,7 @@ context('Test Virtual Services', () => {
       .find('input')
       .type(REDIRECT_AUTHORITY, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
 
     cy.url().should('match', new RegExp(`/virtualservices/${SERVICE_NAME}`));
   });
@@ -146,11 +137,7 @@ context('Test Virtual Services', () => {
   });
 
   it('Edit VS and check updates', () => {
-    cy.wait(500);
-
-    cy.getMidColumn()
-      .contains('ui5-button', 'Edit')
-      .click();
+    cy.inspectTab('Edit');
 
     // Hosts
     cy.get('[aria-label="expand Hosts"]:visible', {
@@ -180,10 +167,7 @@ context('Test Virtual Services', () => {
       .clear()
       .type(GATEWAY, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
 
     // Changed details
     cy.getMidColumn().contains(HOST1);
@@ -192,6 +176,6 @@ context('Test Virtual Services', () => {
   });
 
   it('Inspect service list', () => {
-    cy.inspectList('Virtual Services', SERVICE_NAME);
+    cy.inspectList(SERVICE_NAME);
   });
 });

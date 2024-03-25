@@ -25,11 +25,10 @@ context('Test Service Entries', () => {
   it('Create a Service Entry', () => {
     cy.navigateTo('Istio', 'Service Entries');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
     // Name
-    cy.get('ui5-dialog')
-      .find('[aria-label="ServiceEntry name"]:visible')
+    cy.get('[aria-label="ServiceEntry name"]:visible')
       .find('input')
       .click()
       .type(SE_NAME, { force: true });
@@ -64,10 +63,7 @@ context('Test Service Entries', () => {
       .first()
       .type('selector-value', { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
 
     cy.getMidColumn()
       .contains('ui5-title', SE_NAME)
@@ -85,7 +81,7 @@ context('Test Service Entries', () => {
   });
 
   it('Check the Service Entries list', () => {
-    cy.inspectList('Service Entries', SE_NAME);
+    cy.inspectList(SE_NAME);
     cy.contains(RESOLUTION);
   });
 });
