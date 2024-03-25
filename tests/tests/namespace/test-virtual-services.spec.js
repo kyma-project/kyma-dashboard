@@ -82,6 +82,10 @@ context('Test Virtual Services', () => {
       .filterWithNoValue()
       .type(HEADER_KEY, { force: true });
 
+    cy.get('[aria-label="expand undefined"]:visible', { log: false })
+      .first()
+      .click();
+
     cy.get('ui5-combobox[data-testid="select-dropdown"]')
       .find('ui5-icon[accessible-name="Select Options"]:visible', {
         log: false,
