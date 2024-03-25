@@ -172,6 +172,7 @@ context('Test Virtual Services', () => {
       .type(GATEWAY, { force: true });
 
     cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
 
     // Changed details
     cy.getMidColumn().contains(HOST1);
