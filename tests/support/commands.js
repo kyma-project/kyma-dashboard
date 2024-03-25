@@ -53,12 +53,27 @@ Cypress.Commands.add('filterWithNoValue', { prevSubject: true }, $elements =>
   $elements.filter((_, e) => !e.value),
 );
 
+Cypress.Commands.add('checkItemOnGenericListLink', resourceName => {
+  cy.get('ui5-table-row')
+    .find('ui5-table-cell')
+    .contains('span', resourceName)
+    .should('be.visible');
+});
+
+Cypress.Commands.add('clickGenericListLink', resourceName => {
+  cy.get('ui5-table-row')
+    .find('ui5-table-cell')
+    .contains('span', resourceName)
+    .click();
+});
+
 Cypress.Commands.add('goToNamespaceDetails', () => {
   // Go to the details of namespace
   cy.getLeftNav()
     .contains('Namespaces')
     .click();
 
+  cy.clickGenericListLink(Cypress.env('NAMESPACE_NAME'));
   cy.clickGenericListLink(Cypress.env('NAMESPACE_NAME'));
 
   return cy.end();
@@ -160,18 +175,17 @@ Cypress.Commands.add(
     deletedVisible = true,
     clearSearch = true,
     isUI5Link = true,
+    checkIfResourceIsRemoved = true,
   ) => {
-    cy.get('[aria-label="open-search"]:visible').click();
-
     cy.get('ui5-combobox[placeholder="Search"]:visible')
       .find('input')
       .click()
       .type(resourceName);
 
     if (isUI5Link) {
-      cy.contains('ui5-link', resourceName).should('be.visible');
+      cy.checkItemOnGenericListLink(resourceName);
     } else {
-      cy.contains('a', resourceName).should('be.visible');
+      cy.contains('ui5-link', resourceName).should('be.visible');
     }
 
     cy.contains('ui5-message-strip', /created/).should('not.exist');
@@ -196,9 +210,11 @@ Cypress.Commands.add(
           .clear();
       }
 
-      cy.get('ui5-table')
-        .contains(resourceName)
-        .should('not.exist');
+      if (checkIfResourceIsRemoved) {
+        cy.get('ui5-table')
+          .contains(resourceName)
+          .should('not.exist');
+      }
     }
   },
 );

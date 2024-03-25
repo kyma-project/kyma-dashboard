@@ -30,7 +30,7 @@ context('Test Virtual Services', () => {
   it('Create a Virtual Service', () => {
     cy.navigateTo('Istio', 'Virtual Services');
 
-    cy.contains('ui5-button', 'Create Virtual Service').click();
+    cy.contains('ui5-button', 'Create').click();
 
     // name
     cy.get('ui5-dialog')

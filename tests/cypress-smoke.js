@@ -11,6 +11,7 @@ module.exports = defineConfig({
   fixturesFolder: 'fixtures',
   chromeWebSecurity: false,
   viewportWidth: 1500,
+  video: true,
   viewportHeight: 1500,
   videoCompression: false,
   scrollBehavior: false,

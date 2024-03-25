@@ -21,7 +21,7 @@ context('Test HPA', () => {
   it('Creates auxiliary Deployment', () => {
     cy.navigateTo('Workloads', 'Deployments');
 
-    cy.contains('ui5-button', 'Create Deployment').click();
+    cy.contains('ui5-button', 'Create').click();
 
     cy.get('ui5-dialog')
       .find('[aria-label="Deployment name"]:visible')
@@ -43,7 +43,7 @@ context('Test HPA', () => {
   it('Create HPA', () => {
     cy.navigateTo('Discovery and Network', 'Horizontal Pod');
 
-    cy.contains('ui5-button', 'Create Horizontal Pod Autoscaler').click();
+    cy.contains('ui5-button', 'Create').click();
 
     cy.get('ui5-dialog')
       .find('[aria-label="HorizontalPodAutoscaler name"]:visible')
@@ -92,21 +92,16 @@ context('Test HPA', () => {
   });
 
   it('Check HPA list', () => {
+    cy.wait(500);
     cy.inspectList('Horizontal Pod', HPA_NAME);
   });
 
   it('Check HPA subcomponent', () => {
-    cy.getLeftNav()
-      .contains('Horizontal Pod Autoscalers')
-      .click();
-
     cy.get('ui5-table-row')
-      .contains('ui5-link', HPA_NAME)
+      .contains('a', HPA_NAME)
       .click();
 
-    cy.getMidColumn()
-      .contains('ui5-link', DEPLOYEMENT_NAME)
-      .click({ force: true });
+    cy.contains('a', DEPLOYEMENT_NAME).click();
 
     cy.url().should('match', /deployments/);
 
@@ -114,7 +109,9 @@ context('Test HPA', () => {
   });
 
   it('Check Edit HPA', () => {
-    cy.contains('ui5-link', HPA_NAME).click({ force: true });
+    cy.get('ui5-table-row')
+      .contains('a', HPA_NAME)
+      .click();
 
     cy.contains('ui5-button', 'Edit').click();
 

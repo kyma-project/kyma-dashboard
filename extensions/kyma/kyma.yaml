@@ -111,7 +111,7 @@ data:
     resource:
       kind: Kyma
       group: operator.kyma-project.io
-      version: v1beta1
+      version: v1beta2
     name: Kyma
     category: Kyma
     urlPath: kymas
@@ -131,104 +131,21 @@ data:
     en:
       alert.beta: "CAUTION: The Service Level Agreements (SLAs) and Support obligations do not apply to Beta modules and functionalities. If Beta modules or functionalities directly or indirectly affect other modules, the Service Level Agreements and Support for these modules are limited to priority levels P3 (Medium) or P4 (Low). Thus, Beta releases are not intended for use in customer production environments."
   injections: |-
-    - name: Kyma Modules
-      widget: Panel
+    - title: Introducing Modules
+      description: Modules add functionalities to your cluster. Consume SAP BTP services, monitor your cluster, build serverless applications and more.
+      widget: FeaturedCard
       source: $
-      visibility: $not($exists($item.status.modules))
-      targets:
-        - slot: details-top
-          location: ClusterOverview
-      order: 1 
-      children: 
-        - widget: MessagePanel
-          source: $
-          name: Kyma Modules Panel
-          title: Seems that you don't have any Kyma Modules configured
-          subtitle: Add at least one Kyma Module. Add your module under "kyma-system -> Kyma"
-          children:
-            - widget: Wizard
-              name: Add Module
-              wizard: module-wizard
-              visibility: $not($exists($item.status.modules))
-    - name: Kyma
-      widget: Panel
-      description: To check the Kyma modularization documentation go to {{[Kyma's Modular Approach](https://help.sap.com/docs/btp/sap-business-technology-platform-internal/kyma-environment)}}.
-      source: $
-      visibility: $exists($item.status.modules)
-      targets:
-        - slot: details-top
-          location: ClusterOverview
-      order: 2 
-      children: 
-        - name: Name
-          source: metadata.name
-          widget: ResourceLink
-          resource:
+      id: ModulesBanner
+      order: 0
+      children:
+        - widget: ResourceButton
+          source: "'Modify Modules'"
+          resource: 
             name: metadata.name
             namespace: metadata.namespace
-            kind: '"Kyma"'
-        - name: State
-          widget: Badge
-          source: status.state
-          description: 'status.state!="Ready" ? status.lastOperation.operation : ""'
-        - widget: Alert
-          severity: warning
-          source: '"alert.beta"'
-          visibility: '(
-            $fullModuleTemplate := $filter($moduleTemplates().items, function($v) {
-              $v.metadata.labels."operator.kyma-project.io/module-name" in $item.status.modules.name 
-              and $v.metadata.labels."operator.kyma-project.io/beta" = "true"
-            });
-            $isBeta := $count($fullModuleTemplate) > 0;
-            $isBeta;
-          )'
-        - name: Installed Modules
-          source: '$sort($parent.status.modules[], function($l, $r) {$l.name < $r.name})'
-          widget: Table
-          disablePadding: true
-          extraHeaderContent: 
-            - name: ''
-              source: '"Modify"'
-              widget: ResourceButton
-              resource:
-                name: $parent.metadata.name
-                namespace: $parent.metadata.namespace
-                kind: '"Kyma"'
-          children: 
-            - name: Name
-              source: $
-              widget: Plain
-              children:
-                - widget: ResourceLink
-                  visibility: $exists(resource.metadata.name)
-                  source: name
-                  resource:
-                    name: resource.metadata.name
-                    namespace: resource.metadata.namespace
-                    kind: resource.kind
-                - widget: Text
-                  visibility: $not($exists(resource.metadata.name))
-                  source: name
-            - name: ''
-              source: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.labels."operator.kyma-project.io/beta" = "true" ? "beta" : "-"'
-            - name: Namespace
-              source: $parent.metadata.namespace
-            - name: Channel
-              source: channel
-              widget: Text
-            - name: Version
-              source: version
-              widget: Text
-            - name: State
-              widget: Badge
-              source: state
-              description: 'message ? message : ""'
-            - name: 'Documentation'
-              widget: ExternalLink
-              copyable: false
-              source: '"Documentation"'
-              link: '$filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.annotations."operator.kyma-project.io/doc-url"'
-              visibility: '(
-                $docsLink := $filter($moduleTemplates().items, function($v) {$v.metadata.labels."operator.kyma-project.io/module-name" in name and $v.spec.channel=channel}).metadata.annotations."operator.kyma-project.io/doc-url";
-                $hasDocs := $count($docsLink) > 0;
-              )'
+            kind: "'Kyma'"
+        - widget: ExternalLinkButton
+          link: https://help.sap.com/docs/btp/sap-business-technology-platform/kyma-s-modular-approach
+      targets:
+        - slot: details-top
+          location: ClusterOverview

@@ -25,7 +25,7 @@ context('Test Service Entries', () => {
   it('Create a Service Entry', () => {
     cy.navigateTo('Istio', 'Service Entries');
 
-    cy.contains('ui5-button', 'Create Service Entry').click();
+    cy.contains('ui5-button', 'Create').click();
 
     cy.contains('Advanced').click();
 

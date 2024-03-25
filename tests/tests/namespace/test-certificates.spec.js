@@ -17,7 +17,7 @@ context('Test Certificates', () => {
   it('Adds and displays a certificate', () => {
     cy.navigateTo('Configuration', 'Certificates');
 
-    cy.contains('ui5-button', 'Create Certificate')
+    cy.contains('ui5-button', 'Create')
       .click()
       .should('be.visible');
 
@@ -50,6 +50,10 @@ context('Test Certificates', () => {
     cy.getMidColumn()
       .contains('ui5-button', 'Edit')
       .click();
+
+    cy.clickGenericListLink(CERT_NAME);
+
+    cy.contains('ui5-button', 'Edit').click();
 
     cy.get('[aria-label="expand Annotations"]').click();
 
