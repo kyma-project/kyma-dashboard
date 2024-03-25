@@ -21,10 +21,9 @@ context('Test HPA', () => {
   it('Creates auxiliary Deployment', () => {
     cy.navigateTo('Workloads', 'Deployments');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="Deployment name"]:visible')
+    cy.get('[aria-label="Deployment name"]:visible')
       .find('input')
       .type(DEPLOYEMENT_NAME, { force: true });
 
@@ -32,10 +31,7 @@ context('Test HPA', () => {
       .find('input')
       .type(DOCKER_IMAGE, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
 
     cy.contains('ui5-title', DEPLOYEMENT_NAME).should('be.visible');
   });
@@ -43,10 +39,9 @@ context('Test HPA', () => {
   it('Create HPA', () => {
     cy.navigateTo('Discovery and Network', 'Horizontal Pod');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="HorizontalPodAutoscaler name"]:visible')
+    cy.get('[aria-label="HorizontalPodAutoscaler name"]:visible')
       .find('input')
       .type(HPA_NAME, { force: true });
 
@@ -67,24 +62,30 @@ context('Test HPA', () => {
       .find('input')
       .type(SCALE_TARGET_REF_NAME, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
 
-    cy.contains('ui5-title', HPA_NAME).should('be.visible');
+    cy.getMidColumn()
+      .contains('ui5-title', HPA_NAME)
+      .should('be.visible');
   });
 
   it('Check HPA details', () => {
-    cy.contains('Deployment').should('be.visible');
-    cy.contains('ui5-link', `${DEPLOYEMENT_NAME}`).should('be.visible');
+    cy.getMidColumn()
+      .contains('Deployment')
+      .should('be.visible');
 
-    cy.contains('#content-wrap', 'Events').should('be.visible');
+    cy.getMidColumn()
+      .contains('ui5-link', DEPLOYEMENT_NAME)
+      .should('be.visible');
+
+    cy.getMidColumn()
+      .contains('Events')
+      .should('be.visible');
   });
 
   it('Check HPA list', () => {
     cy.wait(500);
-    cy.inspectList('Horizontal Pod', HPA_NAME);
+    cy.inspectList(HPA_NAME);
   });
 
   it('Check HPA subcomponent', () => {
@@ -93,14 +94,12 @@ context('Test HPA', () => {
     cy.contains('ui5-link', DEPLOYEMENT_NAME).click();
 
     cy.url().should('match', /deployments/);
-
-    cy.contains(HPA_NAME).should('be.visible');
   });
 
   it('Check Edit HPA', () => {
     cy.clickGenericListLink(HPA_NAME);
 
-    cy.contains('ui5-button', 'Edit').click();
+    cy.inspectTab('Edit');
 
     cy.get('[data-testid="spec.minReplicas"]:visible')
       .find('input')
@@ -108,10 +107,8 @@ context('Test HPA', () => {
       .clear()
       .type(MIN_REPLICAS, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.inspectTab('View');
 
     cy.contains('Min Replicas')
       .parent()

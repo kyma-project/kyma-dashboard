@@ -25,13 +25,10 @@ context('Test Service Entries', () => {
   it('Create a Service Entry', () => {
     cy.navigateTo('Istio', 'Service Entries');
 
-    cy.contains('ui5-button', 'Create').click();
-
-    cy.contains('Advanced').click();
+    cy.openCreate();
 
     // Name
-    cy.get('ui5-dialog')
-      .find('[aria-label="ServiceEntry name"]:visible')
+    cy.get('[aria-label="ServiceEntry name"]:visible')
       .find('input')
       .click()
       .type(SE_NAME, { force: true });
@@ -66,26 +63,25 @@ context('Test Service Entries', () => {
       .first()
       .type('selector-value', { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
 
-    cy.contains('ui5-title', SE_NAME).should('be.visible');
+    cy.getMidColumn()
+      .contains('ui5-title', SE_NAME)
+      .should('be.visible');
   });
 
   it('Check the Service Entry details', () => {
-    cy.get('#content-wrap')
+    cy.getMidColumn()
       .should('include.text', RESOLUTION)
       .and('include.text', LOCATION)
       .and('include.text', HOST)
       .and('include.text', ADDRESS);
 
-    cy.contains(WORKLOAD_SELECTOR_LABEL);
+    cy.getMidColumn().contains(WORKLOAD_SELECTOR_LABEL);
   });
 
   it('Check the Service Entries list', () => {
-    cy.inspectList('Service Entries', SE_NAME);
+    cy.inspectList(SE_NAME);
     cy.contains(RESOLUTION);
   });
 });

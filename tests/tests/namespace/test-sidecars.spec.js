@@ -26,11 +26,10 @@ context('Test Sidecars', () => {
   it('Create a Sidecar', () => {
     cy.navigateTo('Istio', 'Sidecars');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
     // Name
-    cy.get('ui5-dialog')
-      .find('[aria-label="Sidecar name"]:visible')
+    cy.get('[aria-label="Sidecar name"]:visible')
       .find('input')
       .click()
       .type(SIDECAR_NAME, { force: true });
@@ -48,8 +47,7 @@ context('Test Sidecars', () => {
       .find('input')
       .type(PORT_NUMBER, { force: true });
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="Sidecar name"]:visible')
+    cy.get('[aria-label="Sidecar name"]:visible')
       .find('input')
       .filterWithNoValue()
       .click()
@@ -90,8 +88,7 @@ context('Test Sidecars', () => {
       PORT_PROTOCOL,
     );
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="Sidecar name"]:visible')
+    cy.get('[aria-label="Sidecar name"]:visible')
       .find('input')
       .filterWithNoValue()
       .click()
@@ -103,24 +100,23 @@ context('Test Sidecars', () => {
       .find('input')
       .type(DEFAULT_ENDPOINT, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
 
-    cy.contains('ui5-title', SIDECAR_NAME).should('be.visible');
+    cy.getMidColumn()
+      .contains('ui5-title', SIDECAR_NAME)
+      .should('be.visible');
   });
 
   it('Check the Sidecar details', () => {
-    cy.contains(PORT_NUMBER);
-    cy.contains(EGRESS_NAME);
-    cy.contains(IGRES_NAME);
-    cy.contains(PORT_PROTOCOL);
-    cy.contains(EGRESS_HOST);
-    cy.contains(DEFAULT_ENDPOINT);
+    cy.getMidColumn().contains(PORT_NUMBER);
+    cy.getMidColumn().contains(EGRESS_NAME);
+    cy.getMidColumn().contains(IGRES_NAME);
+    cy.getMidColumn().contains(PORT_PROTOCOL);
+    cy.getMidColumn().contains(EGRESS_HOST);
+    cy.getMidColumn().contains(DEFAULT_ENDPOINT);
   });
 
   it('Check the Sidecars list', () => {
-    cy.inspectList('Sidecars', SIDECAR_NAME);
+    cy.inspectList(SIDECAR_NAME);
   });
 });

@@ -1,5 +1,3 @@
-const { chooseComboboxOption } = require('../../support/helpers');
-
 const SERVICE_NAME = `test-virtual-service-${Math.floor(Math.random() * 9999) +
   1000}`;
 const MATCH_NAME = 'test-match';
@@ -30,13 +28,11 @@ context('Test Virtual Services', () => {
   it('Create a Virtual Service', () => {
     cy.navigateTo('Istio', 'Virtual Services');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
     // name
-    cy.get('ui5-dialog')
-      .find('[aria-label="VirtualService name"]:visible')
+    cy.get('[aria-label="VirtualService name"]:visible')
       .find('input')
-      .click()
       .type(SERVICE_NAME, { force: true });
 
     // HTTP
@@ -58,8 +54,7 @@ context('Test Virtual Services', () => {
 
     cy.get('[aria-label="expand URI"]:visible', { log: false }).click();
 
-    cy.get('ui5-dialog')
-      .find('ui5-combobox[data-testid="select-dropdown"]')
+    cy.get('ui5-combobox[data-testid="select-dropdown"]')
       .find('ui5-icon[accessible-name="Select Options"]:visible', {
         log: false,
       })
@@ -87,8 +82,11 @@ context('Test Virtual Services', () => {
       .filterWithNoValue()
       .type(HEADER_KEY, { force: true });
 
-    cy.get('ui5-dialog')
-      .find('ui5-combobox[data-testid="select-dropdown"]')
+    cy.get('[aria-label="expand undefined"]:visible', { log: false })
+      .first()
+      .click();
+
+    cy.get('ui5-combobox[data-testid="select-dropdown"]')
       .find('ui5-icon[accessible-name="Select Options"]:visible', {
         log: false,
       })
@@ -107,6 +105,7 @@ context('Test Virtual Services', () => {
       .type(HEADER_VALUE, { force: true });
 
     cy.get('[aria-label="expand Headers"]:visible', { log: false }).click();
+    cy.get('[aria-label="expand Matches"]:visible', { log: false }).click();
 
     // REDIRECT
     cy.get('[aria-label="expand Redirect"]', { log: false })
@@ -121,30 +120,29 @@ context('Test Virtual Services', () => {
       .find('input')
       .type(REDIRECT_AUTHORITY, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
 
-    cy.url().should('match', new RegExp(`/virtualservices/${SERVICE_NAME}$`));
+    cy.url().should('match', new RegExp(`/virtualservices/${SERVICE_NAME}`));
   });
 
   it('Inspect Virtual Service', () => {
-    cy.contains('ui5-title', SERVICE_NAME);
+    cy.getMidColumn().contains('ui5-title', SERVICE_NAME);
 
-    cy.get('[data-testid="collapse-button-close"]', { timeout: 10000 }).click();
+    cy.getMidColumn()
+      .get('[data-testid="collapse-button-close"]', { timeout: 10000 })
+      .click();
 
-    cy.contains(MATCH_NAME);
-    cy.contains(`${URI_KEY}=${URI_PREFIX}`);
-    cy.contains(HEADER_KEY);
-    cy.contains(HEADER_KEY1);
-    cy.contains(HEADER_VALUE);
-    cy.contains(REDIRECT_URI);
-    cy.contains(REDIRECT_AUTHORITY);
+    cy.getMidColumn().contains(MATCH_NAME);
+    cy.getMidColumn().contains(`${URI_KEY}=${URI_PREFIX}`);
+    cy.getMidColumn().contains(HEADER_KEY);
+    cy.getMidColumn().contains(HEADER_KEY1);
+    cy.getMidColumn().contains(HEADER_VALUE);
+    cy.getMidColumn().contains(REDIRECT_URI);
+    cy.getMidColumn().contains(REDIRECT_AUTHORITY);
   });
 
   it('Edit VS and check updates', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.inspectTab('Edit');
 
     // Hosts
     cy.get('[aria-label="expand Hosts"]:visible', {
@@ -174,18 +172,16 @@ context('Test Virtual Services', () => {
       .clear()
       .type(GATEWAY, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
 
     // Changed details
-    cy.contains(HOST1);
-    cy.contains(HOST2);
-    cy.contains(GATEWAY);
+    cy.getMidColumn().contains(HOST1);
+    cy.getMidColumn().contains(HOST2);
+    cy.getMidColumn().contains(GATEWAY);
   });
 
   it('Inspect service list', () => {
-    cy.inspectList('Virtual Services', SERVICE_NAME);
+    cy.inspectList(SERVICE_NAME);
   });
 });

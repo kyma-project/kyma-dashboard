@@ -16,10 +16,9 @@ context('Test Services', () => {
   it('Create a Service', () => {
     cy.navigateTo('Discovery and Network', 'Services');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="Service name"]:visible')
+    cy.get('[aria-label="Service name"]:visible')
       .find('input')
       .click()
       .type(SERVICE_NAME, { force: true });
@@ -41,8 +40,7 @@ context('Test Services', () => {
       .contains('Add')
       .click();
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="Service name"]:visible')
+    cy.get('[aria-label="Service name"]:visible')
       .eq(1)
       .find('input')
       .click()
@@ -54,18 +52,17 @@ context('Test Services', () => {
       .clear()
       .type(SERVICE_TARGET_PORT);
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
   });
 
   it('Inspect Services', () => {
-    cy.contains(SERVICE_PORT);
+    cy.getMidColumn().contains(SERVICE_PORT);
   });
 
   it('Edit a Service', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.wait(1000);
+
+    cy.inspectTab('Edit');
 
     cy.get('[placeholder="Enter Type"]:visible')
       .find('input')
@@ -73,18 +70,16 @@ context('Test Services', () => {
       .clear()
       .type(SERVICE_DIFF_TYPE);
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
   });
 
   it('Inspect updated Service', () => {
-    cy.contains(SERVICE_DIFF_TYPE);
-    cy.contains(SERVICE_PORT);
+    cy.getMidColumn().contains(SERVICE_DIFF_TYPE);
+    cy.getMidColumn().contains(SERVICE_PORT);
   });
 
   it('Inspect Service list', () => {
-    cy.inspectList('Services', SERVICE_NAME);
+    cy.inspectList(SERVICE_NAME);
   });
 });

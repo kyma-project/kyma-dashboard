@@ -26,11 +26,10 @@ context('Test Gateways', () => {
   it('Create Gateway', () => {
     cy.navigateTo('Istio', 'Gateways');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
     // name
-    cy.get('ui5-dialog')
-      .find('[aria-label="Gateway name"]:visible')
+    cy.get('[aria-label="Gateway name"]:visible')
       .find('input')
       .type(GATEWAY_NAME, { force: true });
 
@@ -82,29 +81,25 @@ context('Test Gateways', () => {
       .type('*.example.com', { force: true });
 
     // create
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
   });
 
   it('Inspect details', () => {
-    cy.contains(GATEWAY_NAME);
-    cy.contains(SELECTOR);
+    cy.getMidColumn().contains(GATEWAY_NAME);
+    cy.getMidColumn().contains(SELECTOR);
     // default selector
-    cy.contains('istio=ingressgateway');
-    cy.contains(SERVER_NAME);
-    cy.contains(PORT_NUMBER);
+    cy.getMidColumn().contains('istio=ingressgateway');
+    cy.getMidColumn().contains(SERVER_NAME);
+    cy.getMidColumn().contains(PORT_NUMBER);
     // hosts
-    cy.contains('example.com');
-    cy.contains('*.example.com');
+    cy.getMidColumn().contains('example.com');
+    cy.getMidColumn().contains('*.example.com');
   });
 
   it('Edit Gateway', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.inspectTab('Edit');
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="Gateway name"]:visible')
+    cy.get('[aria-label="Gateway name"]:visible')
       .find('input')
       .should('have.attr', 'readonly');
 
@@ -147,19 +142,17 @@ context('Test Gateways', () => {
 
     chooseComboboxOption('[data-testid="spec.servers.0.tls.mode"]', 'SIMPLE');
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
 
     // changed details
-    cy.contains('443');
-    cy.contains('HTTPS');
-    cy.contains(/simple/i);
-    cy.contains(KYMA_GATEWAY_CERTS);
+    cy.getMidColumn().contains('443');
+    cy.getMidColumn().contains('HTTPS');
+    cy.getMidColumn().contains(/simple/i);
+    cy.getMidColumn().contains(KYMA_GATEWAY_CERTS);
   });
 
   it('Inspect list', () => {
-    cy.inspectList('Gateways', GATEWAY_NAME);
+    cy.inspectList(GATEWAY_NAME);
   });
 });

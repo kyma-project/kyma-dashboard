@@ -20,9 +20,7 @@ context('Test DNS Providers', () => {
   it('Create DNS Provider', () => {
     cy.navigateTo('Configuration', 'DNS Providers');
 
-    cy.contains('ui5-button', 'Create').click();
-
-    cy.wait(500);
+    cy.openCreate();
 
     // type
     chooseComboboxOption(
@@ -50,39 +48,33 @@ context('Test DNS Providers', () => {
       .type(PROVIDER_INCLUDED_DOMAIN, { force: true });
 
     // name
-    cy.get('ui5-dialog')
-      .find('[aria-label="DNSProvider name"]:visible')
+    cy.get('[aria-label="DNSProvider name"]:visible')
       .find('input')
       .type(PROVIDER_NAME, { force: true });
 
     // create
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
   });
 
   it('Inspect details', () => {
     // name
-    cy.contains(PROVIDER_NAME);
+    cy.getMidColumn().contains(PROVIDER_NAME);
     // type
-    cy.contains(PROVIDER_TYPE);
+    cy.getMidColumn().contains(PROVIDER_TYPE);
     // included domain
-    cy.contains(PROVIDER_INCLUDED_DOMAIN);
+    cy.getMidColumn().contains(PROVIDER_INCLUDED_DOMAIN);
   });
 
   it('Edit DNS Provider', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.inspectTab('Edit');
 
     // name should be readonly
-    cy.get('ui5-dialog')
-      .find('[aria-label="DNSProvider name"]:visible')
+    cy.get('[aria-label="DNSProvider name"]:visible')
       .find('input')
       .should('have.attr', 'readonly', 'readonly');
 
     // edit labels
-    cy.get('ui5-dialog')
-      .contains('Labels')
+    cy.get('[aria-label="expand Labels"]')
       .filter(':visible', { log: false })
       .click();
 
@@ -103,8 +95,7 @@ context('Test DNS Providers', () => {
       .type(PROVIDER_INCLUDED_DOMAIN_2);
 
     // edit excluded domains
-    cy.get('ui5-dialog')
-      .contains('Exclude Domains')
+    cy.contains('Exclude Domains')
       .scrollIntoView()
       .filter(':visible', { log: false })
       .click();
@@ -115,21 +106,19 @@ context('Test DNS Providers', () => {
       .type(PROVIDER_EXCLUDED_DOMAIN);
 
     // hit update
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
 
-    cy.contains('Included Domains');
+    cy.getMidColumn().contains('Included Domains');
 
     // indluded domain
-    cy.contains(PROVIDER_INCLUDED_DOMAIN_2);
+    cy.getMidColumn().contains(PROVIDER_INCLUDED_DOMAIN_2);
     // excluded domain
-    cy.contains(PROVIDER_EXCLUDED_DOMAIN);
+    cy.getMidColumn().contains(PROVIDER_EXCLUDED_DOMAIN);
   });
 
   it('Inspect list', () => {
-    cy.inspectList('DNS Providers', PROVIDER_NAME);
+    cy.inspectList(PROVIDER_NAME);
 
     // label
     cy.contains('edited=yes');

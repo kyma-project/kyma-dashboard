@@ -31,8 +31,13 @@ Cypress.skipAfterFail = ({ skipAllSuits = false } = {}) => {
   });
 };
 
-Cypress.Commands.add('filterWithNoValue', { prevSubject: true }, $elements =>
-  $elements.filter((_, e) => !e.value),
+Cypress.Commands.add(
+  'shouldHaveTrimmedText',
+  { prevSubject: true },
+  (subject, equalTo) => {
+    expect(subject.text().trim()).to.eq(equalTo);
+    return subject;
+  },
 );
 
 Cypress.Commands.add('checkItemOnGenericListLink', resourceName => {
@@ -49,6 +54,10 @@ Cypress.Commands.add('clickGenericListLink', resourceName => {
     .click();
 });
 
+Cypress.Commands.add('filterWithNoValue', { prevSubject: true }, $elements =>
+  $elements.filter((_, e) => !e.value),
+);
+
 Cypress.Commands.add('goToNamespaceDetails', () => {
   // Go to the details of namespace
   cy.getLeftNav()
@@ -63,6 +72,7 @@ Cypress.Commands.add('goToNamespaceDetails', () => {
 Cypress.Commands.add('clearInput', { prevSubject: true }, element => {
   return cy
     .wrap(element)
+
     .type(
       `${Cypress.platform === 'darwin' ? '{cmd}a' : '{ctrl}a'} {backspace}`,
     );
@@ -95,7 +105,7 @@ Cypress.Commands.add(
 function paste(subject, { pastePayload }) {
   // https://developer.mozilla.org/en-US/docs/Web/API/Element/paste_event
   const pasteEvent = Object.assign(
-    new Event('paste', { bubbles: true, cancelable: true }),
+    new Event('paste', { bubbles: true, cancelable: false }),
     {
       clipboardData: {
         getData: (type = 'text') => pastePayload,
@@ -108,49 +118,97 @@ function paste(subject, { pastePayload }) {
 }
 
 Cypress.Commands.add('getLeftNav', () => {
-  return cy.get('aside', { timeout: 10000 });
+  return cy.get('aside');
 });
 
-Cypress.Commands.add('deleteInDetails', () => {
-  cy.get('ui5-button')
-    .contains('Delete')
-    .should('be.visible')
-    .click();
+Cypress.Commands.add('getMidColumn', () => {
+  return cy.get('div[slot="midColumn"]');
+});
 
-  cy.contains(`delete ${resourceType} ${resourceName}`);
-  cy.get(`[header-text="Delete ${resourceType}"]`)
-    .find('[data-testid="delete-confirmation"]')
-    .click();
-
-  cy.contains(/deleted/).should('be.visible');
+Cypress.Commands.add('getEndColumn', () => {
+  return cy.get('div[slot="endColumn"]');
 });
 
 Cypress.Commands.add(
+  'deleteInDetails',
+  (resourceType, resourceName, columnLayout = false) => {
+    if (columnLayout) {
+      cy.wait(1000); //wait for button
+
+      cy.getMidColumn()
+        .contains('ui5-button', 'Delete')
+        .should('be.visible')
+        .click();
+    } else {
+      cy.get('ui5-button')
+        .contains('Delete')
+        .should('be.visible')
+        .click();
+    }
+
+    cy.contains(`delete ${resourceType} ${resourceName}`);
+
+    cy.get(`[header-text="Delete ${resourceType}"]:visible`)
+      .find('[data-testid="delete-confirmation"]')
+      .click();
+
+    cy.contains(/deleted/).should('be.visible');
+
+    cy.getMidColumn().should('not.be.visible');
+  },
+);
+
+Cypress.Commands.add(
   'deleteFromGenericList',
-  (
-    resourceType,
-    resourceName,
-    confirmationEnabled = true,
-    deletedVisible = true,
-    checkIfResourceIsRemoved = true,
-  ) => {
-    cy.get('ui5-combobox[placeholder="Search"]')
+  (resourceType, resourceName, options = {}) => {
+    const {
+      confirmationEnabled = true,
+      deletedVisible = true,
+      clearSearch = true,
+      isUI5Link = true,
+      checkIfResourceIsRemoved = true,
+      selectSearchResult = false,
+    } = options;
+
+    cy.get('ui5-input[placeholder="Search"]:visible')
       .find('input')
-      .click()
+      .wait(1000)
       .type(resourceName);
 
-    cy.checkItemOnGenericListLink(resourceName);
+    cy.wait(1000);
+
+    if (selectSearchResult) {
+      cy.get('ui5-li-suggestion-item:visible')
+        .contains(resourceName)
+        .click();
+    }
+
+    if (isUI5Link) {
+      cy.checkItemOnGenericListLink(resourceName);
+    } else {
+      cy.contains('ui5-link', resourceName).should('be.visible');
+    }
+
+    cy.contains('ui5-message-strip', /created/).should('not.exist');
 
     cy.get('ui5-button[data-testid="delete"]').click();
 
     if (confirmationEnabled) {
       cy.contains(`delete ${resourceType} ${resourceName}`);
-      cy.get(`[header-text="Delete ${resourceType}"]`)
+
+      cy.get(`[header-text="Delete ${resourceType}"]:visible`)
         .find('[data-testid="delete-confirmation"]')
         .click();
 
       if (deletedVisible) {
         cy.contains('ui5-message-strip', /deleted/).should('be.visible');
+      }
+
+      if (clearSearch) {
+        cy.get('ui5-input[placeholder="Search"]:visible')
+          .find('input')
+          .wait(1000)
+          .clear();
       }
 
       if (checkIfResourceIsRemoved) {
@@ -161,3 +219,46 @@ Cypress.Commands.add(
     }
   },
 );
+
+Cypress.Commands.add('changeCluster', clusterName => {
+  cy.get('header')
+    .find('[aria-haspopup="menu"]:visible')
+    .click({ force: true });
+
+  cy.get('ui5-list')
+    .find(`[aria-label="${clusterName}"]:visible`)
+    .find('span[part="title"]')
+    .click({ force: true });
+});
+
+Cypress.Commands.add(
+  'closeMidColumn',
+  (checkIfNotExist = false, hiddenButtons = false) => {
+    if (hiddenButtons) {
+      cy.getMidColumn()
+        .find('header')
+        .find('ui5-toggle-button:visible')
+        .click();
+
+      cy.get('[data-component-name="ToolbarOverflowPopoverContent"]')
+        .find('ui5-button[aria-label="close-column"]')
+        .click();
+    } else
+      cy.getMidColumn()
+        .find('ui5-button[aria-label="close-column"]')
+        .click();
+
+    cy.wait(1000);
+    if (checkIfNotExist) cy.getMidColumn().should('not.exist');
+    else cy.getMidColumn().should('not.be.visible');
+  },
+);
+
+Cypress.Commands.add('closeEndColumn', (checkIfNotExist = false) => {
+  cy.getEndColumn()
+    .find('ui5-button[aria-label="close-column"]')
+    .click();
+
+  if (checkIfNotExist) cy.getEndColumn().should('not.exist');
+  else cy.getEndColumn().should('not.be.visible');
+});

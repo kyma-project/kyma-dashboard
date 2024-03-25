@@ -24,7 +24,7 @@ context('Test Authorization Policies', () => {
   it('Create Authorization Policy', () => {
     cy.navigateTo('Istio', 'Authorization Policies');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
     cy.wait(500);
 
@@ -32,8 +32,7 @@ context('Test Authorization Policies', () => {
     chooseComboboxOption('[placeholder="Type or choose an option."]', ACTION);
 
     // Name
-    cy.get('ui5-dialog')
-      .find('[aria-label="AuthorizationPolicy name"]:visible')
+    cy.get('[aria-label="AuthorizationPolicy name"]:visible')
       .find('input')
       .type(AP_NAME, { force: true });
 
@@ -74,36 +73,53 @@ context('Test Authorization Policies', () => {
       .find('input')
       .type(PATHS);
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
   });
 
   it('Checking details', () => {
-    cy.contains(AP_NAME).should('be.visible');
+    cy.getMidColumn()
+      .contains(AP_NAME)
+      .should('be.visible');
 
-    cy.contains(ACTION).should('be.visible');
+    cy.getMidColumn()
+      .contains(ACTION)
+      .should('be.visible');
 
-    cy.contains('Matches all Pods in the Namespace').should('be.visible');
+    cy.getMidColumn()
+      .contains('Matches all Pods in the Namespace')
+      .should('be.visible');
 
-    cy.contains('Rule #1 to when', { timeout: 10000 }).click();
+    cy.getMidColumn()
+      .contains('Rule #1 to when', { timeout: 10000 })
+      .click();
 
-    cy.contains('To #1 methods paths', { timeout: 10000 }).click();
+    cy.getMidColumn()
+      .contains('To #1 methods paths', { timeout: 10000 })
+      .click();
 
-    cy.contains(PATHS).should('be.visible');
+    cy.getMidColumn()
+      .contains(PATHS)
+      .should('be.visible');
 
-    cy.contains(KEY).should('be.visible');
+    cy.getMidColumn()
+      .contains(KEY)
+      .should('be.visible');
 
-    cy.contains(VALUES).should('be.visible');
+    cy.getMidColumn()
+      .contains(VALUES)
+      .should('be.visible');
 
-    cy.contains('Operation').should('be.visible');
+    cy.getMidColumn()
+      .contains('Operation')
+      .should('be.visible');
 
-    cy.contains(METHODS).should('be.visible');
+    cy.getMidColumn()
+      .contains(METHODS)
+      .should('be.visible');
   });
 
   it('Edit and check changes', () => {
-    cy.contains('ui5-button', 'Edit').click();
+    cy.inspectTab('Edit');
 
     cy.get('[placeholder="Enter key"]:visible', { log: false })
       .find('input')
@@ -116,17 +132,19 @@ context('Test Authorization Policies', () => {
       .first()
       .type('selector-value', { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
 
-    cy.contains('sel=selector-value').should('be.visible');
+    cy.getMidColumn()
+      .contains('sel=selector-value')
+      .should('be.visible');
 
-    cy.contains('Matches all Pods in the Namespace').should('not.exist');
+    cy.getMidColumn()
+      .contains('Matches all Pods in the Namespace')
+      .should('not.exist');
   });
 
   it('Inspect list', () => {
-    cy.inspectList('Authorization Policies', 'test-ap');
+    cy.inspectList('test-ap');
   });
 });
