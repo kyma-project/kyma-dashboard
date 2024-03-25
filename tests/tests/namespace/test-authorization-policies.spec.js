@@ -24,7 +24,7 @@ context('Test Authorization Policies', () => {
   it('Create Authorization Policy', () => {
     cy.navigateTo('Istio', 'Authorization Policies');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
     cy.wait(500);
 
@@ -32,8 +32,7 @@ context('Test Authorization Policies', () => {
     chooseComboboxOption('[placeholder="Type or choose an option."]', ACTION);
 
     // Name
-    cy.get('ui5-dialog')
-      .find('[aria-label="AuthorizationPolicy name"]:visible')
+    cy.get('[aria-label="AuthorizationPolicy name"]:visible')
       .find('input')
       .type(AP_NAME, { force: true });
 
@@ -74,10 +73,7 @@ context('Test Authorization Policies', () => {
       .find('input')
       .type(PATHS);
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
   });
 
   it('Checking details', () => {
@@ -123,9 +119,7 @@ context('Test Authorization Policies', () => {
   });
 
   it('Edit and check changes', () => {
-    cy.getMidColumn()
-      .contains('ui5-button', 'Edit')
-      .click();
+    cy.inspectTab('Edit');
 
     cy.get('[placeholder="Enter key"]:visible', { log: false })
       .find('input')
@@ -138,10 +132,8 @@ context('Test Authorization Policies', () => {
       .first()
       .type('selector-value', { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
 
     cy.getMidColumn()
       .contains('sel=selector-value')
