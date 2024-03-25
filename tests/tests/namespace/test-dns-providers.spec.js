@@ -20,9 +20,7 @@ context('Test DNS Providers', () => {
   it('Create DNS Provider', () => {
     cy.navigateTo('Configuration', 'DNS Providers');
 
-    cy.contains('ui5-button', 'Create').click();
-
-    cy.wait(500);
+    cy.openCreate();
 
     // type
     chooseComboboxOption(
@@ -50,16 +48,12 @@ context('Test DNS Providers', () => {
       .type(PROVIDER_INCLUDED_DOMAIN, { force: true });
 
     // name
-    cy.get('ui5-dialog')
-      .find('[aria-label="DNSProvider name"]:visible')
+    cy.get('[aria-label="DNSProvider name"]:visible')
       .find('input')
       .type(PROVIDER_NAME, { force: true });
 
     // create
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
   });
 
   it('Inspect details', () => {
@@ -72,21 +66,15 @@ context('Test DNS Providers', () => {
   });
 
   it('Edit DNS Provider', () => {
-    cy.wait(1000);
-
-    cy.getMidColumn()
-      .contains('ui5-button', 'Edit')
-      .click();
+    cy.inspectTab('Edit');
 
     // name should be readonly
-    cy.get('ui5-dialog')
-      .find('[aria-label="DNSProvider name"]:visible')
+    cy.get('[aria-label="DNSProvider name"]:visible')
       .find('input')
       .should('have.attr', 'readonly', 'readonly');
 
     // edit labels
-    cy.get('ui5-dialog')
-      .contains('Labels')
+    cy.get('[aria-label="expand Labels"]')
       .filter(':visible', { log: false })
       .click();
 
@@ -107,8 +95,7 @@ context('Test DNS Providers', () => {
       .type(PROVIDER_INCLUDED_DOMAIN_2);
 
     // edit excluded domains
-    cy.get('ui5-dialog')
-      .contains('Exclude Domains')
+    cy.contains('Exclude Domains')
       .scrollIntoView()
       .filter(':visible', { log: false })
       .click();
@@ -119,10 +106,8 @@ context('Test DNS Providers', () => {
       .type(PROVIDER_EXCLUDED_DOMAIN);
 
     // hit update
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
 
     cy.getMidColumn().contains('Included Domains');
 
@@ -133,7 +118,7 @@ context('Test DNS Providers', () => {
   });
 
   it('Inspect list', () => {
-    cy.inspectList('DNS Providers', PROVIDER_NAME);
+    cy.inspectList(PROVIDER_NAME);
 
     // label
     cy.contains('edited=yes');

@@ -17,14 +17,9 @@ context('Test Certificates', () => {
   it('Adds and displays a certificate', () => {
     cy.navigateTo('Configuration', 'Certificates');
 
-    cy.contains('ui5-button', 'Create')
-      .click()
-      .should('be.visible');
+    cy.openCreate();
 
-    cy.contains('Simple').should('be.visible');
-
-    cy.get('ui5-dialog')
-      .find('[aria-label="Certificate name"]:visible')
+    cy.get('[aria-label="Certificate name"]:visible')
       .find('input')
       .click()
       .type(CERT_NAME, { force: true });
@@ -34,10 +29,7 @@ context('Test Certificates', () => {
       .click()
       .type(CERT_COMMON_NAME, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
 
     cy.getMidColumn()
       .contains('ui5-title', CERT_NAME)
@@ -45,15 +37,9 @@ context('Test Certificates', () => {
   });
 
   it('Edits a certificate', () => {
-    cy.wait(500);
-
-    cy.getMidColumn()
-      .contains('ui5-button', 'Edit')
-      .click();
+    cy.inspectTab('Edit');
 
     cy.clickGenericListLink(CERT_NAME);
-
-    cy.contains('ui5-button', 'Edit').click();
 
     cy.get('[aria-label="expand Annotations"]').click();
 
@@ -66,10 +52,8 @@ context('Test Certificates', () => {
       .first()
       .type(ANNOTATION_VALUE, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
 
     cy.getMidColumn()
       .contains(`${ANNOTATION_KEY}=${ANNOTATION_VALUE}`)
@@ -77,6 +61,6 @@ context('Test Certificates', () => {
   });
 
   it('Inspect a certificate list', () => {
-    cy.inspectList('Certificates', CERT_NAME);
+    cy.inspectList(CERT_NAME);
   });
 });

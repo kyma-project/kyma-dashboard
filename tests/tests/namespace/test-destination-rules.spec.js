@@ -22,10 +22,9 @@ context('Test Destination Rules', () => {
   it('Create a Destination Rule', () => {
     cy.navigateTo('Istio', 'Destination Rules');
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
-    cy.get('ui5-dialog')
-      .find('[aria-label="DestinationRule name"]:visible')
+    cy.get('[aria-label="DestinationRule name"]:visible')
       .find('input')
       .type(DR_NAME, { force: true });
 
@@ -34,10 +33,7 @@ context('Test Destination Rules', () => {
       .click()
       .type(HOST, { force: true });
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Create')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Create');
 
     cy.getMidColumn()
       .contains('ui5-title', DR_NAME)
@@ -59,14 +55,9 @@ context('Test Destination Rules', () => {
   });
 
   it('Edit Destination Rule', () => {
-    cy.wait(500);
+    cy.inspectTab('Edit');
 
-    cy.getMidColumn()
-      .contains('ui5-button', 'Edit')
-      .click();
-
-    cy.get('ui5-dialog')
-      .find('[aria-label="DestinationRule name"]:visible')
+    cy.get('[aria-label="DestinationRule name"]:visible')
       .find('input')
       .should('have.attr', 'readonly');
 
@@ -103,10 +94,8 @@ context('Test Destination Rules', () => {
     //   .eq(1)
     //   .type(SIMPLE);
 
-    cy.get('ui5-dialog')
-      .contains('ui5-button', 'Update')
-      .should('be.visible')
-      .click();
+    cy.saveChanges('Edit');
+    cy.getMidColumn().inspectTab('View');
 
     // changed details
     cy.getMidColumn().contains(SELECTOR);
@@ -114,6 +103,6 @@ context('Test Destination Rules', () => {
   });
 
   it('Check the Destination Rule list', () => {
-    cy.inspectList('Destination Rules', DR_NAME);
+    cy.inspectList(DR_NAME);
   });
 });

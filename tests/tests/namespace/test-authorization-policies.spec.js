@@ -145,6 +145,6 @@ context('Test Authorization Policies', () => {
   });
 
   it('Inspect list', () => {
-    cy.inspectList('Authorization Policies', 'test-ap');
+    cy.inspectList('test-ap');
   });
 });
