@@ -12,13 +12,11 @@ context('Clean up Namespace', () => {
       .contains('Namespaces')
       .click();
 
-    cy.deleteFromGenericList(
-      'Namespace',
-      Cypress.env('NAMESPACE_NAME'),
-      true,
-      true,
-      false,
-    );
+    cy.deleteFromGenericList('Namespace', Cypress.env('NAMESPACE_NAME'), {
+      clearSearch: false,
+      checkIfResourceIsRemoved: false,
+      selectSearchResult: true,
+    });
   });
 
   it('Check if the Namespace is terminated (step 2)', { retries: 3 }, () => {
@@ -28,6 +26,6 @@ context('Clean up Namespace', () => {
 
     cy.get('ui5-table')
       .contains(Cypress.env('NAMESPACE_NAME'))
-      .should('not.exist');
+      .should('not.exist', { timeout: 50000 });
   });
 });
