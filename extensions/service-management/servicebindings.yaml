@@ -98,7 +98,7 @@ data:
     urlPath: servicebindings
     scope: namespace
     description: >-
-      {{[BTP Service Binding](https://github.com/SAP/sap-btp-service-operator#step-2-create-a-service-binding)}}
+      {{[BTP Service Binding](https://github.com/SAP/sap-btp-service-operator/blob/main/README.md)}}
       provides access details for an existing service instance.
   list: |
     - name: spec.controlledBy

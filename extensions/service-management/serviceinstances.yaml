@@ -70,7 +70,7 @@ data:
     urlPath: serviceinstances
     scope: namespace
     description: >-
-      {{[BTP Service Instance](https://github.com/SAP/sap-btp-service-operator#step-1-create-a-service-instance)}}
+      {{[BTP Service Instance](https://github.com/SAP/sap-btp-service-operator/blob/main/README.md)}}
       makes the functionality of a service available for consumption.
   list: |
     - name: spec.serviceOfferingName
