@@ -17,7 +17,9 @@ data:
     scope: cluster
     name: Applications
     category: Integration
-    description: description
+    description: >-
+      {{[Application](https://kyma-project.io/#/application-connector-manager/user/README)}}
+      represents an external solution connected to Kyma.
   details: |-
     header:
       - name: headers.description
@@ -74,8 +76,6 @@ data:
     - path: spec.accessLabel
   translations: |-
     en: 
-      description: "{{[Application](https://kyma-project.io/docs/kyma/latest/05-technical-reference/00-custom-resources/ac-01-application)}}
-        represents an external solution connected to Kyma."
       headers: 
         access-label: Access Label
         apis: APIs
