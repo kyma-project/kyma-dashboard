@@ -141,9 +141,7 @@ data:
         - widget: ResourceButton
           source: "'Modify Modules'"
           resource: 
-            name: metadata.name
-            namespace: metadata.namespace
-            kind: "'Kyma'"
+            customUrl: "kymamodules"
         - widget: ExternalLinkButton
           link: https://help.sap.com/docs/btp/sap-business-technology-platform/kyma-s-modular-approach
       targets:
