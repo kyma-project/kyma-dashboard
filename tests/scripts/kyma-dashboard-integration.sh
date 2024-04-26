@@ -8,6 +8,8 @@ export TAG="test-dev"
 OS="$(uname -s | tr 'A-Z' 'a-z')"
 ARCH="$(uname -m)"
 
+APPLICATION_CONNECTOR_VERSION="1.1.3"
+
 apt-get update -y 
 apt-get install -y gettext-base
 
@@ -41,8 +43,8 @@ kubectl apply -f https://github.com/kyma-project/istio/releases/latest/download/
 kubectl apply -f https://github.com/kyma-project/istio/releases/latest/download/istio-default-cr.yaml
 
 echo "Apply application connector"
-kubectl apply -f https://github.com/kyma-project/application-connector-manager/releases/latest/download/application-connector-manager.yaml
-kubectl apply -f https://github.com/kyma-project/application-connector-manager/releases/latest/download/default_application_connector_cr.yaml
+kubectl apply -f https://github.com/kyma-project/application-connector-manager/releases/download/${APPLICATION_CONNECTOR_VERSION}/application-connector-manager.yaml
+kubectl apply -f https://github.com/kyma-project/application-connector-manager/releases/download/${APPLICATION_CONNECTOR_VERSION}/default_application_connector_cr.yaml
 
 echo "Apply eventing"
 kubectl apply -f https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing-manager.yaml
