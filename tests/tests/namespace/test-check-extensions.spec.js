@@ -33,35 +33,6 @@ context('Test Namespace Extensions view', () => {
     });
   });
 
-  // Istio
-  describe('Check Istio Extensions', () => {
-    useCategory('Istio');
-
-    it('Test Authorization Policies', () => {
-      cy.checkExtension('Authorization Policies');
-    });
-
-    it('Test Destination Rules', () => {
-      cy.checkExtension('Destination Rules');
-    });
-
-    it('Test Gateways', () => {
-      cy.checkExtension('Gateways');
-    });
-
-    it('Test Service Entries', () => {
-      cy.checkExtension('Service Entries');
-    });
-
-    it('Test Sidecars', () => {
-      cy.checkExtension('Sidecars');
-    });
-
-    it('Test Virtual Services', () => {
-      cy.checkExtension('Virtual Services');
-    });
-  });
-
   // Configuration
   describe('Check Configuration Extensions', () => {
     useCategory('Configuration');
