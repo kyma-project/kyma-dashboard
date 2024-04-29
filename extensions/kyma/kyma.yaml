@@ -137,6 +137,9 @@ data:
       source: $
       id: ModulesBanner
       order: 0
+      visibility: isSAPuser()
+      illustration: Modules
+      design: information-1
       children:
         - widget: ResourceButton
           source: "'Modify Modules'"
@@ -147,5 +150,22 @@ data:
         - widget: ExternalLinkButton
           link: https://help.sap.com/docs/btp/sap-business-technology-platform/kyma-s-modular-approach
       targets:
-        - slot: details-top
+        - slot: banner
+          location: ClusterOverview
+    - title: Shape the future of GenAI in Kyma
+      description: Contribute to our survey and witness how your feedback drives intelligent enhancements to the Kyma Dashboard. Together, we can leverage cutting-edge technology to create a personalized experience that exceeds your expectations.
+      widget: FeaturedCard
+      source: $
+      id: AIbanner
+      order: 1
+      visibility: isSAPuser()
+      illustration: AI
+      design: information-2
+      children:
+        - widget: ExternalLinkButton
+          link: https://sapinsights.eu.qualtrics.com/jfe/form/SV_9WF4ZSc1tuexzVA
+          name: Take survey
+          emphasized: true
+      targets:
+        - slot: banner
           location: ClusterOverview
