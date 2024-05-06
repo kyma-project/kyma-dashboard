@@ -19,7 +19,8 @@ curl -Lo kyma https://storage.googleapis.com/kyma-cli-unstable/kyma-${OS}
 chmod +x ./kyma
 
 echo "Provisioning k3d cluster for Kyma"
-./kyma provision k3d --ci
+k3d cluster create
+kubectl create ns kyma-system
 
 # uncomment after command fix
 # ./kyma deploy
