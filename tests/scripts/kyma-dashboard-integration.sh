@@ -19,9 +19,11 @@ curl -Lo kyma https://storage.googleapis.com/kyma-cli-unstable/kyma-${OS}
 chmod +x ./kyma
 
 echo "Provisioning k3d cluster for Kyma"
-k3d cluster create
+k3d registry create kyma-registry --port 5001
+
+k3d cluster create kyma --kubeconfig-switch-context -p 80:80@loadbalancer -p 443:443@loadbalancer --registry-use kyma-registry
 kubectl create ns kyma-system
-k3d registry create k3d-k3d-k3s-default-registry --port 5001
+
 
 # uncomment after command fix
 # ./kyma deploy
