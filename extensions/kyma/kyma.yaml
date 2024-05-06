@@ -138,7 +138,6 @@ data:
       source: $
       id: ModulesBanner
       order: 0
-      visibility: isSAPuser()
       illustration: Modules
       design: information-1
       children:
@@ -160,7 +159,7 @@ data:
       source: $
       id: AIbanner
       order: 1
-      visibility: isSAPuser()
+      visibility: $isSAPuser()
       illustration: AI
       design: information-2
       children:
