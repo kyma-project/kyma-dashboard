@@ -21,6 +21,7 @@ chmod +x ./kyma
 echo "Provisioning k3d cluster for Kyma"
 k3d cluster create
 kubectl create ns kyma-system
+k3d registry create kyma-registry --port 5001
 
 # uncomment after command fix
 # ./kyma deploy
