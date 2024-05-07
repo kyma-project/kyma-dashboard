@@ -132,11 +132,14 @@ data:
       alert.beta: "CAUTION: The Service Level Agreements (SLAs) and Support obligations do not apply to Beta modules and functionalities. If Beta modules or functionalities directly or indirectly affect other modules, the Service Level Agreements and Support for these modules are limited to priority levels P3 (Medium) or P4 (Low). Thus, Beta releases are not intended for use in customer production environments."
   injections: |-
     - title: Introducing Modules
+      name: Modules
       description: Modules add functionalities to your cluster. Consume SAP BTP services, monitor your cluster, build serverless applications and more.
       widget: FeaturedCard
       source: $
       id: ModulesBanner
       order: 0
+      illustration: Modules
+      design: information-1
       children:
         - widget: ResourceButton
           source: "'Modify Modules'"
@@ -145,5 +148,23 @@ data:
         - widget: ExternalLinkButton
           link: https://help.sap.com/docs/btp/sap-business-technology-platform/kyma-s-modular-approach
       targets:
-        - slot: details-top
+        - slot: banner
+          location: ClusterOverview
+    - title: Shape the future of GenAI in Kyma
+      name: AIbanner
+      description: Contribute to our survey and witness how your feedback drives intelligent enhancements to the Kyma Dashboard. Together, we can leverage cutting-edge technology to create a personalized experience that exceeds your expectations.
+      widget: FeaturedCard
+      source: $
+      id: AIbanner
+      order: 1
+      visibility: $isSAPuser()
+      illustration: AI
+      design: information-2
+      children:
+        - widget: ExternalLinkButton
+          link: https://sapinsights.eu.qualtrics.com/jfe/form/SV_9WF4ZSc1tuexzVA
+          name: Take survey
+          emphasized: true
+      targets:
+        - slot: banner
           location: ClusterOverview
