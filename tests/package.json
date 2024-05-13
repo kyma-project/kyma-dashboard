@@ -14,11 +14,10 @@
     "run-docker": "docker run --rm -it -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --pid=host --name kyma-dashboard europe-docker.pkg.dev/kyma-project/dev/kyma-dashboard-local-dev:PR-$PR_NUMBER"
   },
   "devDependencies": {
-    "cypress": "^13.8.1",
     "cypress-file-upload": "^5.0.8",
     "js-yaml": "^4.1.0"
   },
   "optionalDependencies": {
-    "cypress": "^13.6.1"
+    "cypress": "^13.8.1"
   }
 }
