@@ -117,7 +117,7 @@ data:
     urlPath: kymas
     scope: namespace
     description: >-
-      {{[Kyma Custom Resource](https://github.com/kyma-project/lifecycle-manager/blob/main/docs/technical-reference/api/kyma-cr.md)}}
+      {{[Kyma custom resource](https://github.com/kyma-project/lifecycle-manager/blob/main/docs/technical-reference/api/kyma-cr.md)}}
       configures your Kyma modules.
   list: |-
     - name: Channel
