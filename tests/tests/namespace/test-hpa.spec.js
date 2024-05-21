@@ -101,7 +101,8 @@ context('Test HPA', () => {
 
     cy.inspectTab('Edit');
 
-    cy.get('[data-testid="spec.minReplicas"]:visible')
+    cy.getMidColumn()
+      .get('[data-testid="spec.minReplicas"]:visible')
       .find('input')
       .click()
       .clear()
