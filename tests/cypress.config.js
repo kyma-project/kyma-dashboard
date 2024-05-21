@@ -1,6 +1,7 @@
 const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
+  experimentalMemoryManagement: true,
   includeShadowDom: true,
   defaultCommandTimeout: 60000,
   execTimeout: 60000,
