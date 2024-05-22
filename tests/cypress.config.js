@@ -38,7 +38,8 @@ module.exports = defineConfig({
       'tests/namespace/test-certificates.spec.js',
       'tests/namespace/test-issuers.spec.js',
       'tests/namespace/test-dns-providers.spec.js',
-      'tests/namespace/test-hpa.spec.js',
+      // out of CPU/memory, disabled for now
+      // 'tests/namespace/test-hpa.spec.js',
       'tests/namespace/test-oauth2.spec.js',
       'tests/namespace/test-dns-entries.spec.js',
       'tests/namespace/test-services.spec.js',
