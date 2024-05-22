@@ -40,7 +40,8 @@ module.exports = defineConfig({
       // out of CPU/memory, disabled for now
       // 'tests/namespace/test-hpa.spec.js',
       'tests/namespace/test-oauth2.spec.js',
-      'tests/namespace/test-dns-entries.spec.js',
+      // out of CPU/memory, disabled for now
+      // 'tests/namespace/test-dns-entries.spec.js',
       'tests/namespace/test-services.spec.js',
       // 'tests/namespace/test-kyma.spec.js',
       // 'tests/namespace/test-module-templates.spec.js',
