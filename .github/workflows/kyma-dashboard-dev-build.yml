@@ -28,9 +28,9 @@ jobs:
         run: |
           chmod +x ./environments/dev/env.sh
           ./environments/dev/env.sh
-          echo "WEB_IMAGE=$WEB_IMAGE" >> $GITHUB_ENV
-          echo "BACKEND_IMAGE=$BACKEND_IMAGE" >> $GITHUB_ENV
-          echo "LOCAL_IMAGE=$LOCAL_IMAGE" >> $GITHUB_ENV
+          echo "WEB_IMAGE=$WEB_IMAGE" >> $GITHUB_OUTPUT
+          echo "BACKEND_IMAGE=$BACKEND_IMAGE" >> $GITHUB_OUTPUT
+          echo "LOCAL_IMAGE=$LOCAL_IMAGE" >> $GITHUB_OUTPUT
   build-extensions:
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
