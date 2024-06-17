@@ -12,6 +12,7 @@ on:
     #   - "Makefile"
     #   - "tests/**"
 
+
 permissions:
   id-token: write # This is required for requesting the JWT token
   contents: read # This is required for actions/checkout
@@ -41,7 +42,7 @@ jobs:
     needs: build-image
     steps:
       - name: Test image
-        run: echo "Testing images ${{ needs.build-image.outputs.images }}"
+        run: echo "Testing images ${{ needs.build-extensions.outputs.images }}"
   build-web:
     needs: [ build-extensions, load-env ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
