@@ -26,6 +26,7 @@ jobs:
       - name: Load environment variables
         id: env
         run: |
+          chmod +x ./environments/dev/env.sh
           ./environments/dev/env.sh
           echo "WEB_IMAGE=$WEB_IMAGE" >> $GITHUB_OUTPUT
           echo "BACKEND_IMAGE=$BACKEND_IMAGE" >> $GITHUB_OUTPUT
