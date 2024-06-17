@@ -1,3 +1,6 @@
+ARG BACKEND_IMAGE
+ARG ENV
+
 FROM europe-docker.pkg.dev/kyma-project/prod/busola-backend:${BACKEND_IMAGE}
 
 COPY ./environments/${ENV}/config.yaml /app/config/config.yaml
