@@ -39,7 +39,7 @@ jobs:
         ENV=dev
   test-image:
     runs-on: ubuntu-latest
-    needs: build-image
+    needs: build-extensions
     steps:
       - name: Test image
         run: echo "Testing images ${{ needs.build-extensions.outputs.images }}"
