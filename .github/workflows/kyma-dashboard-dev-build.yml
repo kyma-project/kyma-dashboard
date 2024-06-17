@@ -4,8 +4,24 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "Dockerfile.*"
+      - "package.json"
+      - "environments/dev/**"
+      - "extensions/**"
+      - "gulpfile.js"
+      - "Makefile"
+      - "tests/**"
   pull_request_target:
-    types: [opened, edited, synchronize, reopened, ready_for_review] 
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+    paths:
+      - "Dockerfile.*"
+      - "package.json"
+      - "environments/dev/**"
+      - "extensions/**"
+      - "gulpfile.js"
+      - "Makefile"
+      - "tests/**"
 
 permissions:
   id-token: write # This is required for requesting the JWT token
