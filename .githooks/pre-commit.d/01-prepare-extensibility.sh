@@ -15,6 +15,8 @@ echo "Running extensions pre-commit hook..."
         ENV=${environment} npm run pack-wizards
         ENV=${environment} npm run prepare-statics
         ENV=${environment} npm run pack-statics
+        git add -u $files
+        git commit -m "chore: update extensibility for ${environment} environment"
         else
           echo "No changes in ${environment} environment. Skipping.."
       fi
