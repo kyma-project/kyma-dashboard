@@ -30,6 +30,8 @@ sudo launchctl config user path /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 After running this command, reboot your machine to apply changes.
 
+For more details, see this [Stack Exchange thread](https://apple.stackexchange.com/questions/51677/how-to-set-path-for-finder-launched-applications).
+
 ## Hooks List
 |Name|Type|Description|
 |---|---|---|
