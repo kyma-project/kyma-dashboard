@@ -31,4 +31,4 @@ After running this command, reboot your machine to apply changes.
 ## Hooks List
 |Name|Type|Description|
 |---|---|---|
-|01-rendertemplates.sh|pre-commit|Automatically renders templates and adds the resulting files to the commit if there were any changes.| 
+|01-prepare-extensibility|pre-commit|Automatically check changes in dev, stage, prod folders, pack extensions and adds the resulting files to the commit if there were any changes.| 
