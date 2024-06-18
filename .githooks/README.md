@@ -26,7 +26,7 @@ Upon startup, GoLand initializes the `PATH` based on the macOS' `launchd` path.
 ```shell
 sudo launchctl config user path /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 ```
->**CAUTION:** This change is applied to ALL uses of a computer!
+   >**CAUTION:** This command introduces the change to ALL computer users.
 
 2. Reboot your machine to apply changes.
 
