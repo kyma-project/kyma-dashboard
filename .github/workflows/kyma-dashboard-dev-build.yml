@@ -31,15 +31,6 @@ jobs:
           echo "WEB_IMAGE=$WEB_IMAGE" >> $GITHUB_OUTPUT
           echo "BACKEND_IMAGE=$BACKEND_IMAGE" >> $GITHUB_OUTPUT
           echo "LOCAL_IMAGE=$LOCAL_IMAGE" >> $GITHUB_OUTPUT
-  build-extensions:
-    uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
-    with:
-      name: kyma-dashboard-dev-extensions
-      dockerfile: Dockerfile.extensions
-      context: .
-      export-tags: true
-      build-args: |
-        ENV=dev
   test-image:
     runs-on: ubuntu-latest
     needs: build-extensions
