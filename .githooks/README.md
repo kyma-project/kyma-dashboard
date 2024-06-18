@@ -18,7 +18,7 @@ Now, your local Git repository uses Git hooks from the `.githooks` path.
 ### Mac: VCS Integration in GoLand Can't Use Applications Installed by Homebrew
 
 This is a common issue for all JetBrains IDEs that run on a Mac.
-Upon startup, GoLand initializes the `PATH` based on the macOS' `launchd` path.
+GoLand initializes the `PATH` upon startup based on the macOS `launchd` path.
 <!-- markdown-link-check-disable-next-line -->
 #### Remedy
 
