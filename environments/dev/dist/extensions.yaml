@@ -123,7 +123,7 @@ details:
         and $v.status = 'True' })) != 0 ? 'RUNNING' :
         $count($filter($.status.conditions, function($v) { $v.type = 'Running'
         and $v.status = 'Unknown' and $v.reason = 'MinReplicasNotAvailable' }))
-        != 0 ? 'PENDING' : 'DEPLOYING' : 'BUILDING' : 'INITIALIZING'
+        != 0 ? 'PENDING' : 'DEPLOYING' : 'BUILDING' : 'INITIALIZING' 
       description: >-
         ($.status = undefined or $.status.conditions = undefined or
         $count($.status.conditions) = 0) ? null :
@@ -132,7 +132,7 @@ details:
         'Running' and $v.status = 'True' })) != 0 ? 'New revision error: ' &
         $filter($.status.conditions, function($v) { $v.status = 'False'
         })[0].message : 'Error: ' & $filter($.status.conditions, function($v) {
-        $v.status = 'False' })[0].message : null
+        $v.status = 'False' })[0].message : null 
     - name: header.sourceType
       source: 'spec.source.gitRepository ? "Git Repository" : "Inline Editor"'
     - name: header.runtime
@@ -176,7 +176,7 @@ details:
                       widget: ResourceLink
                       source: secretName
                       resource:
-                        kind: "'Secret'"
+                        kind: '''Secret'''
                         name: secretName
                         namespace: $root.metadata.namespace
                     - name: code.gitRepository.auth.type
@@ -474,13 +474,13 @@ form:
         widget: KeyValuePair
       - visibility: $boolean($root.spec.resourceConfiguration.function.profile)
         severity: warning
-        alert: "'alert.resources.limits'"
+        alert: '''alert.resources.limits'''
         widget: Alert
       - path: resources.requests
         widget: KeyValuePair
       - visibility: $boolean($root.spec.resourceConfiguration.function.profile)
         severity: warning
-        alert: "'alert.resources.requests'"
+        alert: '''alert.resources.requests'''
         widget: Alert
   - path: spec.resourceConfiguration.build
     widget: FormGroup
@@ -591,7 +591,7 @@ list:
       'RUNNING' : $count($filter($.status.conditions, function($v) { $v.type =
       'Running' and $v.status = 'Unknown' and $v.reason =
       'MinReplicasNotAvailable' })) != 0 ? 'PENDING' : 'DEPLOYING' : 'BUILDING'
-      : 'INITIALIZING'
+      : 'INITIALIZING' 
     description: >-
       ($.status = undefined or $.status.conditions = undefined or
       $count($.status.conditions) = 0) ? null :
@@ -773,7 +773,7 @@ details:
           widget: ResourceLink
           resource:
             namespace: $root.spec.secretRef.namespace
-            kind: "'Secret'"
+            kind: '''Secret'''
             name: $root.spec.secretRef.name
         - name: spec.csr
           source: spec.csr
@@ -1862,7 +1862,7 @@ injections:
     design: information-1
     children:
       - widget: ResourceButton
-        source: "'Modify Modules'"
+        source: '''Add Modules'''
         resource:
           customUrl: kymamodules
       - widget: ExternalLinkButton
@@ -1976,7 +1976,7 @@ details:
       children:
         - name: Custom
           widget: CodeViewer
-          language: "'plaintext'"
+          language: '''plaintext'''
           source: spec.output.custom
           visibility: $exists(spec.output.custom)
         - name: Grafana-Loki
@@ -2405,7 +2405,7 @@ details:
           resource:
             name: spec.secretName
             namespace: $root.metadata.namespace
-            kind: "'Secret'"
+            kind: '''Secret'''
         - name: spec.tokenEndpointAuthMethod
           source: spec.tokenEndpointAuthMethod
           widget: Labels
@@ -2518,7 +2518,7 @@ list:
     resource:
       name: spec.secretName
       namespace: $root.metadata.namespace
-      kind: "'secret'"
+      kind: '''secret'''
   - source: 'status.state ? "error" : "ok"'
     highlights:
       positive:
@@ -2539,7 +2539,7 @@ injections:
     order: 1
     children:
       - widget: Alert
-        source: "'deprecation.long'"
+        source: '''deprecation.long'''
         severity: warning
       - widget: ExternalLink
         name: Migration blogpost
@@ -2646,14 +2646,14 @@ details:
           widget: ResourceLink
           resource:
             namespace: $root.metadata.namespace
-            kind: "'ServiceInstance'"
+            kind: '''ServiceInstance'''
             name: $root.spec.serviceInstanceName
         - name: spec.secretName
           source: spec.secretName
           widget: ResourceLink
           resource:
             namespace: $root.metadata.namespace
-            kind: "'Secret'"
+            kind: '''Secret'''
             name: $root.spec.secretName
         - name: spec.externalName
           source: spec.externalName
@@ -2684,7 +2684,7 @@ form:
   - path: spec.secretName
   - path: spec.parameters
     widget: CodeEditor
-    language: "'json'"
+    language: '''json'''
   - path: spec.parametersFrom
     widget: SimpleList
     defaultExpanded: true
@@ -2723,7 +2723,7 @@ list:
     widget: ResourceLink
     resource:
       namespace: $root.metadata.namespace
-      kind: "'ServiceInstance'"
+      kind: '''ServiceInstance'''
       name: $root.spec.serviceInstanceName
   - name: spec.externalName
     source: spec.externalName
@@ -2811,7 +2811,7 @@ form:
     placeholder: spec.externalNamePlaceholder
   - path: spec.parameters
     widget: CodeEditor
-    language: "'json'"
+    language: '''json'''
 general:
   resource:
     kind: ServiceInstance
@@ -3167,7 +3167,7 @@ details:
       resource:
         name: $substringBefore($substringAfter(spec.sink, "http://"), ".")
         namespace: $root.metadata.namespace
-        kind: "'Service'"
+        kind: '''Service'''
   body:
     - source: status.conditions
       widget: Table
@@ -3284,388 +3284,3 @@ translations:
     status.conditions.type: Type
     status.conditions.message: Message
     status.type: Type
----
-details:
-  header:
-    - source: >-
-        $each(spec.output, function($v, $k) {$v.endpoint.value or
-        $v.endpoint.valueFrom.secretKeyRef.name ? $k})
-      placeholder: custom
-      type: string
-      name: Type
-      isSelected: true
-      widget: Text
-  body:
-    - source: >-
-        $filter(status.conditions, function ($v) { $v.type != "Pending" and
-        $v.type != "Running" })
-      widget: Table
-      name: Reconciliation Conditions
-      children:
-        - source: type
-          name: Type
-        - source: status
-          name: Status
-          widget: Badge
-          highlights:
-            success:
-              - 'True'
-            error:
-              - 'False'
-        - source: reason
-          name: Reason
-        - source: message
-          name: Message
-        - source: $readableTimestamp(lastTransitionTime)
-          name: Last transition
-          sort: true
-    - widget: Panel
-      name: Output
-      children:
-        - name: OTLP
-          widget: Panel
-          visibility: $exists(spec.output.otlp)
-          children:
-            - name: Endpoint
-              widget: Panel
-              visibility: $exists(spec.output.otlp.endpoint)
-              children:
-                - name: Value
-                  source: spec.output.otlp.endpoint.value
-                  visibility: $exists(spec.output.otlp.endpoint.value)
-                - name: Value From Secret
-                  widget: ResourceRefs
-                  source: spec.output.otlp.endpoint.valueFrom.secretKeyRef
-                  kind: Secret
-                  visibility: >-
-                    $exists(spec.output.otlp.endpoint.valueFrom.secretKeyRef.name)
-            - name: Authentication
-              widget: Panel
-              visibility: $exists(spec.output.otlp.authentication)
-              children:
-                - name: User
-                  widget: Panel
-                  visibility: $exists(spec.output.otlp.authentication.basic.user)
-                  children:
-                    - name: Value
-                      source: spec.output.otlp.authentication.basic.user.value
-                      visibility: >-
-                        $exists(spec.output.otlp.authentication.basic.user.value)
-                    - name: Value From Secret
-                      widget: ResourceRefs
-                      source: >-
-                        spec.output.otlp.authentication.basic.user.valueFrom.secretKeyRef
-                      kind: Secret
-                      visibility: >-
-                        $exists(spec.output.otlp.authentication.basic.user.valueFrom.secretKeyRef.name)
-                - name: Password
-                  widget: Panel
-                  visibility: $exists(spec.output.otlp.authentication.basic.password)
-                  children:
-                    - name: Value
-                      source: spec.output.otlp.authentication.basic.password.value
-                      visibility: >-
-                        $exists(spec.output.otlp.authentication.basic.password.value)
-                    - name: Value From Secret
-                      widget: ResourceRefs
-                      source: >-
-                        spec.output.otlp.authentication.basic.password.valueFrom.secretKeyRef
-                      kind: Secret
-                      visibility: >-
-                        $exists(spec.output.otlp.authentication.basic.password.valueFrom.secretKeyRef.name)
-            - name: Headers
-              widget: Panel
-              visibility: $exists(spec.output.otlp.headers)
-              children:
-                - name: Header
-                  widget: Panel
-                  visibility: $exists(spec.output.otlp.headers[].name)
-                  source: spec.output.otlp.headers[]
-                  children:
-                    - name: Name
-                      source: name
-                      visibility: $exists(name)
-                    - name: Prefix
-                      source: prefix
-                      visibility: $exists(prefix)
-                    - name: Value
-                      source: value
-                      visibility: $exists(value)
-                    - name: Value From Secret
-                      widget: ResourceRefs
-                      source: valueFrom.secretKeyRef
-                      kind: Secret
-                      visibility: $exists(valueFrom.secretKeyRef.name)
-            - name: TLS
-              widget: Panel
-              visibility: $exists(spec.output.otlp.tls)
-              children:
-                - name: Insecure
-                  visibility: $exists(spec.output.otlp.tls.insecure)
-                  source: spec.output.otlp.tls.insecure
-                - name: Skip Cert Verification
-                  visibility: $exists(spec.output.otlp.tls.insecureSkipVerify)
-                  source: spec.output.otlp.tls.insecureSkipVerify
-                - name: Ca
-                  widget: Panel
-                  visibility: $exists(spec.output.otlp.tls.ca)
-                  source: spec.output.otlp.tls.ca
-                  children:
-                    - name: Value
-                      source: value
-                      visibility: $exists(value)
-                    - name: Value From Secret
-                      widget: ResourceRefs
-                      source: valueFrom.secretKeyRef
-                      kind: Secret
-                      visibility: $exists(valueFrom.secretKeyRef.name)
-                - name: Cert
-                  widget: Panel
-                  visibility: $exists(spec.output.otlp.tls.cert)
-                  source: spec.output.otlp.tls.cert
-                  children:
-                    - name: Value
-                      source: value
-                      visibility: $exists(value)
-                    - name: Value From Secret
-                      widget: ResourceRefs
-                      source: valueFrom.secretKeyRef
-                      kind: Secret
-                      visibility: $exists(valueFrom.secretKeyRef.name)
-                - name: Key
-                  widget: Panel
-                  visibility: $exists(spec.output.otlp.tls.key)
-                  source: spec.output.otlp.tls.key
-                  children:
-                    - name: Value
-                      source: value
-                      visibility: $exists(value)
-                    - name: Value From Secret
-                      widget: ResourceRefs
-                      source: valueFrom.secretKeyRef
-                      kind: Secret
-                      visibility: $exists(valueFrom.secretKeyRef.name)
-            - widget: Panel
-              name: Other Settings
-              children:
-                - name: Protocol
-                  source: spec.output.otlp.protocol
-form:
-  - path: spec.output
-    widget: FormGroup
-    defaultExpanded: true
-    simple: true
-    children:
-      - name: OTLP
-        path: otlp
-        widget: FormGroup
-        defaultExpanded: true
-        simple: true
-        children:
-          - name: Endpoint
-            path: endpoint
-            widget: FormGroup
-            simple: true
-            children:
-              - name: Value
-                path: value
-                widget: Text
-                simple: true
-              - name: Secret Reference
-                path: valueFrom.secretKeyRef
-                widget: ResourceRef
-                simple: true
-                resource:
-                  kind: secret
-                  version: v1
-                children:
-                  - simple: true
-                    path: key
-                    enum: $keys($secret.data)
-          - name: Protocol
-            path: protocol
-            simple: true
-            widget: FormGroup
-            children:
-              - name: Value
-                widget: Text
-          - name: Authentication
-            path: authentication
-            widget: FormGroup
-            simple: true
-            children:
-              - name: User
-                path: basic.user
-                widget: FormGroup
-                simple: true
-                children:
-                  - name: Value
-                    path: value
-                    widget: Text
-                    simple: true
-                  - name: Secret Reference
-                    path: valueFrom.secretKeyRef
-                    widget: ResourceRef
-                    resource:
-                      kind: secret
-                      version: v1
-                    simple: true
-                    children:
-                      - simple: true
-                        path: key
-                        enum: $keys($secret.data)
-              - name: Password
-                path: basic.password
-                widget: FormGroup
-                simple: true
-                children:
-                  - name: Value
-                    path: value
-                    widget: Text
-                    simple: true
-                  - name: Secret Reference
-                    path: valueFrom.secretKeyRef
-                    widget: ResourceRef
-                    resource:
-                      kind: secret
-                      version: v1
-                    simple: true
-                    children:
-                      - simple: true
-                        path: key
-                        enum: $keys($secret.data)
-          - name: Headers
-            path: headers[]
-            widget: FormGroup
-            simple: true
-            children:
-              - name: Name
-                path: name
-                widget: Text
-                simple: true
-              - name: Prefix
-                path: prefix
-                widget: Text
-                simple: true
-              - name: Value
-                path: value
-                widget: Text
-                simple: true
-              - name: Secret Reference
-                path: valueFrom.secretKeyRef
-                widget: ResourceRef
-                simple: true
-                resource:
-                  kind: secret
-                  version: v1
-                children:
-                  - simple: true
-                    path: key
-                    enum: $keys($secret.data)
-          - name: TLS
-            widget: FormGroup
-            path: tls
-            children:
-              - name: Insecure
-                path: insecure
-              - name: Skip Certificate Validation
-                path: insecureSkipVerify
-              - name: CA
-                path: ca
-                widget: FormGroup
-                simple: true
-                children:
-                  - name: Value
-                    path: value
-                    widget: Text
-                    simple: true
-                  - name: Secret Reference
-                    path: valueFrom.secretKeyRef
-                    widget: ResourceRef
-                    simple: true
-                    resource:
-                      kind: secret
-                      version: v1
-                    children:
-                      - simple: true
-                        path: key
-                        enum: $keys($secret.data)
-              - name: Cert
-                path: cert
-                widget: FormGroup
-                simple: true
-                children:
-                  - name: Value
-                    path: value
-                    widget: Text
-                    simple: true
-                  - name: Secret Reference
-                    path: valueFrom.secretKeyRef
-                    widget: ResourceRef
-                    simple: true
-                    resource:
-                      kind: secret
-                      version: v1
-                    children:
-                      - simple: true
-                        path: key
-                        enum: $keys($secret.data)
-              - name: Key
-                path: key
-                widget: FormGroup
-                simple: true
-                children:
-                  - name: Value
-                    path: value
-                    widget: Text
-                    simple: true
-                  - name: Secret Reference
-                    path: valueFrom.secretKeyRef
-                    widget: ResourceRef
-                    simple: true
-                    resource:
-                      kind: secret
-                      version: v1
-                    children:
-                      - simple: true
-                        path: key
-                        enum: $keys($secret.data)
-general:
-  resource:
-    kind: TracePipeline
-    group: telemetry.kyma-project.io
-    version: v1alpha1
-  name: Trace Pipelines
-  category: Observability
-  urlPath: tracepipelines
-  scope: cluster
-  description: >-
-    {{[TracePipeline custom
-    resource](https://kyma-project.io/#/telemetry-manager/user/resources/04-tracepipeline)}}
-    configures a custom Trace Pipeline.
-list:
-  - source: >-
-      $each(spec.output, function($v, $k) {$v.endpoint.value or
-      $v.endpoint.valueFrom.secretKeyRef.name ? $k})
-    placeholder: custom
-    type: string
-    name: Type
-    isSelected: true
-    widget: Text
-  - name: Status
-    source: >-
-      $filter(status.conditions, function ($v) { $v.type != "Pending" and
-      $v.type != "Running" })
-    widget: Columns
-    children:
-      - name: Type
-        source: type
-        widget: Badge
-      - name: Status
-        source: status
-        widget: Badge
-        highlights:
-          success:
-            - 'True'
-          error:
-            - 'False'
