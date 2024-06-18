@@ -28,7 +28,7 @@ sudo launchctl config user path /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 ```
 >**CAUTION:** This change is applied to ALL uses of a computer!
 
-After running this command, reboot your machine to apply changes.
+2. Reboot your machine to apply changes.
 
 For more details, see this [Stack Exchange thread](https://apple.stackexchange.com/questions/51677/how-to-set-path-for-finder-launched-applications).
 
