@@ -36,4 +36,4 @@ For more details, see this [Stack Exchange thread](https://apple.stackexchange.c
 ## Hooks List
 |Name|Type|Description|
 |---|---|---|
-|01-prepare-extensibility|pre-commit|Automatically check changes in dev, stage, prod folders, pack extensions and adds the resulting files to the commit if there were any changes.| 
+|01-prepare-extensibility|pre-commit|Automatically checks for changes in the `dev`, `stage`, and `prod` folders and pack extensions. If the hook detects any changes, it adds the missing files to the commit.| 
