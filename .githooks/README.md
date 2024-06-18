@@ -23,7 +23,7 @@ GoLand initializes the `PATH` upon startup based on the macOS `launchd` path.
 #### Remedy
 
 1. Add the `/usr/local/bin` path to the system `PATH` variable using the following command:
-```shell
+   ```shell
 sudo launchctl config user path /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
    >**CAUTION:** This command introduces the change to ALL computer users.
 
