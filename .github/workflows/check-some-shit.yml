@@ -1,0 +1,34 @@
+name: kyma-dashboard-dev
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+    # paths:
+    #   - "Dockerfile.*"
+    #   - "package.json"
+    #   - "environments/dev/**"
+    #   - "extensions/**"
+    #   - "gulpfile.js"
+    #   - "Makefile"
+    #   - "tests/**"
+
+
+permissions:
+  id-token: write # This is required for requesting the JWT token
+  contents: read # This is required for actions/checkout
+
+jobs:
+  load-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Load environment variables
+        id: env
+        run: |
+          chmod +x ./environments/dev/env.sh
+          ./environments/dev/env.sh
+          echo "WEB_IMAGE=$WEB_IMAGE" >> $GITHUB_OUTPUT
+          echo "BACKEND_IMAGE=$BACKEND_IMAGE" >> $GITHUB_OUTPUT
+          echo "LOCAL_IMAGE=$LOCAL_IMAGE" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
