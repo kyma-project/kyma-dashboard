@@ -20,16 +20,20 @@ permissions:
 jobs:
   load-env:
     runs-on: ubuntu-latest
+    outputs:
+      WEB_IMAGE: ${{ steps.get_tags.outputs.WEB_IMAGE }}
+      BACKEND_IMAGE: ${{ steps.get_tags.outputs.BACKEND_IMAGE }}
+      LOCAL_IMAGE: ${{ steps.get_tags.outputs.LOCAL_IMAGE }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Load environment variables
-        id: env
+        id: get_tags
         run: |
           source ./environments/dev/env.sh
-          echo "WEB_IMAGE=$WEB_IMAGE" >> $GITHUB_OUTPUT
-          echo "BACKEND_IMAGE=$BACKEND_IMAGE" >> $GITHUB_OUTPUT
-          echo "LOCAL_IMAGE=$LOCAL_IMAGE" >> $GITHUB_OUTPUT
+          echo ::set-output name=WEB_IMAGE::"$WEB_IMAGE"
+          echo ::set-output name=BACKEND_IMAGE::"$BACKEND_IMAGE"
+          echo ::set-output name=LOCAL_IMAGE::"$LOCAL_IMAGE"
   build-web:
     needs: [ load-env ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
