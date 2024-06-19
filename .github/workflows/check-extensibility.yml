@@ -1,0 +1,45 @@
+name: Check Extensibility
+
+on:
+  pull_request:
+    paths:
+      - 'environments/dev/**'
+      - 'extensions/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prepare extensions
+        run: npm run prepare-extensibility-dev
+
+      - name: Check for changes in extensions.yaml
+        id: check-changes
+        run: |
+          modified=$(git diff --exit-code --name-only environments/dev extensions)
+          if [ -n "$modified" ]; then
+            echo "Changes detected in dev environment. Rendering extensibility..."
+            echo "CHANGED=true" >> $GITHUB_OUTPUT
+            else
+              echo "No changes in ${environment} environment. Skipping.."
+              echo "CHANGED=false" >> $GITHUB_OUTPUT
+          fi
+        
+      - name: Comment PR
+        if: steps.check-changes.outputs.CHANGED == 'true'
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            RUN COMMAND RENDER EXTENSIBILITY
