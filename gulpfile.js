@@ -100,11 +100,11 @@ const loadPreparedExtensions = through2.obj((file, _, cb) => {
 gulp.task('clean-extensions', () => {
   const env = process.env.ENV;
   return gulp
-    .src(`environments/${env}/extensions/extensions-local`, {
+    .src(`environments/${env}/extensions-local`, {
       read: false,
       allowEmpty: true,
     })
-    .pipe(clean());
+    .pipe(clean({ force: true }));
 });
 
 gulp.task('get-extensions', () => {
