@@ -30,7 +30,7 @@ jobs:
           ./environments/dev/env.sh
           echo ${WEB_IMAGE}
           echo ${BACKEND_IMAGE}
-          echo ${LOCAL_IMAGE}
+          echo $LOCAL_IMAGE
           echo "WEB_IMAGE=${WEB_IMAGE}" >> $GITHUB_OUTPUT
           echo "BACKEND_IMAGE=${BACKEND_IMAGE}" >> $GITHUB_OUTPUT
           echo "LOCAL_IMAGE=${LOCAL_IMAGE}" >> $GITHUB_OUTPUT
