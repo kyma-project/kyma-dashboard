@@ -3,6 +3,7 @@ general:
     kind: Application
     group: applicationconnector.kyma-project.io
     version: v1alpha1
+    test: 123
   urlPath: applications
   scope: cluster
   name: Applications
