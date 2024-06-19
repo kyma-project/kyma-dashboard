@@ -6,6 +6,9 @@ on:
       - 'environments/dev/**'
       - 'extensions/**'
 
+permissions:
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
