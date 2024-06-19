@@ -30,7 +30,6 @@ jobs:
           echo "WEB_IMAGE=$WEB_IMAGE" >> $GITHUB_OUTPUT
           echo "BACKEND_IMAGE=$BACKEND_IMAGE" >> $GITHUB_OUTPUT
           echo "LOCAL_IMAGE=$LOCAL_IMAGE" >> $GITHUB_OUTPUT
-          cat $GITHUB_OUTPUT
   build-web:
     needs: [ load-env ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
