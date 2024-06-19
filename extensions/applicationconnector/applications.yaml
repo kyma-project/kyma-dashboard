@@ -10,6 +10,7 @@ metadata:
 data:
   general: |-
     resource:
+      penis: 123
       kind: Application
       group: applicationconnector.kyma-project.io
       version: v1alpha1
