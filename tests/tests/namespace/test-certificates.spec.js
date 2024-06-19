@@ -39,8 +39,6 @@ context('Test Certificates', () => {
   it('Edits a certificate', () => {
     cy.inspectTab('Edit');
 
-    cy.clickGenericListLink(CERT_NAME);
-
     cy.get('[aria-label="expand Annotations"]').click();
 
     cy.get('[placeholder="Enter key"]:visible', { log: false })
