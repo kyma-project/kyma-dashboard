@@ -28,7 +28,7 @@ jobs:
       - name: Check for changes in extensions.yaml
         id: check-changes
         run: |
-          modified=$(git diff --exit-code --name-only environments/dev extensions)
+          modified=$(git diff --name-only environments/dev extensions)
           if [ -n "$modified" ]; then
             echo "Changes detected in dev environment. Rendering extensibility..."
             echo "CHANGED=true" >> $GITHUB_OUTPUT
@@ -48,4 +48,3 @@ jobs:
               repo: context.repo.repo,
               body: 'RUN COMMAND RENDER EXTENSIBILITY'
             })
-            
