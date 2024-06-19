@@ -31,7 +31,7 @@ jobs:
           cat ${WEB_IMAGE}
           cat ${BACKEND_IMAGE}
           cat ${LOCAL_IMAGE}
-          echo "WEB_IMAGE=$WEB_IMAGE" >> $GITHUB_OUTPUT
-          echo "BACKEND_IMAGE=$BACKEND_IMAGE" >> $GITHUB_OUTPUT
-          echo "LOCAL_IMAGE=$LOCAL_IMAGE" >> $GITHUB_OUTPUT
+          echo "WEB_IMAGE=${WEB_IMAGE}" >> $GITHUB_OUTPUT
+          echo "BACKEND_IMAGE=${BACKEND_IMAGE}" >> $GITHUB_OUTPUT
+          echo "LOCAL_IMAGE=${LOCAL_IMAGE}" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
