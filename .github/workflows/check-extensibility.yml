@@ -37,9 +37,15 @@ jobs:
               echo "CHANGED=false" >> $GITHUB_OUTPUT
           fi
         
-      - name: Comment PR
+      - name: Comment on PR
+        uses: actions/github-script@v6
         if: steps.check-changes.outputs.CHANGED == 'true'
-        uses: thollander/actions-comment-pull-request@v2
         with:
-          message: |
-            RUN COMMAND RENDER EXTENSIBILITY
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'RUN COMMAND RENDER EXTENSIBILITY'
+            })
+            
