@@ -82,7 +82,7 @@ data:
         showHeader: true
         children:
           - name: Type
-            search: false
+            search: true
             source: type
           - name: Name
             search: true
