@@ -27,11 +27,10 @@ jobs:
         id: env
         run: |
           chmod +x ./environments/dev/env.sh
-          cat ./environments/dev/env.sh
           ./environments/dev/env.sh
-          cat $WEB_IMAGE
-          cat $BACKEND_IMAGE
-          cat $LOCAL_IMAGE
+          cat WEB_IMAGE
+          cat BACKEND_IMAGE
+          cat LOCAL_IMAGE
           echo "WEB_IMAGE=$WEB_IMAGE" >> $GITHUB_OUTPUT
           echo "BACKEND_IMAGE=$BACKEND_IMAGE" >> $GITHUB_OUTPUT
           echo "LOCAL_IMAGE=$LOCAL_IMAGE" >> $GITHUB_OUTPUT
