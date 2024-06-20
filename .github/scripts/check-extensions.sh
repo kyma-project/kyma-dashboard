@@ -1,10 +1,13 @@
 #!/bin/bash
->&2 git diff --name-only environments/dev extensions
+git diff --name-only environments/dev extensions
+
+OUTPUT="${GITHUB_OUTPUT:=>&1}"
+
 modified=$(git diff --name-only environments/dev extensions)
 if [ -n "$modified" ]; then
-  >&2 echo "Changes detected in dev environment. Rendering extensibility..."
-  echo "CHANGED=true"
+  echo "Changes detected in dev environment. Rendering extensibility..."
+  echo "CHANGED=true" >> $OUTPUT
 else
-  >&2 echo "No changes in ${environment} environment. Skipping.."
-  echo "CHANGED=false"
+  echo "No changes in ${environment} environment. Skipping.."
+  echo "CHANGED=false" >> $OUTPUT
 fi
