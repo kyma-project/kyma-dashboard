@@ -1,7 +1,8 @@
 ARG LOCAL_IMAGE
-ARG ENV
 
 FROM europe-docker.pkg.dev/kyma-project/prod/busola:${LOCAL_IMAGE}
+
+ARG ENV
 
 COPY  ./environments/${ENV}/dist/extensions.yaml /app/core-ui/extensions/extensions.yaml
 # COPY  ./environments/${ENV}/dist/statics.yaml /app/core-ui/extensions/statics.yaml
