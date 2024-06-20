@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Prepare extensions
-        run: npm run prepare-extensibility-dev
+        run: npm run prepare-extensibility-dev && git diff --name-only environments/dev extensions
 
       - name: Check for changes in extensions.yaml
         id: check-changes
