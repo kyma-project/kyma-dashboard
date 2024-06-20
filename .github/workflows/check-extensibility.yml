@@ -5,6 +5,10 @@ on:
     paths:
       - 'environments/dev/**'
       - 'extensions/**'
+  pull_request:
+    paths:
+      - 'environments/dev/**'
+      - 'extensions/**'
 
 jobs:
   build:
