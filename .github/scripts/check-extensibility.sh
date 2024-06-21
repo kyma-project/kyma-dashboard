@@ -1,12 +1,12 @@
 #!/bin/bash
-git diff main --name-only environments/dev environments/stage environments/prod extensions
+git diff --name-only environments/dev environments/stage environments/prod extensions
 
 OUTPUT="${GITHUB_OUTPUT:=>&1}"
 
 environments=(dev stage prod)
 (
     for environment in "${environments[@]}"; do
-        modified=$(git diff main --name-only environments/${environment} extensions)
+        modified=$(git diff --name-only environments/${environment} extensions)
         if [ -n "$modified" ]; then
             echo "Changes detected in ${environment} environment."
             echo "CHANGED_${environment}=true" >> $OUTPUT
