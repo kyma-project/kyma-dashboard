@@ -30,9 +30,9 @@ jobs:
       - name: Prepare extensions
         run: npm run prepare-extensibility-dev && git diff --name-only environments/dev extensions
 
-      - name: Check for changes in extensions.yaml
+      - name: Check for changes in extensibility
         id: check-changes
-        run: OUTPUT=$GITHUB_OUTPUT ./.github/scripts/check-extensions.sh
+        run: OUTPUT=$GITHUB_OUTPUT ./.github/scripts/check-extensibility.sh
 
       - name: Fail if there are changes in extensibility
         run: |
