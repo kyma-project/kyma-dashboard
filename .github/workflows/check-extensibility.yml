@@ -1,14 +1,12 @@
 name: Check Extensibility
 
 on:
-  # pull_request_target:
-  #   paths:
-  #     - 'environments/dev/**'
-  #     - 'environments/stage/**'
-  #     - 'environments/prod/**'
-  #     - 'extensions/**'
-    pull_request:
-      types: [opened, edited, synchronize, reopened, ready_for_review]
+  pull_request:
+    paths:
+      - 'environments/dev/**'
+      - 'environments/stage/**'
+      - 'environments/prod/**'
+      - 'extensions/**'
 
 jobs:
   check-extensibility:
@@ -36,43 +34,19 @@ jobs:
           OUTPUT=$GITHUB_OUTPUT ./.github/scripts/check-extensibility.sh
         
       - name: Comment on PR dev
-        uses: actions/github-script@v6
         if: steps.check-changes.outputs.CHANGED_dev == 'true'
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Detected changes in extensibility for dev environment. Please run the following command: `prepare-extensibility-dev`'
-            })
+        run: |
+          echo "Detected changes in extensibility for dec environment. Please run the following command: `prepare-extensibility-dev`"
+          exit 1
 
       - name: Comment on PR stage
-        uses: actions/github-script@v6
-        if: steps.check-changes.outputs.CHANGED_stage == 'true'
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Detected changes in extensibility for stage environment. Please run the following command: `prepare-extensibility-stage`'
-            })
+        if: always() && steps.check-changes.outputs.CHANGED_stage == 'true'
+        run: |
+          echo "Detected changes in extensibility for stage environment. Please run the following command: `prepare-extensibility-stage`"
+          exit 1
 
       - name: Comment on PR prod
-        uses: actions/github-script@v6
-        if: steps.check-changes.outputs.CHANGED_prod == 'true'
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Detected changes in extensibility for prod environment. Please run the following command: `prepare-extensibility-prod`'
-            })
-
-      - name: Fail if there are changes in extensibility
-        if: steps.check-changes.outputs.CHANGED_dev == 'true' || steps.check-changes.outputs.CHANGED_stage == 'true' || steps.check-changes.outputs.CHANGED_prod == 'true'
+        if: always() && steps.check-changes.outputs.CHANGED_prod == 'true'
         run: |
-          echo "Detected changes in extensibility."
+          echo "Detected changes in extensibility for prod environment. Please run the following command: `prepare-extensibility-prod`"
           exit 1
