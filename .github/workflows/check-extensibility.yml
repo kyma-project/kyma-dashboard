@@ -1,14 +1,11 @@
 name: Check Extensibility
 
 on:
-  # pull_request_target:
-  #   paths:
-  #     - 'environments/dev/**'
-  #     - 'extensions/**'
-  pull_request:
-    types: [opened, edited, synchronize, reopened, ready_for_review]
+  pull_request_target:
     paths:
       - 'environments/dev/**'
+      - 'environments/stage/**'
+      - 'environments/prod/**'
       - 'extensions/**'
 
 jobs:
@@ -35,12 +32,6 @@ jobs:
         run: |
           chmod +x ./.github/scripts/check-extensibility.sh
           OUTPUT=$GITHUB_OUTPUT ./.github/scripts/check-extensibility.sh
-
-      - name: Fail if there are changes in extensibility
-        if: steps.check-changes.outputs.CHANGED_dev == 'true' || steps.check-changes.outputs.CHANGED_stage == 'true' || steps.check-changes.outputs.CHANGED_prod == 'true'
-        run: |
-          echo "Detected changes in extensibility."
-          exit 1
         
       - name: Comment on PR dev
         uses: actions/github-script@v6
@@ -77,3 +68,9 @@ jobs:
               repo: context.repo.repo,
               body: 'Detected changes in extensibility for prod environment. Please run the following command: `prepare-extensibility-prod`'
             })
+
+      - name: Fail if there are changes in extensibility
+        if: steps.check-changes.outputs.CHANGED_dev == 'true' || steps.check-changes.outputs.CHANGED_stage == 'true' || steps.check-changes.outputs.CHANGED_prod == 'true'
+        run: |
+          echo "Detected changes in extensibility."
+          exit 1
