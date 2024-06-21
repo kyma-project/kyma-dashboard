@@ -32,7 +32,9 @@ jobs:
 
       - name: Check for changes in extensibility
         id: check-changes
-        run: OUTPUT=$GITHUB_OUTPUT ./.github/scripts/check-extensibility.sh
+        run: |
+          chmod +x ./.github/scripts/check-extensibility.sh
+          OUTPUT=$GITHUB_OUTPUT ./.github/scripts/check-extensibility.sh
 
       - name: Fail if there are changes in extensibility
         run: |
