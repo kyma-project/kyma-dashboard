@@ -12,7 +12,7 @@ on:
       - 'extensions/**'
 
 jobs:
-  build:
+  check-extensibility:
     runs-on: ubuntu-latest
 
     steps:
@@ -37,13 +37,10 @@ jobs:
           OUTPUT=$GITHUB_OUTPUT ./.github/scripts/check-extensibility.sh
 
       - name: Fail if there are changes in extensibility
-        run: |
-          if [ "$CHANGED_dev" == "true" ] || [ "$CHANGED_stage" == "true" ] || [ "$CHANGED_prod" == "true" ]; then
-            echo "Changes detected in extensibility."
-            exit 1
-          fi
+        if: steps.check-changes.outputs.CHANGED_dev == 'true' || steps.check-changes.outputs.CHANGED_stage == 'true' || steps.check-changes.outputs.CHANGED_prod == 'true'
+        run: exit 1
         
-      - name: Comment on PR
+      - name: Comment on PR dev
         uses: actions/github-script@v6
         if: steps.check-changes.outputs.CHANGED_dev == 'true'
         with:
@@ -55,7 +52,7 @@ jobs:
               body: 'Detected changes in extensibility for dev environment. Please run the following command: `prepare-extensibility-dev`'
             })
 
-      - name: Comment on PR
+      - name: Comment on PR stage
         uses: actions/github-script@v6
         if: steps.check-changes.outputs.CHANGED_stage == 'true'
         with:
@@ -67,7 +64,7 @@ jobs:
               body: 'Detected changes in extensibility for stage environment. Please run the following command: `prepare-extensibility-stage`'
             })
 
-      - name: Comment on PR
+      - name: Comment on PR prod
         uses: actions/github-script@v6
         if: steps.check-changes.outputs.CHANGED_prod == 'true'
         with:
