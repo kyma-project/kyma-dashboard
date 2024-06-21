@@ -13,7 +13,7 @@ data:
       - source: 'status.state ? status.state : "UNKNOWN"'
         highlights:
           informative:
-            - UNKNOWN
+            - READY
         type: string
         name: status
         widget: Badge
