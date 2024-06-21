@@ -25,7 +25,11 @@ jobs:
         run: npm ci
 
       - name: Prepare extensions
-        run: npm run prepare-extensibility-dev && git diff --name-only environments/dev extensions
+        run: |
+          npm run prepare-extensibility-dev
+          npm run prepare-extensibility-stage
+          npm run prepare-extensibility-prod
+          git diff --name-only environments/dev extensions
 
       - name: Check for changes in extensibility
         id: check-changes
