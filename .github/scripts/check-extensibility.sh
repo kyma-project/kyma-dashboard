@@ -1,4 +1,6 @@
 #!/bin/bash
+git diff --name-only environments/dev environments/stage environments/prod extensions
+
 OUTPUT="${GITHUB_OUTPUT:=>&1}"
 
 environments=(dev stage prod)
