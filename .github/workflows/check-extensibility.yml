@@ -38,7 +38,9 @@ jobs:
 
       - name: Fail if there are changes in extensibility
         if: steps.check-changes.outputs.CHANGED_dev == 'true' || steps.check-changes.outputs.CHANGED_stage == 'true' || steps.check-changes.outputs.CHANGED_prod == 'true'
-        run: exit 1
+        run: |
+          echo "Detected changes in extensibility."
+          exit 1
         
       - name: Comment on PR dev
         uses: actions/github-script@v6
