@@ -29,7 +29,7 @@ jobs:
           npm run prepare-extensibility-dev
           npm run prepare-extensibility-stage
           npm run prepare-extensibility-prod
-          git diff --name-only environments/dev extensions
+          git diff --name-only environments/dev environments/stage environments/prod extensions
 
       - name: Check for changes in extensibility
         id: check-changes
