@@ -33,20 +33,16 @@ jobs:
           chmod +x ./.github/scripts/check-extensibility.sh
           OUTPUT=$GITHUB_OUTPUT ./.github/scripts/check-extensibility.sh
         
-      - name: Comment on PR dev
-        if: steps.check-changes.outputs.CHANGED_dev == 'true'
+      - name: Extensibility changes detected
+        if: steps.check-changes.outputs.CHANGED_dev == 'true' || steps.check-changes.outputs.CHANGED_stage == 'true' || steps.check-changes.outputs.CHANGED_prod == 'true'
         run: |
-          echo "Detected changes in extensibility for dec environment. Please run the following command: prepare-extensibility-dev"
-          exit 1
-
-      - name: Comment on PR stage
-        if: ${{ ( success() || failure() ) && steps.check-changes.outputs.CHANGED_stage == 'true' }}
-        run: |
-          echo "Detected changes in extensibility for stage environment. Please run the following command: prepare-extensibility-stage"
-          exit 1
-
-      - name: Comment on PR prod
-        if: ( success() || failure() ) && steps.check-changes.outputs.CHANGED_prod == 'true'
-        run: |
-          echo "Detected changes in extensibility for prod environment. Please run the following command: prepare-extensibility-prod"
+          if [ ${{ steps.check-changes.outputs.CHANGED_dev }} == 'true' ]; then
+            echo "Detected changes in extensibility for dev environment. Please run the following command: prepare-extensibility-dev"
+          fi
+          if [ ${{ steps.check-changes.outputs.CHANGED_stage }} == 'true' ]; then
+            echo "Detected changes in extensibility for stage environment. Please run the following command: prepare-extensibility-stage"
+          fi
+          if [ ${{ steps.check-changes.outputs.CHANGED_prod }} == 'true' ]; then
+            echo "Detected changes in extensibility for prod environment. Please run the following command: prepare-extensibility-prod"
+          fi
           exit 1
