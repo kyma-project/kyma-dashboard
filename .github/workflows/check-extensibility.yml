@@ -36,17 +36,17 @@ jobs:
       - name: Comment on PR dev
         if: steps.check-changes.outputs.CHANGED_dev == 'true'
         run: |
-          echo "Detected changes in extensibility for dec environment. Please run the following command: `prepare-extensibility-dev`"
+          echo "Detected changes in extensibility for dec environment. Please run the following command: prepare-extensibility-dev"
           exit 1
 
       - name: Comment on PR stage
         if: always() && steps.check-changes.outputs.CHANGED_stage == 'true'
         run: |
-          echo "Detected changes in extensibility for stage environment. Please run the following command: `prepare-extensibility-stage`"
+          echo "Detected changes in extensibility for stage environment. Please run the following command: prepare-extensibility-stage"
           exit 1
 
       - name: Comment on PR prod
         if: always() && steps.check-changes.outputs.CHANGED_prod == 'true'
         run: |
-          echo "Detected changes in extensibility for prod environment. Please run the following command: `prepare-extensibility-prod`"
+          echo "Detected changes in extensibility for prod environment. Please run the following command: prepare-extensibility-prod"
           exit 1
