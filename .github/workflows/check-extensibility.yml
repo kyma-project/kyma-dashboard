@@ -34,7 +34,6 @@ jobs:
       - name: Check for changes in extensibility
         id: check-changes
         run: |
-          chmod +x ./.github/scripts/check-extensibility.sh
           OUTPUT=$GITHUB_OUTPUT ./.github/scripts/check-extensibility.sh
         
       - name: Extensibility changes detected
