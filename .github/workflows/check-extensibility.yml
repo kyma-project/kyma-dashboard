@@ -1,12 +1,14 @@
 name: Check Extensibility
 
 on:
-  pull_request_target:
-    paths:
-      - 'environments/dev/**'
-      - 'environments/stage/**'
-      - 'environments/prod/**'
-      - 'extensions/**'
+  # pull_request_target:
+  #   paths:
+  #     - 'environments/dev/**'
+  #     - 'environments/stage/**'
+  #     - 'environments/prod/**'
+  #     - 'extensions/**'
+    pull_request:
+      types: [opened, edited, synchronize, reopened, ready_for_review]
 
 jobs:
   check-extensibility:
