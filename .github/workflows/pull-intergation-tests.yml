@@ -1,4 +1,4 @@
-name: pull-integration-namespace-k3d
+name: pull-integration-tests
 
 on: 
   pull_request:
