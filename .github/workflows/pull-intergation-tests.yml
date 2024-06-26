@@ -35,6 +35,7 @@ jobs:
         shell: bash
         run: |
           export TAG="test-dev"
+          export REPO_IMG_DEV="k3d-registry.localhost:5000/kyma-dashboard"
           echo "Create k3d registry..."
           k3d registry create registry.localhost --port=5000
 
