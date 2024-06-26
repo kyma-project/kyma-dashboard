@@ -30,7 +30,7 @@ jobs:
             --port 80:80@loadbalancer
             --port 443:443@loadbalancer
             --wait
-            --registry-create kyma-registry
+            --registry-create k3d-k3dcluster-registry
       - name: Setup Kyma
         run: |
           ./.github/scripts/setup-kyma.sh 
