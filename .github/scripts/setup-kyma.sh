@@ -10,10 +10,6 @@ echo "Using OS:" ${OS}
 curl -Lo kyma https://storage.googleapis.com/kyma-cli-unstable/kyma-${OS}
 chmod +x ./kyma
 
-echo "Provisioning k3d cluster for Kyma"
-k3d registry create kyma-registry --port 5001
-k3d cluster edit kyma --registry-use kyma-registry
-
 kubectl create ns kyma-system
 
 ./kyma alpha deploy

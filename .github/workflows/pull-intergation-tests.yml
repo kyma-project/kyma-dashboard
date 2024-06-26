@@ -30,6 +30,7 @@ jobs:
             --port 80:80@loadbalancer
             --port 443:443@loadbalancer
             --wait
+            --regitry-create kyma-registry
       - name: Setup Kyma
         run: |
           ./.github/scripts/setup-kyma.sh 
