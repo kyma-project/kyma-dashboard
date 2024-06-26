@@ -21,6 +21,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Install k3d
+        env:
+          K3D_URL: https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh
+        run: curl --silent --fail $K3D_URL | bash
       - name: Setup Kyma
         run: |
           ./.github/scripts/setup-kyma.sh 
