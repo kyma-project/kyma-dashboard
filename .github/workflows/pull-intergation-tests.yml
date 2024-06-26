@@ -53,7 +53,7 @@ jobs:
         run: |
           k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
           export CYPRESS_DOMAIN=http://localhost:3001
-          
+
           cd tests
           npm ci && npm run "test:e2e"
       - name: Uploads artifacts
@@ -61,14 +61,14 @@ jobs:
         if: ${{ always() }}
         with:
           name: cypress-${{ github.job }}
-          path: tests/integration/cypress/
+          path: tests/cypress/
           retention-days: 90
-      - name: Upload Busola logs
+      - name: Upload Kyma Dashboard logs
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
-          name: busola-logs-${{ github.job }}
+          name: kyma-dashboard-logs-${{ github.job }}
           path: |
-            backend/backend.log
-            busola.log
+            kyma-alpha-deploy.log
+            busola-build.log
           retention-days: 90
