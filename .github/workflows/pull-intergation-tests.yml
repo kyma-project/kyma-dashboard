@@ -1,0 +1,76 @@
+name: pull-integration-namespace-k3d
+
+on: 
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+    # paths:
+    #   - ".github/workflows/pull-integration-tests.yml"
+    #   - "resources/**"
+    #   - "tests/**"
+    #   - "nginx/**"
+    #   - "src/**"
+    #   - "tests/**"
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: gardenlinux/workflow-telemetry-action@v2
+        with:
+          comment_on_pr: false
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create Single Cluster
+        uses: AbsaOSS/k3d-action@4e8b3239042be1dc0aed6c5eb80c13b18200fc79 #v2.4.0
+        with:
+          cluster-name: "k3dCluster"
+          args: >-
+            --agents 1
+            --port 80:80@loadbalancer
+            --port 443:443@loadbalancer
+            --wait
+      - name: Setup Kyma
+        run: |
+          ./.github/scripts/setup-kyma.sh 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: setup_busola
+        shell: bash
+        run: |
+          echo "Create k3d registry..."
+          k3d registry create registry.localhost --port=5000
+
+          echo "Make release-dev..."
+          make release-dev
+
+          echo "Running kyma-dashboard..."
+          docker run -d --rm --net=host --pid=host --name kyma-dashboard "k3d-registry.localhost:5000/kyma-dashboard-local-dev:test-dev"
+
+          echo "waiting for server to be up..."
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' "http://localhost:3001")" != "200" ]]; do sleep 5; done
+          sleep 10
+      - name: run_tests
+        shell: bash
+        run: |
+          k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
+          
+          cd tests
+          npm ci && npm run "test:e2e"
+      - name: Uploads artifacts
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: cypress-${{ github.job }}
+          path: tests/integration/cypress/
+          retention-days: 90
+      - name: Upload Busola logs
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: busola-logs-${{ github.job }}
+          path: |
+            backend/backend.log
+            busola.log
+          retention-days: 90
