@@ -52,6 +52,7 @@ jobs:
         shell: bash
         run: |
           k3d kubeconfig get kyma > tests/fixtures/kubeconfig.yaml
+          export CYPRESS_DOMAIN=http://localhost:3001
           
           cd tests
           npm ci && npm run "test:e2e"
