@@ -34,6 +34,7 @@ jobs:
       - name: setup_busola
         shell: bash
         run: |
+          export TAG="test-dev"
           echo "Create k3d registry..."
           k3d registry create registry.localhost --port=5000
 
