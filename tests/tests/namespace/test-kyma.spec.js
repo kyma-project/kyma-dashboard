@@ -22,7 +22,7 @@ context('Test Kyma', () => {
       .contains('Kyma')
       .click();
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
     cy.get('ui5-dialog')
       .find('[aria-label="Kyma name"]:visible')
