@@ -1247,9 +1247,7 @@ details:
         critical:
           - 'true'
   body:
-    - source: >-
-        $filter(status.conditions, function ($v) { $v.type != "Pending" and
-        $v.type != "Running" })
+    - source: status.conditions
       widget: Table
       name: Reconciliation Conditions
       children:
@@ -1659,9 +1657,7 @@ list:
       critical:
         - 'true'
   - name: Status
-    source: >-
-      $filter(status.conditions, function ($v) { $v.type != "Pending" and
-      $v.type != "Running" })
+    source: status.conditions
     widget: Columns
     children:
       - name: Type
@@ -2629,9 +2625,7 @@ details:
       isSelected: true
       widget: Text
   body:
-    - source: >-
-        $filter(status.conditions, function ($v) { $v.type != "Pending" and
-        $v.type != "Running" })
+    - source: status.conditions
       widget: Table
       name: Reconciliation Conditions
       children:
@@ -2986,9 +2980,7 @@ list:
     isSelected: true
     widget: Text
   - name: Status
-    source: >-
-      $filter(status.conditions, function ($v) { $v.type != "Pending" and
-      $v.type != "Running" })
+    source: status.conditions
     widget: Columns
     children:
       - name: Type

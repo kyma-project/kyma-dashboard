@@ -10,9 +10,12 @@ context('Create Namespace', () => {
       .contains('Namespaces')
       .click();
 
-    cy.contains('ui5-button', 'Create').click();
+    cy.openCreate();
 
-    cy.get('ui5-checkbox[text="Create Resource Quota"]:visible').click();
+    cy.get('.create-form')
+      .find('ui5-checkbox[text="Create Resource Quota"]:visible')
+      .find('[role="checkbox"]')
+      .click();
 
     cy.get('.create-form')
       .find('ui5-checkbox[text="Create Limit Range"]:visible')
