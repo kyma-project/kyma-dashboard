@@ -31,6 +31,7 @@ kubectl apply -f https://github.com/kyma-project/serverless-manager/releases/lat
 echo "Apply api-gateway"
 kubectl apply -f https://github.com/kyma-project/api-gateway/releases/latest/download/api-gateway-manager.yaml
 kubectl apply -f https://github.com/kyma-project/api-gateway/releases/latest/download/apigateway-default-cr.yaml
+kubectl apply -f https://github.tools.sap/kyma/kyma-modules/blob/main/regular/moduletemplate-api-gateway.yaml
 
 echo "Apply istio"
 kubectl apply -f https://github.com/kyma-project/istio/releases/latest/download/istio-manager.yaml
@@ -42,6 +43,8 @@ kubectl apply -f https://github.com/kyma-project/application-connector-manager/r
 
 echo "Apply eventing"
 kubectl apply -f https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing-manager.yaml
+kubectl apply -f https://github.tools.sap/kyma/kyma-modules/blob/main/regular/moduletemplate-eventing.yaml
+kubectl apply -f https://github.tools.sap/kyma/kyma-modules/blob/main/fast/moduletemplate-eventing.yaml
 
 # if [[ ${JOB_NAME} =~ .*smoke.* ]]; then
 #     echo "Apply and enable telemetry module"

@@ -33,6 +33,7 @@ module.exports = defineConfig({
       // uncomment after frog fix
       // 'tests/cluster/test-applications.spec.js',
       // 'tests/cluster/test-modules-wizard.spec.js',
+      'tests/cluster/test-kyma-modules.spec.js',
       'tests/namespace/a-run-before.spec.js',
       'tests/namespace/test-certificates.spec.js',
       'tests/namespace/test-issuers.spec.js',
@@ -44,7 +45,6 @@ module.exports = defineConfig({
       // 'tests/namespace/test-kyma.spec.js',
       // 'tests/namespace/test-module-templates.spec.js',
       'tests/namespace/z-run-after.spec.js',
-      'tests/cluster/test-kyma-modules.spec.js',
     ],
     supportFile: 'support/index.js',
   },
