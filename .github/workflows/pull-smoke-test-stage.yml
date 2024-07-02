@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [opened, edited, synchronize, reopened, ready_for_review]
     paths:
-      - ".github/workflows/pull-integration-tests.yml"
+      - ".github/workflows/pull-smoke-test-stage.yml"
       - "Dockerfile.*"
       - "package.json"
       - "environments/dev/**"
