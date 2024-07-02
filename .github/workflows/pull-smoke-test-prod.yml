@@ -4,10 +4,10 @@ on:
   pull_request:
     types: [opened, edited, synchronize, reopened, ready_for_review]
     paths:
-      - ".github/workflows/pull-smoke-test-stage.yml"
+      - ".github/workflows/pull-smoke-test-prod.yml"
       - "Dockerfile.*"
       - "package.json"
-      - "environments/stage/**"
+      - "environments/prod/**"
       - "extensions/**"
       - "gulpfile.js"
       - "Makefile"
@@ -38,7 +38,7 @@ jobs:
         run: |
           ./.github/scripts/setup-busola.sh | tee busola-build.log
         env: 
-          ENV: stage
+          ENV: prod
       - name: run_tests
         shell: bash
         run: |
