@@ -37,8 +37,8 @@ jobs:
         shell: bash
         run: |
           ./.github/scripts/setup-busola.sh | tee busola-build.log
-        envs: |
-          ENV=stage
+        env: 
+          ENV: stage
       - name: run_tests
         shell: bash
         run: |
