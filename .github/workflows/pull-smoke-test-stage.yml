@@ -1,4 +1,4 @@
-name: PR Integration Tests
+name: PR Smoke Tests Stage
 
 on: 
   pull_request:
