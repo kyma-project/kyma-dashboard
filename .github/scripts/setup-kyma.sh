@@ -31,7 +31,6 @@ kubectl apply -f https://github.com/kyma-project/serverless-manager/releases/lat
 echo "Apply api-gateway"
 kubectl apply -f https://github.com/kyma-project/api-gateway/releases/latest/download/api-gateway-manager.yaml
 kubectl apply -f https://github.com/kyma-project/api-gateway/releases/latest/download/apigateway-default-cr.yaml
-kubectl apply -f https://github.tools.sap/kyma/kyma-modules/blob/main/regular/moduletemplate-api-gateway.yaml
 
 echo "Apply istio"
 kubectl apply -f https://github.com/kyma-project/istio/releases/latest/download/istio-manager.yaml
