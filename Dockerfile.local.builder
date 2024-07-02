@@ -9,7 +9,7 @@ COPY  ./environments/${ENV}/dist/extensions.yaml /app/core-ui/extensions/extensi
 COPY  ./environments/${ENV}/dist/wizards.yaml /app/core-ui/extensions/wizards.yaml
 
 COPY  ./environments/${ENV}/config.yaml /app/core-ui/config/config.yaml
-RUN yq eval -i '.config.features.KUBECONFIG_ID.config.kubeconfigUrl = "/kubeconfig"' core-ui/config/config.yaml
+RUN yq eval -i '.config.features.KUBECONFIG_ID.config.kubeconfigUrl = "/kubeconfig"' /app/core-ui/config/config.yaml
 
 EXPOSE 3001
 ENV NODE_ENV=production ADDRESS=0.0.0.0 IS_DOCKER=true
