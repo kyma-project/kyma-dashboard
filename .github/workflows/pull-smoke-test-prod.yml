@@ -1,4 +1,4 @@
-name: PR Smoke Tests Stage
+name: PR Smoke Tests Prod
 
 on: 
   pull_request:
@@ -14,7 +14,7 @@ on:
       - "tests/**"
 
 jobs:
-  run-smoke-test-stage:
+  run-smoke-test-prod:
     runs-on: ubuntu-latest
     steps:
       - uses: gardenlinux/workflow-telemetry-action@v2
