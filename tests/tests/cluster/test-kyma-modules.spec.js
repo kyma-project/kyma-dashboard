@@ -42,7 +42,7 @@ context('Test Kyma Modules views', () => {
       .contains('ui5-button:visible', 'Add')
       .click();
 
-    cy.wait(5000);
+    cy.wait(7000);
 
     cy.get('ui5-table-row')
       .contains('eventing')
@@ -54,17 +54,7 @@ context('Test Kyma Modules views', () => {
   });
 
   it('Test Modules list and details', () => {
-    cy.inspectTab('Edit');
-
-    cy.get('ui5-button:visible')
-      .contains('Save')
-      .click();
-
-    cy.get('ui5-message-strip')
-      .contains('Kyma updated')
-      .should('be.visible');
-
-    cy.inspectTab('View');
+    cy.reload();
 
     cy.get('ui5-input[placeholder="Search"]:visible')
       .find('input')
@@ -84,6 +74,22 @@ context('Test Kyma Modules views', () => {
     cy.getMidColumn().contains(`0 days`);
 
     cy.closeMidColumn();
+
+    cy.get('ui5-input[placeholder="Search"]:visible')
+      .find('input')
+      .clearInput();
+
+    cy.inspectTab('Edit');
+
+    cy.get('ui5-button:visible')
+      .contains('Save')
+      .click();
+
+    cy.get('ui5-message-strip')
+      .contains('Kyma updated')
+      .should('be.visible');
+
+    cy.inspectTab('View');
   });
 
   it('Test changing Module Channel', () => {
@@ -115,7 +121,7 @@ context('Test Kyma Modules views', () => {
       .contains('ui5-button:visible', 'Add')
       .click();
 
-    cy.wait(5000);
+    cy.wait(10000);
 
     cy.get('ui5-table-row')
       .contains('eventing')
