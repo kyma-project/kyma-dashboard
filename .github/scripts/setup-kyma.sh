@@ -44,7 +44,7 @@ echo "Apply eventing"
 kubectl apply -f https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing-manager.yaml
 
 echo "Apply module templates"
-kubectl apply -k ../../extensions/modules
+kubectl apply -k ./extensions/modules
 
 # if [[ ${JOB_NAME} =~ .*smoke.* ]]; then
 #     echo "Apply and enable telemetry module"
