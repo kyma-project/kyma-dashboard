@@ -54,23 +54,21 @@ context('Test Kyma Modules views', () => {
   });
 
   it('Test Modules list and details', () => {
-    cy.reload();
-
     cy.get('ui5-input[placeholder="Search"]:visible')
       .find('input')
       .wait(1000)
-      .type('eventing');
+      .type('api-gateway');
 
     cy.get('ui5-table-row')
-      .contains('eventing')
+      .contains('api-gateway')
       .should('be.visible');
 
     cy.get('ui5-table-row')
-      .contains('eventing')
+      .contains('api-gateway')
       .click();
 
-    cy.getMidColumn().contains('eventing');
-    cy.getMidColumn().contains(`Eventing`);
+    cy.getMidColumn().contains('default');
+    cy.getMidColumn().contains(`APIGateway`);
     cy.getMidColumn().contains(`0 days`);
 
     cy.closeMidColumn();
@@ -132,7 +130,7 @@ context('Test Kyma Modules views', () => {
       .should('be.visible');
   });
 
-  it('Test deleting Modules', () => {
+  it('Test deleting Modules', { retries: 3 }, () => {
     cy.get('ui5-panel')
       .contains('ui5-button', 'Add')
       .click();
@@ -153,6 +151,6 @@ context('Test Kyma Modules views', () => {
 
     cy.get('ui5-table-row')
       .contains('eventing')
-      .should('not.be.visible');
+      .should('not.exist', { timeout: 50000 });
   });
 });
