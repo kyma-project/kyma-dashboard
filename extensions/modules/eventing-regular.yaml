@@ -1,26 +1,40 @@
 apiVersion: operator.kyma-project.io/v1beta2
 kind: ModuleTemplate
 metadata:
-  name: api-gateway-regular
+  name: eventing-regular
   namespace: kcp-system
   labels:
-    'operator.kyma-project.io/controller-name': 'manifest'
-    'operator.kyma-project.io/managed-by': 'lifecycle-manager'
-    'operator.kyma-project.io/module-name': 'api-gateway'
+    'operator.kyma-project.io/module-name': 'eventing'
   annotations:
-    'operator.kyma-project.io/doc-url': 'https://kyma-project.io/#/api-gateway/user/README'
-    'operator.kyma-project.io/is-cluster-scoped': 'true'
-    'operator.kyma-project.io/module-version': '2.3.1'
+    'operator.kyma-project.io/doc-url': 'https://kyma-project.io/#/eventing-manager/user/README'
+    'operator.kyma-project.io/is-cluster-scoped': 'false'
+    'operator.kyma-project.io/module-version': '1.2.0'
 spec:
   channel: regular
   mandatory: false
   data:
     apiVersion: operator.kyma-project.io/v1alpha1
-    kind: APIGateway
+    kind: Eventing
     metadata:
-      name: default
+      labels:
+        app.kubernetes.io/name: eventing
+        app.kubernetes.io/instance: eventing
+        app.kubernetes.io/part-of: eventing-manager
+        app.kubernetes.io/created-by: eventing-manager
+      name: eventing
+      namespace: kyma-system
     spec:
-      enableKymaGateway: true
+      publisher:
+        replicas:
+          min: 2
+          max: 2
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 40m
+            memory: 64Mi
   descriptor:
     component:
       componentReferences: []
@@ -28,7 +42,7 @@ spec:
         - name: security.kyma-project.io/scan
           value: enabled
           version: v1
-      name: kyma-project.io/module/api-gateway
+      name: kyma-project.io/module/eventing
       provider: '{"name":"kyma-project.io","labels":[{"name":"kyma-project.io/built-by","value":"cli","version":"v1"}]}'
       repositoryContexts:
         - baseUrl: europe-docker.pkg.dev/kyma-project/modules-internal
@@ -36,62 +50,51 @@ spec:
           type: OCIRegistry
       resources:
         - access:
-            imageReference: europe-docker.pkg.dev/kyma-project/prod/api-gateway-manager:2.3.1
+            imageReference: europe-docker.pkg.dev/kyma-project/prod/eventing-manager:1.2.0
             type: ociRegistry
           labels:
             - name: scan.security.kyma-project.io/type
               value: third-party-image
               version: v1
-          name: api-gateway-manager
+          name: eventing-manager
           relation: external
           type: ociImage
-          version: 2.3.1
+          version: 1.2.0
         - access:
-            imageReference: europe-docker.pkg.dev/kyma-project/prod/external/oryd/oathkeeper:v0.38.25-beta.1
+            imageReference: europe-docker.pkg.dev/kyma-project/prod/eventing-publisher-proxy:1.0.1
             type: ociRegistry
           labels:
             - name: scan.security.kyma-project.io/type
               value: third-party-image
               version: v1
-          name: oathkeeper
+          name: eventing-publisher-proxy
           relation: external
           type: ociImage
-          version: v0.38.25-beta.1
+          version: 1.0.1
         - access:
-            imageReference: europe-docker.pkg.dev/kyma-project/prod/external/oryd/oathkeeper-maester:v0.1.5
-            type: ociRegistry
-          labels:
-            - name: scan.security.kyma-project.io/type
-              value: third-party-image
-              version: v1
-          name: oathkeeper-maester
-          relation: external
-          type: ociImage
-          version: v0.1.5
-        - access:
-            localReference: sha256:78bab6b37b97ccd1cd86b04b7dcb4bcda6079b6a87dc4a54c9b26efd9743cf52
+            localReference: sha256:72611defaf29077e7d5cd8c91b68649efbc1dc8f99d0a7006f221c088c32440e
             mediaType: application/octet-stream
             referenceName: raw-manifest
             type: localBlob
           digest:
             hashAlgorithm: SHA-256
             normalisationAlgorithm: genericBlobDigest/v1
-            value: 78bab6b37b97ccd1cd86b04b7dcb4bcda6079b6a87dc4a54c9b26efd9743cf52
+            value: 72611defaf29077e7d5cd8c91b68649efbc1dc8f99d0a7006f221c088c32440e
           name: raw-manifest
           relation: local
           type: yaml
-          version: 2.3.1
+          version: 1.2.0
       sources:
         - access:
-            commit: e2943f2c34d213a4f8f1509391689f0eb5e8259f
-            repoUrl: https://github.com/kyma-project/api-gateway.git
+            commit: 30bd5b1fbd94d4a30cb8953852515d7d1fa8de50
+            repoUrl: https://github.com/kyma-project/eventing-manager.git
             type: gitHub
           labels:
             - name: git.kyma-project.io/ref
               value: HEAD
               version: v1
             - name: scan.security.kyma-project.io/rc-tag
-              value: ''
+              value: 1.2.0
               version: v1
             - name: scan.security.kyma-project.io/language
               value: golang-mod
@@ -103,11 +106,11 @@ spec:
               value: 'false'
               version: v1
             - name: scan.security.kyma-project.io/exclude
-              value: '**/tests/**,**/test/**,**/*_test.go'
+              value: '**/test/**,**/*_test.go,/hack/**'
               version: v1
           name: module-sources
           type: Github
-          version: 2.3.1
-      version: 2.3.1
+          version: 1.2.0
+      version: 1.2.0
     meta:
       schemaVersion: v2
