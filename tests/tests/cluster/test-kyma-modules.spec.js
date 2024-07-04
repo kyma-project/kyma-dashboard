@@ -142,7 +142,7 @@ context('Test Kyma Modules views', () => {
       .click();
 
     cy.get('ui5-li:visible')
-      .contains(/Regular .*/)
+      .contains(/Fast .*/)
       .click();
 
     cy.get('.create-form')
@@ -156,7 +156,7 @@ context('Test Kyma Modules views', () => {
       .should('be.visible');
 
     cy.get('ui5-table-row')
-      .contains('regular')
+      .contains('fast')
       .should('be.visible');
   });
 
@@ -184,12 +184,8 @@ context('Test Kyma Modules views', () => {
 
     cy.wait(20000);
 
-    cy.get('ui5-table-row')
-      .contains('eventing')
-      .should('not.exist', { timeout: 50000 });
-
-    cy.get('ui5-table-row')
-      .contains('api-gateway')
-      .should('not.exist', { timeout: 50000 });
+    cy.get('ui5-table')
+      .find('ui5-illustrated-message[title-text="No modules"]')
+      .should('be.visible');
   });
 });
