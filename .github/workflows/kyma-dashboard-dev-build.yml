@@ -1,16 +1,29 @@
-name: kyma-dashboard-dev
+name: Build Kyma Dashboard Dev Images
 
 on:
   pull_request_target:
     types: [opened, edited, synchronize, reopened, ready_for_review]
-    # paths:
-    #   - "Dockerfile.*"
-    #   - "package.json"
-    #   - "environments/dev/**"
-    #   - "extensions/**"
-    #   - "gulpfile.js"
-    #   - "Makefile"
-    #   - "tests/**"
+    paths:
+      - ".github/workflows/kyma-dashboard-dev-build.yml"
+      - "Dockerfile.*"
+      - "package.json"
+      - "environments/dev/**"
+      - "extensions/**"
+      - "gulpfile.js"
+      - "Makefile"
+      - "tests/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/kyma-dashboard-dev-build.yml"
+      - "Dockerfile.*"
+      - "package.json"
+      - "environments/dev/**"
+      - "extensions/**"
+      - "gulpfile.js"
+      - "Makefile"
+      - "tests/**"
 
 
 permissions:
@@ -18,7 +31,7 @@ permissions:
   contents: read # This is required for actions/checkout
 
 jobs:
-  load-env:
+  load-env-dev:
     runs-on: ubuntu-latest
     outputs:
       WEB_IMAGE: ${{ steps.get_tags.outputs.WEB_IMAGE }}
@@ -34,8 +47,8 @@ jobs:
           echo "WEB_IMAGE=$WEB_IMAGE" >> $GITHUB_OUTPUT
           echo "BACKEND_IMAGE=$BACKEND_IMAGE" >> $GITHUB_OUTPUT
           echo "LOCAL_IMAGE=$LOCAL_IMAGE" >> $GITHUB_OUTPUT
-  build-web:
-    needs: [ load-env ]
+  build-web-dev:
+    needs: [ load-env-dev ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
       name: kyma-dashboard-dev-web
@@ -44,15 +57,15 @@ jobs:
       export-tags: true
       build-args: |
         ENV=dev
-        WEB_IMAGE=${{ needs.load-env.outputs.WEB_IMAGE }}
-  test-image-web:
+        WEB_IMAGE=${{ needs.load-env-dev.outputs.WEB_IMAGE }}
+  test-image-web-dev:
     runs-on: ubuntu-latest
-    needs: build-web
+    needs: build-web-dev
     steps:
       - name: Test image
-        run: echo "Testing images ${{ needs.build-web.outputs.images }}"
-  build-backend:
-    needs: [ load-env ]
+        run: echo "Testing images ${{ needs.build-web-dev.outputs.images }}"
+  build-backend-dev:
+    needs: [ load-env-dev ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
       name: kyma-dashboard-dev-backend
@@ -61,15 +74,15 @@ jobs:
       export-tags: true
       build-args: |
         ENV=dev
-        BACKEND_IMAGE=${{ needs.load-env.outputs.BACKEND_IMAGE }}
-  test-image-backend:
+        BACKEND_IMAGE=${{ needs.load-env-dev.outputs.BACKEND_IMAGE }}
+  test-image-backend-dev:
     runs-on: ubuntu-latest
-    needs: build-backend
+    needs: build-backend-dev
     steps:
       - name: Test image
-        run: echo "Testing images ${{ needs.build-backend.outputs.images }}"
-  build-local:
-    needs: [ load-env ]
+        run: echo "Testing images ${{ needs.build-backend-dev.outputs.images }}"
+  build-local-dev:
+    needs: [ load-env-dev ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
       name: kyma-dashboard-dev-local
@@ -78,10 +91,10 @@ jobs:
       export-tags: true
       build-args: |
         ENV=dev
-        LOCAL_IMAGE=${{ needs.load-env.outputs.LOCAL_IMAGE }}
-  test-image-local:
+        LOCAL_IMAGE=${{ needs.load-env-dev.outputs.LOCAL_IMAGE }}
+  test-image-local-dev:
     runs-on: ubuntu-latest
-    needs: build-local
+    needs: build-local-dev
     steps:
       - name: Test image
-        run: echo "Testing images ${{ needs.build-local.outputs.images }}"
+        run: echo "Testing images ${{ needs.build-local-dev.outputs.images }}"

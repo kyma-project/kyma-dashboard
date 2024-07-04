@@ -1,20 +1,20 @@
-name: PR Integration Tests
+name: PR Smoke Tests Stage
 
 on: 
   pull_request:
     types: [opened, edited, synchronize, reopened, ready_for_review]
     paths:
-      - ".github/workflows/pull-intergation-tests.yml"
+      - ".github/workflows/pull-smoke-test-stage.yml"
       - "Dockerfile.*"
       - "package.json"
-      - "environments/dev/**"
+      - "environments/stage/**"
       - "extensions/**"
       - "gulpfile.js"
       - "Makefile"
       - "tests/**"
 
 jobs:
-  run-integration-test:
+  run-smoke-test-stage:
     runs-on: ubuntu-latest
     steps:
       - uses: gardenlinux/workflow-telemetry-action@v2
@@ -38,7 +38,7 @@ jobs:
         run: |
           ./.github/scripts/setup-busola.sh | tee busola-build.log
         env: 
-          ENV: dev
+          ENV: stage
       - name: run_tests
         shell: bash
         run: |
@@ -46,7 +46,7 @@ jobs:
           export CYPRESS_DOMAIN=http://localhost:3001
 
           cd tests
-          npm ci && npm run "test:e2e"
+          npm ci && npm run "test:smoke-extensions"
       - name: Uploads artifacts
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
