@@ -33,7 +33,7 @@ context('Test Kyma Modules views', () => {
       .should('be.visible');
 
     cy.get('div[data-component-name="DynamicPageHeader"]')
-      .contains('fast')
+      .contains('regular')
       .should('be.visible');
 
     cy.get('ui5-panel')
