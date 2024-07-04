@@ -12,6 +12,10 @@ context('Test Kyma Modules views', () => {
       .contains('Installed Modules')
       .should('be.visible');
 
+    cy.contains('ui5-card', 'Installed Modules')
+      .contains('0')
+      .should('be.visible');
+
     cy.get('ui5-card')
       .contains('Modify Modules')
       .click();
@@ -20,6 +24,18 @@ context('Test Kyma Modules views', () => {
   });
 
   it('Test adding Modules', () => {
+    cy.get('ui5-table')
+      .find('ui5-illustrated-message[title-text="No Modules"]')
+      .should('be.visible');
+
+    cy.get('div[data-component-name="DynamicPageHeader"]')
+      .contains('Release channel:')
+      .should('be.visible');
+
+    cy.get('div[data-component-name="DynamicPageHeader"]')
+      .contains('fast')
+      .should('be.visible');
+
     cy.get('ui5-panel')
       .contains('ui5-button', 'Add')
       .click();
@@ -27,16 +43,16 @@ context('Test Kyma Modules views', () => {
     cy.wait(1000);
 
     cy.get('ui5-card')
-      .contains('eventing')
-      .should('be.visible');
-
-    cy.get('ui5-card-header[title-text="eventing"]').click();
-
-    cy.get('ui5-card')
       .contains('api-gateway')
       .should('be.visible');
 
     cy.get('ui5-card-header[title-text="api-gateway"]').click();
+
+    cy.get('ui5-card')
+      .contains('eventing')
+      .should('be.visible');
+
+    cy.get('ui5-card-header[title-text="eventing"]').click();
 
     cy.get('.create-form')
       .contains('ui5-button:visible', 'Add')
@@ -51,6 +67,20 @@ context('Test Kyma Modules views', () => {
     cy.get('ui5-table-row')
       .contains('api-gateway')
       .should('be.visible');
+  });
+
+  it('Test number of Modules in Feature card', () => {
+    cy.getLeftNav()
+      .contains('Cluster Details')
+      .click();
+
+    cy.contains('ui5-card', 'Installed Modules')
+      .contains('2')
+      .should('be.visible');
+
+    cy.get('ui5-card')
+      .contains('Modify Modules')
+      .click();
   });
 
   it('Test Modules list and details', () => {
@@ -147,10 +177,19 @@ context('Test Kyma Modules views', () => {
       .contains('ui5-button:visible', 'Add')
       .click();
 
+    cy.get('ui5-table-row')
+      .first()
+      .find('ui5-button[data-testid="delete"]')
+      .click();
+
     cy.wait(20000);
 
     cy.get('ui5-table-row')
       .contains('eventing')
+      .should('not.exist', { timeout: 50000 });
+
+    cy.get('ui5-table-row')
+      .contains('api-gateway')
       .should('not.exist', { timeout: 50000 });
   });
 });
