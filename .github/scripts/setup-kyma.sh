@@ -43,6 +43,11 @@ kubectl apply -f https://github.com/kyma-project/application-connector-manager/r
 echo "Apply eventing"
 kubectl apply -f https://github.com/kyma-project/eventing-manager/releases/latest/download/eventing-manager.yaml
 
+echo "Apply module templates"
+kubectl apply -f ./extensions/modules/api-gateway-regular.yaml
+kubectl apply -f ./extensions/modules/eventing-fast.yaml
+kubectl apply -f ./extensions/modules/eventing-regular.yaml
+
 echo "Apply and enable telemetry module"
 kubectl apply -f https://github.com/kyma-project/telemetry-manager/releases/latest/download/telemetry-manager.yaml
 kubectl apply -f https://github.com/kyma-project/telemetry-manager/releases/latest/download/telemetry-default-cr.yaml -n kyma-system
