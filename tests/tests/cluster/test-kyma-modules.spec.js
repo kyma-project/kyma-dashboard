@@ -161,6 +161,8 @@ context('Test Kyma Modules views', () => {
   });
 
   it('Test deleting Modules', { retries: 3 }, () => {
+    cy.reload();
+
     cy.get('ui5-panel')
       .contains('ui5-button', 'Add')
       .click();
