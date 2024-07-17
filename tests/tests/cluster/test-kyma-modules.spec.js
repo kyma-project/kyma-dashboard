@@ -54,7 +54,7 @@ context('Test Kyma Modules views', () => {
 
     cy.get('ui5-card-header[title-text="eventing"]').click();
 
-    cy.get('.create-form')
+    cy.get('[data-testid="create-form-footer-bar"]')
       .contains('ui5-button:visible', 'Add')
       .click();
 
@@ -145,7 +145,7 @@ context('Test Kyma Modules views', () => {
       .contains(/Fast .*/)
       .click();
 
-    cy.get('.create-form')
+    cy.get('[data-testid="create-form-footer-bar"]')
       .contains('ui5-button:visible', 'Add')
       .click();
 
@@ -175,7 +175,7 @@ context('Test Kyma Modules views', () => {
 
     cy.get('ui5-card-header[title-text="eventing"]').click();
 
-    cy.get('.create-form')
+    cy.get('[data-testid="create-form-footer-bar"]')
       .contains('ui5-button:visible', 'Add')
       .click();
 
