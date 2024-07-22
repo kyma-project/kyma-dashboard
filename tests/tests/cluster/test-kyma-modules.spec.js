@@ -58,8 +58,8 @@ context('Test Kyma Modules views', () => {
       .contains('eventing')
       .click();
 
-    cy.get('ui5-bar')
-      .contains('ui5-button', 'Add')
+    cy.get('[data-testid="create-form-footer-bar"]')
+      .contains('ui5-button:visible', 'Add')
       .click();
 
     cy.wait(7000);
@@ -151,8 +151,8 @@ context('Test Kyma Modules views', () => {
       .contains(/Fast .*/)
       .click();
 
-    cy.get('ui5-bar')
-      .contains('ui5-button', 'Add')
+    cy.get('[data-testid="create-form-footer-bar"]')
+      .contains('ui5-button:visible', 'Add')
       .click();
 
     cy.wait(10000);
@@ -215,6 +215,8 @@ context('Test Kyma Modules views', () => {
   });
 
   it('Test deleting Modules', { retries: 3 }, () => {
+    cy.wait(1000);
+
     cy.get('ui5-panel')
       .contains('ui5-button', 'Add')
       .click();
@@ -229,14 +231,18 @@ context('Test Kyma Modules views', () => {
       .contains('eventing')
       .click();
 
-    cy.get('ui5-bar')
-      .contains('ui5-button', 'Add')
+    cy.get('[data-testid="create-form-footer-bar"]')
+      .contains('ui5-button:visible', 'Add')
       .click();
+
+    cy.reload();
 
     cy.get('ui5-table-row')
       .first()
       .find('ui5-button[data-testid="delete"]')
       .click();
+
+    cy.contains(`delete Module api-gateway`);
 
     cy.get(`[header-text="Delete Module"]:visible`)
       .find('[data-testid="delete-confirmation"]')
