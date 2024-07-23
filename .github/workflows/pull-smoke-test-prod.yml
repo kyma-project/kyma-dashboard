@@ -11,7 +11,8 @@ on:
       - "extensions/**"
       - "gulpfile.js"
       - "Makefile"
-      - "tests/**"
+      - "tests/tests/cluster/test-check-extensions.spec.js"
+      - "tests/tests/namespace/test-check-extensions.spec.js"
 
 jobs:
   run-smoke-test-prod:
