@@ -235,16 +235,7 @@ context('Test Kyma Modules views', () => {
 
     cy.reload();
 
-    cy.get('ui5-table-row')
-      .first()
-      .find('ui5-button[data-testid="delete"]')
-      .click();
-
-    cy.contains(`delete Module api-gateway`);
-
-    cy.get(`[header-text="Delete Module"]:visible`)
-      .find('[data-testid="delete-confirmation"]')
-      .click();
+    cy.deleteFromGenericList('Module', 'api-gateway');
 
     cy.wait(20000);
 
