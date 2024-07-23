@@ -193,7 +193,9 @@ context('Test Kyma Modules views', () => {
 
     cy.get('ui5-li:visible')
       .contains(/Predefined .*/)
-      .click();
+      .filter(':visible')
+      .find('li')
+      .click({ force: true });
 
     cy.get('ui5-bar')
       .contains('ui5-button', 'Add')
