@@ -36,6 +36,7 @@ context('Test Kyma Modules views', () => {
       .contains('regular')
       .should('be.visible');
 
+    //add first module
     cy.get('ui5-panel')
       .contains('ui5-button', 'Add')
       .click();
@@ -50,10 +51,26 @@ context('Test Kyma Modules views', () => {
       .contains('api-gateway')
       .click();
 
+    cy.get('[data-testid="create-form-footer-bar"]')
+      .contains('ui5-button:visible', 'Add')
+      .click();
+
+    //check if already installed module is not visible
+    cy.get('ui5-panel')
+      .contains('ui5-button', 'Add')
+      .click();
+
+    cy.wait(1000);
+
+    cy.get('ui5-card')
+      .contains('api-gateway')
+      .should('not.exist');
+
     cy.get('ui5-card')
       .contains('eventing')
       .should('be.visible');
 
+    //add second module
     cy.get('ui5-title')
       .contains('eventing')
       .click();
