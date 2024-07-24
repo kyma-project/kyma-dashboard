@@ -46,13 +46,17 @@ context('Test Kyma Modules views', () => {
       .contains('api-gateway')
       .should('be.visible');
 
-    cy.get('ui5-card-header[title-text="api-gateway"]').click();
+    cy.get('ui5-title')
+      .contains('api-gateway')
+      .click();
 
     cy.get('ui5-card')
       .contains('eventing')
       .should('be.visible');
 
-    cy.get('ui5-card-header[title-text="eventing"]').click();
+    cy.get('ui5-title')
+      .contains('eventing')
+      .click();
 
     cy.get('[data-testid="create-form-footer-bar"]')
       .contains('ui5-button:visible', 'Add')
@@ -84,6 +88,8 @@ context('Test Kyma Modules views', () => {
   });
 
   it('Test Modules list and details', () => {
+    cy.wait(1000);
+
     cy.get('ui5-input[placeholder="Search"]:visible')
       .find('input')
       .wait(1000)
@@ -131,9 +137,9 @@ context('Test Kyma Modules views', () => {
       .contains('eventing')
       .should('be.visible');
 
-    cy.get('ui5-card-header[title-text="eventing"]')
-      .siblings('ui5-panel')
-      .as('eventing-panel');
+    cy.get('ui5-panel[data-testid="module-settings-panel-eventing"]').as(
+      'eventing-panel',
+    );
 
     cy.get('@eventing-panel').click();
 
@@ -158,6 +164,52 @@ context('Test Kyma Modules views', () => {
     cy.get('ui5-table-row')
       .contains('fast')
       .should('be.visible');
+
+    cy.get('ui5-table-row')
+      .contains('Overridden')
+      .should('be.visible');
+  });
+
+  it('Test changing Module Channel to Predefined', () => {
+    cy.get('ui5-panel')
+      .contains('ui5-button', 'Add')
+      .click();
+
+    cy.wait(1000);
+
+    cy.get('ui5-card')
+      .contains('eventing')
+      .should('be.visible');
+
+    cy.get('ui5-panel[data-testid="module-settings-panel-eventing"]').as(
+      'eventing-panel',
+    );
+
+    cy.get('@eventing-panel').click();
+
+    cy.get('@eventing-panel')
+      .find('ui5-select')
+      .click();
+
+    cy.get('ui5-li:visible')
+      .contains(/Predefined .*/)
+      .filter(':visible')
+      .find('li')
+      .click({ force: true });
+
+    cy.get('ui5-bar')
+      .contains('ui5-button', 'Add')
+      .click();
+
+    cy.wait(10000);
+
+    cy.get('ui5-table-row')
+      .contains('eventing')
+      .should('be.visible');
+
+    cy.get('ui5-table-row')
+      .contains('Overridden')
+      .should('not.be.exist');
   });
 
   it('Test deleting Modules', { retries: 3 }, () => {
@@ -173,7 +225,9 @@ context('Test Kyma Modules views', () => {
       .contains('eventing')
       .should('be.visible');
 
-    cy.get('ui5-card-header[title-text="eventing"]').click();
+    cy.get('ui5-title')
+      .contains('eventing')
+      .click();
 
     cy.get('[data-testid="create-form-footer-bar"]')
       .contains('ui5-button:visible', 'Add')
@@ -181,16 +235,7 @@ context('Test Kyma Modules views', () => {
 
     cy.reload();
 
-    cy.get('ui5-table-row')
-      .first()
-      .find('ui5-button[data-testid="delete"]')
-      .click();
-
-    cy.contains(`delete Module api-gateway`);
-
-    cy.get(`[header-text="Delete Module"]:visible`)
-      .find('[data-testid="delete-confirmation"]')
-      .click();
+    cy.deleteFromGenericList('Module', 'api-gateway');
 
     cy.wait(20000);
 
