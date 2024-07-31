@@ -242,11 +242,11 @@ context('Test Kyma Modules views', () => {
   it('Test deleting Modules', { retries: 3 }, () => {
     cy.deleteFromGenericList('Module', 'eventing');
 
-    cy.wait(10000);
+    cy.reload();
 
     cy.deleteFromGenericList('Module', 'api-gateway');
 
-    cy.wait(10000);
+    cy.wait(20000);
 
     cy.get('ui5-table')
       .find('ui5-illustrated-message[title-text="No modules"]')
