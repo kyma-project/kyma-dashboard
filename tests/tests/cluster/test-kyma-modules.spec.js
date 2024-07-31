@@ -179,6 +179,8 @@ context('Test Kyma Modules views', () => {
       .contains('Change')
       .click();
 
+    cy.contains('Kyma updated').should('be.visible');
+
     cy.inspectTab('View');
 
     cy.wait(10000);
@@ -221,6 +223,8 @@ context('Test Kyma Modules views', () => {
     cy.get('ui5-button')
       .contains('Change')
       .click();
+
+    cy.contains('Kyma updated').should('be.visible');
 
     cy.inspectTab('View');
 
