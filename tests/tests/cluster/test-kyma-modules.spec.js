@@ -44,7 +44,7 @@ context('Test Kyma Modules views', () => {
       .contains('regular')
       .should('be.visible');
 
-    //add first module
+    // Add first module
     cy.get('ui5-panel')
       .contains('ui5-button', 'Add')
       .click();
@@ -63,7 +63,7 @@ context('Test Kyma Modules views', () => {
       .contains('ui5-button:visible', 'Add')
       .click();
 
-    //check if already installed module is not visible
+    // Check if already installed module is not visible
     cy.get('ui5-panel')
       .contains('ui5-button', 'Add')
       .click();
@@ -78,7 +78,7 @@ context('Test Kyma Modules views', () => {
       .contains('eventing')
       .should('be.visible');
 
-    //add second module
+    // Add second module
     cy.get('ui5-title')
       .contains('eventing')
       .click();
