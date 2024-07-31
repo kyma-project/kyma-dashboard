@@ -242,27 +242,9 @@ context('Test Kyma Modules views', () => {
   it('Test deleting Modules', { retries: 3 }, () => {
     cy.wait(1000);
 
-    cy.get('ui5-panel')
-      .contains('ui5-button', 'Add')
-      .click();
-
-    cy.wait(1000);
-
-    cy.get('ui5-card')
-      .contains('eventing')
-      .should('be.visible');
-
-    cy.get('ui5-title')
-      .contains('eventing')
-      .click();
-
-    cy.get('[data-testid="create-form-footer-bar"]')
-      .contains('ui5-button:visible', 'Add')
-      .click();
-
-    cy.reload();
-
     cy.deleteFromGenericList('Module', 'api-gateway');
+
+    cy.deleteFromGenericList('Module', 'eventing');
 
     cy.wait(20000);
 
