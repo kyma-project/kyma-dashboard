@@ -1635,7 +1635,7 @@ general:
     group: telemetry.kyma-project.io
     version: v1alpha1
   name: Log Pipelines
-  category: Observability
+  category: Telemetry
   urlPath: logpipelines
   scope: cluster
   description: >-
@@ -2967,7 +2967,7 @@ general:
     group: telemetry.kyma-project.io
     version: v1alpha1
   name: Trace Pipelines
-  category: Observability
+  category: Telemetry
   urlPath: tracepipelines
   scope: cluster
   description: >-

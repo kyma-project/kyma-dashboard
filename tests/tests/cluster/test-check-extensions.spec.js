@@ -16,9 +16,9 @@ context('Test Cluster Extensions views', () => {
     // });
   });
 
-  // Observability
-  describe('Test Observability Extensions', () => {
-    useCategory('Observability');
+  // Telemetry
+  describe('Test Telemetry Extensions', () => {
+    useCategory('Telemetry');
 
     it('Test Trace Pipelines', () => {
       cy.checkExtension('Trace Pipelines');

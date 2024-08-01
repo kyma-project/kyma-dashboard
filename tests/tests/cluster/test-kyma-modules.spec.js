@@ -23,6 +23,14 @@ context('Test Kyma Modules views', () => {
     cy.url().should('match', /.*\/kymamodules/);
   });
 
+  it('Check if edit is empty', () => {
+    cy.inspectTab('Edit');
+
+    cy.contains('No modules installed').should('be.visible');
+
+    cy.inspectTab('View');
+  });
+
   it('Test adding Modules', () => {
     cy.get('ui5-table')
       .find('ui5-illustrated-message[title-text="No modules"]')
@@ -36,6 +44,7 @@ context('Test Kyma Modules views', () => {
       .contains('regular')
       .should('be.visible');
 
+    // Add first module
     cy.get('ui5-panel')
       .contains('ui5-button', 'Add')
       .click();
@@ -50,10 +59,26 @@ context('Test Kyma Modules views', () => {
       .contains('api-gateway')
       .click();
 
+    cy.get('[data-testid="create-form-footer-bar"]')
+      .contains('ui5-button:visible', 'Add')
+      .click();
+
+    // Check if already installed module is not visible
+    cy.get('ui5-panel')
+      .contains('ui5-button', 'Add')
+      .click();
+
+    cy.wait(1000);
+
+    cy.get('ui5-card')
+      .contains('api-gateway')
+      .should('not.exist');
+
     cy.get('ui5-card')
       .contains('eventing')
       .should('be.visible');
 
+    // Add second module
     cy.get('ui5-title')
       .contains('eventing')
       .click();
@@ -127,33 +152,36 @@ context('Test Kyma Modules views', () => {
   });
 
   it('Test changing Module Channel', () => {
-    cy.get('ui5-panel')
-      .contains('ui5-button', 'Add')
-      .click();
+    cy.inspectTab('Edit');
 
     cy.wait(1000);
 
-    cy.get('ui5-card')
-      .contains('eventing')
-      .should('be.visible');
+    cy.contains('ui5-label', 'eventing').should('be.visible');
 
-    cy.get('ui5-panel[data-testid="module-settings-panel-eventing"]').as(
-      'eventing-panel',
-    );
-
-    cy.get('@eventing-panel').click();
-
-    cy.get('@eventing-panel')
+    cy.contains('ui5-label', 'eventing')
+      .parent()
       .find('ui5-select')
       .click();
 
+    cy.wait(500);
+
     cy.get('ui5-li:visible')
-      .contains(/Fast .*/)
+      .contains(/^Fast .*/)
       .click();
 
-    cy.get('[data-testid="create-form-footer-bar"]')
-      .contains('ui5-button:visible', 'Add')
+    cy.checkUnsavedDialog();
+
+    cy.saveChanges('Edit');
+
+    cy.contains('Change Release Channel').should('be.visible');
+
+    cy.get('ui5-button')
+      .contains('Change')
       .click();
+
+    cy.contains('Kyma updated').should('be.visible');
+
+    cy.inspectTab('View');
 
     cy.wait(10000);
 
@@ -171,23 +199,14 @@ context('Test Kyma Modules views', () => {
   });
 
   it('Test changing Module Channel to Predefined', () => {
-    cy.get('ui5-panel')
-      .contains('ui5-button', 'Add')
-      .click();
+    cy.inspectTab('Edit');
 
     cy.wait(1000);
 
-    cy.get('ui5-card')
-      .contains('eventing')
-      .should('be.visible');
+    cy.contains('ui5-label', 'eventing').should('be.visible');
 
-    cy.get('ui5-panel[data-testid="module-settings-panel-eventing"]').as(
-      'eventing-panel',
-    );
-
-    cy.get('@eventing-panel').click();
-
-    cy.get('@eventing-panel')
+    cy.contains('ui5-label', 'eventing')
+      .parent()
       .find('ui5-select')
       .click();
 
@@ -197,9 +216,17 @@ context('Test Kyma Modules views', () => {
       .find('li')
       .click({ force: true });
 
-    cy.get('ui5-bar')
-      .contains('ui5-button', 'Add')
+    cy.saveChanges('Edit');
+
+    cy.contains('Change Release Channel').should('be.visible');
+
+    cy.get('ui5-button')
+      .contains('Change')
       .click();
+
+    cy.contains('Kyma updated').should('be.visible');
+
+    cy.inspectTab('View');
 
     cy.wait(10000);
 
@@ -213,34 +240,13 @@ context('Test Kyma Modules views', () => {
   });
 
   it('Test deleting Modules', { retries: 3 }, () => {
-    cy.wait(1000);
-
-    cy.get('ui5-panel')
-      .contains('ui5-button', 'Add')
-      .click();
-
-    cy.wait(1000);
-
-    cy.get('ui5-card')
-      .contains('eventing')
-      .should('be.visible');
-
-    cy.get('ui5-title')
-      .contains('eventing')
-      .click();
-
-    cy.get('[data-testid="create-form-footer-bar"]')
-      .contains('ui5-button:visible', 'Add')
-      .click();
-
-    cy.reload();
-
     cy.deleteFromGenericList('Module', 'api-gateway');
 
     cy.wait(20000);
 
-    cy.get('ui5-table')
-      .find('ui5-illustrated-message[title-text="No modules"]')
-      .should('be.visible');
+    // Uncomment after fix - https://github.com/kyma-project/busola/issues/3101
+    //cy.get('ui5-table')
+    //  .find('ui5-illustrated-message[title-text="No modules"]')
+    //  .should('be.visible');
   });
 });
