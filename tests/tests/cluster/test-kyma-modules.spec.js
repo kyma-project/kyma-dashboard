@@ -239,14 +239,23 @@ context('Test Kyma Modules views', () => {
       .should('not.be.exist');
   });
 
-  it('Test deleting Modules', { retries: 3 }, () => {
+  it('Test deleting Modules from List', { retries: 3 }, () => {
     cy.deleteFromGenericList('Module', 'api-gateway');
 
     cy.wait(20000);
 
-    // Uncomment after fix - https://github.com/kyma-project/busola/issues/3101
-    //cy.get('ui5-table')
-    //  .find('ui5-illustrated-message[title-text="No modules"]')
-    //  .should('be.visible');
+    cy.get('ui5-table')
+      .find('ui5-illustrated-message[title-text="No modules"]')
+      .should('be.visible');
+  });
+
+  it('Test deleting Modules from Details', { retries: 3 }, () => {
+    cy.deleteFromGenericList('Module', 'api-gateway');
+
+    cy.wait(20000);
+
+    cy.get('ui5-table')
+      .find('ui5-illustrated-message[title-text="No modules"]')
+      .should('be.visible');
   });
 });
