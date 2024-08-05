@@ -239,18 +239,19 @@ context('Test Kyma Modules views', () => {
       .should('not.be.exist');
   });
 
-  it('Test deleting Modules from List', { retries: 3 }, () => {
+  it('Test deleting Modules from List and Details', { retries: 3 }, () => {
     cy.deleteFromGenericList('Module', 'api-gateway');
 
-    cy.wait(20000);
+    cy.get('ui5-input[placeholder="Search"]:visible')
+      .find('input')
+      .wait(1000)
+      .type('eventing');
 
-    cy.get('ui5-table')
-      .find('ui5-illustrated-message[title-text="No modules"]')
-      .should('be.visible');
-  });
+    cy.get('ui5-table-row')
+      .contains('eventing')
+      .click();
 
-  it('Test deleting Modules from Details', { retries: 3 }, () => {
-    cy.deleteFromGenericList('Module', 'api-gateway');
+    cy.deleteInDetails('Module', 'eventing', true);
 
     cy.wait(20000);
 
