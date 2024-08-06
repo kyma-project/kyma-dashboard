@@ -59,13 +59,28 @@ data:
     - name: spec.secretRef
       simple: true
       path: spec.secretRef
-      widget: ResourceRef      
+      widget: ResourceRef
       provideVar: secret
+      visibility: $canI('v1', 'Secret')
+      overwrite: false
       resource:
         kind: Secret
         version: v1
       defaultExpanded: true
-      required: true 
+      required: true
+    - simple: true
+      var: separator
+      value: ""
+    - simple: true
+      name: spec.secretRef
+      path: spec.secretRef
+      widget: FormGroup
+      required: true
+      overwrite: false
+      visibility: $not($canI('v1', 'Secret'))
+      children:
+        - path: namespace
+        - path: name
     - path: spec.domains.include
       simple: true
       widget: SimpleList

@@ -70,11 +70,25 @@ data:
     - name: issuer
       path: spec.issuerRef
       required: false
-      widget: ResourceRef      
+      widget: ResourceRef
+      visibility: $canI("cert.gardener.cloud/v1alpha1", 'Issuer')
+      overwrite: false
       resource:
         kind: Issuer
         group: cert.gardener.cloud
         version: v1alpha1
+    - simple: true
+      var: separator
+      value: ""
+    - simple: true
+      path: spec.issuerRef
+      required: false
+      widget: FormGroup
+      overwrite: false
+      visibility: $not($canI('cert.gardener.cloud/v1alpha1', 'Issuer'))
+      children:
+        - path: namespace
+        - path: name
     - path: spec.renew
     - var: useExistingSecret
       name: spec.useExisting
