@@ -241,7 +241,6 @@ context('Test Kyma Modules views', () => {
 
   it('Test deleting Modules from List and Details', { retries: 3 }, () => {
     cy.deleteFromGenericList('Module', 'api-gateway');
-
     cy.get('ui5-input[placeholder="Search"]:visible')
       .find('input')
       .wait(1000)
