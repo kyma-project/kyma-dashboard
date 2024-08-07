@@ -61,11 +61,22 @@ data:
       path: spec.serviceInstanceName
       required: true
       widget: Resource
+      visibility: $canI('services.cloud.sap.com/v1', 'ServiceInstance')
+      overwrite: false
       resource:
         kind: ServiceInstance
         scope: namespace
         group: services.cloud.sap.com
         version: v1
+    - simple: true
+      var: separator
+      value: ""
+    - simple: true
+      path: spec.serviceInstanceName
+      required: true
+      widget: Text
+      overwrite: false
+      visibility: $not($canI('services.cloud.sap.com/v1', 'ServiceInstance'))
     - path: spec.externalName
       placeholder: spec.externalNamePlaceholder
     - path: spec.secretName

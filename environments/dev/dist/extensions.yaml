@@ -141,10 +141,24 @@ form:
     path: spec.issuerRef
     required: false
     widget: ResourceRef
+    visibility: $canI("cert.gardener.cloud/v1alpha1", 'Issuer')
+    overwrite: false
     resource:
       kind: Issuer
       group: cert.gardener.cloud
       version: v1alpha1
+  - simple: true
+    var: separator
+    value: ''
+  - simple: true
+    path: spec.issuerRef
+    required: false
+    widget: FormGroup
+    overwrite: false
+    visibility: $not($canI('cert.gardener.cloud/v1alpha1', 'Issuer'))
+    children:
+      - path: namespace
+      - path: name
   - path: spec.renew
   - var: useExistingSecret
     name: spec.useExisting
@@ -368,11 +382,26 @@ form:
     path: spec.secretRef
     widget: ResourceRef
     provideVar: secret
+    visibility: $canI('v1', 'Secret')
+    overwrite: false
     resource:
       kind: Secret
       version: v1
     defaultExpanded: true
     required: true
+  - simple: true
+    var: separator
+    value: ''
+  - simple: true
+    name: spec.secretRef
+    path: spec.secretRef
+    widget: FormGroup
+    required: true
+    overwrite: false
+    visibility: $not($canI('v1', 'Secret'))
+    children:
+      - path: namespace
+      - path: name
   - path: spec.domains.include
     simple: true
     widget: SimpleList
@@ -1787,10 +1816,20 @@ form:
   - name: spec.secretName
     path: spec.secretName
     widget: Resource
+    visibility: $canI('v1', 'Secret')
+    overwrite: false
     resource:
       kind: Secret
       scope: namespace
       version: v1
+  - simple: true
+    var: separator
+    value: ''
+  - name: spec.secretName
+    path: spec.secretName
+    visibility: $not($canI('v1', 'Secret'))
+    overwrite: false
+    widget: Text
   - name: spec.tokenEndpointAuthMethod
     path: spec.tokenEndpointAuthMethod
     enum:
@@ -2007,11 +2046,22 @@ form:
     path: spec.serviceInstanceName
     required: true
     widget: Resource
+    visibility: $canI('services.cloud.sap.com/v1', 'ServiceInstance')
+    overwrite: false
     resource:
       kind: ServiceInstance
       scope: namespace
       group: services.cloud.sap.com
       version: v1
+  - simple: true
+    var: separator
+    value: ''
+  - simple: true
+    path: spec.serviceInstanceName
+    required: true
+    widget: Text
+    overwrite: false
+    visibility: $not($canI('services.cloud.sap.com/v1', 'ServiceInstance'))
   - path: spec.externalName
     placeholder: spec.externalNamePlaceholder
   - path: spec.secretName

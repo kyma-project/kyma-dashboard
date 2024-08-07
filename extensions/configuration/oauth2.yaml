@@ -119,10 +119,20 @@ data:
     - name: spec.secretName
       path: spec.secretName
       widget: Resource
+      visibility: $canI('v1', 'Secret')
+      overwrite: false
       resource:
         kind: Secret
         scope: namespace
         version: v1  
+    - simple: true
+      var: separator
+      value: ""
+    - name: spec.secretName
+      path: spec.secretName
+      visibility: $not($canI('v1', 'Secret'))
+      overwrite: false
+      widget: Text
     - name: spec.tokenEndpointAuthMethod
       path: spec.tokenEndpointAuthMethod
       enum:
