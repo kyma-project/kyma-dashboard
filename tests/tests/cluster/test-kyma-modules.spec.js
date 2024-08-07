@@ -240,17 +240,18 @@ context('Test Kyma Modules views', () => {
   });
 
   it('Test deleting Modules from List and Details', { retries: 3 }, () => {
-    cy.deleteFromGenericList('Module', 'api-gateway');
+    cy.deleteFromGenericList('Module', 'eventing');
+
     cy.get('ui5-input[placeholder="Search"]:visible')
       .find('input')
       .wait(1000)
-      .type('eventing');
+      .type('api-gateway');
 
     cy.get('ui5-table-row')
-      .contains('eventing')
+      .contains('api-gateway')
       .click();
 
-    cy.deleteInDetails('Module', 'eventing', true);
+    cy.deleteInDetails('Module', 'api-gateway', true);
 
     cy.wait(20000);
 
