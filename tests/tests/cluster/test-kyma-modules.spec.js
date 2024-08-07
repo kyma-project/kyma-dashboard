@@ -255,6 +255,10 @@ context('Test Kyma Modules views', () => {
 
     cy.wait(20000);
 
+    cy.get('ui5-input[placeholder="Search"]:visible')
+      .find('input')
+      .clear();
+
     cy.get('ui5-table')
       .find('ui5-illustrated-message[title-text="No modules"]')
       .should('be.visible');
