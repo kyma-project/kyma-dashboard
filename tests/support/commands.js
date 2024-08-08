@@ -43,7 +43,7 @@ Cypress.Commands.add(
 Cypress.Commands.add('checkItemOnGenericListLink', resourceName => {
   cy.get('ui5-table-row')
     .find('ui5-table-cell')
-    .contains('span', resourceName)
+    .contains(resourceName)
     .should('be.visible');
 });
 
