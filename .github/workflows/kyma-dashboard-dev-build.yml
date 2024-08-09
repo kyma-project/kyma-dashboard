@@ -1,6 +1,13 @@
 name: Build Kyma Dashboard Dev Images
 
 on:
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Additional tag for built images'
+        required: false
+        type: string
+        default: ""
   pull_request_target:
     types: [opened, edited, synchronize, reopened, ready_for_review]
     paths:
