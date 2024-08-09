@@ -68,7 +68,7 @@ jobs:
 
   create-tag:
     name: Create tag
-    needs: upgrade-images
+    #    needs: upgrade-images
     runs-on: ubuntu-latest
 
     steps:
@@ -132,7 +132,7 @@ jobs:
 
   publish-release:
     name: Publish release
-    needs: [integrations, create-draft]
+    needs: [create-draft] #integrations, create-draft]
     runs-on: ubuntu-latest
 
     steps:
