@@ -1,17 +1,9 @@
 name: Build Kyma Dashboard Stage Images
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, edited, synchronize, reopened, ready_for_review]
-    paths:
-      - ".github/workflows/kyma-dashboard-stage-build.yml"
-      - "Dockerfile.*"
-      - "package.json"
-      - "environments/stage/**"
-      - "extensions/**"
-      - "gulpfile.js"
-      - "Makefile"
-      - "tests/**"
+
   push:
     branches:
       - main
