@@ -1,0 +1,100 @@
+name: Build Kyma Dashboard Prod Images
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+    paths:
+      - ".github/workflows/kyma-dashboard-prod-build.yml"
+      - "Dockerfile.*"
+      - "package.json"
+      - "environments/prod/**"
+      - "extensions/**"
+      - "gulpfile.js"
+      - "Makefile"
+      - "tests/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/kyma-dashboard-prod-build.yml"
+      - "Dockerfile.*"
+      - "package.json"
+      - "environments/prod/**"
+      - "extensions/**"
+      - "gulpfile.js"
+      - "Makefile"
+      - "tests/**"
+
+
+permissions:
+  id-token: write # This is required for requesting the JWT token
+  contents: read # This is required for actions/checkout
+
+jobs:
+  load-env-prod:
+    runs-on: ubuntu-latest
+    outputs:
+      WEB_IMAGE: ${{ steps.get_tags.outputs.WEB_IMAGE }}
+      BACKEND_IMAGE: ${{ steps.get_tags.outputs.BACKEND_IMAGE }}
+      LOCAL_IMAGE: ${{ steps.get_tags.outputs.LOCAL_IMAGE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Load environment variables
+        id: get_tags
+        run: |
+          source ./environments/prod/env.sh
+          echo "WEB_IMAGE=$WEB_IMAGE" >> $GITHUB_OUTPUT
+          echo "BACKEND_IMAGE=$BACKEND_IMAGE" >> $GITHUB_OUTPUT
+          echo "LOCAL_IMAGE=$LOCAL_IMAGE" >> $GITHUB_OUTPUT
+  build-web-prod:
+    needs: [ load-env-prod ]
+    uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
+    with:
+      name: kyma-dashboard-prod-web
+      dockerfile: Dockerfile.web.builder
+      context: .
+      export-tags: true
+      build-args: |
+        ENV=prod
+        WEB_IMAGE=${{ needs.load-env-prod.outputs.WEB_IMAGE }}
+  test-image-web-prod:
+    runs-on: ubuntu-latest
+    needs: build-web-prod
+    steps:
+      - name: Test image
+        run: echo "Testing images ${{ needs.build-web-prod.outputs.images }}"
+  build-backend-prod:
+    needs: [ load-env-prod ]
+    uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
+    with:
+      name: kyma-dashboard-prod-backend
+      dockerfile: Dockerfile.backend
+      context: .
+      export-tags: true
+      build-args: |
+        ENV=prod
+        BACKEND_IMAGE=${{ needs.load-env-prod.outputs.BACKEND_IMAGE }}
+  test-image-backend-prod:
+    runs-on: ubuntu-latest
+    needs: build-backend-prod
+    steps:
+      - name: Test image
+        run: echo "Testing images ${{ needs.build-backend-prod.outputs.images }}"
+  build-local-prod:
+    needs: [ load-env-prod ]
+    uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
+    with:
+      name: kyma-dashboard-prod-local
+      dockerfile: Dockerfile.local.builder
+      context: .
+      export-tags: true
+      build-args: |
+        ENV=prod
+        LOCAL_IMAGE=${{ needs.load-env-prod.outputs.LOCAL_IMAGE }}
+  test-image-local-prod:
+    runs-on: ubuntu-latest
+    needs: build-local-prod
+    steps:
+      - name: Test image
+        run: echo "Testing images ${{ needs.build-local-prod.outputs.images }}"
