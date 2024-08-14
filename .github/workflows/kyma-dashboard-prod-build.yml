@@ -3,6 +3,27 @@ name: Build Kyma Dashboard Prod Images
 on:
   pull_request_target:
     types: [opened, edited, synchronize, reopened, ready_for_review]
+    paths:
+      - ".github/workflows/kyma-dashboard-prod-build.yml"
+      - "Dockerfile.*"
+      - "package.json"
+      - "environments/prod/**"
+      - "extensions/**"
+      - "gulpfile.js"
+      - "Makefile"
+      - "tests/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/kyma-dashboard-prod-build.yml"
+      - "Dockerfile.*"
+      - "package.json"
+      - "environments/prod/**"
+      - "extensions/**"
+      - "gulpfile.js"
+      - "Makefile"
+      - "tests/**"
 
 
 permissions:
