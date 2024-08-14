@@ -32,6 +32,7 @@ context('Test Kyma version', () => {
   it('Fails gracefully', () => {
     cy.setBusolaFeature('SHOW_KYMA_VERSION', true);
     mockKymaSystemForbidden();
+
     cy.loginAndSelectCluster();
 
     cy.contains('Kubernetes:').should('exist');
