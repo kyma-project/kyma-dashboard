@@ -11,7 +11,8 @@ on:
       - "extensions/**"
       - "gulpfile.js"
       - "Makefile"
-      - "tests/**"
+      - "tests/cypress-smoke.json"
+      - "tests/tests/**/test-check-extensions.spec.js"
   push:
     branches:
       - main
@@ -23,8 +24,8 @@ on:
       - "extensions/**"
       - "gulpfile.js"
       - "Makefile"
-      - "tests/**"
-
+      - "tests/cypress-smoke.json"
+      - "tests/tests/**/test-check-extensions.spec.js"
 
 permissions:
   id-token: write # This is required for requesting the JWT token
