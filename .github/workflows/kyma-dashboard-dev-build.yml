@@ -58,12 +58,6 @@ jobs:
       build-args: |
         ENV=dev
         WEB_IMAGE=${{ needs.load-env-dev.outputs.WEB_IMAGE }}
-  test-image-web-dev:
-    runs-on: ubuntu-latest
-    needs: build-web-dev
-    steps:
-      - name: Test image
-        run: echo "Testing images ${{ needs.build-web-dev.outputs.images }}"
   build-backend-dev:
     needs: [ load-env-dev ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
@@ -75,12 +69,6 @@ jobs:
       build-args: |
         ENV=dev
         BACKEND_IMAGE=${{ needs.load-env-dev.outputs.BACKEND_IMAGE }}
-  test-image-backend-dev:
-    runs-on: ubuntu-latest
-    needs: build-backend-dev
-    steps:
-      - name: Test image
-        run: echo "Testing images ${{ needs.build-backend-dev.outputs.images }}"
   build-local-dev:
     needs: [ load-env-dev ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
@@ -92,9 +80,13 @@ jobs:
       build-args: |
         ENV=dev
         LOCAL_IMAGE=${{ needs.load-env-dev.outputs.LOCAL_IMAGE }}
-  test-image-local-dev:
+  test-images-dev:
     runs-on: ubuntu-latest
-    needs: build-local-dev
+    needs: [ build-web-stage, build-backend-stage, build-local-stage ]
     steps:
-      - name: Test image
-        run: echo "Testing images ${{ needs.build-local-dev.outputs.images }}"
+      - name: Test web image
+        run: echo "Testing web images ${{ needs.build-web-dev.outputs.images }}"
+      - name: Test backend image
+        run: echo "Testing backend images ${{ needs.build-backend-dev.outputs.images }}"
+      - name: Test local image
+        run: echo "Testing local images ${{ needs.build-local-dev.outputs.images }}"
