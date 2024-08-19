@@ -152,3 +152,4 @@ data:
       spec.parametersFrom: Parameters from Secrets
       chooseSecretKey: Choose Secret Key
       bindingData: Binding Data
+      testData: Test Data
