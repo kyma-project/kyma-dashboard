@@ -52,7 +52,7 @@ jobs:
     needs: [ load-env-stage ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
-      name: kyma-dashboard-stage-web
+      name: kyma-dashboard-web-stage # This image name is used to build the URL to the registry
       dockerfile: Dockerfile.web.builder
       context: .
       export-tags: true
@@ -63,7 +63,7 @@ jobs:
     needs: [ load-env-stage ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
-      name: kyma-dashboard-stage-backend
+      name: kyma-dashboard-backend-stage # This image name is used to build the URL to the registry
       dockerfile: Dockerfile.backend
       context: .
       export-tags: true
@@ -74,7 +74,7 @@ jobs:
     needs: [ load-env-stage ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
-      name: kyma-dashboard-stage-local
+      name: kyma-dashboard-local-stage # This image name is used to build the URL to the registry
       dockerfile: Dockerfile.local.builder
       context: .
       export-tags: true

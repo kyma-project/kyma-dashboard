@@ -52,7 +52,7 @@ jobs:
     needs: [ load-env-prod ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
-      name: kyma-dashboard-prod-web
+      name: kyma-dashboard-web-prod # This image name is used to build the URL to the registry
       dockerfile: Dockerfile.web.builder
       context: .
       export-tags: true
@@ -63,7 +63,7 @@ jobs:
     needs: [ load-env-prod ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
-      name: kyma-dashboard-prod-backend
+      name: kyma-dashboard-backend-prod # This image name is used to build the URL to the registry
       dockerfile: Dockerfile.backend
       context: .
       export-tags: true
@@ -74,7 +74,7 @@ jobs:
     needs: [ load-env-prod ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
-      name: kyma-dashboard-prod-local
+      name: kyma-dashboard-local-prod # This image name is used to build the URL to the registry
       dockerfile: Dockerfile.local.builder
       context: .
       export-tags: true
