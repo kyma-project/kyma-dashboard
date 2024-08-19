@@ -1,37 +1,38 @@
-name: Build Kyma Dashboard Dev Images
+name: Build Kyma Dashboard Prod Images
 
 on:
   pull_request_target:
     types: [opened, edited, synchronize, reopened, ready_for_review]
     paths:
-      - ".github/workflows/kyma-dashboard-dev-build.yml"
+      - ".github/workflows/kyma-dashboard-prod-build.yml"
       - "Dockerfile.*"
       - "package.json"
-      - "environments/dev/**"
+      - "environments/prod/**"
       - "extensions/**"
       - "gulpfile.js"
       - "Makefile"
-      - "tests/**"
+      - "tests/cypress-smoke.json"
+      - "tests/tests/**/test-check-extensions.spec.js"
   push:
     branches:
       - main
     paths:
-      - ".github/workflows/kyma-dashboard-dev-build.yml"
+      - ".github/workflows/kyma-dashboard-prod-build.yml"
       - "Dockerfile.*"
       - "package.json"
-      - "environments/dev/**"
+      - "environments/prod/**"
       - "extensions/**"
       - "gulpfile.js"
       - "Makefile"
-      - "tests/**"
-
+      - "tests/cypress-smoke.json"
+      - "tests/tests/**/test-check-extensions.spec.js"
 
 permissions:
   id-token: write # This is required for requesting the JWT token
   contents: read # This is required for actions/checkout
 
 jobs:
-  load-env-dev:
+  load-env-prod:
     runs-on: ubuntu-latest
     outputs:
       WEB_IMAGE: ${{ steps.get_tags.outputs.WEB_IMAGE }}
@@ -43,50 +44,50 @@ jobs:
       - name: Load environment variables
         id: get_tags
         run: |
-          source ./environments/dev/env.sh
+          source ./environments/prod/env.sh
           echo "WEB_IMAGE=$WEB_IMAGE" >> $GITHUB_OUTPUT
           echo "BACKEND_IMAGE=$BACKEND_IMAGE" >> $GITHUB_OUTPUT
           echo "LOCAL_IMAGE=$LOCAL_IMAGE" >> $GITHUB_OUTPUT
-  build-web-dev:
-    needs: [ load-env-dev ]
+  build-web-prod:
+    needs: [ load-env-prod ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
-      name: kyma-dashboard-web-dev # This image name is used to build the URL to the registry
+      name: kyma-dashboard-web-prod # This image name is used to build the URL to the registry
       dockerfile: Dockerfile.web.builder
       context: .
       export-tags: true
       build-args: |
-        ENV=dev
-        WEB_IMAGE=${{ needs.load-env-dev.outputs.WEB_IMAGE }}
-  build-backend-dev:
-    needs: [ load-env-dev ]
+        ENV=prod
+        WEB_IMAGE=${{ needs.load-env-prod.outputs.WEB_IMAGE }}
+  build-backend-prod:
+    needs: [ load-env-prod ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
-      name: kyma-dashboard-backend-dev # This image name is used to build the URL to the registry
+      name: kyma-dashboard-backend-prod # This image name is used to build the URL to the registry
       dockerfile: Dockerfile.backend
       context: .
       export-tags: true
       build-args: |
-        ENV=dev
-        BACKEND_IMAGE=${{ needs.load-env-dev.outputs.BACKEND_IMAGE }}
-  build-local-dev:
-    needs: [ load-env-dev ]
+        ENV=prod
+        BACKEND_IMAGE=${{ needs.load-env-prod.outputs.BACKEND_IMAGE }}
+  build-local-prod:
+    needs: [ load-env-prod ]
     uses: kyma-project/test-infra/.github/workflows/image-builder.yml@main # Usage: kyma-project/test-infra/.github/workflows/image-builder.yml@main
     with:
-      name: kyma-dashboard-local-dev # This image name is used to build the URL to the registry
+      name: kyma-dashboard-local-prod # This image name is used to build the URL to the registry
       dockerfile: Dockerfile.local.builder
       context: .
       export-tags: true
       build-args: |
-        ENV=dev
-        LOCAL_IMAGE=${{ needs.load-env-dev.outputs.LOCAL_IMAGE }}
-  test-images-dev:
+        ENV=prod
+        LOCAL_IMAGE=${{ needs.load-env-prod.outputs.LOCAL_IMAGE }}
+  test-images-prod:
     runs-on: ubuntu-latest
     needs: [ build-web-stage, build-backend-stage, build-local-stage ]
     steps:
       - name: Test web image
-        run: echo "Testing web images ${{ needs.build-web-dev.outputs.images }}"
+        run: echo "Testing web images ${{ needs.build-web-prod.outputs.images }}"
       - name: Test backend image
-        run: echo "Testing backend images ${{ needs.build-backend-dev.outputs.images }}"
+        run: echo "Testing backend images ${{ needs.build-backend-prod.outputs.images }}"
       - name: Test local image
-        run: echo "Testing local images ${{ needs.build-local-dev.outputs.images }}"
+        run: echo "Testing local images ${{ needs.build-local-prod.outputs.images }}"
