@@ -83,7 +83,7 @@ jobs:
         LOCAL_IMAGE=${{ needs.load-env-prod.outputs.LOCAL_IMAGE }}
   test-images-prod:
     runs-on: ubuntu-latest
-    needs: [ build-web-stage, build-backend-stage, build-local-stage ]
+    needs: [ build-web-prod, build-backend-prod, build-local-prod ]
     steps:
       - name: Test web image
         run: echo "Testing web images ${{ needs.build-web-prod.outputs.images }}"
