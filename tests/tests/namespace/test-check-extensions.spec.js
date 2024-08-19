@@ -4,6 +4,7 @@ import { useCategory } from '../../support/helpers';
 context('Test Namespace Extensions view', () => {
   before(() => {
     cy.loginAndSelectCluster();
+
     cy.goToNamespaceDetails();
   });
 
