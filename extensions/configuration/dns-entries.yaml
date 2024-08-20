@@ -8,6 +8,13 @@ metadata:
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
+  dataSources: |-
+    targetServices:
+      resource:
+        kind: Service
+        version: v1
+      filter: >-
+        $exists($item.status.loadBalancer.ingress)
   details: |-
     header: 
       - source: 'status.state ? status.state : "UNKNOWN"'
@@ -51,8 +58,10 @@ data:
       required: true    
       name: spec.targets
       children:
-        - widget: Text
-          simple: true
+        - simple: true
+          enum: "$map($targetServices().items, function($v, $i, $a) {
+            {'key':$v.status.loadBalancer.ingress.ip , 'name':$v.status.loadBalancer.ingress.ip & ' (' & $v.metadata.name & ')'}
+          })"
           placeholder: target.placeholder 
     - path: spec.text
       name: spec.text
