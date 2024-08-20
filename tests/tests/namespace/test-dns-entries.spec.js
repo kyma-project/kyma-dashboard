@@ -61,8 +61,7 @@ context('Test DNS Entries', () => {
       .should('have.attr', 'readonly');
 
     // change from A to CNAME
-    cy.get('[placeholder^="Enter the A record target"]:visible')
-      .find('input')
+    cy.get('input[placeholder^="Enter the A record target"]:visible')
       .last()
       .type('example.com', { force: true });
 
