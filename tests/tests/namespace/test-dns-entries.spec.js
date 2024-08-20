@@ -63,6 +63,7 @@ context('Test DNS Entries', () => {
     // change from A to CNAME
     cy.get('input[placeholder^="Enter the A record target"]:visible')
       .last()
+      .wait(1000)
       .type('example.com', { force: true });
 
     cy.saveChanges('Edit');
