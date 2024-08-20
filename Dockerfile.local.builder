@@ -1,6 +1,6 @@
 ARG LOCAL_IMAGE
 
-FROM europe-docker.pkg.dev/kyma-project/prod/busola:${LOCAL_IMAGE}
+FROM europe-docker.pkg.dev/kyma-project/dev/busola:${LOCAL_IMAGE}
 
 ARG ENV
 
