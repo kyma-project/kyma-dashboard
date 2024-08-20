@@ -1,7 +1,7 @@
 import 'cypress-file-upload';
 
 Cypress.skipAfterFail = ({ skipAllSuits = false } = {}) => {
-  before(function() {
+  before(function () {
     // stop all if an important test failed before
     cy.task('dynamicSharedStore', { name: 'cancelTests' }).then(
       hasImportantTestFallen => {
@@ -11,7 +11,7 @@ Cypress.skipAfterFail = ({ skipAllSuits = false } = {}) => {
       },
     );
   });
-  afterEach(function() {
+  afterEach(function () {
     if (this.currentTest.state === 'failed') {
       if (!Cypress.config('isInteractive')) {
         // isInteractive is true for headed browsers (suite started with 'cypress open' command)
@@ -189,7 +189,7 @@ Cypress.Commands.add(
       cy.contains('ui5-link', resourceName).should('be.visible');
     }
 
-    cy.contains('ui5-message-strip', /created/).should('not.exist');
+    cy.contains('ui5-toast', /created/).should('not.exist');
 
     cy.get('ui5-button[data-testid="delete"]').click();
 
@@ -201,7 +201,7 @@ Cypress.Commands.add(
         .click();
 
       if (deletedVisible) {
-        cy.contains('ui5-message-strip', /deleted/).should('be.visible');
+        cy.contains('ui5-toast', /deleted/).should('be.visible');
       }
 
       if (clearSearch) {
