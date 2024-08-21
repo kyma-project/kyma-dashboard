@@ -144,7 +144,7 @@ context('Test Kyma Modules views', () => {
       .contains('Save')
       .click();
 
-    cy.get('ui5-message-strip')
+    cy.get('ui5-toast')
       .contains('Kyma updated')
       .should('be.visible');
 
