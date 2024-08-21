@@ -1,6 +1,6 @@
 ARG WEB_IMAGE
 
-FROM europe-docker.pkg.dev/kyma-project/dev/busola-web:${WEB_IMAGE}
+FROM europe-docker.pkg.dev/kyma-project/prod/busola-web:${WEB_IMAGE}
 
 ARG ENV
 
