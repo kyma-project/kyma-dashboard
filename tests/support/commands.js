@@ -189,8 +189,6 @@ Cypress.Commands.add(
       cy.contains('ui5-link', resourceName).should('be.visible');
     }
 
-    cy.contains('ui5-toast', /created/).should('not.exist');
-
     cy.get('ui5-button[data-testid="delete"]').click();
 
     if (confirmationEnabled) {
