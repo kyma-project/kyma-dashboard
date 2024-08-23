@@ -78,6 +78,21 @@ translations:
     placeholders:
       description: Provide a description for your Application
 ---
+dataSources:
+  jksSecret:
+    resource:
+      kind: Secret
+      version: v1
+    filter: >-
+      $item.metadata.name =
+      $root.spec.keystores.jks.passwordSecretRef.secretName
+  pkcs12Secret:
+    resource:
+      kind: Secret
+      version: v1
+    filter: >-
+      $item.metadata.name =
+      $root.spec.keystores.pkcs12.passwordSecretRef.secretName
 details:
   status:
     header:
@@ -104,7 +119,12 @@ details:
       children:
         - name: issuer
           source: spec.issuerRef.name
+          widget: ResourceLink
           visibility: $exists(spec.issuerRef)
+          resource:
+            namespace: $root.spec.issuerRef.namespace
+            kind: '''Issuer'''
+            name: $root.spec.issuerRef.name
         - name: secret
           source: spec.secretRef.name
           widget: ResourceLink
@@ -151,9 +171,21 @@ details:
               widget: Panel
               visibility: $exists(spec.keystores.jks.passwordSecretRef)
               children:
+                - name: Password Secret Ref
+                  source: spec.keystores.jks.passwordSecretRef.secretName
+                  widget: ResourceLink
+                  visibility: >-
+                    $exists(spec.keystores.jks.passwordSecretRef.secretName) and
+                    $count($jksSecret().items)>0
+                  resource:
+                    namespace: $jksSecret().items.metadata.namespace
+                    kind: '''Secret'''
+                    name: $root.spec.keystores.jks.passwordSecretRef.secretName
                 - name: spec.keystores.secretName
                   source: spec.keystores.jks.passwordSecretRef.secretName
-                  visibility: $exists(spec.keystores.jks.passwordSecretRef.secretName)
+                  visibility: >-
+                    $exists(spec.keystores.jks.passwordSecretRef.secretName) and
+                    $count($jksSecret().items)=0
                 - name: spec.keystores.key
                   source: spec.keystores.jks.passwordSecretRef.key
                   visibility: $exists(spec.keystores.jks.passwordSecretRef.key)
@@ -168,9 +200,21 @@ details:
               widget: Panel
               visibility: $exists(spec.keystores.pkcs12.passwordSecretRef)
               children:
+                - name: Password Secret Ref
+                  source: spec.keystores.pkcs12.passwordSecretRef.secretName
+                  widget: ResourceLink
+                  visibility: >-
+                    $exists(spec.keystores.pkcs12.passwordSecretRef.secretName)
+                    and $count($pkcs12Secret().items)>0
+                  resource:
+                    namespace: $pkcs12Secret().items.metadata.namespace
+                    kind: '''Secret'''
+                    name: $root.spec.keystores.pkcs12.passwordSecretRef.secretName
                 - name: spec.keystores.secretName
                   source: spec.keystores.pkcs12.passwordSecretRef.secretName
-                  visibility: $exists(spec.keystores.pkcs12.passwordSecretRef.secretName)
+                  visibility: >-
+                    $exists(spec.keystores.pkcs12.passwordSecretRef.secretName)
+                    and $count($pkcs12Secret().items)=0
                 - name: spec.keystores.key
                   source: spec.keystores.pkcs12.passwordSecretRef.key
                   visibility: $exists(spec.keystores.pkcs12.passwordSecretRef.key)
