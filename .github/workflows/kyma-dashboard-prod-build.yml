@@ -56,6 +56,7 @@ jobs:
       dockerfile: Dockerfile.web.builder
       context: .
       export-tags: true
+      tags: latest
       build-args: |
         ENV=prod
         WEB_IMAGE=${{ needs.load-env-prod.outputs.WEB_IMAGE }}
@@ -67,6 +68,7 @@ jobs:
       dockerfile: Dockerfile.backend
       context: .
       export-tags: true
+      tags: latest
       build-args: |
         ENV=prod
         BACKEND_IMAGE=${{ needs.load-env-prod.outputs.BACKEND_IMAGE }}
@@ -78,6 +80,7 @@ jobs:
       dockerfile: Dockerfile.local.builder
       context: .
       export-tags: true
+      tags: latest
       build-args: |
         ENV=prod
         LOCAL_IMAGE=${{ needs.load-env-prod.outputs.LOCAL_IMAGE }}
