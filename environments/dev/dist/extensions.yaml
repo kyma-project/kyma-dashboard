@@ -123,14 +123,14 @@ details:
           visibility: $exists(spec.issuerRef)
           resource:
             namespace: $root.spec.issuerRef.namespace
-            kind: '''Issuer'''
+            kind: "'Issuer'"
             name: $root.spec.issuerRef.name
         - name: secret
           source: spec.secretRef.name
           widget: ResourceLink
           resource:
             namespace: $root.spec.secretRef.namespace
-            kind: '''Secret'''
+            kind: "'Secret'"
             name: $root.spec.secretRef.name
         - name: spec.secretName
           source: spec.secretName
@@ -179,7 +179,7 @@ details:
                     $count($jksSecret().items)>0
                   resource:
                     namespace: $jksSecret().items.metadata.namespace
-                    kind: '''Secret'''
+                    kind: "'Secret'"
                     name: $root.spec.keystores.jks.passwordSecretRef.secretName
                 - name: spec.keystores.secretName
                   source: spec.keystores.jks.passwordSecretRef.secretName
@@ -208,7 +208,7 @@ details:
                     and $count($pkcs12Secret().items)>0
                   resource:
                     namespace: $pkcs12Secret().items.metadata.namespace
-                    kind: '''Secret'''
+                    kind: "'Secret'"
                     name: $root.spec.keystores.pkcs12.passwordSecretRef.secretName
                 - name: spec.keystores.secretName
                   source: spec.keystores.pkcs12.passwordSecretRef.secretName
@@ -1059,22 +1059,81 @@ list:
     widget: Labels
 ---
 details:
-  header:
-    - name: spec.acme.email
-      source: spec.acme.email
-    - source: 'status.state ? status.state : "UNKNOWN"'
-      highlights:
-        informative:
-          - UNKNOWN
-      name: status
-      widget: Badge
-      description: status.message
-    - name: spec.acme.server
-      source: spec.acme.server
+  status:
+    header:
+      - name: status
+        source: 'status.state ? status.state : "UNKNOWN"'
+        highlights:
+          informative:
+            - UNKNOWN
+        widget: Badge
+        description: status.message
+    body:
+      - name: status.observedGeneration
+        source: status.observedGeneration
+      - name: status.requestsPerDayQuota
+        source: status.requestsPerDayQuota
   body:
-    - widget: Columns
+    - name: specification
+      widget: Panel
       children:
-        - name: Included domains
+        - name: issuertype
+          source: '$exists(spec.acme) ? "ACME" : $exists(spec.ca) ? "CA" : ""'
+        - name: spec.acme.server
+          source: spec.acme.server
+          visibility: $exists(spec.acme)
+        - name: spec.acme.email
+          source: spec.acme.email
+          visibility: $exists(spec.acme)
+        - name: spec.acme.skipDNSChallengeValidation
+          source: spec.acme.skipDNSChallengeValidation
+          visibility: $exists(spec.acme)
+        - name: spec.acme.autoRegistration
+          source: spec.acme.autoRegistration
+          visibility: $exists(spec.acme)
+        - name: spec.ca.privateKeySecretRef
+          visibility: $exists(spec.acme)
+          source: spec.acme.privateKeySecretRef.name
+          widget: ResourceLink
+          resource:
+            namespace: $root.spec.acme.privateKeySecretRef.namespace
+            kind: "'Secret'"
+            name: $root.spec.acme.privateKeySecretRef.name
+        - name: spec.ca.privateKeySecretRef
+          visibility: $exists(spec.ca)
+          source: spec.ca.privateKeySecretRef.name
+          widget: ResourceLink
+          resource:
+            namespace: $root.spec.ca.privateKeySecretRef.namespace
+            kind: "'Secret'"
+            name: $root.spec.ca.privateKeySecretRef.name
+        - name: spec.acme.externalAccountBinding.keyID
+          source: spec.acme.externalAccountBinding.keyID
+          visibility: $exists(spec.acme)
+        - name: spec.acme.externalAccountBinding.keySecretRef
+          visibility: $exists(spec.acme)
+          source: spec.acme.externalAccountBinding.keySecretRef.name
+          widget: ResourceLink
+          resource:
+            namespace: $root.spec.acme.externalAccountBinding.keySecretRef.namespace
+            kind: "'Secret'"
+            name: $root.spec.acme.externalAccountBinding.keySecretRef.name
+    - widget: Columns
+      visibility: $exists(spec.acme)
+      children:
+        - name: spec.acme.precheckNameservers
+          widget: Table
+          visibility: $exists(spec.acme.precheckNameservers)
+          disablePadding: true
+          showHeader: false
+          source: spec.acme.precheckNameservers
+          children:
+            - source: $item
+              search: true
+    - widget: Columns
+      visibility: $exists(spec.acme)
+      children:
+        - name: spec.acme.includeddomains
           widget: Table
           disablePadding: true
           showHeader: false
@@ -1082,7 +1141,7 @@ details:
           children:
             - source: $item
               search: true
-        - name: Excluded domains
+        - name: spec.acme.excludeddomains
           widget: Table
           disablePadding: true
           showHeader: false
@@ -1090,6 +1149,10 @@ details:
           children:
             - source: $item
               search: true
+    - widget: EventList
+      name: events
+      filter: $matchEvents($$, $root.kind, $root.metadata.name)
+      hideInvolvedObjects: true
 form:
   - var: IssuerType
     dynamicValue: |
@@ -1116,6 +1179,13 @@ form:
         simple: true
         placeholder: email.for.registration
       - path: skipDNSChallengeValidation
+      - name: spec.acme.precheckNameservers
+        path: precheckNameservers
+        widget: SimpleList
+        children:
+          - path: '[]'
+            simple: true
+            placeholder: spec.acme.precheckNameservers.placeholder
       - path: privateKeySecretRef
         widget: ResourceRef
         provideVar: secret
@@ -1176,6 +1246,8 @@ general:
     {{[Issuer](https://cert-manager.io/docs/concepts/issuer/)}} is a Namespace
     resource responsible for provisioning of certificates.
 list:
+  - name: issuertype
+    source: '$exists(spec.acme) ? "ACME" : $exists(spec.ca) ? "CA" : ""'
   - name: spec.acme.email
     source: spec.acme.email
   - name: status
@@ -1218,6 +1290,7 @@ translations:
     metadata.creationTimestamp: Created at
     issuertype: Issuer Type
     selectissuertype: Select Issuer type
+    specification: Specification
     spec.requestsPerDayQuota: Daily Requests Quota
     spec.acme.email: Email
     email.for.registration: Email address for user registration
@@ -1229,7 +1302,6 @@ translations:
     spec.acme.excludeddomains: Excluded Domains
     spec.acme.domainallowed: Domain that is allowed
     spec.acme.domainforbidden: Domain that is forbidden
-    status: Status
     spec.acme.skipDNSChallengeValidation: Skip DNS challenge validation
     spec.acme.privateKeySecretRef: Private key Secret
     spec.acme.autoRegistration: Auto registration
@@ -1237,7 +1309,13 @@ translations:
     spec.acme.externalAccountBinding.keyID: CA key ID
     spec.acme.externalAccountBinding.id: ID of the CA that the external account is bound to
     spec.acme.externalAccountBinding.keySecretRef: Symmetric MAC Secret
+    spec.acme.precheckNameservers: Precheck Nameservers
+    spec.acme.precheckNameservers.placeholder: Format `host` or `host:port`, e.g. "8.8.8.8" or "8.8.8.8:53"
     spec.ca.privateKeySecretRef: Private key Secret
+    status: Status
+    status.observedGeneration: Observed Generation
+    status.requestsPerDayQuota: Requests per day quota
+    events: Events
 ---
 dataSources:
   moduleTemplates:
@@ -1388,7 +1466,7 @@ injections:
     design: information-1
     children:
       - widget: ResourceButton
-        source: '''Add Modules'''
+        source: "'Add Modules'"
         resource:
           customUrl: kymamodules
       - widget: ExternalLinkButton
@@ -1480,7 +1558,7 @@ details:
       children:
         - name: Custom
           widget: CodeViewer
-          language: '''plaintext'''
+          language: "'plaintext'"
           source: spec.output.custom
           visibility: $exists(spec.output.custom)
         - name: Grafana-Loki
@@ -1909,7 +1987,7 @@ details:
           resource:
             name: spec.secretName
             namespace: $root.metadata.namespace
-            kind: '''Secret'''
+            kind: "'Secret'"
         - name: spec.tokenEndpointAuthMethod
           source: spec.tokenEndpointAuthMethod
           widget: Labels
@@ -2032,7 +2110,7 @@ list:
     resource:
       name: spec.secretName
       namespace: $root.metadata.namespace
-      kind: '''secret'''
+      kind: "'secret'"
   - source: 'status.state ? "error" : "ok"'
     highlights:
       positive:
@@ -2053,7 +2131,7 @@ injections:
     order: 1
     children:
       - widget: Alert
-        source: '''deprecation.long'''
+        source: "'deprecation.long'"
         severity: warning
       - widget: ExternalLink
         name: Migration blogpost
@@ -2160,14 +2238,14 @@ details:
           widget: ResourceLink
           resource:
             namespace: $root.metadata.namespace
-            kind: '''ServiceInstance'''
+            kind: "'ServiceInstance'"
             name: $root.spec.serviceInstanceName
         - name: spec.secretName
           source: spec.secretName
           widget: ResourceLink
           resource:
             namespace: $root.metadata.namespace
-            kind: '''Secret'''
+            kind: "'Secret'"
             name: $root.spec.secretName
         - name: spec.externalName
           source: spec.externalName
@@ -2209,7 +2287,7 @@ form:
   - path: spec.secretName
   - path: spec.parameters
     widget: CodeEditor
-    language: '''json'''
+    language: "'json'"
   - path: spec.parametersFrom
     widget: SimpleList
     defaultExpanded: true
@@ -2248,7 +2326,7 @@ list:
     widget: ResourceLink
     resource:
       namespace: $root.metadata.namespace
-      kind: '''ServiceInstance'''
+      kind: "'ServiceInstance'"
       name: $root.spec.serviceInstanceName
   - name: spec.externalName
     source: spec.externalName
@@ -2336,7 +2414,7 @@ form:
     placeholder: spec.externalNamePlaceholder
   - path: spec.parameters
     widget: CodeEditor
-    language: '''json'''
+    language: "'json'"
 general:
   resource:
     kind: ServiceInstance
@@ -2692,7 +2770,7 @@ details:
       resource:
         name: $substringBefore($substringAfter(spec.sink, "http://"), ".")
         namespace: $root.metadata.namespace
-        kind: '''Service'''
+        kind: "'Service'"
   body:
     - source: status.conditions
       widget: Table
