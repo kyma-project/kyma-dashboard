@@ -4,7 +4,6 @@ REPO_IMG_PROD ?= europe-docker.pkg.dev/kyma-project/prod/$(BASE_IMG_NAME)
 TAG ?= $(DOCKER_TAG)
 
 release-dev:
-	ENV=dev make prepare-extensions-image
 	TARGET=web ENV=dev make build
 	TARGET=web ENV=dev make push
 	TARGET=backend ENV=dev make build
@@ -13,7 +12,6 @@ release-dev:
 	TARGET=local ENV=dev make push
 
 release-stage:
-	ENV=stage make prepare-extensions-image
 	TARGET=web ENV=stage make build
 	TARGET=web ENV=stage make push
 	TARGET=backend ENV=stage make build
@@ -22,7 +20,6 @@ release-stage:
 	TARGET=local ENV=stage make push
 
 release-prod:
-	ENV=prod make prepare-extensions-image
 	TARGET=web ENV=prod make build
 	TARGET=web ENV=prod make push
 	TARGET=backend ENV=prod make build
@@ -30,8 +27,6 @@ release-prod:
 	TARGET=local ENV=prod make build
 	TARGET=local ENV=prod make push
 
-prepare-extensions-image:
-	docker build -t extensions-local --build-arg ENV=$(ENV) -f Dockerfile.extensions .
 
 build:
 	$(eval LOCAL_TAG := $(BASE_IMG_NAME)-$(TARGET)-$(ENV))
