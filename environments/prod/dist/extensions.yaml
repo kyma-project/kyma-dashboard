@@ -123,14 +123,14 @@ details:
           visibility: $exists(spec.issuerRef)
           resource:
             namespace: $root.spec.issuerRef.namespace
-            kind: '''Issuer'''
+            kind: "'Issuer'"
             name: $root.spec.issuerRef.name
         - name: secret
           source: spec.secretRef.name
           widget: ResourceLink
           resource:
             namespace: $root.spec.secretRef.namespace
-            kind: '''Secret'''
+            kind: "'Secret'"
             name: $root.spec.secretRef.name
         - name: spec.secretName
           source: spec.secretName
@@ -179,7 +179,7 @@ details:
                     $count($jksSecret().items)>0
                   resource:
                     namespace: $jksSecret().items.metadata.namespace
-                    kind: '''Secret'''
+                    kind: "'Secret'"
                     name: $root.spec.keystores.jks.passwordSecretRef.secretName
                 - name: spec.keystores.secretName
                   source: spec.keystores.jks.passwordSecretRef.secretName
@@ -208,7 +208,7 @@ details:
                     and $count($pkcs12Secret().items)>0
                   resource:
                     namespace: $pkcs12Secret().items.metadata.namespace
-                    kind: '''Secret'''
+                    kind: "'Secret'"
                     name: $root.spec.keystores.pkcs12.passwordSecretRef.secretName
                 - name: spec.keystores.secretName
                   source: spec.keystores.pkcs12.passwordSecretRef.secretName
@@ -1097,7 +1097,7 @@ details:
           widget: ResourceLink
           resource:
             namespace: $root.spec.acme.privateKeySecretRef.namespace
-            kind: '''Secret'''
+            kind: "'Secret'"
             name: $root.spec.acme.privateKeySecretRef.name
         - name: spec.ca.privateKeySecretRef
           visibility: $exists(spec.ca)
@@ -1105,7 +1105,7 @@ details:
           widget: ResourceLink
           resource:
             namespace: $root.spec.ca.privateKeySecretRef.namespace
-            kind: '''Secret'''
+            kind: "'Secret'"
             name: $root.spec.ca.privateKeySecretRef.name
         - name: spec.acme.externalAccountBinding.keyID
           source: spec.acme.externalAccountBinding.keyID
@@ -1116,10 +1116,10 @@ details:
           widget: ResourceLink
           resource:
             namespace: $root.spec.acme.externalAccountBinding.keySecretRef.namespace
-            kind: '''Secret'''
+            kind: "'Secret'"
             name: $root.spec.acme.externalAccountBinding.keySecretRef.name
     - widget: Columns
-      visibility: $exists(spec.acme)
+      visibility: $exists(spec.acme.precheckNameservers)
       children:
         - name: spec.acme.precheckNameservers
           widget: Table
@@ -1466,7 +1466,7 @@ injections:
     design: information-1
     children:
       - widget: ResourceButton
-        source: '''Add Modules'''
+        source: "'Add Modules'"
         resource:
           customUrl: kymamodules
       - widget: ExternalLinkButton
@@ -1558,7 +1558,7 @@ details:
       children:
         - name: Custom
           widget: CodeViewer
-          language: '''plaintext'''
+          language: "'plaintext'"
           source: spec.output.custom
           visibility: $exists(spec.output.custom)
         - name: Grafana-Loki
@@ -1987,7 +1987,7 @@ details:
           resource:
             name: spec.secretName
             namespace: $root.metadata.namespace
-            kind: '''Secret'''
+            kind: "'Secret'"
         - name: spec.tokenEndpointAuthMethod
           source: spec.tokenEndpointAuthMethod
           widget: Labels
@@ -2110,7 +2110,7 @@ list:
     resource:
       name: spec.secretName
       namespace: $root.metadata.namespace
-      kind: '''secret'''
+      kind: "'secret'"
   - source: 'status.state ? "error" : "ok"'
     highlights:
       positive:
@@ -2131,7 +2131,7 @@ injections:
     order: 1
     children:
       - widget: Alert
-        source: '''deprecation.long'''
+        source: "'deprecation.long'"
         severity: warning
       - widget: ExternalLink
         name: Migration blogpost
@@ -2238,14 +2238,14 @@ details:
           widget: ResourceLink
           resource:
             namespace: $root.metadata.namespace
-            kind: '''ServiceInstance'''
+            kind: "'ServiceInstance'"
             name: $root.spec.serviceInstanceName
         - name: spec.secretName
           source: spec.secretName
           widget: ResourceLink
           resource:
             namespace: $root.metadata.namespace
-            kind: '''Secret'''
+            kind: "'Secret'"
             name: $root.spec.secretName
         - name: spec.externalName
           source: spec.externalName
@@ -2287,7 +2287,7 @@ form:
   - path: spec.secretName
   - path: spec.parameters
     widget: CodeEditor
-    language: '''json'''
+    language: "'json'"
   - path: spec.parametersFrom
     widget: SimpleList
     defaultExpanded: true
@@ -2326,7 +2326,7 @@ list:
     widget: ResourceLink
     resource:
       namespace: $root.metadata.namespace
-      kind: '''ServiceInstance'''
+      kind: "'ServiceInstance'"
       name: $root.spec.serviceInstanceName
   - name: spec.externalName
     source: spec.externalName
@@ -2414,7 +2414,7 @@ form:
     placeholder: spec.externalNamePlaceholder
   - path: spec.parameters
     widget: CodeEditor
-    language: '''json'''
+    language: "'json'"
 general:
   resource:
     kind: ServiceInstance
@@ -2770,7 +2770,7 @@ details:
       resource:
         name: $substringBefore($substringAfter(spec.sink, "http://"), ".")
         namespace: $root.metadata.namespace
-        kind: '''Service'''
+        kind: "'Service'"
   body:
     - source: status.conditions
       widget: Table

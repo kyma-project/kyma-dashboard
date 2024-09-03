@@ -69,7 +69,7 @@ data:
               kind: "'Secret'"
               name: $root.spec.acme.externalAccountBinding.keySecretRef.name 
       - widget: Columns
-        visibility: $exists(spec.acme)
+        visibility: $exists(spec.acme.precheckNameservers)
         children:
         - name: spec.acme.precheckNameservers
           widget: Table
