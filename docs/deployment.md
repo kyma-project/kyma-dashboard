@@ -4,7 +4,6 @@
 
 - `release-{ENV}`: consists of steps:
 
-  - Build local `prepare-extensions-image` with the extensions from current environment. This image will be used during the next steps.
   - Build and push frontend image: `extensions.yaml` and `config.yaml` are added.
   - Build and push backend image: `config.yaml` is added.
   - Build and push local iamge: `extensions.yaml` and `config.yaml` are added.
