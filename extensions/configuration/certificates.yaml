@@ -273,3 +273,4 @@ data:
       spec.secretName: Secret Name
       certificateCN: Certificate CN (max 64 characters)
       secret: Secret
+      conditions: Conditions

@@ -16,21 +16,26 @@ data:
       filter: >-
         $exists($item.status.loadBalancer.ingress)
   details: |-
-    header: 
-      - source: 'status.state ? status.state : "UNKNOWN"'
-        highlights:
-          informative:
-            - UNKNOWN
-        type: string
-        name: status
-        widget: Badge
-        description: status.message
+    resourceGraph:
+      dataSources:
+        - source: relatedService
+    status:
+      header:
+        - source: 'status.state ? status.state : "UNKNOWN"'
+          highlights:
+            informative:
+              - UNKNOWN
+          type: string
+          name: status
+          widget: Badge
+          description: status.message
+      body:
+        - name: Provider
+          source: status.provider
+          type: long
+        - name: Observed Generation
+          source: status.observedGeneration
     body: 
-      - name: Provider
-        widget: Panel
-        children:
-          - name: Provider
-            source: status.provider
       - name: Specification
         widget: Panel
         children:
