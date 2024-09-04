@@ -30,13 +30,13 @@ data:
           widget: Badge
           description: status.message
       body:
-        - name: Provider
+        - name: provider
           source: status.provider
           type: long
-        - name: Observed Generation
+        - name: observedGeneration
           source: status.observedGeneration
     body: 
-      - name: Specification
+      - name: specification
         widget: Panel
         children:
           - name: spec.dnsName
@@ -125,3 +125,6 @@ data:
       dnsName.placeholder: Select the DNSName
       text.placeholder: Text record must be a string. Provide either target or text. 
       status: Status
+      provider: Provider
+      observedGeneration: Observed Generation
+      specification: Specification
