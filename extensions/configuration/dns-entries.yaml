@@ -32,7 +32,7 @@ data:
       body:
         - name: Provider
           source: status.provider
-          type: long
+          fullWidth: true
         - name: Observed Generation
           source: status.observedGeneration
     body: 
