@@ -15,6 +15,12 @@ data:
         version: v1
       filter: >-
         $exists($item.status.loadBalancer.ingress)
+    relatedService:
+      resource:
+        kind: Service
+        version: v1
+      filter: >-
+        $filter($root.spec.targets, function ($v, $i, $a) { $contains($item.status.loadBalancer.ingress.ip, $v)})
   details: |-
     resourceGraph:
       dataSources:
