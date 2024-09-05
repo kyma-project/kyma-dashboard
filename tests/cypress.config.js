@@ -42,6 +42,7 @@ module.exports = defineConfig({
       'tests/namespace/test-oauth2.spec.js',
       'tests/namespace/test-dns-entries.spec.js',
       'tests/namespace/test-services.spec.js',
+      'tests/namespace/test-service-bindings.spec.js',
       // 'tests/namespace/test-kyma.spec.js',
       // 'tests/namespace/test-module-templates.spec.js',
       'tests/namespace/z-run-after.spec.js',
