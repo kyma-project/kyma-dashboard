@@ -356,6 +356,7 @@ translations:
     spec.secretName: Secret Name
     certificateCN: Certificate CN (max 64 characters)
     secret: Secret
+    conditions: Conditions
 ---
 dataSources:
   targetServices:
@@ -363,22 +364,34 @@ dataSources:
       kind: Service
       version: v1
     filter: $exists($item.status.loadBalancer.ingress)
+  relatedService:
+    resource:
+      kind: Service
+      version: v1
+    filter: >-
+      $filter($root.spec.targets, function ($v, $i, $a) {
+      $contains($item.status.loadBalancer.ingress.ip, $v)})
 details:
-  header:
-    - source: 'status.state ? status.state : "UNKNOWN"'
-      highlights:
-        informative:
-          - UNKNOWN
-      type: string
-      name: status
-      widget: Badge
-      description: status.message
+  resourceGraph:
+    dataSources:
+      - source: relatedService
+  status:
+    header:
+      - source: 'status.state ? status.state : "UNKNOWN"'
+        highlights:
+          informative:
+            - UNKNOWN
+        type: string
+        name: status
+        widget: Badge
+        description: status.message
+    body:
+      - name: Provider
+        source: status.provider
+        fullWidth: true
+      - name: Observed Generation
+        source: status.observedGeneration
   body:
-    - name: Provider
-      widget: Panel
-      children:
-        - name: Provider
-          source: status.provider
     - name: Specification
       widget: Panel
       children:
