@@ -23,8 +23,6 @@ Then build docker image for the same `env`.
 Finally run coresponding docker image.
 
 ```bash
-ENV=$ENV make prepare-extensions-image
-
 TARGET=local ENV=$ENV make build
 
 docker run --rm -it -p 3001:3001 -e DOCKER_DESKTOP_CLUSTER=true --pid=host --name kyma-dashboard kyma-dashboard-local-$ENV
