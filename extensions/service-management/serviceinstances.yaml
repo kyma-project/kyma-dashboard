@@ -119,8 +119,21 @@ data:
       widget: CodeEditor
       language: "'json'"
     - path: spec.parametersFrom
-      widget: CodeEditor
-      language: "'json'"
+      widget: GenericList
+      defaultExpanded: true
+      children:
+        - path: '[].secretKeyRef.name'
+          widget: Resource
+          resource:
+            kind: Secret
+            version: v1
+            scope: namespace
+          provideVar: secret
+          required: false
+        - path: '[].secretKeyRef.key'
+          enum: '$keys($secret.data)'
+          required: false
+          placeholder: chooseSecretKey
     - path: spec.customTags
       widget: SimpleList
       children:
@@ -185,3 +198,4 @@ data:
       spec.btpAccessCredentialsSecret: BTP Access Credentials Secret
       spec.servicePlanID: Plan ID
       serviceinstancedata: Service Instance Data
+      chooseSecretKey: Choose Secret Key
