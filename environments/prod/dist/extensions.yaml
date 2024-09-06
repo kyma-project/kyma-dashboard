@@ -2386,7 +2386,37 @@ details:
     depth: 1
     dataSources:
       - source: myServiceBindings
-  status: null
+  status:
+    header:
+      - name: status
+        source: status.conditions[$count(status.conditions)-1].reason
+        description: >-
+          $filter(status.conditions, function ($v, $i, $a) { $length($v.message)
+          > 0 })[0].message
+        widget: Badge
+        highlights:
+          positive:
+            - Provisioned
+          informative:
+            - NotProvisioned
+          negative:
+            - CreateFailed
+    body:
+      - name: status.observedGeneration
+        source: status.observedGeneration
+      - name: status.instanceID
+        source: status.instanceID
+      - name: status.operationType
+        source: status.operationType
+      - name: status.operationURL
+        source: status.operationURL
+      - name: status.tags
+        source: status.tags
+        widget: Labels
+        fullWidth: true
+      - name: conditions
+        source: status.conditions
+        widget: ConditionList
   header:
     - name: metadata.finalizers
       source: metadata.finalizers
