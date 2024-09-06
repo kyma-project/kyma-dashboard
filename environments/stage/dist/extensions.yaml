@@ -2382,6 +2382,10 @@ dataSources:
       version: v1
     filter: $item.spec.serviceInstanceName = $root.metadata.name
 details:
+  resourceGraph:
+    depth: 1
+    dataSources:
+      - source: myServiceBindings
   status: null
   header:
     - name: metadata.finalizers

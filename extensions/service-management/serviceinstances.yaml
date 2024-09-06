@@ -16,6 +16,10 @@ data:
         version: v1
       filter: '$item.spec.serviceInstanceName = $root.metadata.name'
   details: |
+    resourceGraph:
+      depth: 1
+      dataSources:
+        - source: myServiceBindings
     status:
     header:
       - name: status
