@@ -2542,10 +2542,8 @@ list:
         - CreateFailed
 translations:
   en:
-    metadata.annotations: Annotations
-    metadata.labels: Labels
-    metadata.creationTimestamp: Created at
     metadata.finalizers: Finalizers
+    conditions: Conditions
     status: Status
     status.observedGeneration: Observed Generation
     status.operationURL: Operation URL
@@ -2568,7 +2566,6 @@ translations:
     spec.shared: Shared
     spec.btpAccessCredentialsSecret: BTP Access Credentials Secret
     spec.servicePlanID: Plan ID
-    serviceinstancedata: Service Instance Data
     chooseSecretKey: Choose Secret Key
 ---
 details:
