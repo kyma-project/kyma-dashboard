@@ -97,6 +97,7 @@ data:
             source: spec.userInfo.uid
           - name: spec.username
             source: spec.userInfo.username
+        visibility: $exists(spec.userInfo)
       - name: spec.credentialsRotationPolicy
         widget: Panel
         visibility: $exists(spec.credentialsRotationPolicy)
