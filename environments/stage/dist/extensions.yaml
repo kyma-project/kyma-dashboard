@@ -484,38 +484,103 @@ translations:
     text.placeholder: Text record must be a string. Provide either target or text.
     status: Status
 ---
+dataSources:
+  relatedSecret:
+    resource:
+      kind: Secret
+      version: v1
+    filter: $root.spec.secretRef.name = $item.metadata.name
 details:
+  resourceGraph:
+    depth: 1
+    dataSources:
+      - source: relatedSecret
+  status:
+    header:
+      - source: 'status.state ? status.state : "UNKNOWN"'
+        highlights:
+          informative:
+            - UNKNOWN
+        type: string
+        name: status
+        widget: Badge
+        description: status.message
+    body:
+      - name: Default TTL
+        source: status.defaultTTL
+      - name: Observed Generation
+        source: status.observedGeneration
   header:
-    - source: spec.type
-      name: spec.type
-    - source: 'status.state ? status.state : "UNKNOWN"'
-      highlights:
-        informative:
-          - UNKNOWN
-      type: string
-      name: status
-      widget: Badge
-      description: status.message
+    - name: Finalizers
+      source: metadata.finalizers
+      widget: Labels
   body:
+    - name: Specification
+      widget: Panel
+      children:
+        - source: spec.type
+          name: Type
+        - name: Secret
+          source: spec.secretRef.name
+          widget: ResourceLink
+          resource:
+            namespace: $root.spec.secretRef.namespace
+            kind: '''Secret'''
+            name: $root.spec.secretRef.name
+        - name: Default TTL
+          source: spec.defaultTTL
+          visibility: $exists(spec.defaultTTL)
+        - name: Rate Limit
+          widget: Panel
+          visibility: $exists(spec.rateLimit)
+          children:
+            - name: spec.rateLimit
+              source: spec.userInfo.groups
+              widget: Labels
+            - name: UID
+              source: spec.rateLimit.uid
+            - name: Requests Per Day
+              source: spec.rateLimit.requestsPerDay
     - widget: Columns
       children:
-        - name: included.domains
+        - name: Included Domains
           widget: Table
           disablePadding: true
           showHeader: true
           source: spec.domains.include
           children:
             - source: $item
-              name: included.domains
+              name: Included Domains
               search: true
-        - name: excluded.domains
+        - name: Excluded Domains
           widget: Table
           disablePadding: true
           showHeader: true
           source: spec.domains.exclude
           children:
             - source: $item
-              name: excluded.domains
+              name: Excluded Domains
+              search: true
+    - widget: Columns
+      visibility: $exists(spec.zones)
+      children:
+        - name: Included Zones
+          widget: Table
+          disablePadding: true
+          showHeader: true
+          source: spec.zones.include
+          children:
+            - source: $item
+              name: Included Zones
+              search: true
+        - name: Excluded Zones
+          widget: Table
+          disablePadding: true
+          showHeader: true
+          source: spec.zones.exclude
+          children:
+            - source: $item
+              name: Excluded Zones
               search: true
 form:
   - simple: true
@@ -607,7 +672,6 @@ translations:
     metadata.labels: Labels
     metadata.creationTimestamp: Created at
     provider.choose: Choose Provider type
-    spec.type: Type
     spec.type.alicloud-dns: Alicloud DNS provider
     spec.type.aws-route53: AWS Route 53 provider
     spec.type.azure-dns: Azure DNS provider
@@ -618,8 +682,6 @@ translations:
     spec.type.netlify-dns: Netlify DNS provider
     spec.domains.include: Include Domains
     spec.domains.exclude: Exclude Domains
-    included.domains: Included Domains
-    excluded.domains: Excluded Domains
     domain.allowed: Domain that is allowed
     domain.forbidden: Domain that is forbidden
     spec.secretRef: Secret Reference
