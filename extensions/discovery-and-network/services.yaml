@@ -8,6 +8,33 @@ metadata:
     busola.io/extension: resource
     busola.io/extension-version: '0.5'
 data:
+  dataSources: |-
+    apirules:
+      resource:
+        kind: APIRule
+        group: gateway.kyma-project.io
+        version: v1beta1
+      filter: $item.spec.service.name = $root.metadata.name
+    podSelector:
+      resource:
+        kind: Pod
+        version: v1
+      filter: $matchByLabelSelector($item, $root.spec.selector)
+    subscriptions:
+      resource:
+        kind: Subscription
+        group: eventing.kyma-project.io
+        version: v1alpha1
+      filter: >-
+        $substringAfter($substringBefore($item.spec.sink, '.'), '://') =
+        $root.metadata.name
+    relatedDNSEntry:
+      resource:
+        kind: DNSEntry
+        group: dns.gardener.cloud
+        version: v1alpha1
+      filter: >-
+        $filter($item.spec.targets, function ($v, $i, $a) { $contains($root.status.loadBalancer.ingress.ip, $v)})
   details: |-
     resourceGraph:
       dataSources:
@@ -324,33 +351,6 @@ data:
         function($value) {$value.ip ? $value.ip : $value.hostname}) ~> $join(', '):
         ($count($item.spec.externalIPs) ? $item.spec.externalIPs ~> $join(', '):
         '-')
-  dataSources: |-
-    apirules:
-      resource:
-        kind: APIRule
-        group: gateway.kyma-project.io
-        version: v1beta1
-      filter: $item.spec.service.name = $root.metadata.name
-    podSelector:
-      resource:
-        kind: Pod
-        version: v1
-      filter: $matchByLabelSelector($item, $root.spec.selector)
-    subscriptions:
-      resource:
-        kind: Subscription
-        group: eventing.kyma-project.io
-        version: v1alpha1
-      filter: >-
-        $substringAfter($substringBefore($item.spec.sink, '.'), '://') =
-        $root.metadata.name
-    relatedDNSEntry:
-      resource:
-        kind: DNSEntry
-        group: dns.gardener.cloud
-        version: v1alpha1
-      filter: >-
-        $filter($item.spec.targets, function ($v, $i, $a) { $contains($root.status.loadBalancer.ingress.ip, $v)})
   general: |-
     resource:
       kind: Service
