@@ -43,15 +43,6 @@ data:
         - source: subscriptions
         - source: relatedDNSEntry
     status:
-      header:
-        - source: 'status.state ? status.state : "UNKNOWN"'
-          highlights:
-            informative:
-            - UNKNOWN
-          type: string
-          name: status
-          widget: Badge
-          description: status.message
       body:
         - name: Conditions
           source: status.conditions
